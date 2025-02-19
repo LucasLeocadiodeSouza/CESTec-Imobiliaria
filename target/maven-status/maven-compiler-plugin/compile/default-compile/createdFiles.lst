@@ -1,0 +1,3 @@
+com\cestec\principal\App.class
+com\cestec\connectSQL\dbException.class
+com\cestec\connectSQL\DB.class
