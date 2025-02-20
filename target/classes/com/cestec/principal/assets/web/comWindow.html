@@ -147,7 +147,8 @@
                      justify-content:   center;
                      padding:           10px;
                      margin-bottom:     10px;
-                     transition: 0.2s;}
+                     transition:        0.2s;
+                     user-select:       none;}
 
     .botoesmenuesq:hover {background-color: #2b7430;}
 
@@ -169,7 +170,8 @@
                   padding:           6px;
                   border-bottom-left-radius: 25px;
                   border-top-left-radius:    25px;
-                  width:                     25px;}
+                  width:                     25px;
+                  user-select:               none;}
 
     #dbackagenda:hover {background-color: #2b7430;}
 
@@ -184,7 +186,8 @@
                   padding:          6px;
                   border-bottom-right-radius: 25px;
                   border-top-right-radius:    25px;
-                  width:                      25px;}
+                  width:                      25px;
+                  user-select:                none;}
 
     #dnextagenda:hover {background-color: #2b7430;}
 
@@ -223,10 +226,15 @@
                 margin-left:       14px;
                 margin-right:      150px;
                 margin-bottom:     10px;}
+    ::-webkit-scrollbar {
+        width: 1px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
 
 </style>
-
-<script src="jsbiblio/comWindow.js"></script>
 </head>
 <body>
     <div id="dbarramenulateral" class="gen">
@@ -248,18 +256,55 @@
         </div>
 
         <div id="ditens" class="gen">
-            <div id="ditensmenu" class="gen botoesmenuesq">
-                <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Menu</label>
+            <div style="height: 450px; overflow-x: hidden; flex-grow: 1; overscroll-behavior-y: none;">
+                <div id="ditensmenuext" class="gen botoesmenuesq" style="background-color: transparent; box-shadow: none; display: inline-table; padding-inline: 0px;padding-block: 0px;">
+                    <div id="bimmenuint" class="botoesmenuesq bimmenu" style="margin-top: 5px;">                  
+                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Menu</label>
+                    </div>     
+                    
+                    <div id="dimmfinanciamento" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">            
+                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Simular Financiamento</label>
+                    </div>
+                </div>
+                
+                <div id="ditenscontratoext" class="botoesmenuesq" style="background-color: transparent; box-shadow: none; display: inline-table; padding-inline: 0px;padding-block: 0px;">
+                    <div id="dimcontratoint" class="gen botoesmenuesq bimmenu">                  
+                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Contratos</label>
+                    </div>    
+                    
+                    <div id="bimcvercontratos" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
+                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Ver Contratos</label>
+                    </div>
+    
+                    <div id="bimcnovocontrato" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
+                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Novo Contrato</label>
+                    </div>
+    
+                    <div id="bimcassinatura" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
+                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Assinaturas</label>
+                    </div>
+    
+                    <div id="bimcaprovacao" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
+                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Aprovacão</label>
+                    </div>
+                                  
+                </div>
+    
+                <div id="ditensrelatorioext" class="botoesmenuesq" style="background-color: transparent; box-shadow: none; display: inline-table; padding-inline: 0px;padding-block: 0px;">
+                    <div id="ditensrelatorioint" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;">                  
+                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Relatorio</label>
+                    </div>
+
+                    <div id="dimrvendas" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
+                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Relatório de Vendas</label>
+                    </div>
+
+                    <div id="dimrimovel" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
+                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Relatório do Imovel</label>
+                    </div>
+                </div>
             </div>
             
-            <div id="ditenscontratos" class="botoesmenuesq">
-                <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Contratos</label>
-            </div>
-
-            <div id="ditensrelatorio" class="botoesmenuesq">
-                <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Relatorio</label>
-            </div>
-
 
             <div id="ditenssobre" class="obssobre">
                 <div class="gen">
@@ -363,5 +408,8 @@
             </div>
         </div>
     </div>
+
+
+    <script src="jsbiblio/comWindow.js"></script>
 </body>
 </html>
