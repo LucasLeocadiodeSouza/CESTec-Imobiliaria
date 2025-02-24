@@ -9,4 +9,14 @@ public class controller {
     public String home() {
         return "comWindow";
     }
+
+    @GetMapping("/contratosCadastro") 
+    public String contratosCadastro() {
+        return "wcr001";
+    }
+
+    @GetMapping("/contratosCadastroClientes") 
+    public String contratosCadastroClientes() {
+        return "wcr002";
+    }
 }

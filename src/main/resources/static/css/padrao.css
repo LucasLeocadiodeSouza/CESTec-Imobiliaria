@@ -1,5 +1,11 @@
 body .gen {padding: 10px}
 
+.gen img {width: 20px;
+          padding: 0px;
+          height: 25px;
+          margin-right: 6px;
+          margin-block: 6px;}
+
 .gen label {font-family: "Inter";
             font-size: 17px;
             color: #444;            
@@ -11,21 +17,37 @@ body .gen {padding: 10px}
             font-weight: normal;
             display: flex;}
 
-.gen button {font-family:      "Arial";
-             font-size:        13px;
-             background-color: #e2e4e8;            
-             border:            none;
-             cursor:            pointer;
-             border-radius:     6px;
-             width:             95px;
-             height:            40px;
-             transition:        0.2s;}
-
-.gen button:hover {
-            background-color: #d5d5d6;
-            box-shadow: 0 0 0 1px #5151525f;
-            color: #fff;
-}
+.button {background-color: #b4b6ba;            
+         border: none;
+         cursor: pointer;
+         border-radius: 6px;
+         width: 110px;
+         height: 40px;
+         transition: 0.2s;
+         margin-inline: 5px;
+         padding: 2px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         font-family: sans-serif;
+         font-size: 13px;
+         font-weight: 600;
+         position: relative;}
+           
+.button::before {content: "";
+                 background-size: contain;
+                 background-repeat: no-repeat;
+                 background-position: center;
+                 width: 20px;
+                 height: 25px;
+                 margin-right: 6px;
+                 margin-block: 6px;
+                 position: absolute;
+                 left: 10px;}
+           
+.button:hover {background-color: #d5d5d6;
+               box-shadow: 0 0 0 1px #5151525f;
+               color: #fff;}
 
 .gen a      {font-weight:     bolder;
              color:           #33e701;
@@ -36,18 +58,125 @@ body .gen {padding: 10px}
              background-color: #d5d4d4c2;
              border-color:     #9392929a;}             
 
+.titulo {border: 2px solid rgb(104, 104, 104);
+         border-bottom: none; 
+         background-color: #c4c4c4;
+         height: 33px; 
+         width: 98%;
+         justify-content: center; 
+         display: flex;}
+
+.titulo h2 {margin-top: 0px;}
+
+.aba    {height: 40px;
+         width: 180px;
+         display: flex;
+         justify-content: center;
+         flex-direction: column;
+         border: 1px solid rgb(104, 104, 104);
+         border-bottom: none; 
+         background-color: rgb(210, 210, 210);}
+
+.abaint      {display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 31px;}
+
+.abaint:hover {background-color: rgb(205, 204, 204);}
+
+
+.aba label {font-family: "Host Grotesk", serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;}
+
+.indentaba       {background-color: rgb(81, 81, 81);
+                  height: 9px;
+                  width: 100%;
+                  margin-top: 0px;}
+
+.aba:hover .indentaba {background-color: rgb(1, 109, 8);}
+
+.if {width: 100%; 
+     height: 28px;}
+
+.dmf {width: 100%; 
+     height: 30px;}
+
+.dmf h2 {margin-top: 0px;
+         margin-bottom: 50px;}
+
+.dmf label {font-family:Arial, Helvetica}
+
+.bpc {display: flex;
+      border: 3px solid darkgrey;
+      margin-inline: 10px;
+      align-items: center;
+      justify-content: center;
+      height: 23px;}
+
+.bpc:hover {opacity: 0.3;}
+
 input {font-family:      "Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
-        font-weight:      180;
-        font-size:        14px;
-        color:            #000000;
-        background-color: #94ad912b;
-        box-shadow:       black;
-        border-radius:    0.3vw;
-        box-shadow:       0 0 0 .15vw rgba(135, 207, 235, 0.186);
-        padding:          2.5px;
-        transition:       .2s;}
+       font-weight:      180;
+       font-size:        14px;
+       color:            #000000;
+       background-color: #94ad912b;
+       box-shadow:       black;
+       border-radius:    0.3vw;
+       box-shadow:       0 0 0 .15vw rgba(135, 207, 235, 0.186);
+       padding:          2.5px;
+       transition:       .2s;}
 
 input:hover {box-shadow: 0 0 .4vw rgba(0,0,0,0.5), 0 0 0 .15vw transparent;}
 
 input:focus {box-shadow: 0 0 0 .15vw skyblue; } /* colocar uma cor do sistema */
 
+input[type="button"], 
+input[type="submit"], 
+input[type="reset"] {box-shadow: none;}
+
+.DMF_external {width:  100%;
+               height: 100%;
+               background-color: #00000076;
+               position:         absolute;
+               top: 0;
+               left: 0;
+               display: flex;
+               justify-content: center;
+               align-items: center;}
+
+div.grid {display: flex;
+          justify-content: center;
+          align-items: flex-start;}
+
+tr {background-color: #cecece;}
+
+th {background-color: #a9a9a9;}
+
+td {border-bottom: 0;}
+
+th, td {text-align: left;
+        padding: 15px;
+        box-sizing: border-box;}
+
+table {
+     background-color: #c0c0c0;
+     font-size: 16px;
+     border-collapse: collapse;
+     display: table;
+     width: 100%;
+       th {
+         color: #f2f2f2;
+         font-weight: normal;
+         border-bottom: solid 2px #d8d8d8;
+         position: sticky;
+         top: 0;
+       }
+       td {
+         border: solid 1px #bbbbbb;
+         border-left: 0;
+         border-right: 0;
+         white-space: nowrap;
+       }
+}
