@@ -17,40 +17,19 @@ window.addEventListener("load", function () {
     iniciarEventos();
 });
 
-/*
-function gerarContrato() {
-    let nome = document.getElementById("nome").value;
-    let valor = document.getElementById("valor").value;
-
-    fetch("/contratos/gerar", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ nome: nome, valor: parseFloat(valor) }) //exemplo de parametros
-    })
-    .then(response => response.text())
-    .then(data => {
-        alert("Resposta do servidor: " + data);
-    })
-    .catch(error => console.error("Erro:", error));
-}*/
-
 function iniciarEventos() {
         controlaTela("inicio");
         event_click("dimcontratoint");
         event_click("bimmenuint");
         event_click("ditensrelatorioint");
+        event_click("bimcnovocontrato"); 
+        event_click("bimcnovopropr");
 }
 
 function event_click(obj) {
-    /* document.getElementById(obj).addEventListener("click", function() {
-            window.location.href = "/contratos"; 
-        }); Para mudar de pagina no click*/
-
     if(obj == "dimcontratoint"){
         document.getElementById(obj).addEventListener("click", function() {
-            form("ditenscontratoext").style.backgroundColor = form("bimcvercontratos").style.display == "flex"?"#dedede":"#29582c";
+            form("ditenscontratoext").style.backgroundColor = form("bimcnovopropr").style.display == "flex"?"#dedede":"#29582c";
             controlaTela("menuitens");
         });
     }
@@ -66,12 +45,22 @@ function event_click(obj) {
             controlaTela("relatorio");
         });
     }
+    if(obj == "bimcnovocontrato"){
+        document.getElementById(obj).addEventListener("click", function() {
+            window.location.href = "/contratosCadastro"; 
+        });
+    }
+    if(obj == "bimcnovopropr"){
+        document.getElementById(obj).addEventListener("click", function() {
+            window.location.href = "/contratosCadastroClientes"; 
+        });
+    }
 }
 
 function controlaTela(opc){
     if(opc == "inicio"){
             form("dimmfinanciamento").style.display = "none";
-            form("bimcvercontratos").style.display  = "none";
+            form("bimcnovopropr").style.display     = "none";
             form("bimcnovocontrato").style.display  = "none";
             form("bimcassinatura").style.display    = "none";
             form("bimcaprovacao").style.display     = "none";
@@ -82,7 +71,7 @@ function controlaTela(opc){
         form("dimmfinanciamento").style.display  = form("dimmfinanciamento").style.display == "flex"?"none":"flex";
     }
     if(opc == "menuitens"){
-        form("bimcvercontratos").style.display  = form("bimcvercontratos").style.display == "flex"?"none":"flex";
+        form("bimcnovopropr").style.display     = form("bimcnovopropr").style.display == "flex"?"none":"flex";
         form("bimcnovocontrato").style.display  = form("bimcnovocontrato").style.display == "flex"?"none":"flex";
         form("bimcassinatura").style.display    = form("bimcassinatura").style.display   == "flex"?"none":"flex";
         form("bimcaprovacao").style.display     = form("bimcaprovacao").style.display    == "flex"?"none":"flex";
