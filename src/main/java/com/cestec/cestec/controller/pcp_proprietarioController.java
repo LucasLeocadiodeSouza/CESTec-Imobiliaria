@@ -1,7 +1,6 @@
 package com.cestec.cestec.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cestec.cestec.model.pcp_imovel;
 import com.cestec.cestec.model.pcp_proprietario;
 import com.cestec.cestec.service.pcp_proprietarioService;
+
 
 @RestController
 @RequestMapping("/contratosCadastroClientes/proprietario")
@@ -31,7 +31,7 @@ public class pcp_proprietarioController {
         return pcp_proprietarioService.salvarImovel(imovel, codProprietario);
     }
 
-    @GetMapping
+    @GetMapping()
     public List<pcp_proprietario> listarProprietarios() {
         return pcp_proprietarioService.listarProprietarios();
     }

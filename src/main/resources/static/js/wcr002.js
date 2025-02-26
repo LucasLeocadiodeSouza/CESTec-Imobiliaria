@@ -20,15 +20,7 @@ function iniciarEventos() {
     event_click("bcadastro");
     imgFormat();
 
-    const dados = [
-        { CodigoProp: 1, Nome: "João", CPF: "123.456.789-00", Endereco: "Rua A", Telefone: "9999-8888" },
-        { CodigoProp: 2, Nome: "Maria", CPF: "987.654.321-00", Endereco: "Rua B", Telefone: "7777-6666" }
-    ];
-
-    createGrid("tabela_contrato",
-               "Codigo Prop.,Nome,CPF,Endereco,Num. Telefone",
-               "800",
-               dados);
+    buscarDadosTable();         
 }
 
 function event_click(obj) {
@@ -71,6 +63,7 @@ function event_click(obj) {
     if(obj == "bbuscar"){
         form(obj).addEventListener("click", function () {
             controlaTela("novabusca");
+            buscarDadosTable(); 
         });        
     }
     if(obj == 'binserir'){
@@ -80,7 +73,7 @@ function event_click(obj) {
     }
     if(obj == 'bclose'){
         form(obj).addEventListener("click", function () {
-            form("DMF_external").style.display = "none";    
+            form("DMF_external").style.display = "none";
         }); 
     }
     if(obj == 'bcadastro'){
@@ -88,6 +81,25 @@ function event_click(obj) {
             adicionarProprietario();
         });
     }
+}
+
+function event_click_table(id){
+    if(id == "tabela_contrato"){
+        form("DMF_external").style.display = "flex";
+    }
+}
+
+function buscarDadosTable(){
+    fetch("/contratosCadastroClientes/proprietario")
+        .then(response => response.json()) //quando chega a mensagem vc converte para json
+        .then(data => {                    // quando chega o dados na forma de JSON vc faz  ...           
+            createGrid("tabela_contrato",
+                       "codproprietario,nome,cpf,endereco,numtel",
+                       "Cod. Prop., Nome, CPF, Endereco, Telefone",
+                       "800",
+                       data);
+        })
+        .catch(error => console.log("Erro ao buscar dados: ",error));
 }
 
 function adicionarProprietario() {
@@ -112,12 +124,34 @@ function adicionarProprietario() {
         return response.json();
     })
     .then(data => {
-        alert("Resposta do servidor: " + data);        
+        enviarEmail();
+        alert("Dados Salvos Com Sucesso!");        
     })
     .catch(error => alert(error.message));
 }
 
+function enviarEmail(){
+    const email = {
+        to: form("memail").value,
+        subject: "Bem Vinda a CESTec Enterprise 😊",
+        body: "Somos Uma Imobiliaria que focamos em oferecer o melhor Atendimento e Serviços para nossos colaboradores! \n"
+            + "Gostariamos de Agradecer pela confiança e compromisso."
+    }
+
+    fetch("/email", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(email)        
+    })
+    .then(response => {})
+    .then(data => {console.log("deu baum")})
+    .catch(error => alert(error.message));
+}
+
 function controlaTela(opc){
+    limparTela(opc);
     if(opc == "inicia" || opc == 'buscar'){
         desabilitaCampo('bnovabusca',      true);
         desabilitaCampo('bbuscar',         false);
@@ -133,7 +167,22 @@ function controlaTela(opc){
     }
 }
 
+function limparTela(opc){
+    if(opc == "inicia" || opc == 'buscar'){        
+        form('codproprietario').value = "0";
 
+        form("binserir").style.display     = form("aba1").style.pointerEvents == 'visible'?"flex":"none";
+        form("DMF_external").style.display = "none";
+    }
+    if(opc == "modal"){
+        form('mnome').value     = "";
+        form('mcpf').value      = "";
+        form('mddd').value      = "";
+        form('mtelefone').value = "";
+        form('memail').value    = "";
+        form('mloc').value      = "";
+    }
+}
 
 
 function imgFormat(){
@@ -163,16 +212,20 @@ function desabilitaCampo(obj,desahabilita){
     form(obj).style.cursor = desahabilita?'not-allowed':'pointer';
 }
 
-function createGrid(id,column,gridWidth,dados){
+function createGrid(id,column,columnName,gridWidth,dados){
+    form(id).innerText = '';
     const table     = document.getElementById(id);
     const thead     = document.createElement("thead");
     const headerRow = document.createElement("tr");      
+    const colunas   = column.split(",");
 
-    const colunas = column.split(",");
+    var pi = 0;
     colunas.forEach((coluna,index) => {
         const th = document.createElement("th");
+        th.id = "th" + pi;
         th.textContent =  coluna.trim();
         headerRow.appendChild(th);
+        pi += 1;
     });
     thead.appendChild(headerRow);
     table.appendChild(thead);
@@ -183,12 +236,29 @@ function createGrid(id,column,gridWidth,dados){
 
     dados.forEach(dado => {
         const row = document.createElement("tr");        
-        Object.values(dado).forEach(valor => {
+
+        colunas.forEach(coluna => {
             const td = document.createElement("td");
-            td.textContent = valor;
+            const valor = dado[coluna.trim()];
+            td.textContent = valor? valor :"N/A";
             row.appendChild(td);
         });    
+
+        row.addEventListener("click", ()=>{
+            form(id).querySelectorAll("tr").forEach(row => {
+                row.style.border = "none";
+            });            
+            event_click_table(id);
+            row.style.border = " 2px solid black";
+        });
+
         tbody.appendChild(row);
-    });    
+    });
+
+    var pi = 0;
+    colunas.forEach((coluna, index)=>{
+        form("th"+pi).innerText = columnName.split(",")[pi];
+        pi += 1;
+    });
     return table;
 }
