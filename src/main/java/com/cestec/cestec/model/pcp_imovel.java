@@ -1,5 +1,7 @@
 package com.cestec.cestec.model;
 
+import java.sql.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,11 +23,56 @@ public class pcp_imovel {
     private pcp_proprietario pcp_proprietario;
 
     private String endereco;
-    private int    qtdQuartos;
+    private Integer    quartos;
     private double area;
     private double vlrcondominio;
-    private double preco;    
+    private Integer    status;
+    private Date   datiregistro;
+    private Date   datinicontrato;
+    private double preco;
+    private Integer    tipo;
+    private Integer    negociacao;
 
+
+    public Integer getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
+    }
+
+    public Integer getNegociacao() {
+        return negociacao;
+    }
+
+    public void setNegociacao(Integer negociacao) {
+        this.negociacao = negociacao;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Date getDatiregistro() {
+        return datiregistro;
+    }
+
+    public void setDatiregistro(Date datiregistro) {
+        this.datiregistro = datiregistro;
+    }
+
+    public Date getDatinicontrato() {
+        return datinicontrato;
+    }
+
+    public void setDatinicontrato(Date datinicontrato) {
+        this.datinicontrato = datinicontrato;
+    }
 
     public Integer getCodimovel() {
         return codimovel;
@@ -51,12 +98,12 @@ public class pcp_imovel {
         this.endereco = endereco;
     }
 
-    public int getQtdQuartos() {
-        return qtdQuartos;
+    public Integer getQuartos() {
+        return quartos;
     }
 
-    public void setQtdQuartos(int qtdQuartos) {
-        this.qtdQuartos = qtdQuartos;
+    public void setQuartos(Integer quartos) {
+        this.quartos = quartos;
     }
 
     public double getArea() {
@@ -82,11 +129,4 @@ public class pcp_imovel {
     public void setPreco(double preco) {
         this.preco = preco;
     }
-
-    /*
-	tipo int,
-	status int,
-	negociacao int
-    */
-
 }

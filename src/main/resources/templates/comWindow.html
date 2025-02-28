@@ -15,8 +15,8 @@
     <script src="/js/comWindow.js" defer></script>
     
 <style>
-    .ppp         {width: 32px;}
-    .p           {width: 60px;}
+    .ppp         {width: 32px; }
+    .p           {width: 60px; }
     .medium      {width: 120px;}
     .Intermedium {width: 180px;}
     .large       {width: 240px;}
@@ -201,10 +201,10 @@
     #dnextagenda:hover {background-color: #2b7430;}
 
     .dagendadias { background-color: #005906;
-                   height:           185px;
-                   width:            400px;
+                   height:           90%;
+                   width:            100%;
                    border-radius:    8px;                   
-                   box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);
+                   box-shadow:       0 0 6px rgb(0, 89, 6);;
                    padding:          5px;}
 
     .ddescagenda { float: right; 
@@ -284,13 +284,17 @@
                         <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Contratos</label>
                     </div>    
                     
+                    <div id="bimcnovoimovel" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
+                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Cadastro de Imóvel</label>
+                    </div>
+
                     <div id="bimcnovocontrato" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
-                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Cadastro de Contrato</label>
+                        <label style="font-size:  17px; color: white; font-weight: normal; display: flex;">Cadastro de Contrato</label>
                     </div>
 
                     <div id="bimcnovopropr" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
                         <label style="font-size:  17px; color: white; font-weight: normal; display: flex;">Cadastro de Proprietario</label>
-                    </div>                        
+                    </div> 
     
                     <div id="bimcassinatura" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
                         <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Assinaturas</label>
@@ -335,11 +339,11 @@
 
     <div id="ddireita" class="gen">
         <div id="dmetas" class="gen">
-            <div id="ddescmetas" class="ddescdiv">
+            <div id="ddescmetas" class="ddescdiv" stylus="width: 280px;">
                 <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Metas</label></div>
             
-                <div id="ddescgraficometa" style="background-color: #29582c; display: inline-block; width: 300px; height: 185px; border-radius: 10px; justify-content: center;">
-                    <div style="background-color: rgb(0, 12, 0); width: 270px; height: 50px; margin-top: 5px; margin-left: 5px; padding: 10px;">
+                <div id="ddescgraficometa" style="background-color: #29582c; display: inline-block; width: 280px; height: 185px; border-radius: 10px; justify-content: center;">
+                    <div style="background-color: rgb(0, 12, 0); width: 89%; height: 50px; margin-top: 5px; margin-left: 5px; padding: 10px;">
                         <div>
                             <label>Valor Efetivado: R$ </label>
                             <label>123456.85</label> 
@@ -351,10 +355,10 @@
                         </div>
                     </div>
                     
-                    <div id="dgrafico" style="background-color: #bcc943; display: flex; width: 250px; height: 30px; margin-top: 5px; flex-direction: row; margin-left: 40px; border-radius: 3px;">
+                    <div id="dgrafico" style="background-color: #bcc943; display: flex; width: 80%; height: 30px; margin-top: 5px; flex-direction: row; margin-left: 40px; border-radius: 3px;">
                         <div id="dgraficointerno" style="background-color: #0d13c3; display: flex; width: 5px; height: 30px; border-bottom-left-radius: 3px; border-top-left-radius: 3px;"></div>
                     </div>
-                    <div id="dsetagrafico" style="background-color: #91937f; display: flex; width: 260px; height: 30px; margin-top: 5px; flex-direction: row; margin-left: 40px;">
+                    <div id="dsetagrafico" style="background-color: #91937f; display: flex; width: 80%; height: 30px; margin-top: 5px; flex-direction: row; margin-left: 40px;">
                         <div id="dlinhagrafico" style="background-color: #0f0f0f; display: flex; width: 255px; height: 5px; flex-direction: row; margin-top: 4px;">
                             <div style=" width: 2px; height: 12px; background-color: red; margin-inline: 25%; transform: translateY(-2px);">
                                 <label style="transform: translateY(50%) translateX(-50%);">25%</label>
@@ -369,7 +373,7 @@
                         <div id="dsetagrafico" style=" display: flex; width: 5px; height: 5px; flex-direction: row; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid #000;"></div>
                     </div>
 
-                    <div style="background-color: rgb(0, 12, 0); width: 270px; margin: 5px; padding: 10px;">
+                    <div style="background-color: rgb(0, 12, 0); width: 89%; margin: 5px; padding: 10px;">
                             <label style="font-size: 13px;">Prazo Final da Meta: </label>
                             <label style="font-size: 13px;">17/02/2024</label> 
                     </div>

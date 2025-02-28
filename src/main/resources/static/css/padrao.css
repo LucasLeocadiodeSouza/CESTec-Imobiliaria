@@ -150,7 +150,8 @@ div.grid {display: flex;
           justify-content: center;
           align-items: flex-start;}
 
-tr {background-color: #cecece;}
+tr {background-color: #cecece;
+    font-size: 17px;}
 
 th {background-color: #a9a9a9;}
 

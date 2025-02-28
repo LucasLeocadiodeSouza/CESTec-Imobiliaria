@@ -36,10 +36,18 @@
     .grid {width: 99%;
            height: 400px;
            margin-top: 25px;
-           margin-inline: 7px;}
+           margin-inline: 7px;
+           overflow-y: scroll;}
+    ::-webkit-scrollbar {
+        width: 1px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
 
     #dmodalf_contrato {width: 800px;
-                       height: 420px;
+                       height: 470px;
                        opacity: 1;
                        background-color: aliceblue;
                        box-shadow: 0 0 .4vw rgba(0,0,0,0.5);}
@@ -102,7 +110,7 @@
             <input type="button" id="binserir"  name="binserir"  class="button" value="Inserir"  data-icon="/icons/incluir.png">
         </div>
 
-        <div class='grid'><table class=""></table></div>
+        <div class='grid'><table id="tabela_CTO" class="table"></table></div>
 
         <!--  MODAL -->
         <div id="DMF_external" class="DMF_external">
@@ -126,6 +134,7 @@
                 <div class='dmf'>
                     <label class="labelmodal">Tipo de Imovel: </label>
                     <select id="mstpimovel" name="mstpimovel" style="width: 140px;">
+                        <option value="0">Selecione o Tipo de imovel</option>
                         <option value="1">Apartamento</option>
                         <option value="2">Casa</option>
                         <option value="3">Terreno</option>
@@ -135,6 +144,7 @@
                 <div class='dmf'>
                     <label class="labelmodal">Tipo de Contrato: </label>
                     <select id="mstpcontrato" name="mstpcontrato" class="medium">
+                        <option value="0">Selecione o Tipo de contrato</option>
                         <option value="1">Aluguel</option>
                         <option value="2">Venda</option>
                     </select>
@@ -143,6 +153,11 @@
                 <div class='dmf'>
                     <label class="labelmodal">Area Total(M²): </label>
                     <input type="text" id="mmetrosquad" name="mmetrosquad" class="ppp">
+                </div>
+
+                <div class='dmf'>
+                    <label class="labelmodal">Quartos: </label>
+                    <input type="text" id="mquartos" name="mquartos" class="ppp">
                 </div>
 
                 <div class='dmf'>
@@ -162,7 +177,7 @@
 
                 <div class='dmf'>
                     <label class="labelmodal">Inicio do Contrato: </label>
-                    <input type="date" id="mperiodoini" name="mperiodoini" class="medium" disabled>
+                    <input type="date" id="mperiodoini" name="mperiodoini" class="medium">
                 </div>
 
                 <div class='if' style="display: flex; margin-left: 5px;"></div>
