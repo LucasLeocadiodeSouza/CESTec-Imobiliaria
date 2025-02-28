@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.cestec.cestec.model.ImovelProprietarioDTO;
 import com.cestec.cestec.model.pcp_imovel;
 import com.cestec.cestec.model.pcp_proprietario;
 import com.cestec.cestec.repository.imovelRepository;
@@ -60,4 +61,27 @@ public class pcp_proprietarioService {
     public List<pcp_imovel> listarImoveisPorProprietario(Integer codProprietario) {
         return imovelRepository.findByProprietario(codProprietario);
     }
+
+    public List<pcp_imovel> listarImoveis(){
+        return imovelRepository.findAll();
+    }
+
+    public String getDescTipos(Integer tipo){
+        switch (tipo) {
+            case 1:
+                return "Aluguel";
+            case 2:
+                return "Venda";        
+        }
+        return "";
+    }
+
+    public String getNomeProp(Integer codProprietario){
+            return proprietarioRepository.findById(codProprietario).get().getNome();
+    }
+
+    public List<ImovelProprietarioDTO> buscarImoveis(){
+       return imovelRepository.buscarimoveis();
+    }
+
 }

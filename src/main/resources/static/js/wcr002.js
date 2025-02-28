@@ -69,6 +69,7 @@ function event_click(obj) {
     if(obj == 'binserir'){
         form(obj).addEventListener("click", function () {
             form("DMF_external").style.display = "flex";
+            controlaTela("modal");
         });
     }
     if(obj == 'bclose'){
@@ -79,6 +80,7 @@ function event_click(obj) {
     if(obj == 'bcadastro'){
         form(obj).addEventListener("click", function () {
             adicionarProprietario();
+            form("DMF_external").style.display = "none";
         });
     }
 }
@@ -86,6 +88,7 @@ function event_click(obj) {
 function event_click_table(id){
     if(id == "tabela_contrato"){
         form("DMF_external").style.display = "flex";
+        controlaTela("modal");
     }
 }
 
@@ -96,7 +99,7 @@ function buscarDadosTable(){
             createGrid("tabela_contrato",
                        "codproprietario,nome,cpf,endereco,numtel",
                        "Cod. Prop., Nome, CPF, Endereco, Telefone",
-                       "800",
+                       "10,40,10,30,10",
                        data);
         })
         .catch(error => console.log("Erro ao buscar dados: ",error));
@@ -118,14 +121,11 @@ function adicionarProprietario() {
         body: JSON.stringify(proprietario)
     })
     .then(response => {
-        if (!response.ok) {
-            return response.text().then(errorMsg => { throw new Error(errorMsg); });
-        }
         return response.json();
     })
-    .then(data => {
-        enviarEmail();
-        alert("Dados Salvos Com Sucesso!");        
+    .then(data => {        
+        alert("Dados Salvos Com Sucesso!");
+        if(confirm("Deseja enviar um Email de Boas Vindas para o cliente?")) enviarEmail();
     })
     .catch(error => alert(error.message));
 }
@@ -146,7 +146,7 @@ function enviarEmail(){
         body: JSON.stringify(email)        
     })
     .then(response => {})
-    .then(data => {console.log("deu baum")})
+    .then(data => {})
     .catch(error => alert(error.message));
 }
 
@@ -212,7 +212,7 @@ function desabilitaCampo(obj,desahabilita){
     form(obj).style.cursor = desahabilita?'not-allowed':'pointer';
 }
 
-function createGrid(id,column,columnName,gridWidth,dados){
+function createGrid(id,column,columnName,columnWidth,dados){
     form(id).innerText = '';
     const table     = document.getElementById(id);
     const thead     = document.createElement("thead");
@@ -258,6 +258,7 @@ function createGrid(id,column,columnName,gridWidth,dados){
     var pi = 0;
     colunas.forEach((coluna, index)=>{
         form("th"+pi).innerText = columnName.split(",")[pi];
+        form("th"+pi).style.width = columnWidth.split(",")[pi] +"%"; 
         pi += 1;
     });
     return table;

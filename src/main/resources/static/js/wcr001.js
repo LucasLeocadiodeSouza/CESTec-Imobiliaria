@@ -15,7 +15,21 @@ function iniciarEventos() {
     event_click("bbuscar");
     event_click("binserir");
     event_click("bclose");
+    event_click("bcadastro");
+    
+    event_change("codproprietario");
+    event_change("mcodproprietario");
+
     imgFormat();
+
+    buscarDadosTable();
+}
+
+function event_click_table(id){
+    if(id == "tabela_CTO"){
+        form("DMF_external").style.display = "flex";
+        controlaTela("modal");
+    }
 }
 
 function event_click(obj) {
@@ -58,6 +72,7 @@ function event_click(obj) {
     if(obj == "bbuscar"){
         form(obj).addEventListener("click", function () {
             controlaTela("novabusca");
+            buscarDadosTable();
         });        
     }
     if(obj == 'binserir'){
@@ -72,7 +87,21 @@ function event_click(obj) {
     }
     if(obj == 'bcadastro'){
         form(obj).addEventListener("click", function () {
-            
+            adicionarContratoImovel();
+            form("DMF_external").style.display = "none";
+        });
+    }
+}
+
+function event_change(obj){
+    if(obj == "codproprietario"){
+        form(obj).addEventListener("change", function(){
+            form(obj).value!=""?descProprietario(obj,"descproprietario") : form("descproprietario").value = "Todos";
+        });
+    }
+    if(obj == "mcodproprietario"){
+        form(obj).addEventListener("change", function(){
+            form(obj).value!=""?descProprietario(obj,"mdescproprietario") : form("mdescproprietario").value = "";
         });
     }
 }
@@ -105,6 +134,80 @@ function controlaTela(opc){
     }
 }
 
+
+function limparTela(opc){
+    if(opc == "inicia" || opc == 'buscar'){        
+        form('codproprietario').value  = "0";
+        form('descproprietario').value = "0";
+
+        form("binserir").style.display     = form("aba1").style.pointerEvents == 'visible'?"flex":"none";
+        form("DMF_external").style.display = "none";
+    }
+    if(opc == "modal"){
+        form('mcodproprietario').value     = "";
+        form('mdescproprietario').value    = "";
+        form('mstpimovel').value           = "0";
+        form('mstpcontrato').value         = "0";
+        form('mmetrosquad').value          = "";
+        form('mquartos').value             = "";
+        form('mCondominio').value          = "";
+        form('mloc').value                 = "";
+        form('mvlr').value                 = "";
+        form('mperiodoini').value          = "";
+    }
+} 
+
+function buscarDadosTable(){
+    fetch("/contratosCadastroClientes/proprietario/buscarImoveis")
+        .then(response => response.json()) //quando chega a mensagem vc converte para json
+        .then(data => {                    // quando chega o dados na forma de JSON vc faz  ...           
+            createGrid("tabela_CTO",
+                        "codimovel,codproprietario,nome,tipo,status,preco,negociacao",
+                        "Cód.Imovel,Cod. Prop., Nome,Tipo,Situacao,Valor(R$),Contrato",
+                        "5,8,35,20,18,5,10",
+                        data);
+        })
+        .catch(error => console.log("Erro ao buscar dados: ",error));
+}
+
+function adicionarContratoImovel() {
+    const imovel = { tipo:              form("mstpimovel").value,
+                     negociacao:        form('mstpcontrato').value,
+                     quartos:           form('mquartos').value,
+                     area:              parseFloat(form("mmetrosquad").value),
+                     vlrcondominio:     parseFloat(form("mCondominio").value),
+                     preco:             parseFloat(form("mvlr").value),
+                     status:            1,
+                     endereco:          form("mloc").value,
+                     periodo:           form("mperiodoini").value, 
+                     datiregistro:      new Date().toISOString().split('T')[0],
+                     datinicontrato:    form("mperiodoini").value};
+
+    fetch(`/contratosCadastroClientes/proprietario/${form("mcodproprietario").value}/imoveis`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(imovel,form("mcodproprietario").value)
+    })
+    .then(response => {response.ok?alert("Dados Salvos Com Sucesso!"):alert("Algo deu errado, por favor insira os dados corretamente");})
+    .then(data => {})
+    .catch(error => alert(error.message));
+}
+
+function descProprietario(codigo,retorno) {
+    fetch(`/contratosCadastroClientes/proprietario/${form(codigo).value}/nomepropri`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(form(codigo).value)
+    })
+    .then(response => {return response.text()})
+    .then(data => { form(retorno).value = data })
+    .catch(error => alert(error.message));
+}
+
 function imgFormat(){
     document.querySelectorAll(".button").forEach(button => {
         let iconUrl = button.getAttribute("data-icon");
@@ -130,4 +233,71 @@ function desabilitaCampo(obj,desahabilita){
     }
     form(obj).disabled = desahabilita;
     form(obj).style.cursor = desahabilita?'not-allowed':'pointer';
+}
+
+
+function createGrid(id,column,columnName,columnWidth,dados){
+    form(id).innerText = '';
+    const table     = document.getElementById(id);
+    const thead     = document.createElement("thead");
+    const headerRow = document.createElement("tr");      
+    const colunas   = column.split(",");
+
+    var pi = 0;
+    colunas.forEach((coluna,index) => {
+        const th = document.createElement("th");
+        th.id = "th" + pi;
+        th.textContent =  coluna.trim();
+        headerRow.appendChild(th);
+        pi += 1;
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+    tbody.setAttribute("id", `${id}-tbody`);
+    table.appendChild(tbody);
+
+    dados.forEach(dado => {
+        const row = document.createElement("tr");        
+
+        colunas.forEach(coluna => {
+            const td  = document.createElement("td");
+            var valor = dado[coluna.trim()];
+            if(coluna == "tipo"){
+                if(valor==1){valor = "Apartamento"}
+                if(valor==2){valor = "Casa"}
+                if(valor==3){valor = "Terreno"};
+            }
+            if(coluna == "status"){
+                valor = valor==1?"Disponivel":"Indisponivel";
+            }
+            if(coluna == "negociacao"){
+                valor = valor==1?"Aluguel":"Venda";
+            }
+
+            td.textContent = valor? valor :"N/A";
+            row.appendChild(td);
+        });    
+
+        row.addEventListener("click", ()=>{
+            form(id).querySelectorAll("tr").forEach(row => {
+                row.style.border = "none";
+            });            
+            event_click_table(id);
+            row.style.border = " 2px solid black";
+        });
+
+        tbody.appendChild(row);
+    });
+
+    var pi = 0;
+    colunas.forEach((coluna, index)=>{
+        form("th"+pi).innerText   = columnName.split(",")[pi];
+        form("th"+pi).style.width = columnWidth.split(",")[pi] +"%"; 
+        pi += 1;
+    });
+
+
+    return table;
 }

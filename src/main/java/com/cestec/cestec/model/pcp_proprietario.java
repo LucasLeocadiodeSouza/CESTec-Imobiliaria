@@ -2,6 +2,8 @@ package com.cestec.cestec.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +21,7 @@ public class pcp_proprietario {
     private Integer codproprietario;
 
     @OneToMany(mappedBy = "pcp_proprietario", cascade = CascadeType.ALL, orphanRemoval = false)
+    @JsonIgnore
     private List<pcp_imovel> imoveis;
 
     private String cpf;

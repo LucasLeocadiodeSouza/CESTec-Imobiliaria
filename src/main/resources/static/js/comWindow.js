@@ -22,8 +22,9 @@ function iniciarEventos() {
         event_click("dimcontratoint");
         event_click("bimmenuint");
         event_click("ditensrelatorioint");
-        event_click("bimcnovocontrato"); 
+        event_click("bimcnovoimovel"); 
         event_click("bimcnovopropr");
+        event_click("bimcnovocontrato");
 }
 
 function event_click(obj) {
@@ -45,14 +46,19 @@ function event_click(obj) {
             controlaTela("relatorio");
         });
     }
-    if(obj == "bimcnovocontrato"){
+    if(obj == "bimcnovoimovel"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/contratosCadastro"; 
-        });
+        }); 
     }
     if(obj == "bimcnovopropr"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/contratosCadastroClientes"; 
+        });
+    }
+    if(obj == "bimcnovocontrato"){
+        document.getElementById(obj).addEventListener("click", function() {
+            window.location.href = "/"; 
         });
     }
 }
@@ -61,6 +67,7 @@ function controlaTela(opc){
     if(opc == "inicio"){
             form("dimmfinanciamento").style.display = "none";
             form("bimcnovopropr").style.display     = "none";
+            form("bimcnovoimovel").style.display    = "none";
             form("bimcnovocontrato").style.display  = "none";
             form("bimcassinatura").style.display    = "none";
             form("bimcaprovacao").style.display     = "none";
@@ -71,10 +78,11 @@ function controlaTela(opc){
         form("dimmfinanciamento").style.display  = form("dimmfinanciamento").style.display == "flex"?"none":"flex";
     }
     if(opc == "menuitens"){
-        form("bimcnovopropr").style.display     = form("bimcnovopropr").style.display == "flex"?"none":"flex";
-        form("bimcnovocontrato").style.display  = form("bimcnovocontrato").style.display == "flex"?"none":"flex";
+        form("bimcnovopropr").style.display     = form("bimcnovopropr").style.display    == "flex"?"none":"flex";
+        form("bimcnovoimovel").style.display    = form("bimcnovoimovel").style.display   == "flex"?"none":"flex";
         form("bimcassinatura").style.display    = form("bimcassinatura").style.display   == "flex"?"none":"flex";
         form("bimcaprovacao").style.display     = form("bimcaprovacao").style.display    == "flex"?"none":"flex";
+        form("bimcnovocontrato").style.display  = form("bimcnovocontrato").style.display == "flex"?"none":"flex";
     }
     if(opc == "relatorio"){
         form("dimrvendas").style.display  = form("dimrvendas").style.display == "flex"?"none":"flex";
