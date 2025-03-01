@@ -24,7 +24,7 @@ function iniciarEventos() {
         event_click("ditensrelatorioint");
         event_click("bimcnovoimovel"); 
         event_click("bimcnovopropr");
-        event_click("bimcnovocontrato");
+        event_click("bimcnovocliente");
 }
 
 function event_click(obj) {
@@ -53,12 +53,12 @@ function event_click(obj) {
     }
     if(obj == "bimcnovopropr"){
         document.getElementById(obj).addEventListener("click", function() {
-            window.location.href = "/contratosCadastroClientes"; 
+            window.location.href = "/contratosCadastroPropri"; 
         });
     }
-    if(obj == "bimcnovocontrato"){
+    if(obj == "bimcnovocliente"){
         document.getElementById(obj).addEventListener("click", function() {
-            window.location.href = "/"; 
+            window.location.href = "/contratosCadastroClientes"; 
         });
     }
 }
@@ -68,7 +68,7 @@ function controlaTela(opc){
             form("dimmfinanciamento").style.display = "none";
             form("bimcnovopropr").style.display     = "none";
             form("bimcnovoimovel").style.display    = "none";
-            form("bimcnovocontrato").style.display  = "none";
+            form("bimcnovocliente").style.display   = "none";
             form("bimcassinatura").style.display    = "none";
             form("bimcaprovacao").style.display     = "none";
             form("dimrvendas").style.display        = "none";
@@ -82,7 +82,7 @@ function controlaTela(opc){
         form("bimcnovoimovel").style.display    = form("bimcnovoimovel").style.display   == "flex"?"none":"flex";
         form("bimcassinatura").style.display    = form("bimcassinatura").style.display   == "flex"?"none":"flex";
         form("bimcaprovacao").style.display     = form("bimcaprovacao").style.display    == "flex"?"none":"flex";
-        form("bimcnovocontrato").style.display  = form("bimcnovocontrato").style.display == "flex"?"none":"flex";
+        form("bimcnovocliente").style.display  = form("bimcnovocliente").style.display   == "flex"?"none":"flex";
     }
     if(opc == "relatorio"){
         form("dimrvendas").style.display  = form("dimrvendas").style.display == "flex"?"none":"flex";

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.cestec.cestec.model.ImovelProprietarioDTO;
+import com.cestec.cestec.model.pcp_cliente;
 import com.cestec.cestec.model.pcp_imovel;
 import com.cestec.cestec.model.pcp_proprietario;
 import com.cestec.cestec.repository.imovelRepository;
@@ -41,7 +42,18 @@ public class pcp_proprietarioService {
         String validacao = validaProprietario(pcp_proprietario);        
         if (!validacao.equals("OK")) {
             return ResponseEntity.badRequest().body(validacao);
-        }        
+        }
+
+        pcp_proprietario proprietarioAnalise = proprietarioRepository.findByCodproprietario(pcp_proprietario.getCodproprietario());
+
+        if(proprietarioAnalise != null){
+            proprietarioAnalise.setCpf(pcp_proprietario.getCpf());
+            proprietarioAnalise.setEmail(pcp_proprietario.getEmail());
+            proprietarioAnalise.setEndereco(pcp_proprietario.getEndereco());
+            proprietarioAnalise.setNome(pcp_proprietario.getNome());
+            proprietarioAnalise.setNumtel(pcp_proprietario.getNumtel());
+        };
+
         pcp_proprietario salvo = proprietarioRepository.save(pcp_proprietario);
         return ResponseEntity.ok(salvo);
     }
@@ -66,6 +78,10 @@ public class pcp_proprietarioService {
         return imovelRepository.findAll();
     }
 
+    public pcp_proprietario buscarProprietario(Integer index){
+        return proprietarioRepository.findAll().get(index);
+    }
+
     public String getDescTipos(Integer tipo){
         switch (tipo) {
             case 1:
@@ -77,7 +93,7 @@ public class pcp_proprietarioService {
     }
 
     public String getNomeProp(Integer codProprietario){
-            return proprietarioRepository.findById(codProprietario).get().getNome();
+        return proprietarioRepository.findById(codProprietario).get().getNome();
     }
 
     public List<ImovelProprietarioDTO> buscarImoveis(){

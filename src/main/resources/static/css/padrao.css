@@ -150,8 +150,7 @@ div.grid {display: flex;
           justify-content: center;
           align-items: flex-start;}
 
-tr {background-color: #cecece;
-    font-size: 17px;}
+tr {font-size: 17px;}
 
 th {background-color: #a9a9a9;}
 
@@ -161,8 +160,18 @@ th, td {text-align: left;
         padding: 15px;
         box-sizing: border-box;}
 
+td {border: solid 1px #bbbbbb;  
+    border-left: solid 1px #bbbbbb; 
+    border-right: solid 1px #bbbbbb; 
+    white-space: nowrap;
+}
+
+tr:first-child td {border-top: solid 1px #bbbbbb;}
+
+tr:last-child td {
+    border-bottom: solid 1px #bbbbbb;}
+
 table {
-     background-color: #c0c0c0;
      font-size: 16px;
      border-collapse: collapse;
      display: table;

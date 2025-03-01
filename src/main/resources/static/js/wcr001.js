@@ -25,8 +25,11 @@ function iniciarEventos() {
     buscarDadosTable();
 }
 
-function event_click_table(id){
+function event_click_table(id,index){
     if(id == "tabela_CTO"){
+        form("sacao").innerText   = "Alterando";
+        form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
+
         form("DMF_external").style.display = "flex";
         controlaTela("modal");
     }
@@ -77,6 +80,9 @@ function event_click(obj) {
     }
     if(obj == 'binserir'){
         form(obj).addEventListener("click", function () {
+            form("sacao").innerText   = "Inserindo";
+            form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
+            
             form("DMF_external").style.display = "flex";
         });
     }
@@ -258,7 +264,7 @@ function createGrid(id,column,columnName,columnWidth,dados){
     tbody.setAttribute("id", `${id}-tbody`);
     table.appendChild(tbody);
 
-    dados.forEach(dado => {
+    dados.forEach((dado,index) => {
         const row = document.createElement("tr");        
 
         colunas.forEach(coluna => {
@@ -284,7 +290,7 @@ function createGrid(id,column,columnName,columnWidth,dados){
             form(id).querySelectorAll("tr").forEach(row => {
                 row.style.border = "none";
             });            
-            event_click_table(id);
+            event_click_table(id,index);
             row.style.border = " 2px solid black";
         });
 

@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cestec.cestec.model.email;
 import com.cestec.cestec.service.emailService;
+
+import jakarta.mail.MessagingException;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -19,9 +22,7 @@ public class emailController {
     }
 
     @PostMapping()
-    public void postMethodName(@RequestBody email email) {
+    public void postMethodName(@RequestBody email email) throws MessagingException {
         emailservice.sendemail(email);
     }
-    
-
 }
