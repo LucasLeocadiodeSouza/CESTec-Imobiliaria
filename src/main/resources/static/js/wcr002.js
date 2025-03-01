@@ -68,6 +68,9 @@ function event_click(obj) {
     }
     if(obj == 'binserir'){
         form(obj).addEventListener("click", function () {
+            form("sacao").innerText   = "Inserindo";
+            form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
+
             form("DMF_external").style.display = "flex";
             controlaTela("modal");
         });
@@ -85,11 +88,33 @@ function event_click(obj) {
     }
 }
 
-function event_click_table(id){
+function event_click_table(id,index){
     if(id == "tabela_contrato"){
+        form("sacao").innerText   = "Alterando";
+        form("stitulo").innerText = "Cadastro de Proprietario - " + form("sacao").innerText;
+
+        buscarPropriGrid(index);                
         form("DMF_external").style.display = "flex";
         controlaTela("modal");
     }
+}
+
+function buscarPropriGrid(index){
+    fetch(`/contratosCadastroClientes/proprietario/${index}/buscarPropriGrid`,{
+        method: "POST",
+        headers: {"Content-Type": "application/json"}
+    })
+    .then(response =>{return response.json()})
+    .then(data => {
+        form("mcodproprietario").value  = data.codproprietario;
+        form("mnome").value         	= data.nome;
+        form("mcpf").value          	= data.cpf;
+        form("mddd").value          	= data.numtel.substring(0,2);
+        form("mtelefone").value     	= data.numtel.substring(2);
+        form("memail").value        	= data.email;
+        form("mloc").value          	= data.endereco;
+    })
+    .catch(error => alert(error.message));
 }
 
 function buscarDadosTable(){
@@ -106,12 +131,13 @@ function buscarDadosTable(){
 }
 
 function adicionarProprietario() {
-    const proprietario = { nome:     form("mnome").value,
-                           cpf:      form("mcpf").value,
-                           cnpj:     '0',
-                           numtel:   form("mddd").value + form("mtelefone").value,
-                           email:    form("memail").value,
-                           endereco: form("mloc").value };
+    const proprietario = { codproprietario: form("mcodproprietario").value,
+                           nome:            form("mnome").value,
+                           cpf:             form("mcpf").value,
+                           cnpj:            '0',
+                           numtel:          form("mddd").value + form("mtelefone").value,
+                           email:           form("memail").value,
+                           endereco:        form("mloc").value };
 
     fetch("/contratosCadastroClientes/proprietario", {
         method: "POST",
@@ -125,9 +151,9 @@ function adicionarProprietario() {
     })
     .then(data => {        
         alert("Dados Salvos Com Sucesso!");
-        if(confirm("Deseja enviar um Email de Boas Vindas para o cliente?")) enviarEmail();
+        if(form("sacao").innerText == "Inserindo")if(confirm("Deseja enviar um Email de Boas Vindas para o Proprietario?")) enviarEmail();
     })
-    .catch(error => alert(error.message));
+    .catch(error => alert(error.stringify(error)));
 }
 
 function enviarEmail(){
@@ -234,7 +260,7 @@ function createGrid(id,column,columnName,columnWidth,dados){
     tbody.setAttribute("id", `${id}-tbody`);
     table.appendChild(tbody);
 
-    dados.forEach(dado => {
+    dados.forEach((dado, index ) => {
         const row = document.createElement("tr");        
 
         colunas.forEach(coluna => {
@@ -248,7 +274,7 @@ function createGrid(id,column,columnName,columnWidth,dados){
             form(id).querySelectorAll("tr").forEach(row => {
                 row.style.border = "none";
             });            
-            event_click_table(id);
+            event_click_table(id,index);
             row.style.border = " 2px solid black";
         });
 

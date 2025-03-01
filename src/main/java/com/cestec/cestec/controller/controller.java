@@ -15,8 +15,13 @@ public class controller {
         return "wcr001";
     }
 
+    @GetMapping("/contratosCadastroPropri") 
+    public String contratosCadastroPropri() {
+        return "wcr002";
+    }
+
     @GetMapping("/contratosCadastroClientes") 
     public String contratosCadastroClientes() {
-        return "wcr002";
+        return "wcr003";
     }
 }
