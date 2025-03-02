@@ -1,6 +1,7 @@
 package com.cestec.cestec.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -59,10 +60,23 @@ public class pcp_proprietarioService {
     }
 
     public pcp_imovel salvarImovel(pcp_imovel imovel, Integer codproprietario) {
-        pcp_proprietario pcp_proprietario = proprietarioRepository.findById(codproprietario)
-                .orElseThrow(() -> new RuntimeException("Proprietário não encontrado"));
+        pcp_proprietario proprietario = proprietarioRepository.findById(codproprietario)
+        .orElseThrow(() -> new RuntimeException("Proprietário não encontrado com o código: " + codproprietario)); 
+        imovel.setPcp_proprietario(proprietario);
 
-        imovel.setPcp_proprietario(pcp_proprietario);
+        pcp_imovel verificaimovel = imovelRepository.existeimovel(imovel.getCodimovel(),codproprietario);
+        if(verificaimovel != null){
+            verificaimovel.setArea(imovel.getArea());
+            verificaimovel.setDatinicontrato(imovel.getDatinicontrato());
+            verificaimovel.setEndereco(imovel.getEndereco());
+            verificaimovel.setNegociacao(imovel.getNegociacao());
+            verificaimovel.setPreco(imovel.getPreco());
+            verificaimovel.setPcp_proprietario(proprietario);
+            verificaimovel.setQuartos(imovel.getQuartos());
+            verificaimovel.setStatus(imovel.getStatus());
+            verificaimovel.setTipo(imovel.getTipo());
+            verificaimovel.setVlrcondominio(imovel.getVlrcondominio());
+        };
         return imovelRepository.save(imovel);
     }
 
@@ -80,6 +94,10 @@ public class pcp_proprietarioService {
 
     public pcp_proprietario buscarProprietario(Integer index){
         return proprietarioRepository.findAll().get(index);
+    }
+
+    public ImovelProprietarioDTO buscarImovelGrid(Integer index){
+        return imovelRepository.buscarImovelGrid(imovelRepository.buscarimoveis().get(index).getCodimovel(), imovelRepository.buscarimoveis().get(index).getCodproprietario());
     }
 
     public String getDescTipos(Integer tipo){

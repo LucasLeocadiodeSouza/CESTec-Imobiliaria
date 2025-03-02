@@ -28,13 +28,8 @@ public class pcp_proprietarioController {
         return pcp_proprietarioService.salvarProprietario(proprietario);
     }
 
-    @PostMapping("/{codProprietario}/imoveis")
+    @PostMapping("/{codProprietario}/salvarImovel")
     public pcp_imovel salvarImovel(@RequestBody pcp_imovel imovel, @PathVariable Integer codProprietario) {
-        if(imovel.getNegociacao() != 1 && imovel.getNegociacao() != 2){              return null; }
-        if(imovel.getTipo() != 1 && imovel.getTipo() != 2 && imovel.getTipo() != 3){ return null; }
-        if(imovel.getEndereco() != "" ){ return null; }
-        if(imovel.getPreco() != 0 )    { return null; }
-
         return pcp_proprietarioService.salvarImovel(imovel, codProprietario);
     }
 
@@ -61,6 +56,11 @@ public class pcp_proprietarioController {
     @PostMapping("/{codProprietario}/nomepropri")
     public String getNomeProp(@PathVariable Integer codProprietario) {
         return pcp_proprietarioService.getNomeProp(codProprietario);
+    }
+    
+    @PostMapping("/{index}/buscarImovelGrid")
+    public ImovelProprietarioDTO buscarImovelGrid(@PathVariable Integer index){        
+        return pcp_proprietarioService.buscarImovelGrid(index);
     }
     
     

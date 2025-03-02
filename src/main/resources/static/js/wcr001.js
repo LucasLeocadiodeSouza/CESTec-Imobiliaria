@@ -10,7 +10,9 @@ window.addEventListener("load", function () {
 
 function iniciarEventos() {
     controlaTela("inicia");
-    event_click("abas");
+    ABA_init();
+    form("aba1").classList.add('ativa');
+
     event_click("bnovabusca");
     event_click("bbuscar");
     event_click("binserir");
@@ -27,46 +29,17 @@ function iniciarEventos() {
 
 function event_click_table(id,index){
     if(id == "tabela_CTO"){
-        form("sacao").innerText   = "Alterando";
+        form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
         form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
 
-        form("DMF_external").style.display = "flex";
+        preencherDadosModal(index);
+
         controlaTela("modal");
+        form("DMF_external").style.display = "flex";
     }
 }
 
 function event_click(obj) {
-    if(obj == "abas"){        
-        document.querySelectorAll(".aba").forEach(aba => {
-            aba.addEventListener("click", function () {
-
-                document.querySelectorAll(".aba").forEach(abareset => {
-                    abareset.querySelector('.indentaba').style.backgroundColor =  'rgb(81, 81, 81)';
-                    abareset.querySelector('.indentaba').style.removeProperty("background-color"); 
-                    abareset.querySelector('.abaint').style.removeProperty("background-color");
-                    abareset.querySelector('.abaint').style.pointerEvents = 'visible';
-                });
-
-                let abatraco   = this.querySelector(".indentaba");
-                let abainterna = this.querySelector(".abaint");                
-
-                abatraco.style.backgroundColor   = "rgb(0, 97, 7)";                
-                abainterna.style.pointerEvents   = 'none';
-                abainterna.style.backgroundColor = "rgb(193, 192, 192)";
-            });
-            form('aba1').addEventListener("click", function () {
-                form('aba2').style.pointerEvents   = 'visible';              
-                form('aba1').style.pointerEvents   = 'none';
-                controlaTela('inicia');
-            });
-            form('aba2').addEventListener("click", function () {
-                form('aba1').style.pointerEvents   = 'visible';               
-                form('aba2').style.pointerEvents   = 'none';
-                controlaTela('inicia');
-            });
-            
-        });       
-    }
     if(obj == "bnovabusca"){
         form(obj).addEventListener("click", function () {
             controlaTela("buscar");
@@ -83,6 +56,7 @@ function event_click(obj) {
             form("sacao").innerText   = "Inserindo";
             form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
             
+            controlaTela("modal");
             form("DMF_external").style.display = "flex";
         });
     }
@@ -113,6 +87,7 @@ function event_change(obj){
 }
 
 function controlaTela(opc){
+    limparTela(opc);
     if(opc == "inicia" || opc == 'buscar'){
         desabilitaCampo('bnovabusca',      true);
         desabilitaCampo('bbuscar',         false);
@@ -138,6 +113,19 @@ function controlaTela(opc){
         desabilitaCampo('raluguel',        true);
         desabilitaCampo('rvenda',          true);
     }
+    if(opc == "modal"){
+        desabilitaCampo('mcodproprietario',  ehConsulta());
+        desabilitaCampo('mdescproprietario', ehConsulta());
+        desabilitaCampo('mstpimovel',        ehConsulta());
+        desabilitaCampo('mstpcontrato',      ehConsulta());
+        desabilitaCampo('mmetrosquad',       ehConsulta());
+        desabilitaCampo('mquartos',          ehConsulta());
+        desabilitaCampo('mcondominio',       ehConsulta());
+        desabilitaCampo('mloc',              ehConsulta());
+        desabilitaCampo('mvlr',              ehConsulta());
+        desabilitaCampo('mperiodoini',       ehConsulta());
+        desabilitaCampo('bcadastro',         ehConsulta());
+    }
 }
 
 
@@ -156,12 +144,83 @@ function limparTela(opc){
         form('mstpcontrato').value         = "0";
         form('mmetrosquad').value          = "";
         form('mquartos').value             = "";
-        form('mCondominio').value          = "";
+        form('mcondominio').value          = "";
         form('mloc').value                 = "";
         form('mvlr').value                 = "";
         form('mperiodoini').value          = "";
     }
 } 
+
+function ABA_init(){
+    document.querySelectorAll(".aba").forEach(aba => {
+        aba.addEventListener("click", function () {
+
+            document.querySelectorAll(".aba").forEach(abareset => {
+                abareset.querySelector('.indentaba').style.backgroundColor =  'rgb(81, 81, 81)';
+                abareset.querySelector('.indentaba').style.removeProperty("background-color"); 
+                abareset.querySelector('.abaint').style.removeProperty("background-color");
+                abareset.querySelector('.abaint').style.pointerEvents = 'visible';
+                abareset.classList.remove('ativa'); 
+            });
+            this.classList.add('ativa');
+
+            let abatraco   = this.querySelector(".indentaba");
+            let abainterna = this.querySelector(".abaint");                
+
+            abatraco.style.backgroundColor   = "rgb(0, 97, 7)";                
+            abainterna.style.pointerEvents   = 'none';
+            abainterna.style.backgroundColor = "rgb(193, 192, 192)";
+        });
+        form('aba1').addEventListener("click", function () {
+            form('aba2').style.pointerEvents   = 'visible';              
+            form('aba1').style.pointerEvents   = 'none';
+            controlaTela('inicia');
+        });
+        form('aba2').addEventListener("click", function () {
+            form('aba1').style.pointerEvents   = 'visible';               
+            form('aba2').style.pointerEvents   = 'none';
+            controlaTela('inicia');
+        });
+        
+
+        aba.addEventListener("click", function () {
+            buscarDadosTable();
+        });
+    });
+}
+
+function preencherDadosModal(index){
+    fetch(`/contratosCadastroClientes/proprietario/${index}/buscarImovelGrid`,{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => {return response.json()})
+    .then(data => {
+        form("mcodimovel").value        = data.codimovel;
+        form("mcodproprietario").value  = data.codproprietario;
+        form("mdescproprietario").value = data.nome;
+        form("mstpimovel").value        = data.tipo;
+        form("msituacao").value         = data.status;
+        form("mvlr").value          	= data.preco;
+        form("mstpcontrato").value     	= data.negociacao;
+        form("mmetrosquad").value     	= data.area;
+        form("mquartos").value       	= data.quartos;
+        form("mcondominio").value     	= data.vlrcondominio;
+        form("mloc").value     	        = data.endereco;
+        form("mperiodoini").value     	= data.datinicontrato;
+    })
+    .catch(error => console.log(error.message))
+}
+
+function ehConsulta(){
+    return form("aba1").classList.contains('ativa');
+}
+
+function ehManutencao(){
+    return form("aba2").classList.contains('ativa');
+}
 
 function buscarDadosTable(){
     fetch("/contratosCadastroClientes/proprietario/buscarImoveis")
@@ -177,11 +236,12 @@ function buscarDadosTable(){
 }
 
 function adicionarContratoImovel() {
-    const imovel = { tipo:              form("mstpimovel").value,
+    const imovel = { codimovel:         form("mcodimovel").value,
+                     tipo:              form("mstpimovel").value,
                      negociacao:        form('mstpcontrato').value,
                      quartos:           form('mquartos').value,
                      area:              parseFloat(form("mmetrosquad").value),
-                     vlrcondominio:     parseFloat(form("mCondominio").value),
+                     vlrcondominio:     parseFloat(form("mcondominio").value),
                      preco:             parseFloat(form("mvlr").value),
                      status:            1,
                      endereco:          form("mloc").value,
@@ -189,16 +249,16 @@ function adicionarContratoImovel() {
                      datiregistro:      new Date().toISOString().split('T')[0],
                      datinicontrato:    form("mperiodoini").value};
 
-    fetch(`/contratosCadastroClientes/proprietario/${form("mcodproprietario").value}/imoveis`, {
+    fetch(`/contratosCadastroClientes/proprietario/${form("mcodproprietario").value}/salvarImovel`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(imovel,form("mcodproprietario").value)
     })
-    .then(response => {response.ok?alert("Dados Salvos Com Sucesso!"):alert("Algo deu errado, por favor insira os dados corretamente");})
-    .then(data => {})
-    .catch(error => alert(error.message));
+    .then(response => {return response.json()})
+    .then(data => {console.log(data)})
+    .catch(error => alert("Error: " + error.message));
 }
 
 function descProprietario(codigo,retorno) {

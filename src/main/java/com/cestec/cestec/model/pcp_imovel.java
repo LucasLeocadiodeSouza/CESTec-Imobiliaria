@@ -22,16 +22,16 @@ public class pcp_imovel {
     @JoinColumn(name = "codproprietario", nullable = false)
     private pcp_proprietario pcp_proprietario;
 
-    private String endereco;
-    private Integer    quartos;
-    private double area;
-    private double vlrcondominio;
-    private Integer    status;
-    private Date   datiregistro;
-    private Date   datinicontrato;
-    private double preco;
-    private Integer    tipo;
-    private Integer    negociacao;
+    private String  endereco;
+    private Integer quartos;
+    private double  area;
+    private double  vlrcondominio;
+    private Integer status;
+    private Date    datiregistro;
+    private Date    datinicontrato;
+    private double  preco;
+    private Integer tipo;
+    private Integer negociacao;
 
 
     public Integer getTipo() {
