@@ -12,7 +12,9 @@ window.addEventListener("load", function () {
 
 function iniciarEventos() {
     controlaTela("inicia");
-    event_click("abas");
+    ABA_init();
+    form("aba1").classList.add('ativa');
+
     event_click("bnovabusca");
     event_click("bbuscar");
     event_click("binserir");
@@ -24,37 +26,6 @@ function iniciarEventos() {
 }
 
 function event_click(obj) {
-    if(obj == "abas"){        
-        document.querySelectorAll(".aba").forEach(aba => {
-            aba.addEventListener("click", function () {
-
-                document.querySelectorAll(".aba").forEach(abareset => {
-                    abareset.querySelector('.indentaba').style.backgroundColor =  'rgb(81, 81, 81)';
-                    abareset.querySelector('.indentaba').style.removeProperty("background-color"); 
-                    abareset.querySelector('.abaint').style.removeProperty("background-color");
-                    abareset.querySelector('.abaint').style.pointerEvents = 'visible';
-                });
-
-                let abatraco   = this.querySelector(".indentaba");
-                let abainterna = this.querySelector(".abaint");                
-
-                abatraco.style.backgroundColor   = "rgb(0, 97, 7)";                
-                abainterna.style.pointerEvents   = 'none';
-                abainterna.style.backgroundColor = "rgb(193, 192, 192)";
-            });
-            form('aba1').addEventListener("click", function () {
-                form('aba2').style.pointerEvents   = 'visible';              
-                form('aba1').style.pointerEvents   = 'none';
-                controlaTela('inicia');
-            });
-            form('aba2').addEventListener("click", function () {
-                form('aba1').style.pointerEvents   = 'visible';               
-                form('aba2').style.pointerEvents   = 'none';
-                controlaTela('inicia');
-            });
-            
-        });       
-    }
     if(obj == "bnovabusca"){
         form(obj).addEventListener("click", function () {
             controlaTela("buscar");
@@ -90,13 +61,51 @@ function event_click(obj) {
 
 function event_click_table(id,index){
     if(id == "tabela_contrato"){
-        form("sacao").innerText   = "Alterando";
+        form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
         form("stitulo").innerText = "Cadastro de Proprietario - " + form("sacao").innerText;
 
         buscarPropriGrid(index);                
-        form("DMF_external").style.display = "flex";
         controlaTela("modal");
+        form("DMF_external").style.display = "flex";
     }
+}
+
+function ABA_init(){
+    document.querySelectorAll(".aba").forEach(aba => {
+        aba.addEventListener("click", function () {
+
+            document.querySelectorAll(".aba").forEach(abareset => {
+                abareset.querySelector('.indentaba').style.backgroundColor =  'rgb(81, 81, 81)';
+                abareset.querySelector('.indentaba').style.removeProperty("background-color"); 
+                abareset.querySelector('.abaint').style.removeProperty("background-color");
+                abareset.querySelector('.abaint').style.pointerEvents = 'visible';
+                abareset.classList.remove('ativa'); 
+            });
+            this.classList.add('ativa');
+
+            let abatraco   = this.querySelector(".indentaba");
+            let abainterna = this.querySelector(".abaint");                
+
+            abatraco.style.backgroundColor   = "rgb(0, 97, 7)";                
+            abainterna.style.pointerEvents   = 'none';
+            abainterna.style.backgroundColor = "rgb(193, 192, 192)";
+        });
+        form('aba1').addEventListener("click", function () {
+            form('aba2').style.pointerEvents   = 'visible';              
+            form('aba1').style.pointerEvents   = 'none';
+            controlaTela('inicia');
+        });
+        form('aba2').addEventListener("click", function () {
+            form('aba1').style.pointerEvents   = 'visible';               
+            form('aba2').style.pointerEvents   = 'none';
+            controlaTela('inicia');
+        });
+        
+
+        aba.addEventListener("click", function () {
+            buscarDadosTable();
+        });
+    });
 }
 
 function buscarPropriGrid(index){
@@ -191,6 +200,15 @@ function controlaTela(opc){
         desabilitaCampo('bbuscar',         true);        
         desabilitaCampo('codproprietario', true);
     }
+    if(opc == "modal"){
+        desabilitaCampo('mnome',     ehConsulta());
+        desabilitaCampo('mcpf',      ehConsulta());
+        desabilitaCampo('mddd',      ehConsulta());
+        desabilitaCampo('mtelefone', ehConsulta());
+        desabilitaCampo('memail',    ehConsulta());
+        desabilitaCampo('mloc',      ehConsulta());
+        desabilitaCampo('bcadastro', ehConsulta());
+    }
 }
 
 function limparTela(opc){
@@ -208,6 +226,15 @@ function limparTela(opc){
         form('memail').value    = "";
         form('mloc').value      = "";
     }
+}
+
+
+function ehConsulta(){
+    return form("aba1").classList.contains('ativa');
+}
+
+function ehManutencao(){
+    return form("aba2").classList.contains('ativa');
 }
 
 
