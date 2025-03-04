@@ -3,7 +3,6 @@
     Data: 15/02/25
     IM: 00007
 */
-
 window.addEventListener("load", function () {
     iniciarEventos();
 });

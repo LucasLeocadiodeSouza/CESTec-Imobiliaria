@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class controller {
+
     @GetMapping("/home") 
     public String home() {
         return "comWindow";
@@ -23,5 +24,10 @@ public class controller {
     @GetMapping("/contratosCadastroClientes") 
     public String contratosCadastroClientes() {
         return "wcr003";
+    }
+
+    @GetMapping("/login") 
+    public String login() {
+        return "wlog";
     }
 }
