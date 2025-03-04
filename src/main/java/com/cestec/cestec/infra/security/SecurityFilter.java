@@ -11,6 +11,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.cestec.cestec.repository.userRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -41,11 +42,16 @@ public class SecurityFilter extends OncePerRequestFilter{
     }
     
     private String recoverToken(HttpServletRequest request){
-        var authHeader = request.getHeader("Authorization");
-        if(authHeader == null){
-            return null;
+        //var authHeader = request.getHeader("Authorization");
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null){
+            for (Cookie cookie : cookies){
+                if("authToken".equals(cookie.getName())){
+                    return cookie.getValue();
+                }
+            }
         }
-        return authHeader.replace("Bearer ", "");
+        return null;
     }
 
 }

@@ -4,12 +4,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cestec.cestec.infra.security.tokenService;
-import com.cestec.cestec.model.AuthenticationDTO;
-import com.cestec.cestec.model.RegisterDTO;
-import com.cestec.cestec.model.loginResponseDTO;
-import com.cestec.cestec.model.sp_user;
+import com.cestec.cestec.model.securityLogin.AuthenticationDTO;
+import com.cestec.cestec.model.securityLogin.RegisterDTO;
+import com.cestec.cestec.model.securityLogin.loginResponseDTO;
+import com.cestec.cestec.model.securityLogin.sp_user;
 import com.cestec.cestec.repository.userRepository;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +37,17 @@ public class authentController {
     private tokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
+    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data, HttpServletResponse response) {
         var userNamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.passkey());
         var auth = this.authenticationManager.authenticate(userNamePassword);
         var token = tokenService.generatedToken((sp_user) auth.getPrincipal());
-        
-        System.out.println("token: " + token);
+
+        Cookie cookie = new Cookie("authToken", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/"); //disponivel em todo dominio
+        //cookie.setMaxAge(1 * 24 * 60 * 60); //expira em 1 dia
+        response.addCookie(cookie);
 
         return ResponseEntity.ok(new loginResponseDTO(token));
     }

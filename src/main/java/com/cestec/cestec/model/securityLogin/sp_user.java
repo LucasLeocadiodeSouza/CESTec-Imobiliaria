@@ -1,4 +1,4 @@
-package com.cestec.cestec.model;
+package com.cestec.cestec.model.securityLogin;
 
 import java.util.Collection;
 import java.util.List;
