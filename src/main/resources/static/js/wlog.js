@@ -11,6 +11,7 @@ window.addEventListener("load", function () {
 function iniciarEventos() {
     //controlaTela("inicia");
     event_click("blogin");       
+    resetarCookie();
 }
 
 function event_click(obj) {

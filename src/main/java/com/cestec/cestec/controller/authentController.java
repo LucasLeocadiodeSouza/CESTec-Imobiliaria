@@ -9,6 +9,7 @@ import com.cestec.cestec.model.securityLogin.RegisterDTO;
 import com.cestec.cestec.model.securityLogin.loginResponseDTO;
 import com.cestec.cestec.model.securityLogin.sp_user;
 import com.cestec.cestec.repository.userRepository;
+import com.cestec.cestec.service.sp_userService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,6 +32,9 @@ public class authentController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private sp_userService userservice;
+
+    @Autowired
     private userRepository userRepository;
 
     @Autowired
@@ -46,11 +50,13 @@ public class authentController {
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/"); //disponivel em todo dominio
-        //cookie.setMaxAge(1 * 24 * 60 * 60); //expira em 1 dia
+        cookie.setMaxAge(1 * 24 * 60 * 60); //expira em 1 dia
         response.addCookie(cookie);
 
+        //System.out.println(userservice.getRoleUser(data.login()));
+
         return ResponseEntity.ok(new loginResponseDTO(token));
-    }
+    }   
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {

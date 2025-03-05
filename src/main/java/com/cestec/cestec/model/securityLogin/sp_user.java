@@ -38,7 +38,11 @@ public class sp_user implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == userRole.SALER) return List.of(new SimpleGrantedAuthority("ROLE_SALER"), new SimpleGrantedAuthority("ROLE_USER"));
         if(this.role == userRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if(this.role == userRole.SUPER) return List.of(new SimpleGrantedAuthority("ROLE_SUPER"), new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if(this.role == userRole.COORD) return List.of(new SimpleGrantedAuthority("ROLE_COORD"), new SimpleGrantedAuthority("ROLE_SUPER"), new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if(this.role == userRole.DIREC) return List.of(new SimpleGrantedAuthority("ROLE_DIREC"), new SimpleGrantedAuthority("ROLE_COORD"), new SimpleGrantedAuthority("ROLE_SUPER"), new SimpleGrantedAuthority("ROLE_SALER"), new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
     @Override
