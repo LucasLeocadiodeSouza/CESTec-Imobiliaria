@@ -32,14 +32,12 @@ public class config {
                                                      .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                                                      .requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN")
                                                      .requestMatchers(HttpMethod.GET,"/contratosCadastroPropri","/contratosCadastroClientes").hasRole("ADMIN")
-                                                     .requestMatchers(HttpMethod.GET, "/contratosCadastro").hasRole("SALER")
-                                                     .anyRequest().authenticated()
+                                                     .requestMatchers(HttpMethod.GET, "/contratosCadastro","/contratosCadastroContrato").hasRole("SALER")
+                                                     .anyRequest().hasAnyRole("USER")
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{

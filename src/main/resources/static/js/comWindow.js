@@ -25,6 +25,10 @@ function iniciarEventos() {
         event_click("bimcnovoimovel"); 
         event_click("bimcnovopropr");
         event_click("bimcnovocliente");
+        event_click("bimcnovocontrato");
+
+        buscarUserId();
+        buscarUserName();
 }
 
 function event_click(obj) {
@@ -61,28 +65,35 @@ function event_click(obj) {
             window.location.href = "/contratosCadastroClientes"; 
         });
     }
+    if(obj == "bimcnovocontrato"){
+        document.getElementById(obj).addEventListener("click", function() {
+            window.location.href = "/contratosCadastroContrato"; 
+        });
+    }
 }
 
 function controlaTela(opc){
     if(opc == "inicio"){
             form("dimmfinanciamento").style.display = "none";
+            form("bimcnovocontrato").style.display  = "none";
             form("bimcnovopropr").style.display     = "none";
             form("bimcnovoimovel").style.display    = "none";
             form("bimcnovocliente").style.display   = "none";
             form("bimcassinatura").style.display    = "none";
             form("bimcaprovacao").style.display     = "none";
             form("dimrvendas").style.display        = "none";
-            form("dimrimovel").style.display        = "none";
+            form("dimrimovel").style.display        = "none"; 
     }
     if(opc == "menu"){
         form("dimmfinanciamento").style.display  = form("dimmfinanciamento").style.display == "flex"?"none":"flex";
     }
     if(opc == "menuitens"){
+        form("bimcnovocontrato").style.display  = form("bimcnovocontrato").style.display == "flex"?"none":"flex";
         form("bimcnovopropr").style.display     = form("bimcnovopropr").style.display    == "flex"?"none":"flex";
         form("bimcnovoimovel").style.display    = form("bimcnovoimovel").style.display   == "flex"?"none":"flex";
         form("bimcassinatura").style.display    = form("bimcassinatura").style.display   == "flex"?"none":"flex";
         form("bimcaprovacao").style.display     = form("bimcaprovacao").style.display    == "flex"?"none":"flex";
-        form("bimcnovocliente").style.display  = form("bimcnovocliente").style.display   == "flex"?"none":"flex";
+        form("bimcnovocliente").style.display  = form("bimcnovocliente").style.display   == "flex"?"none":"flex"; 
     }
     if(opc == "relatorio"){
         form("dimrvendas").style.display  = form("dimrvendas").style.display == "flex"?"none":"flex";
@@ -92,4 +103,28 @@ function controlaTela(opc){
 
 function form(obj){
     return document.getElementById(obj);
+}
+
+function buscarUserName(){
+    fetch("/home/userlogin", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response =>{return response.text()})
+    .then(data => { form("huser").textContent = data })
+    .catch(error => alert(error.message));
+}
+
+function buscarUserId(){
+    fetch("/home/userid", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => {return response.text()})
+    .then(data => { form("lid").textContent = data })
+    .catch(error => alert(error.message));
 }

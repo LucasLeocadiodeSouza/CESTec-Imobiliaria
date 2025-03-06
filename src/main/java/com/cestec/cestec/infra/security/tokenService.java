@@ -34,6 +34,11 @@ public class tokenService {
         }        
     }
 
+    public String getExtractedUsernameFromToken(String token){
+        String username = JWT.decode(token).getSubject();
+        return username;
+    }
+
     public String validateToken(String token){
         try {
             Algorithm algoritimo = Algorithm.HMAC256(secret);
