@@ -85,7 +85,7 @@ function ABA_init(){
             let abatraco   = this.querySelector(".indentaba");
             let abainterna = this.querySelector(".abaint");                
 
-            abatraco.style.backgroundColor   = "rgb(0, 97, 7)";                
+            abatraco.style.backgroundColor   = "rgb(41, 76, 141)";                
             abainterna.style.pointerEvents   = 'none';
             abainterna.style.backgroundColor = "rgb(193, 192, 192)";
         });
