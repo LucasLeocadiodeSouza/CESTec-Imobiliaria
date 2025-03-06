@@ -10,8 +10,7 @@ window.addEventListener("load", function () {
 
 function iniciarEventos() {
     //controlaTela("inicia");
-    event_click("blogin");       
-    resetarCookie();
+    event_click("blogin");
 }
 
 function event_click(obj) {

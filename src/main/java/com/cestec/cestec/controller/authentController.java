@@ -12,6 +12,7 @@ import com.cestec.cestec.repository.userRepository;
 import com.cestec.cestec.service.sp_userService;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
@@ -32,9 +33,6 @@ public class authentController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private sp_userService userservice;
-
-    @Autowired
     private userRepository userRepository;
 
     @Autowired
@@ -52,8 +50,6 @@ public class authentController {
         cookie.setPath("/"); //disponivel em todo dominio
         cookie.setMaxAge(1 * 24 * 60 * 60); //expira em 1 dia
         response.addCookie(cookie);
-
-        //System.out.println(userservice.getRoleUser(data.login()));
 
         return ResponseEntity.ok(new loginResponseDTO(token));
     }   

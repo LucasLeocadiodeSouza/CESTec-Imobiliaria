@@ -1,7 +1,7 @@
 <!-- 
     Dev: Lucas Leocadio de Souza
-    Data: 19/02/25
-    IM: 00011
+    Data: 04/03/25
+    IM: 00013
 -->
 
 <!DOCTYPE html>
@@ -13,8 +13,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-    <title>Cadastro de Proprietario</title>
-    <script src="/js/wcr002.js" defer></script>
+    <title>Cadastro de Contratos</title>
+    <script src="/js/wcr004.js" defer></script>
     
 <style>
     .ppp         {width: 32px;}
@@ -50,7 +50,7 @@
         background: transparent;
     }
 
-    #dmodalf_proprietario {width: 600px;
+    #dmodalf_contrato {width: 600px;
                            height: 320px;
                            opacity: 1;
                            background-color: aliceblue;
@@ -62,18 +62,35 @@
 <body>
     <div class="gen" style="background-color: #dedede; height: 100vh; display: flex; justify-content: center; padding: 15px;flex-direction: column;justify-content: flex-start;">
         <div class="titulo">
-            <h2>Cadastro de proprietarios</h2>
+            <h2>Cadastro de Contratos</h2>
         </div>
 
         <div id='abas' class="gen" style="height: 40px; width: 90%; justify-content: center; margin: 10px; margin-bottom: 0px;padding: 0px; display: flex; justify-content: flex-start;">            
             <div id="aba1" class="aba"><div class="indentaba" style="background-color: rgb(0, 97, 7)"></div><div class="abaint" style="background-color: rgb(193, 192, 192)"><img src="/icons/consultaLupa.png"   class="gen"><label style="margin-block: 0px;"> Consulta</label></div></div>
             <div id="aba2" class="aba"><div class="indentaba"></div><div class="abaint"><img src="/icons/manutencaoIcon.png" class="gen"><label style="margin-block: 0px;"> Manutencão</label></div></div>
         </div>
+
         <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
             <div class='if'>
                 <label class="labelfiltro">Código do Proprietario: </label>
                 <input type="text" id="codproprietario" name="codproprietario" class="ppp">
                 <input type="text" id="descproprietario" name="descproprietario" class="large" disabled>
+            </div>
+
+            <div class='if'>
+                <label class="labelfiltro">Código do Cliente: </label>
+                <input type="text" id="codcliente"  name="codcliente"  class="ppp">
+                <input type="text" id="desccliente" name="desccliente" class="large" disabled>
+            </div>
+
+            <div class='if'>
+                <label class="labelmodal">Tipo de Imóvel:</label>
+
+                <input type="radio" id="raluguel" name="rimovel" value="1">
+                <label class="labelmodal" style="text-align: left; width: 80px" for="raluguel">Aluguel</label>
+
+                <input type="radio" id="rvenda" name="rimovel" value="2">
+                <label class="labelmodal" style="text-align: left; width: 80px" for="rvenda">Venda</label>
             </div>
 
             <div  class='if' style="display: flex; height: auto;">
@@ -93,7 +110,7 @@
 
         <!--  MODAL -->
         <div id="DMF_external" class="DMF_external">
-            <div id="dmodalf_proprietario">
+            <div id="dmodalf_contrato">
                 <input type="hidden" id="fixa" name="fixa">
 
                 <div class='dmf' style="display: flex; justify-content: flex-end;align-items: center; height: 35px;">

@@ -21,11 +21,17 @@ public class controller {
         return "wcr002";
     }
 
+    
     @GetMapping("/contratosCadastroClientes") 
     public String contratosCadastroClientes() {
         return "wcr003";
     }
-
+    
+    @GetMapping("/contratosCadastroContrato") 
+    public String contratosCadastroContrato() {
+        return "wcr004";
+    }
+    
     @GetMapping("/login") 
     public String login() {
         return "wlog";
