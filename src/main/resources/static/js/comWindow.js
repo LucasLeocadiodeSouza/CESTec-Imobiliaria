@@ -34,19 +34,19 @@ function iniciarEventos() {
 function event_click(obj) {
     if(obj == "dimcontratoint"){
         document.getElementById(obj).addEventListener("click", function() {
-            form("ditenscontratoext").style.backgroundColor = form("bimcnovopropr").style.display == "flex"?"#dedede":"#29582c";
+            form("ditenscontratoext").style.backgroundColor = form("bimcnovopropr").style.display == "flex"?"#dedede":"#192B4A";
             controlaTela("menuitens");
         });
     }
     if(obj == "bimmenuint"){
         document.getElementById(obj).addEventListener("click", function() {
-            form("ditensmenuext").style.backgroundColor = form("dimmfinanciamento").style.display == "flex"?"#dedede":"#29582c";
+            form("ditensmenuext").style.backgroundColor = form("dimmfinanciamento").style.display == "flex"?"#dedede":"#192B4A";
             controlaTela("menu");
         });
     }
     if(obj == "ditensrelatorioint"){
         document.getElementById(obj).addEventListener("click", function() {
-            form("ditensrelatorioext").style.backgroundColor = form("dimrvendas").style.display == "flex"?"#dedede":"#29582c";
+            form("ditensrelatorioext").style.backgroundColor = form("dimrvendas").style.display == "flex"?"#dedede":"#192B4A";
             controlaTela("relatorio");
         });
     }
