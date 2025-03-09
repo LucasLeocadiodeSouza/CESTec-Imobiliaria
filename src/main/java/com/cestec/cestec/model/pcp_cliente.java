@@ -20,11 +20,7 @@ public class pcp_cliente {
 
     @OneToOne(mappedBy = "pcp_cliente", cascade = CascadeType.ALL, orphanRemoval = false)    
     @JsonIgnore
-    private pcp_aluguel pcp_aluguel;
-
-    @OneToOne(mappedBy = "pcp_cliente", cascade = CascadeType.ALL, orphanRemoval = false)
-    @JsonIgnore
-    private pcp_venda pcp_venda;
+    private pcp_contrato pcp_contrato;
 
     private String nome;
     private String cpf;
@@ -32,19 +28,12 @@ public class pcp_cliente {
     private String numtel;
     private String email;
     private String endereco;
-
     
-    public pcp_aluguel getPcp_aluguel() {
-        return pcp_aluguel;
+    public pcp_contrato getPcp_contrato() {
+        return pcp_contrato;
     }
-    public void setPcp_aluguel(pcp_aluguel pcp_aluguel) {
-        this.pcp_aluguel = pcp_aluguel;
-    }
-    public pcp_venda getPcp_venda() {
-        return pcp_venda;
-    }
-    public void setPcp_venda(pcp_venda pcp_venda) {
-        this.pcp_venda = pcp_venda;
+    public void setPcp_contrato(pcp_contrato pcp_contrato) {
+        this.pcp_contrato = pcp_contrato;
     }
     public Integer getCodcliente() {
         return codcliente;

@@ -11,8 +11,17 @@ function iniciarEventos() {
     controlaTela("inicia");
     ABA_init();
     form("aba1").classList.add('ativa');
+    buscarContratoGrid();
 
-    event_click("");
+    event_click("bnovabusca");
+    event_click("bbuscar");
+    event_click("binserir");
+    event_click("bclose");
+    event_click("bcadastro");
+
+    event_change("codproprietario");
+    event_change("mcodprop");
+    event_change("msimovel");
 
     imgFormat();
 }
@@ -31,20 +40,28 @@ function event_click(obj) {
     if(obj == "bbuscar"){
         form(obj).addEventListener("click", function () {
             controlaTela("novabusca");
+
+            buscarContratoGrid();
         });        
     }
     if(obj == 'binserir'){
         form(obj).addEventListener("click", function () {
             form("sacao").innerText   = "Inserindo";
             form("stitulo").innerText = "Cadastro de Contrato - " + form("sacao").innerText;
-            
+                        
             controlaTela("modal");
             form("DMF_external").style.display = "flex";
         });
     }
     if(obj == 'bclose'){
         form(obj).addEventListener("click", function () {
-            form("DMF_external").style.display = "none";    
+            form("DMF_external").style.display = "none";
+        });
+    }
+    if(obj == 'bcadastro'){
+        form(obj).addEventListener("click", function () {
+            inserirAlterarContrato();
+            form("DMF_external").style.display = "none";
         });
     }
 }
@@ -55,9 +72,16 @@ function event_change(obj){
             form(obj).value!=""?descProprietario(obj,"descproprietario") : form("descproprietario").value = "Todos";
         });
     }
-    if(obj == "mcodproprietario"){
+    if(obj == "mcodprop"){
         form(obj).addEventListener("change", function(){
-            form(obj).value!=""?descProprietario(obj,"mdescproprietario") : form("mdescproprietario").value = "";
+            form(obj).value!=""?descProprietario(obj,"mdescprop") : form("mdescprop").value = "";
+
+            getOptionImovel();            
+        });
+    }
+    if(obj == "msimovel"){
+        form(obj).addEventListener("change", function(){
+            getTipoImovel();            
         });
     }
 }
@@ -67,11 +91,8 @@ function controlaTela(opc){
     if(opc == "inicia" || opc == 'buscar'){
         desabilitaCampo('bnovabusca',      true);
         desabilitaCampo('bbuscar',         false);
-        desabilitaCampo('codcontrato',     false);
         desabilitaCampo('codproprietario', false);
-        desabilitaCampo('periodoini',      false);
-        desabilitaCampo('periodofin',      false);
-        desabilitaCampo('periodoindef',    false);
+        desabilitaCampo('codcliente',      false);
         desabilitaCampo('raluguel',        false);
         desabilitaCampo('rvenda',          false);
 
@@ -81,16 +102,23 @@ function controlaTela(opc){
     if(opc == "novabusca"){
         desabilitaCampo('bnovabusca',      false);
         desabilitaCampo('bbuscar',         true);
-        desabilitaCampo('codcontrato',     true);
         desabilitaCampo('codproprietario', true);
-        desabilitaCampo('periodoini',      true);
-        desabilitaCampo('periodofin',      true);
-        desabilitaCampo('periodoindef',    true);
+        desabilitaCampo('codcliente',      true);
         desabilitaCampo('raluguel',        true);
         desabilitaCampo('rvenda',          true);
     }
     if(opc == "modal"){
-        desabilitaCampo('bcadastro',         ehConsulta());
+        desabilitaCampo('mcodcliente',   ehConsulta());
+        desabilitaCampo('mdesccliente',  true);
+        desabilitaCampo('mcodprop',      ehConsulta());
+        desabilitaCampo('mdescprop',     true);
+        desabilitaCampo('msimovel',      ehConsulta());
+        desabilitaCampo('mtpimovel',     true);
+        desabilitaCampo('mloc',          true);
+        desabilitaCampo('mtpcontrato',   true);
+        desabilitaCampo('mvlrnegociado', ehConsulta());
+        desabilitaCampo('mvlrimovel',    true);
+        desabilitaCampo('bcadastro',     ehConsulta());
     }
 }
 
@@ -98,13 +126,24 @@ function controlaTela(opc){
 function limparTela(opc){
     if(opc == "inicia" || opc == 'buscar'){        
         form('codproprietario').value  = "0";
-        form('descproprietario').value = "0";
+        form('descproprietario').value = "";
+        form('codcliente').value       = "0";
+        form('desccliente').value      = "";
 
         form("binserir").style.display     = form("aba1").style.pointerEvents == 'visible'?"flex":"none";
         form("DMF_external").style.display = "none";
     }
     if(opc == "modal"){
-        form('mcodproprietario').value     = "";
+        form('mcodcliente').value   = "0";
+        form('mdesccliente').value  = "";
+        form('mcodprop').value      = "0";
+        form('mdescprop').value     = "";
+        form('msimovel').value      = "0";
+        form('mtpimovel').value     = "";
+        form('mloc').value          = "";
+        form('mtpcontrato').value   = "";
+        form('mvlrimovel').value    = "";
+        form('mvlrnegociado').value = "";
     }
 } 
 
@@ -124,7 +163,7 @@ function ABA_init(){
             let abatraco   = this.querySelector(".indentaba");
             let abainterna = this.querySelector(".abaint");                
 
-            abatraco.style.backgroundColor   = "rgb(0, 97, 7)";                
+            abatraco.style.backgroundColor   = "rgb(41, 76, 141)";                
             abainterna.style.pointerEvents   = 'none';
             abainterna.style.backgroundColor = "rgb(193, 192, 192)";
         });
@@ -137,11 +176,9 @@ function ABA_init(){
             form('aba1').style.pointerEvents   = 'visible';               
             form('aba2').style.pointerEvents   = 'none';
             controlaTela('inicia');
-        });
-        
+        });        
 
         aba.addEventListener("click", function () {
-            buscarDadosTable();
         });
     });
 }
@@ -166,6 +203,62 @@ function descProprietario(codigo,retorno) {
     .then(data => { form(retorno).value = data })
     .catch(error => alert(error.message));
 }
+
+function buscarContratoGrid(){
+    fetch("/contrato/buscarContratoGrid",{
+        method:  "GET",
+        headers: {"Content":"application/json"}
+    })
+    .then(response => {return response.json()})
+    .then(data => { createGrid("tabela_contrato",
+                               "codcontrato,codcliente,nome,proprietario,nome,codimovel,tipo,negociacao,preco",
+                               "Contrato,Cod,Nome,Cod,Nome,Cod,Tipo,Contrato,Valor",
+                               "10,10,15,10,15,10,10,10,10",
+                               data);})
+    .catch(error => alert(error.message))
+}
+
+function inserirAlterarContrato(){
+    const contrato = {codcliente:       + form("mcodcliente").value,
+                      codproprietario:  + form("mcodprop").value,                     
+                      valor:            + form("mvlrnegociado").value,
+                      codproprietario:  + form("mcodprop").value,
+                      datinicio:        + form("mperiodoini").value,
+                      datfinal:         + form("mperiodofin").value,
+                      datiregistro:       new Date().toISOString().split('T')[0],
+                      ativo:            true
+                     };
+
+    fetch(`/${form("msimovel").value}/inserirAlterarContrato`,{
+        method: "POST",
+        headers: {"Content":"application/json"},
+        body: contrato
+    })
+    .then(response => {return response.json()})
+    .then(data => {console.log(data)})
+    .catch(error => alert(error.message));
+}
+
+function getOptionImovel(){
+    fetch(`/contratosCadastroClientes/proprietario/${form("mcodprop").value}/getOptionImovel`,{
+        method: "GET",
+        headers: {"Content":"application/json"}
+    })
+    .then(response => {return response.text()})
+    .then(data => { fillSelect("msimovel", data);
+                    form("msimovel").options[0].disabled = true; })
+    .catch(error => alert(error.message))
+}
+
+function getTipoImovel(){
+    fetch(`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getTipoImovel`,{
+        method: "GET",
+        headers: {"Content":"application/json"}
+    })
+    .then(response => {return response.text()})
+    .then(data => { form("mtpimovel").value = data })
+    .catch(error => alert(error.message))
+} 
 
 function imgFormat(){
     document.querySelectorAll(".button").forEach(button => {
@@ -194,6 +287,22 @@ function desabilitaCampo(obj,desahabilita){
     form(obj).style.cursor = desahabilita?'not-allowed':'pointer';
 }
 
+function fillSelect(selectId, data) {
+    let select = document.getElementById(selectId);
+    select.innerHTML = "";
+
+    let items = data.split("#");
+
+    items.forEach(item => {
+        let parts = item.split("|");
+        if (parts.length === 2) {
+            let option         = document.createElement("option");
+            option.value       = parts[0];
+            option.textContent = parts[1];
+            select.appendChild(option);
+        }
+    });
+}
 
 function createGrid(id,column,columnName,columnWidth,dados){
     form(id).innerText = '';

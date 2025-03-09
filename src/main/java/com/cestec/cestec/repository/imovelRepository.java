@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import com.cestec.cestec.model.ImovelProprietarioDTO;
 import com.cestec.cestec.model.pcp_imovel;
 
@@ -28,5 +27,5 @@ public interface imovelRepository extends JpaRepository<pcp_imovel, Integer> {
            "FROM pcp_imovel i JOIN i.pcp_proprietario p " +
            "WHERE i.codimovel = :codimovel AND "+
            "p.codproprietario = :codproprietario")
-    ImovelProprietarioDTO buscarImovelGrid(@Param("codimovel") Integer codimovel,@Param("codproprietario") Integer codproprietario);
+    ImovelProprietarioDTO buscarImovelGrid(@Param("codimovel") Integer codimovel,@Param("codproprietario") Integer codproprietario);    
 }

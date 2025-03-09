@@ -100,6 +100,17 @@ public class pcp_proprietarioService {
         return imovelRepository.buscarImovelGrid(imovelRepository.buscarimoveis().get(index).getCodimovel(), imovelRepository.buscarimoveis().get(index).getCodproprietario());
     }
 
+    public String getTipoImovel(Integer codImovel){
+        Integer tipo = imovelRepository.findById(codImovel).get().getTipo();
+        
+        switch (tipo) {
+            case 1: return "Apartamento";
+            case 2: return "Casa";
+            case 3: return "Terreno";
+            default: return "";
+        }
+    }
+
     public String getDescTipos(Integer tipo){
         switch (tipo) {
             case 1:
