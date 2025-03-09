@@ -14,6 +14,8 @@ import com.cestec.cestec.model.ImovelProprietarioDTO;
 import com.cestec.cestec.model.pcp_imovel;
 import com.cestec.cestec.model.pcp_proprietario;
 import com.cestec.cestec.service.pcp_proprietarioService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -47,6 +49,23 @@ public class pcp_proprietarioController {
     public List<pcp_imovel> listarImoveisPorProprietario(@PathVariable Integer codProprietario) {
         return pcp_proprietarioService.listarImoveisPorProprietario(codProprietario);
     }
+
+    @GetMapping("/{codProprietario}/getOptionImovel")
+    public String getOptionImovel(@PathVariable Integer codProprietario) {
+        List<pcp_imovel> listaImovel = pcp_proprietarioService.listarImoveisPorProprietario(codProprietario);
+
+        String fselect       = "0|Selecione um Imovel";
+        for (pcp_imovel imovel : listaImovel) {
+            fselect = fselect + "#" + imovel.getCodimovel() + "|" + imovel.getCodimovel();         
+        }
+        return fselect;
+    }
+
+    @GetMapping("/{codImovel}/getTipoImovel")
+    public String getTipoImovel(@PathVariable Integer codImovel) {
+        return pcp_proprietarioService.getTipoImovel(codImovel);
+    }
+    
 
     @GetMapping("/buscarImoveis")
     public List<ImovelProprietarioDTO> buscarImoveis() {

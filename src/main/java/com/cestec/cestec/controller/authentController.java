@@ -9,10 +9,8 @@ import com.cestec.cestec.model.securityLogin.RegisterDTO;
 import com.cestec.cestec.model.securityLogin.loginResponseDTO;
 import com.cestec.cestec.model.securityLogin.sp_user;
 import com.cestec.cestec.repository.userRepository;
-import com.cestec.cestec.service.sp_userService;
 
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 

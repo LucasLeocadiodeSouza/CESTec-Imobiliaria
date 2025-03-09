@@ -51,10 +51,10 @@
     }
 
     #dmodalf_contrato {width: 600px;
-                           height: 320px;
-                           opacity: 1;
-                           background-color: aliceblue;
-                           box-shadow: 0 0 .4vw rgba(0,0,0,0.5);}
+                       height: 410px;
+                       opacity: 1;
+                       background-color: aliceblue;
+                       box-shadow: 0 0 .4vw rgba(0,0,0,0.5);}
 
     body {background-color: #1d3561;}
 </style>
@@ -66,7 +66,7 @@
         </div>
 
         <div id='abas' class="gen" style="height: 40px; width: 90%; justify-content: center; margin: 10px; margin-bottom: 0px;padding: 0px; display: flex; justify-content: flex-start;">            
-            <div id="aba1" class="aba"><div class="indentaba" style="background-color: rgb(0, 97, 7)"></div><div class="abaint" style="background-color: rgb(193, 192, 192)"><img src="/icons/consultaLupa.png"   class="gen"><label style="margin-block: 0px;"> Consulta</label></div></div>
+            <div id="aba1" class="aba"><div class="indentaba" style="background-color: rgb(41, 76, 141)"></div><div class="abaint" style="background-color: rgb(193, 192, 192)"><img src="/icons/consultaLupa.png"   class="gen"><label style="margin-block: 0px;"> Consulta</label></div></div>
             <div id="aba2" class="aba"><div class="indentaba"></div><div class="abaint"><img src="/icons/manutencaoIcon.png" class="gen"><label style="margin-block: 0px;"> Manutencão</label></div></div>
         </div>
 
@@ -120,34 +120,52 @@
                 <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
                     <h2><span id="stitulo" name="stitulo"></span></h2>
                     <span     id="sacao"   name="sacao" style="display: none"></span>
-                </div>
+                </div>                
 
-                <input type="hidden" id="mcodproprietario" name="mcodproprietario">
+                <div class='dmf'>
+                    <label class="labelmodal">Negociante: </label>
+                    <input type="text" id="mcodcliente"   name="mcodcliente"   class="ppp">
+                    <input type="text" id="mdesccliente"  name="mdesccliente"  class="large">
+                </div>
 
                 <div class='dmf'>
                     <label class="labelmodal">Proprietario: </label>
-                    <input type="text" id="mnome"  name="mnome"  class="large">
+                    <input type="text" id="mcodprop"   name="mcodprop"   class="ppp">
+                    <input type="text" id="mdescprop"  name="mdescprop"  class="large">
                 </div>
 
                 <div class='dmf'>
-                    <label class="labelmodal">CPF: </label>
-                    <input type="text" id="mcpf"  name="mcpf"  class="medium">
-                </div>
-
-                <div class='dmf'>
-                    <label class="labelmodal">Telefone: </label>
-                    <input type="text" id="mddd"  name="mddd"  class="ppp">
-                    <input type="text" id="mtelefone" name="mtelefone" class="medium">
-                </div>
-
-                <div class='dmf'>
-                    <label class="labelmodal">Email: </label>
-                    <input type="text" id="memail"  name="memail"  class="large">
+                    <label class="labelmodal">Imovel: </label>
+                    <select id="msimovel"   name="msimovel" class="large">
+                        <option value="0" disabled>Selecione um imovel</option>
+                    </select>
+                    <input type="text" id="mtpimovel"  name="mtpimovel"  class="Intermedium" disabled>
                 </div>
 
                 <div class='dmf'>
                     <label class="labelmodal">Endereco: </label>
-                    <input type="text" id="mloc"  name="mloc"  class="large">
+                    <input type="text" id="mloc"  name="mloc"  class="large" disabled>
+                </div>
+
+                <div class='dmf'>
+                    <label class="labelmodal">Tipo Contrato: </label>
+                    <input type="text" id="mtpcontrato"  name="mtpcontrato"  class="medium" disabled>
+                </div>
+
+                <div class='dmf'>
+                    <label class="labelmodal">Valor do Imovel: </label>
+                    <input type="text" id="mvlrimovel"  name="mvlrimovel"  class="medium" disabled>
+                </div>
+
+                <div class='dmf'>
+                    <label class="labelmodal">Valor negociado: </label>
+                    <input type="text" id="mvlrnegociado"  name="mvlrnegociado"  class="medium">
+                </div>
+
+                <div class='dmf'>
+                    <label class="labelmodal">Inicio do Contrato: </label>
+                    <input type="date" id="mperiodoini" name="mperiodoini" class="medium">
+                    <input type="date" id="mperiodofin" name="mperiodofin" class="medium">
                 </div>
 
                 <div class='if' style="display: flex; margin-left: 5px;"></div>
