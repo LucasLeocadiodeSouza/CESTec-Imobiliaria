@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.cestec.cestec.model.ImovelProprietarioDTO;
-import com.cestec.cestec.model.pcp_cliente;
 import com.cestec.cestec.model.pcp_imovel;
 import com.cestec.cestec.model.pcp_proprietario;
 import com.cestec.cestec.repository.imovelRepository;
@@ -107,8 +106,8 @@ public class pcp_proprietarioService {
             case 1: return "Apartamento";
             case 2: return "Casa";
             case 3: return "Terreno";
-            default: return "";
         }
+        return "Tipo do imovel não encontrado";
     }
 
     public String getDescTipos(Integer tipo){
@@ -118,7 +117,7 @@ public class pcp_proprietarioService {
             case 2:
                 return "Venda";        
         }
-        return "";
+        return "Descricão não encontrada";
     }
 
     public String getNomeProp(Integer codProprietario){
@@ -129,4 +128,20 @@ public class pcp_proprietarioService {
        return imovelRepository.buscarimoveis();
     }
 
+    public String getEnderecoImovel(Integer codImovel){
+        return imovelRepository.findById(codImovel).get().getEndereco();
+    }
+
+    public String getTipoContratoImovel(Integer codImovel){
+        Integer negociacao = imovelRepository.findById(codImovel).get().getNegociacao();
+        switch (negociacao) {
+            case 1: return "Aluguel";
+            case 2: return "Venda";
+        }
+        return "Tipo contrato não encontrado";
+    }
+    
+    public double getValorImovel(Integer codImovel){
+        return imovelRepository.findById(codImovel).get().getPreco();
+    }
 }

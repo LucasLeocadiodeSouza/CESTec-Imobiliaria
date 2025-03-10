@@ -29,6 +29,11 @@ public class pcp_clienteController {
         return pcp_clienteService.buscarClientes();
     }
 
+    @GetMapping("/{codcliente}/findNomeClienteById")
+    public String findNomeClienteById(@PathVariable Integer codcliente){
+        return pcp_clienteService.findNomeClienteById(codcliente);
+    }
+
     @PostMapping("/{index}/buscarClienteGrid")
     public pcp_cliente buscarClienteGrid(@PathVariable Integer index) {
         return pcp_clienteService.buscarClienteGrid(index);
