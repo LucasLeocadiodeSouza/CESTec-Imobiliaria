@@ -66,6 +66,20 @@ public class pcp_proprietarioController {
         return pcp_proprietarioService.getTipoImovel(codImovel);
     }
     
+    @GetMapping("/{codImovel}/getEnderecoImovel")
+    public String getEnderecoImovel(@PathVariable Integer codImovel) {
+        return pcp_proprietarioService.getEnderecoImovel(codImovel);
+    }
+
+    @GetMapping("/{codImovel}/getTipoContratoImovel")
+    public String getTipoContratoImovel(@PathVariable Integer codImovel) {
+        return pcp_proprietarioService.getTipoContratoImovel(codImovel);
+    }
+
+    @GetMapping("/{codImovel}/getValorImovel")
+    public double getValorImovel(@PathVariable Integer codImovel) {
+        return pcp_proprietarioService.getValorImovel(codImovel);
+    }
 
     @GetMapping("/buscarImoveis")
     public List<ImovelProprietarioDTO> buscarImoveis() {

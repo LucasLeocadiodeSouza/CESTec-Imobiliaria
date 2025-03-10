@@ -33,4 +33,8 @@ public class pcp_clienteService {
     public pcp_cliente buscarClienteGrid(Integer index){
         return clienteRepository.findAll().get(index);
     }
+
+    public String findNomeClienteById(Integer codcliente){
+        return clienteRepository.findById(codcliente).get().getNome();
+    }
 }

@@ -18,9 +18,11 @@ function iniciarEventos() {
     event_click("binserir");
     event_click("bclose");
     event_click("bcadastro");
-
+    
     event_change("codproprietario");
     event_change("mcodprop");
+    event_change("codcliente");
+    event_change("mcodcliente");
     event_change("msimovel");
 
     imgFormat();
@@ -76,12 +78,25 @@ function event_change(obj){
         form(obj).addEventListener("change", function(){
             form(obj).value!=""?descProprietario(obj,"mdescprop") : form("mdescprop").value = "";
 
-            getOptionImovel();            
+            getOptionImovel();
+        });
+    }
+    if(obj == "codcliente"){
+        form(obj).addEventListener("change", function(){
+            form(obj).value!=""?getDescCliente(obj,"desccliente") : "--";
+        });
+    }
+    if(obj == "mcodcliente"){
+        form(obj).addEventListener("change", function(){
+            form(obj).value!=""?getDescCliente(obj,"mdesccliente") : "--";            
         });
     }
     if(obj == "msimovel"){
         form(obj).addEventListener("change", function(){
-            getTipoImovel();            
+            getTipoImovel();
+            getEnderecoImovel();
+            getTipoContratoImovel();
+            getValorImovel();            
         });
     }
 }
@@ -259,6 +274,47 @@ function getTipoImovel(){
     .then(data => { form("mtpimovel").value = data })
     .catch(error => alert(error.message))
 } 
+
+function getEnderecoImovel(){
+    fetch(`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getEnderecoImovel`,{
+        method: "GET",
+        headers: {"Content":"application/json"}
+    })
+    .then(response => {return response.text()})
+    .then(data => { form("mloc").value = data })
+    .catch(error => alert(error.message))
+}
+
+function getTipoContratoImovel(){
+    fetch(`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getTipoContratoImovel`,{
+        method: "GET",
+        headers: {"Content":"application/json"}
+    })
+    .then(response => {return response.text()})
+    .then(data => { form("mtpcontrato").value = data;
+                    form("mperiodofin").style.display = data==="Aluguel"?"inline":"none"})
+    .catch(error => alert(error.message))
+} 
+
+function getValorImovel(){
+    fetch(`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getValorImovel`,{
+        method: "GET",
+        headers: {"Content":"application/json"}
+    })
+    .then(response => {return response.text()})
+    .then(data => { form("mvlrimovel").value = data })
+    .catch(error => alert(error.message))
+}
+
+function getDescCliente(codigo, retorno){
+    fetch(`/cliente/${form(codigo).value}/findNomeClienteById`,{
+        method: "GET",
+        headers: {"Content":"application/json"}
+    })
+    .then(response => {return response.text()})
+    .then(data => { form(retorno).value = data })
+    .catch(error => alert(error.message))
+}
 
 function imgFormat(){
     document.querySelectorAll(".button").forEach(button => {
