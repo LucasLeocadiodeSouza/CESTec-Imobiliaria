@@ -27,13 +27,14 @@ public class contratoController {
     public List<contratoDTO> buscarContratoGrid() {
         return contratoService.buscarContratoGrid();
     }
-    
-    /*
-    @PostMapping("/{cod}/inserirAlterarContrato")
-    public pcp_contrato inserirAlterarContrato(@RequestBody pcp_contrato pcp_contrato, @PathVariable Integer codimovel) {        
-        return contratoService.saveContrato(pcp_contrato, codimovel);
-    } */
 
+    @GetMapping("/{index}/buscarContratoGrid")
+    public contratoDTO buscarContratoLinha(@PathVariable Integer index) {
+        return contratoService.buscarContratoGrid().get(index);
+    }
     
-
+    @PostMapping("/inserirAlterarContrato")
+    public pcp_contrato inserirAlterarContrato(@RequestBody contratoDTO contratoDTO) {
+        return contratoService.salvarContrato(contratoDTO);
+    }
 }

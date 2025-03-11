@@ -2,27 +2,35 @@ package com.cestec.cestec.model;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class contratoDTO {
     
     private Integer codcontrato;
     private Integer codimovel;
     private Integer codproprietario;
     private Integer codcliente;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date    datinicio;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date    datfinal;
+
     private Integer codtipo;
-    private Integer codcorretor;
+    //private Integer codcorretor;
     private boolean ativo;
     private double  preco;
-    private double  endereco;
+    private String  endereco;
     private double  tipo;
     private double  negociacao;
     private String  nomeProp;
     private String  nomeCliente;
+    private double  valor;
 
     public contratoDTO(){}    
 
-    public contratoDTO(Integer codcontrato, Integer codcliente, String nomeCliente, Integer codproprietario, String nomeProp, Integer codimovel, double tipo, double negociacao, double preco) {
+    public contratoDTO(Integer codcontrato, Integer codcliente, String nomeCliente, Integer codproprietario, String nomeProp, Integer codimovel, double tipo, double negociacao, double preco, Date datinicio, Date datfinal, double valor, String endereco) {
         this.codcontrato     = codcontrato;
         this.codimovel       = codimovel;
         this.codproprietario = codproprietario;
@@ -32,8 +40,22 @@ public class contratoDTO {
         this.negociacao      = negociacao;
         this.nomeProp        = nomeProp;
         this.nomeCliente     = nomeCliente;
+        this.datinicio       = datinicio;
+        this.datfinal        = datfinal;
+        this.valor           = valor;
+        this.endereco        = endereco;
+    } 
+    
+    public contratoDTO(Integer codcontrato, Integer codcliente, Integer codimovel, Integer codproprietario, Date datfinal, Date datinicio, double tipo, double negociacao, double preco) {
+        this.codcontrato     = codcontrato;
+        this.codimovel       = codimovel;
+        this.codproprietario = codproprietario;
+        this.codcliente      = codcliente;
+        this.preco           = preco;
+        this.tipo            = tipo;
     }
 
+    
     public Integer getCodcontrato() {
         return codcontrato;
     }
@@ -50,13 +72,13 @@ public class contratoDTO {
         this.codtipo = codtipo;
     }
 
-    public Integer getCodcorretor() {
-        return codcorretor;
-    }
+    // public Integer getCodcorretor() {
+    //     return codcorretor;
+    // }
 
-    public void setCodcorretor(Integer codcorretor) {
-        this.codcorretor = codcorretor;
-    }
+    // public void setCodcorretor(Integer codcorretor) {
+    //     this.codcorretor = codcorretor;
+    // }
 
     public Integer getCodproprietario() {
         return codproprietario;
@@ -98,11 +120,11 @@ public class contratoDTO {
         this.preco = preco;
     }
 
-    public double getEndereco() {
+    public String getEndereco() {
         return endereco;
     }
 
-    public void setEndereco(double endereco) {
+    public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
 
@@ -152,5 +174,13 @@ public class contratoDTO {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
     }
 }

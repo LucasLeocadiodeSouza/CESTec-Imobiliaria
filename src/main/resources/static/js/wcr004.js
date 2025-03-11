@@ -29,7 +29,14 @@ function iniciarEventos() {
 }
 
 function event_click_table(id,index){
-    if(id == "tabela_CTO"){
+    if(id == "tabela_contrato"){
+        form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
+        form("stitulo").innerText = "Cadastro de Contrato - " + form("sacao").innerText;
+        
+        preencherModal(index);
+
+        controlaTela("modal");
+        form("DMF_external").style.display = "flex"; 
     }
 }
 
@@ -133,6 +140,8 @@ function controlaTela(opc){
         desabilitaCampo('mtpcontrato',   true);
         desabilitaCampo('mvlrnegociado', ehConsulta());
         desabilitaCampo('mvlrimovel',    true);
+        desabilitaCampo('mperiodoini',   ehConsulta());
+        desabilitaCampo('mperiodofin',   ehConsulta());
         desabilitaCampo('bcadastro',     ehConsulta());
     }
 }
@@ -158,7 +167,9 @@ function limparTela(opc){
         form('mloc').value          = "";
         form('mtpcontrato').value   = "";
         form('mvlrimovel').value    = "";
-        form('mvlrnegociado').value = "";
+        form('mvlrnegociado').value = ""; 
+        form("mperiodoini").value   = "";
+        form("mperiodofin").value   = "";
     }
 } 
 
@@ -219,14 +230,45 @@ function descProprietario(codigo,retorno) {
     .catch(error => alert(error.message));
 }
 
+function preencherModal(index){
+    var tipo, negociacao;
+    fetch(`/contrato/${index}/buscarContratoGrid`, {
+        method: "GET",
+        headers: {"Content-Type":"application/json"}
+    })
+    .then(response => {return response.json()})
+    .then(data => { form('mcodprop').value     = data.codproprietario;
+                    getOptionImovel();
+                    tipo = data.tipo;
+                    negociacao = data.negociacao;
+                    
+                    if(tipo==1){tipo = "Apartamento"}
+                    if(tipo==2){tipo = "Casa"}
+                    if(tipo==3){tipo = "Terreno"};                
+                    negociacao = negociacao==1?"Aluguel":"Venda";                
+
+                   form('mcodcliente').value   = data.codcliente;
+                   form('mdesccliente').value  = data.nomeCliente;                   
+                   form('mdescprop').value     = data.nomeProp;
+                   form('mtpimovel').value     = tipo;
+                   form('mloc').value          = data.endereco;
+                   form('mtpcontrato').value   = negociacao;
+                   form('mvlrimovel').value    = data.preco;
+                   form('mvlrnegociado').value = data.valor;
+                   form("mperiodoini").value   = data.datinicio;
+                   form('msimovel').value      = data.codimovel; //nao esta selecionando
+                   form("mperiodofin").value   = data.datfinal;})
+    .catch(error => alert(error.message))
+}
+
 function buscarContratoGrid(){
     fetch("/contrato/buscarContratoGrid",{
         method:  "GET",
-        headers: {"Content":"application/json"}
+        headers: {"Content-Type":"application/json"}
     })
     .then(response => {return response.json()})
     .then(data => { createGrid("tabela_contrato",
-                               "codcontrato,codcliente,nome,proprietario,nome,codimovel,tipo,negociacao,preco",
+                               "codcontrato,codcliente,nomeCliente,codproprietario,nomeProp,codimovel,tipo,negociacao,preco",
                                "Contrato,Cod,Nome,Cod,Nome,Cod,Tipo,Contrato,Valor",
                                "10,10,15,10,15,10,10,10,10",
                                data);})
@@ -234,30 +276,29 @@ function buscarContratoGrid(){
 }
 
 function inserirAlterarContrato(){
-    const contrato = {codcliente:       + form("mcodcliente").value,
-                      codproprietario:  + form("mcodprop").value,                     
-                      valor:            + form("mvlrnegociado").value,
-                      codproprietario:  + form("mcodprop").value,
-                      datinicio:        + form("mperiodoini").value,
-                      datfinal:         + form("mperiodofin").value,
-                      datiregistro:       new Date().toISOString().split('T')[0],
-                      ativo:            true
-                     };
+    const contratoDTO = {codimovel:       form("msimovel").value,
+                         codcliente:      form("mcodcliente").value,
+                         codproprietario: form("mcodprop").value,
+                         datinicio:       form("mperiodoini").value,
+                         datfinal:        form("mperiodofin").value,
+                         preco:           form("mvlrnegociado").value};
 
-    fetch(`/${form("msimovel").value}/inserirAlterarContrato`,{
+    fetch(`/contrato/inserirAlterarContrato`,{
         method: "POST",
-        headers: {"Content":"application/json"},
-        body: contrato
+        headers: { 
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(contratoDTO)
     })
     .then(response => {return response.json()})
-    .then(data => {console.log(data)})
+    .then(data => {})
     .catch(error => alert(error.message));
 }
 
 function getOptionImovel(){
     fetch(`/contratosCadastroClientes/proprietario/${form("mcodprop").value}/getOptionImovel`,{
         method: "GET",
-        headers: {"Content":"application/json"}
+        headers: {"Content-Type":"application/json"}
     })
     .then(response => {return response.text()})
     .then(data => { fillSelect("msimovel", data);
@@ -268,7 +309,7 @@ function getOptionImovel(){
 function getTipoImovel(){
     fetch(`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getTipoImovel`,{
         method: "GET",
-        headers: {"Content":"application/json"}
+        headers: {"Content-Type":"application/json"}
     })
     .then(response => {return response.text()})
     .then(data => { form("mtpimovel").value = data })
@@ -278,17 +319,17 @@ function getTipoImovel(){
 function getEnderecoImovel(){
     fetch(`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getEnderecoImovel`,{
         method: "GET",
-        headers: {"Content":"application/json"}
+        headers: {"Content-Type":"application/json"}
     })
     .then(response => {return response.text()})
-    .then(data => { form("mloc").value = data })
+    .then(data => { form("mloc").value = data; })
     .catch(error => alert(error.message))
 }
 
 function getTipoContratoImovel(){
     fetch(`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getTipoContratoImovel`,{
         method: "GET",
-        headers: {"Content":"application/json"}
+        headers: {"Content-Type":"application/json"}
     })
     .then(response => {return response.text()})
     .then(data => { form("mtpcontrato").value = data;
@@ -299,7 +340,7 @@ function getTipoContratoImovel(){
 function getValorImovel(){
     fetch(`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getValorImovel`,{
         method: "GET",
-        headers: {"Content":"application/json"}
+        headers: {"Content-Type":"application/json"}
     })
     .then(response => {return response.text()})
     .then(data => { form("mvlrimovel").value = data })
@@ -309,7 +350,7 @@ function getValorImovel(){
 function getDescCliente(codigo, retorno){
     fetch(`/cliente/${form(codigo).value}/findNomeClienteById`,{
         method: "GET",
-        headers: {"Content":"application/json"}
+        headers: {"Content-Type":"application/json"}
     })
     .then(response => {return response.text()})
     .then(data => { form(retorno).value = data })

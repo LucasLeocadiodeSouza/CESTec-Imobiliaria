@@ -13,7 +13,7 @@ import com.cestec.cestec.model.pcp_contrato;
 public interface contratoRepository extends JpaRepository<pcp_contrato, Integer> {
     
     @Query("SELECT new com.cestec.cestec.model.contratoDTO( " +
-            "con.codcontrato, c.codcliente, c.nome, p.codproprietario, p.nome, i.codimovel, i.tipo, i.negociacao, i.preco) " +
+            "con.codcontrato, c.codcliente, c.nome, p.codproprietario, p.nome, i.codimovel, i.tipo, i.negociacao, i.preco, con.datinicio, con.datfinal, con.valor, i.endereco) " +
             "FROM pcp_contrato con " + 
             "JOIN con.pcp_proprietario p " + 
             "JOIN con.pcp_cliente c " +
