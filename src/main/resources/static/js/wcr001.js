@@ -256,7 +256,7 @@ function adicionarContratoImovel() {
         body: JSON.stringify(imovel,form("mcodproprietario").value)
     })
     .then(response => {return response.json()})
-    .then(data => {console.log(data)})
+    .then(data => {})
     .catch(error => alert("Error: " + error.message));
 }
 

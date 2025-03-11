@@ -27,10 +27,6 @@ public class pcp_contrato {
     private pcp_imovel pcp_imovel;
 
     @ManyToOne
-    @JoinColumn(name = "codtipo", nullable = false)
-    private pcp_contrato_tipo pcp_contrato_tipo;
-
-    @ManyToOne
     @JoinColumn(name = "codproprietario", nullable = false)
     private pcp_proprietario pcp_proprietario;
 
@@ -45,6 +41,28 @@ public class pcp_contrato {
     private float   valor;
     private boolean ativo;
 
+    public pcp_contrato(){}
+    
+    public pcp_contrato(pcp_cliente pcp_cliente,
+                        pcp_imovel pcp_imovel,
+                        pcp_proprietario pcp_proprietario,
+                        Date datinicio, 
+                        Date datfinal, 
+                        Date datiregistro,
+                        Integer codcorretor, 
+                        float valor, 
+                        boolean ativo) {
+
+        this.pcp_cliente      = pcp_cliente;
+        this.pcp_imovel       = pcp_imovel;
+        this.pcp_proprietario = pcp_proprietario;
+        this.datinicio        = datinicio;
+        this.datfinal         = datfinal;
+        this.datiregistro     = datiregistro;
+        this.codcorretor      = codcorretor;
+        this.valor            = valor;
+        this.ativo            = ativo;
+    }
 
     public Integer getCodcontrato() {
         return codcontrato;
@@ -63,12 +81,6 @@ public class pcp_contrato {
     }
     public void setPcp_imovel(pcp_imovel pcp_imovel) {
         this.pcp_imovel = pcp_imovel;
-    }
-    public pcp_contrato_tipo getPcp_contrato_tipo() {
-        return pcp_contrato_tipo;
-    }
-    public void setPcp_contrato_tipo(pcp_contrato_tipo pcp_contrato_tipo) {
-        this.pcp_contrato_tipo = pcp_contrato_tipo;
     }
     public pcp_proprietario getPcp_proprietario() {
         return pcp_proprietario;
