@@ -5,6 +5,7 @@
 */
 window.addEventListener("load", function () {
     iniciarEventos();
+    buscarUserName();
 });
 
 function iniciarEventos() {
@@ -24,6 +25,7 @@ function iniciarEventos() {
     event_change("codcliente");
     event_change("mcodcliente");
     event_change("msimovel");
+    event_change("mvendedor");
 
     imgFormat();
 }
@@ -106,6 +108,11 @@ function event_change(obj){
             getValorImovel();            
         });
     }
+    if(obj == "mvendedor"){
+        form(obj).addEventListener("change", function(){
+            getDescCorretor();           
+        });
+    }
 }
 
 function controlaTela(opc){
@@ -140,6 +147,7 @@ function controlaTela(opc){
         desabilitaCampo('mtpcontrato',   true);
         desabilitaCampo('mvlrnegociado', ehConsulta());
         desabilitaCampo('mvlrimovel',    true);
+        desabilitaCampo('mvendedor',     ehConsulta());
         desabilitaCampo('mperiodoini',   ehConsulta());
         desabilitaCampo('mperiodofin',   ehConsulta());
         desabilitaCampo('bcadastro',     ehConsulta());
@@ -167,7 +175,8 @@ function limparTela(opc){
         form('mloc').value          = "";
         form('mtpcontrato').value   = "";
         form('mvlrimovel').value    = "";
-        form('mvlrnegociado').value = ""; 
+        form('mvlrnegociado').value = "";
+        form('mvendedor').value    = "0";
         form("mperiodoini").value   = "";
         form("mperiodofin").value   = "";
     }
@@ -245,7 +254,7 @@ function preencherModal(index){
                     if(tipo==1){tipo = "Apartamento"}
                     if(tipo==2){tipo = "Casa"}
                     if(tipo==3){tipo = "Terreno"};                
-                    negociacao = negociacao==1?"Aluguel":"Venda";                
+                    negociacao = negociacao==1?"Aluguel":"Venda";
 
                    form('mcodcliente').value   = data.codcliente;
                    form('mdesccliente').value  = data.nomeCliente;                   
@@ -281,7 +290,9 @@ function inserirAlterarContrato(){
                          codproprietario: form("mcodprop").value,
                          datinicio:       form("mperiodoini").value,
                          datfinal:        form("mperiodofin").value,
-                         preco:           form("mvlrnegociado").value};
+                         preco:           form("mvlrnegociado").value,
+                         ideusuCorretor:  form("mvendedor").value,
+                         ideusu:          form("ideusu").value};
 
     fetch(`/contrato/inserirAlterarContrato`,{
         method: "POST",
@@ -356,6 +367,30 @@ function getDescCliente(codigo, retorno){
     .then(data => { form(retorno).value = data })
     .catch(error => alert(error.message))
 }
+
+function getDescCorretor(){
+    fetch(`/contrato/${form("mvendedor").value}/getNomeByIdeusu`,{
+        method: "GET",
+        headers: {"Content-type":"application/json"}
+    })
+    .then(response => { return response.text()})
+    .then(data => {form("mnome").value = data;
+                   console.log(data) })
+    .catch(error => alert(error.message))
+}
+
+function buscarUserName(){
+    fetch("/home/userlogin", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response =>{return response.text()})
+    .then(data => { form("ideusu").value = data })
+    .catch(error => alert(error.message));
+}
+
 
 function imgFormat(){
     document.querySelectorAll(".button").forEach(button => {

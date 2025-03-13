@@ -11,10 +11,13 @@ C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\infra\sec
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\infra\security\SecurityFilter.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\infra\security\tokenService.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\contratoDTO.java
+C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\corretorDTO.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\email.java
+C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\funcionario.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\ImovelProprietarioDTO.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\pcp_cliente.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\pcp_contrato.java
+C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\pcp_corretor.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\pcp_imovel.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\pcp_proprietario.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\securityLogin\AuthenticationDTO.java
@@ -24,6 +27,8 @@ C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\sec
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\securityLogin\userRole.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\clienteRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\contratoRepository.java
+C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\corretorRepository.java
+C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\funcionarioRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\imovelRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\proprietarioRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\userRepository.java

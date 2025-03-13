@@ -28,6 +28,13 @@ public class contratoController {
         return contratoService.buscarContratoGrid();
     }
 
+    @GetMapping("/{ideusu}/getNomeByIdeusu")
+    public String getNomeByIdeusu(@PathVariable String ideusu) {
+        System.out.println("ideusu " + ideusu);
+        System.out.println("aa " + contratoService.getNomeByIdeusu(ideusu));
+        return contratoService.getNomeByIdeusu(ideusu);
+    }
+
     @GetMapping("/{index}/buscarContratoGrid")
     public contratoDTO buscarContratoLinha(@PathVariable Integer index) {
         return contratoService.buscarContratoGrid().get(index);
