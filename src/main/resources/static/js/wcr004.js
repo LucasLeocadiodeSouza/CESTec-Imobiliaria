@@ -367,7 +367,7 @@ function getDescCliente(codigo, retorno){
     .then(data => { form(retorno).value = data })
     .catch(error => alert(error.message))
 }
-
+ 
 function getDescCorretor(){
     fetch(`/contrato/${form("mvendedor").value}/getNomeByIdeusu`,{
         method: "GET",
