@@ -19,6 +19,7 @@
 <style>
     .ppp         {width: 32px;}
     .p           {width: 60px;}
+    .small       {width: 100px;}   
     .medium      {width: 120px;}
     .Intermedium {width: 180px;}
     .large       {width: 240px;}
@@ -51,7 +52,7 @@
     }
 
     #dmodalf_contrato {width: 600px;
-                       height: 410px;
+                       height: 450px;
                        opacity: 1;
                        background-color: aliceblue;
                        box-shadow: 0 0 .4vw rgba(0,0,0,0.5);}
@@ -61,6 +62,8 @@
 </head>
 <body>
     <div class="gen" style="background-color: #dedede; height: 100vh; display: flex; justify-content: center; padding: 15px;flex-direction: column;justify-content: flex-start;">
+        <input type="hidden" id="ideusu" name="ideusu">
+
         <div class="titulo">
             <h2>Cadastro de Contratos</h2>
         </div>
@@ -111,8 +114,6 @@
         <!--  MODAL -->
         <div id="DMF_external" class="DMF_external">
             <div id="dmodalf_contrato">
-                <input type="hidden" id="fixa" name="fixa">
-
                 <div class='dmf' style="display: flex; justify-content: flex-end;align-items: center; height: 35px;">
                     <div id="bclose" class="bpc"><img src="/icons/fechartela.png" style="width: 80%; height: 80%; margin: 0px;"></div>                
                 </div>
@@ -160,6 +161,12 @@
                 <div class='dmf'>
                     <label class="labelmodal">Valor negociado: </label>
                     <input type="text" id="mvlrnegociado"  name="mvlrnegociado"  class="medium">
+                </div>
+
+                <div class='dmf'>
+                    <label class="labelmodal">Vendedor: </label>
+                    <input type="text" id="mvendedor" name="mvendedor" class="small">
+                    <input type="text" id="mnome"     name="mnome"     class="large" disabled>
                 </div>
 
                 <div class='dmf'>

@@ -14,7 +14,6 @@ import com.cestec.cestec.model.ImovelProprietarioDTO;
 import com.cestec.cestec.model.pcp_imovel;
 import com.cestec.cestec.model.pcp_proprietario;
 import com.cestec.cestec.service.pcp_proprietarioService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 

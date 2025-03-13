@@ -18,7 +18,8 @@ public class contratoDTO {
     private Date    datfinal;
 
     private Integer codtipo;
-    //private Integer codcorretor;
+    private Integer codcorretor;
+    private String  ideusuCorretor;
     private boolean ativo;
     private double  preco;
     private String  endereco;
@@ -27,6 +28,7 @@ public class contratoDTO {
     private String  nomeProp;
     private String  nomeCliente;
     private double  valor;
+    private String  ideusu;
 
     public contratoDTO(){}    
 
@@ -71,15 +73,7 @@ public class contratoDTO {
     public void setCodtipo(Integer codtipo) {
         this.codtipo = codtipo;
     }
-
-    // public Integer getCodcorretor() {
-    //     return codcorretor;
-    // }
-
-    // public void setCodcorretor(Integer codcorretor) {
-    //     this.codcorretor = codcorretor;
-    // }
-
+    
     public Integer getCodproprietario() {
         return codproprietario;
     }
@@ -182,5 +176,29 @@ public class contratoDTO {
 
     public void setValor(double valor) {
         this.valor = valor;
+    }
+
+    public Integer getCodcorretor() {
+        return codcorretor;
+    }
+
+    public void setCodcorretor(Integer codcorretor) {
+        this.codcorretor = codcorretor;
+    }
+
+    public String getIdeusu() {
+        return ideusu;
+    }
+
+    public void setIdeusu(String ideusu) {
+        this.ideusu = ideusu;
+    }
+
+    public String getIdeusuCorretor() {
+        return ideusuCorretor;
+    }
+
+    public void setIdeusuCorretor(String ideusuCorretor) {
+        this.ideusuCorretor = ideusuCorretor;
     }
 }

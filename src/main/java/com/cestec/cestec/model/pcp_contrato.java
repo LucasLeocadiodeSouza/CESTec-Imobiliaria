@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "pcp_contrato")
 public class pcp_contrato {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codcontrato;
@@ -30,14 +30,13 @@ public class pcp_contrato {
     @JoinColumn(name = "codproprietario", nullable = false)
     private pcp_proprietario pcp_proprietario;
 
-    // @ManyToOne
-    // @JoinColumn(name = "codcorretor", nullable = false)
-    // private pcp_corretor pcp_corretor;
+    @ManyToOne
+    @JoinColumn(name = "codcorretor")
+    private pcp_corretor pcp_corretor;
 
     private Date    datinicio;
     private Date    datfinal;
     private Date    datiregistro;
-    private Integer codcorretor;
     private float   valor;
     private boolean ativo;
 
@@ -49,7 +48,7 @@ public class pcp_contrato {
                         Date datinicio, 
                         Date datfinal, 
                         Date datiregistro,
-                        Integer codcorretor, 
+                        pcp_corretor pcp_corretor, 
                         float valor, 
                         boolean ativo) {
 
@@ -59,7 +58,7 @@ public class pcp_contrato {
         this.datinicio        = datinicio;
         this.datfinal         = datfinal;
         this.datiregistro     = datiregistro;
-        this.codcorretor      = codcorretor;
+        this.pcp_corretor     = pcp_corretor;
         this.valor            = valor;
         this.ativo            = ativo;
     }
@@ -106,12 +105,6 @@ public class pcp_contrato {
     public void setDatiregistro(Date datiregistro) {
         this.datiregistro = datiregistro;
     }
-    public Integer getCodcorretor() {
-        return codcorretor;
-    }
-    public void setCodcorretor(Integer codcorretor) {
-        this.codcorretor = codcorretor;
-    }
     public float getValor() {
         return valor;
     }
@@ -123,5 +116,12 @@ public class pcp_contrato {
     }
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+    public pcp_corretor getPcp_corretor() {
+        return pcp_corretor;
+    }
+
+    public void setPcp_corretor(pcp_corretor pcp_corretor) {
+        this.pcp_corretor = pcp_corretor;
     }
 }
