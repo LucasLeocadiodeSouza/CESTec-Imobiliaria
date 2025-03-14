@@ -16,6 +16,7 @@ function iniciarEventos() {
     event_click("bnovabusca");
     event_click("bbuscar");
     event_click("binserir");
+    event_click("blimpar");
     event_click("bclose");
     event_click("bcadastro");
     imgFormat();
@@ -42,6 +43,11 @@ function event_click(obj) {
 
             form("DMF_external").style.display = "flex";
             controlaTela("modal");
+        });
+    }
+    if(obj == 'blimpar'){
+        form(obj).addEventListener("click", function () {
+            controlaTela("inicia");
         });
     }
     if(obj == 'bclose'){
@@ -127,7 +133,7 @@ function buscarClienteGrid(index){
 
 function buscarDadosTable(){
     fetch("/cliente/buscarClientes")
-        .then(response => response.json()) //quando chega a mensagem vc converte para json
+        .then(response => {return response.json()}) //quando chega a mensagem vc converte para json
         .then(data => {                    // quando chega o dados na forma de JSON vc faz  ...           
             createGrid("tabela_clientes",
                        "codcliente,nome,cpf,endereco,numtel",

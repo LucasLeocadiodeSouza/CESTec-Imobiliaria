@@ -15,6 +15,7 @@ function iniciarEventos() {
     event_click("bnovabusca");
     event_click("bbuscar");
     event_click("binserir");
+    event_click("blimpar");
     event_click("bclose");
     event_click("bcadastro");
     
@@ -49,6 +50,11 @@ function event_click(obj) {
             controlaTela("novabusca");
             buscarDadosTable();
         });        
+    }
+    if(obj == 'blimpar'){
+        form(obj).addEventListener("click", function () {
+            controlaTela("inicia");
+        });
     }
     if(obj == 'binserir'){
         form(obj).addEventListener("click", function () {

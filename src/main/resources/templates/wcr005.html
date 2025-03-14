@@ -1,7 +1,7 @@
 <!-- 
     Dev: Lucas Leocadio de Souza
-    Data: 04/03/25
-    IM: 00013
+    Data: 13/03/25
+    IM: 00017
 -->
 
 <!DOCTYPE html>
@@ -13,8 +13,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-    <title>Cadastro de Contratos</title>
-    <script src="/js/wcr004.js" defer></script>
+    <title>Cadastro de Metas</title>
+    <script src="/js/wcr005.js" defer></script>
     
 <style>
     .ppp         {width: 32px;}
@@ -35,7 +35,7 @@
                   text-align: right;}
 
     .labelmodal {font-weight: 600;
-                 width: 165px;
+                 width: 190px;
                  text-align: right;}
 
     .grid {width: 99%;
@@ -51,11 +51,11 @@
         background: transparent;
     }
 
-    #dmodalf_contrato {width: 600px;
-                       height: 450px;
-                       opacity: 1;
-                       background-color: aliceblue;
-                       box-shadow: 0 0 .4vw rgba(0,0,0,0.5);}
+    #dmodalf_meta {width: 600px;
+                   height: 300px;
+                   opacity: 1;
+                   background-color: aliceblue;
+                   box-shadow: 0 0 .4vw rgba(0,0,0,0.5);}
 
     body {background-color: #1d3561;}
 </style>
@@ -65,7 +65,7 @@
         <input type="hidden" id="ideusu" name="ideusu">
 
         <div class="titulo">
-            <h2>Cadastro de Contratos</h2>
+            <h2>Cadastro de Metas</h2>
         </div>
 
         <div id='abas' class="gen" style="height: 40px; width: 90%; justify-content: center; margin: 10px; margin-bottom: 0px;padding: 0px; display: flex; justify-content: flex-start;">            
@@ -75,28 +75,18 @@
 
         <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
             <div class='if'>
-                <label class="labelfiltro">Código do Proprietario: </label>
-                <input type="text" id="codproprietario" name="codproprietario" class="ppp">
-                <input type="text" id="descproprietario" name="descproprietario" class="large" disabled>
+                <label class="labelfiltro">Corretor: </label>
+                <input type="text" id="codcorretor"  name="codcorretor"  class="medium">
+                <input type="text" id="desccorretor" name="desccorretor" class="large" disabled>
             </div>
 
             <div class='if'>
-                <label class="labelfiltro">Código do Cliente: </label>
-                <input type="text" id="codcliente"  name="codcliente"  class="ppp">
-                <input type="text" id="desccliente" name="desccliente" class="large" disabled>
-            </div>
+                <label class="labelfiltro">Periodo da Meta: </label>
+                <input type="date" id="periodoini" name="periodoini" class="medium">
+                <input type="date" id="periodofin" name="periodofin" class="medium">
+            </div>            
 
-            <div class='if'>
-                <label class="labelmodal">Tipo de Imóvel:</label>
-
-                <input type="radio" id="raluguel" name="rimovel" value="1">
-                <label class="labelmodal" style="text-align: left; width: 80px" for="raluguel">Aluguel</label>
-
-                <input type="radio" id="rvenda" name="rimovel" value="2">
-                <label class="labelmodal" style="text-align: left; width: 80px" for="rvenda">Venda</label>
-            </div>
-
-            <div  class='if' style="display: flex; height: auto;">
+            <div  class='if' style="display: flex; height: auto; margin-top: 5px;">
                 <label class="labelfiltro"></label>                
                 <input type="button" id="bbuscar"    name="bbuscar"    class="button" value="Buscar"      data-icon="/icons/buscar.png">                
                 <input type="button" id="bnovabusca" name="bnovabusca" class="button" value="Nova Busca"  data-icon="/icons/novaPesquisa.png">
@@ -109,11 +99,11 @@
             <input type="button" id="binserir"  name="binserir"  class="button" value="Inserir"  data-icon="/icons/incluir.png">
         </div>
 
-        <div class='grid'><table id="tabela_contrato" class="table"></table></div>
+        <div class='grid'><table id="tabela_metas" class="table"></table></div>
 
         <!--  MODAL -->
         <div id="DMF_external" class="DMF_external">
-            <div id="dmodalf_contrato">
+            <div id="dmodalf_meta">
                 <div class='dmf' style="display: flex; justify-content: flex-end;align-items: center; height: 35px;">
                     <div id="bclose" class="bpc"><img src="/icons/fechartela.png" style="width: 80%; height: 80%; margin: 0px;"></div>                
                 </div>
@@ -124,53 +114,18 @@
                 </div>                
 
                 <div class='dmf'>
-                    <label class="labelmodal">Negociante: </label>
-                    <input type="text" id="mcodcliente"   name="mcodcliente"   class="ppp">
-                    <input type="text" id="mdesccliente"  name="mdesccliente"  class="large">
-                </div>
-
-                <div class='dmf'>
-                    <label class="labelmodal">Proprietario: </label>
-                    <input type="text" id="mcodprop"   name="mcodprop"   class="ppp">
-                    <input type="text" id="mdescprop"  name="mdescprop"  class="large">
-                </div>
-
-                <div class='dmf'>
-                    <label class="labelmodal">Imovel: </label>
-                    <select id="msimovel"   name="msimovel" class="large">
-                        <option value="0" disabled>Selecione um imovel</option>
-                    </select>
-                    <input type="text" id="mtpimovel"  name="mtpimovel"  class="Intermedium" disabled>
-                </div>
-
-                <div class='dmf'>
-                    <label class="labelmodal">Endereco: </label>
-                    <input type="text" id="mloc"  name="mloc"  class="large" disabled>
-                </div>
-
-                <div class='dmf'>
-                    <label class="labelmodal">Tipo Contrato: </label>
-                    <input type="text" id="mtpcontrato"  name="mtpcontrato"  class="medium" disabled>
-                </div>
-
-                <div class='dmf'>
-                    <label class="labelmodal">Valor do Imovel (R$): </label>
-                    <input type="text" id="mvlrimovel"  name="mvlrimovel"  class="medium" disabled>
-                </div>
-
-                <div class='dmf'>
                     <label class="labelmodal">Valor negociado (R$): </label>
-                    <input type="text" id="mvlrnegociado"  name="mvlrnegociado"  class="medium">
+                    <input type="text" id="mvlrmeta" name="mvlrmeta" class="medium">
                 </div>
 
                 <div class='dmf'>
-                    <label class="labelmodal">Vendedor: </label>
-                    <input type="text" id="mvendedor" name="mvendedor" class="small">
-                    <input type="text" id="mnome"     name="mnome"     class="large" disabled>
+                    <label class="labelmodal">Corretor: </label>
+                    <input type="text" id="mcodcorretor"  name="mcodcorretor"   class="small">
+                    <input type="text" id="mdesccorretor" name="mdesccorretor"  class="large" disabled>
                 </div>
 
                 <div class='dmf'>
-                    <label class="labelmodal">Inicio do Contrato: </label>
+                    <label class="labelmodal">Periodo da Meta: </label>
                     <input type="date" id="mperiodoini" name="mperiodoini" class="medium">
                     <input type="date" id="mperiodofin" name="mperiodofin" class="medium">
                 </div>
