@@ -26,6 +26,7 @@ function iniciarEventos() {
         event_click("bimcnovopropr");
         event_click("bimcnovocliente");
         event_click("bimcnovocontrato");
+        event_click("bimccadastrometa");
 
         buscarUserId();
         buscarUserName();
@@ -46,7 +47,7 @@ function event_click(obj) {
     }
     if(obj == "ditensrelatorioint"){
         document.getElementById(obj).addEventListener("click", function() {
-            form("ditensrelatorioext").style.backgroundColor = form("dimrvendas").style.display == "flex"?"#dedede":"#192B4A";
+            form("ditensrelatorioext").style.backgroundColor = form("bimccadastrometa").style.display == "flex"?"#dedede":"#192B4A";
             controlaTela("relatorio");
         });
     }
@@ -68,6 +69,11 @@ function event_click(obj) {
     if(obj == "bimcnovocontrato"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/contratosCadastroContrato"; 
+        }); //contratosCadastroMetas
+    }
+    if(obj == "bimccadastrometa"){
+        document.getElementById(obj).addEventListener("click", function() {
+            window.location.href = "/contratosCadastroMetas";
         });
     }
 }
@@ -81,7 +87,7 @@ function controlaTela(opc){
             form("bimcnovocliente").style.display   = "none";
             form("bimcassinatura").style.display    = "none";
             form("bimcaprovacao").style.display     = "none";
-            form("dimrvendas").style.display        = "none";
+            form("bimccadastrometa").style.display  = "none";
             form("dimrimovel").style.display        = "none"; 
     }
     if(opc == "menu"){
@@ -96,8 +102,8 @@ function controlaTela(opc){
         form("bimcnovocliente").style.display  = form("bimcnovocliente").style.display   == "flex"?"none":"flex"; 
     }
     if(opc == "relatorio"){
-        form("dimrvendas").style.display  = form("dimrvendas").style.display == "flex"?"none":"flex";
-        form("dimrimovel").style.display  = form("dimrimovel").style.display == "flex"?"none":"flex";
+        form("bimccadastrometa").style.display  = form("bimccadastrometa").style.display == "flex"?"none":"flex";
+        form("dimrimovel").style.display        = form("dimrimovel").style.display       == "flex"?"none":"flex";
     }
 }
 

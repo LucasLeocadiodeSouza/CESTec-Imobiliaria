@@ -16,6 +16,7 @@ function iniciarEventos() {
 
     event_click("bnovabusca");
     event_click("bbuscar");
+    event_click("blimpar");
     event_click("binserir");
     event_click("bclose");
     event_click("bcadastro");
@@ -46,6 +47,11 @@ function event_click(obj) {
     if(obj == "bnovabusca"){
         form(obj).addEventListener("click", function () {
             controlaTela("buscar");
+        });
+    }
+    if(obj == 'blimpar'){
+        form(obj).addEventListener("click", function () {
+            controlaTela("inicia");
         });
     }
     if(obj == "bbuscar"){
@@ -166,6 +172,8 @@ function limparTela(opc){
         form("DMF_external").style.display = "none";
     }
     if(opc == "modal"){
+        fillSelect("msimovel","0|Selecione um Imovel");
+
         form('mcodcliente').value   = "0";
         form('mdesccliente').value  = "";
         form('mcodprop').value      = "0";
