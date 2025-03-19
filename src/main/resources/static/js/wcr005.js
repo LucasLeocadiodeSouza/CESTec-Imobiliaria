@@ -4,6 +4,11 @@
     IM: 00017
 */
 window.addEventListener("load", function () {
+    createGrid("tabela_metas",
+               "codmeta,codcorretor,nome,vlrmeta,datiniciometa,situacao",
+               "Código,Código,Nome,Meta,Periodo,Situacão",
+               "10,40,10,20,20");
+    
     iniciarEventos();
     buscarUserName();
 });
@@ -12,7 +17,6 @@ function iniciarEventos() {
     controlaTela("inicia");
     ABA_init();
     form("aba1").classList.add('ativa');
-    buscarMetasGrid();
 
     event_click("bnovabusca");
     event_click("bbuscar");
@@ -48,7 +52,7 @@ function event_click(obj) {
     if(obj == "bbuscar"){
         form(obj).addEventListener("click", function () {
             controlaTela("novabusca");
-            //buscarMetasGrid();
+            buscarMetasCorretoresGrid();
         });        
     }
     if(obj == 'binserir'){
@@ -72,6 +76,8 @@ function event_click(obj) {
     }
     if(obj == 'bcadastro'){
         form(obj).addEventListener("click", function () {
+            salvarMetaCorretor();
+
             form("DMF_external").style.display = "none";
         });
     }
@@ -191,17 +197,14 @@ function preencherModal(index){
     .catch(error => alert(error.message))
 }
 
-function buscarMetasGrid(){
-    fetch("/contrato/buscarContratoGrid",{
+function buscarMetasCorretoresGrid(){
+    fetch("/wcr005/buscarMetasCorretoresGrid",{
         method:  "GET",
         headers: {"Content-Type":"application/json"}
     })
     .then(response => {return response.json()})
-    .then(data => { createGrid("tabela_metas",
-                               "codcorretor,nome,valor_meta,periodo,situacao",
-                               "Código,Nome,Meta,Periodo,Situacão",
-                               "10,40,10,20,20",
-                               data);})
+    .then(data => {carregaGrid("tabela_metas",
+                                 data) })
     .catch(error => alert(error.message))
 }
 
@@ -213,6 +216,25 @@ function getDescCorretor(obj, retorno){
     .then(response => { return response.text()})
     .then(data => {form(retorno).value = data})
     .catch(error => alert(error.message))
+}
+
+function salvarMetaCorretor(){
+    const meta = { login:         form("mcodcorretor").value,
+                   vlrmeta:       form("mvlrmeta").value,
+                   datiniciometa: form("mperiodoini").value,
+                   datfinalmeta:  form("mperiodofin").value,
+                   nome:          form("ideusu").value
+                 };
+
+    fetch(`/wcr005/salvarMetaCorretor`,{
+        method:  "POST",
+        headers: {
+            "Content-type":"application/json"
+        },
+        body: JSON.stringify(meta)
+    })
+    .then(response => {return response.json()})
+    .catch(error => alert(error.message));
 }
 
 function buscarUserName(){
@@ -255,7 +277,7 @@ function desabilitaCampo(obj,desahabilita){
     form(obj).style.cursor = desahabilita?'not-allowed':'pointer';
 }
 
-function createGrid(id,column,columnName,columnWidth,dados){
+function createGrid(id,column,columnName,columnWidth){
     form(id).innerText = '';
     const table     = document.getElementById(id);
     const thead     = document.createElement("thead");
@@ -265,7 +287,7 @@ function createGrid(id,column,columnName,columnWidth,dados){
     var pi = 0;
     colunas.forEach((coluna,index) => {
         const th = document.createElement("th");
-        th.id = "th" + pi;
+        th.id = coluna.trim() + "__" + pi;        
         th.textContent =  coluna.trim();
         headerRow.appendChild(th);
         pi += 1;
@@ -277,33 +299,49 @@ function createGrid(id,column,columnName,columnWidth,dados){
     tbody.setAttribute("id", `${id}-tbody`);
     table.appendChild(tbody);
 
-    dados.forEach((dado,index) => {
-        const row = document.createElement("tr");        
-
-        colunas.forEach(coluna => {
-            const td  = document.createElement("td");
-            var valor = dado[coluna.trim()];
-            row.appendChild(td);
-        });    
-
-        row.addEventListener("click", ()=>{
-            form(id).querySelectorAll("tr").forEach(row => {
-                row.style.border = "none";
-            });            
-            event_click_table(id,index);
-            row.style.border = " 2px solid black";
-        });
-
-        tbody.appendChild(row);
-    });
-
     var pi = 0;
     colunas.forEach((coluna, index)=>{
-        form("th"+pi).innerText   = columnName.split(",")[pi];
-        form("th"+pi).style.width = columnWidth.split(",")[pi] +"%"; 
+        form(coluna.trim() + "__" + pi).innerText   = columnName.split(",")[pi];
+        form(coluna.trim() + "__" + pi).style.width = columnWidth.split(",")[pi] +"%"; 
         pi += 1;
     });
-
-
     return table;
+}
+
+function carregaGrid(id,dados){
+    clearGrid(id);
+    let colunas = form(id).children[0].children[0].children;
+
+    for(var i = 0; i < dados.length; i++){
+        const row = document.createElement("tr");
+
+        for(var j = 0; j < colunas.length; j++){
+            const td  = document.createElement("td");
+            var valor = dados[i][colunas[j].id.replace("__" + j ,"").trim()];
+            if(colunas[j].id.replace("__"+j,"") == "situacao"){
+                if(valor == "0") valor = "Não Concluida"
+                if(valor == "1") valor = "Em progresso"
+                if(valor == "2") valor = "Concluida"
+            }
+            td.textContent = valor? valor :"N/A";
+            row.appendChild(td);
+            
+            row.addEventListener("click", ()=>{
+                form(id).querySelectorAll("tr").forEach(row => {
+                    row.style.border = "none";
+                });            
+                event_click_table(id,i);
+                row.style.border = " 2px solid black";
+            });
+        }
+
+        form("tabela_metas").appendChild(row);
+    }
+}
+
+function clearGrid(id){
+    const linha = form(id).rows;
+    for(var i = 1; i < linha.length; i++){
+        linha[i].innerText = "";
+    }
 }

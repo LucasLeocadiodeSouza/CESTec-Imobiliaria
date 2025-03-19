@@ -192,8 +192,6 @@ function enviarEmail(){
         },
         body: JSON.stringify(email)        
     })
-    .then(response => {})
-    .then(data => {})
     .catch(error => alert(error.message));
 }
 

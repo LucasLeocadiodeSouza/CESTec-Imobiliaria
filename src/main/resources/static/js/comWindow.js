@@ -3,17 +3,11 @@
     IM: 00002
 */
 window.addEventListener("load", function () {
-    /* console.log("Página carregada. Chamando back-end...");
-    fetch("/api/teste")
-        .then(response => response.text())
-        .then(data => {
-            console.log("Resposta do back-end:", data);
-            document.getElementById("resposta").innerText = data;
-        })
-        .catch(error => {
-            console.error("Erro ao chamar back-end:", error);
-        }); */
-
+    buscarUserId("lid");
+    buscarUserId("wcodfunc");
+    buscarUserName("ideusu");
+    buscarUserName("huser");
+        
     iniciarEventos();
 });
 
@@ -28,8 +22,10 @@ function iniciarEventos() {
         event_click("bimcnovocontrato");
         event_click("bimccadastrometa");
 
-        buscarUserId();
-        buscarUserName();
+        valorMetaMensal();
+        setGraficoMeta();
+        getVlrEfetivadoCorretor();
+        getPeriodoMeta();
 }
 
 function event_click(obj) {
@@ -99,7 +95,7 @@ function controlaTela(opc){
         form("bimcnovoimovel").style.display    = form("bimcnovoimovel").style.display   == "flex"?"none":"flex";
         form("bimcassinatura").style.display    = form("bimcassinatura").style.display   == "flex"?"none":"flex";
         form("bimcaprovacao").style.display     = form("bimcaprovacao").style.display    == "flex"?"none":"flex";
-        form("bimcnovocliente").style.display  = form("bimcnovocliente").style.display   == "flex"?"none":"flex"; 
+        form("bimcnovocliente").style.display   = form("bimcnovocliente").style.display   == "flex"?"none":"flex"; 
     }
     if(opc == "relatorio"){
         form("bimccadastrometa").style.display  = form("bimccadastrometa").style.display == "flex"?"none":"flex";
@@ -111,7 +107,7 @@ function form(obj){
     return document.getElementById(obj);
 }
 
-function buscarUserName(){
+function buscarUserName(obj){
     fetch("/home/userlogin", {
         method: "GET",
         headers: {
@@ -119,11 +115,11 @@ function buscarUserName(){
         }
     })
     .then(response =>{return response.text()})
-    .then(data => { form("huser").textContent = data })
+    .then(data => { form(obj).textContent = data; })    
     .catch(error => alert(error.message));
 }
 
-function buscarUserId(){
+function buscarUserId(obj){
     fetch("/home/userid", {
         method: "GET",
         headers: {
@@ -131,6 +127,62 @@ function buscarUserId(){
         }
     })
     .then(response => {return response.text()})
-    .then(data => { form("lid").textContent = data })
+    .then(data => { form(obj).textContent = data })
     .catch(error => alert(error.message));
+}
+
+function valorMetaMensal(){
+    fetch("/home/userlogin", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response =>{return response.text()})
+    .then(data => {fetch(`/home/${data}/valorMetaMensal`, {
+                       method: "GET",
+                       headers: {
+                           "Content-Type":"application/json"
+                       }
+                   })
+                   .then(response => {return response.text()})
+                   .then(data     => { form("vlrmeta").innerText = data })
+                   .catch(error   => alert("Erro ao buscar meta mensal: " + error.message))
+    })
+}
+
+function setGraficoMeta(){
+    fetch("/home/getPercentMetaMes", {
+        method: "GET",
+        headers: {
+            "Content-Type":"application/json"
+        }
+    })
+    .then(response => {return response.text()})
+    .then(data     => { form("dgraficointerno").style.width = data + "%" })
+    .catch(error   => alert("Erro ao Mudar as dimensoes do grafico de metas: " + error.message))
+}
+
+function getVlrEfetivadoCorretor(){
+    fetch("/home/getVlrEfetivadoCorretor", {
+        method: "GET",
+        headers: {
+            "Content-Type":"application/json"
+        }
+    })
+    .then(response => {return response.text()})
+    .then(data     => { form("vlrefetivadometa").innerText = data })
+    .catch(error   => alert("Erro ao buscar Valor Efetivado: " + error.message))
+}
+
+function getPeriodoMeta(){
+    fetch("/home/getPeriodoMeta", {
+        method: "GET",
+        headers: {
+            "Content-Type":"application/json"
+        }
+    })
+    .then(response => {return response.text()})
+    .then(data => {form("datperiodometa").innerText = data})
+    .catch(error => alert("Erro ao buscar Período da meta: " + error.message))
 }

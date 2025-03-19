@@ -7,6 +7,7 @@ public class corretorDTO {
     private Integer codfuncionario;
     private Integer codcorretor;
     //private Integer codsetor;
+    private Integer codmeta;
     private double  salario;
     private String  nome;
     private Date    datinasc;
@@ -15,15 +16,61 @@ public class corretorDTO {
     private String  endereco;
     private String  email;
     private String  login;
+    private double  vlrmeta;
+    private Date    datiniciometa;
+    private Date    datfinalmeta;
+    private Integer situacao;
 
     public corretorDTO(){}
 
     public corretorDTO(Integer codcorretor, String email, Integer codfuncionario, String nome, String login) {
         this.codfuncionario = codfuncionario;
-        this.codcorretor = codcorretor;
-        this.nome = nome;
-        this.email = email;
-        this.login = login;
+        this.codcorretor    = codcorretor;
+        this.nome           = nome;
+        this.email          = email;
+        this.login          = login;
+    }
+
+    public corretorDTO(Integer codmeta,Integer codcorretor, String nome, double vlrmeta, Date datiniciometa, Date datfinalmeta, Integer situacao) {
+        this.codmeta       = codmeta;
+        this.codcorretor   = codcorretor;
+        this.nome          = nome;
+        this.vlrmeta       = vlrmeta;
+        this.datiniciometa = datiniciometa;
+        this.datfinalmeta  = datfinalmeta;
+        this.situacao      = situacao;
+    }
+
+    public double getVlrmeta() {
+        return vlrmeta;
+    }
+
+    public void setVlrmeta(double vlrmeta) {
+        this.vlrmeta = vlrmeta;
+    }
+
+    public Date getDatiniciometa() {
+        return datiniciometa;
+    }
+
+    public void setDatiniciometa(Date datiniciometa) {
+        this.datiniciometa = datiniciometa;
+    }
+
+    public Date getDatfinalmeta() {
+        return datfinalmeta;
+    }
+
+    public void setDatfinalmeta(Date datfinalmeta) {
+        this.datfinalmeta = datfinalmeta;
+    }
+
+    public Integer getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(Integer situacao) {
+        this.situacao = situacao;
     }
 
     public Integer getCodfuncionario() {
@@ -104,6 +151,14 @@ public class corretorDTO {
     
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public Integer getCodmeta() {
+        return codmeta;
+    }
+
+    public void setCodmeta(Integer codmeta) {
+        this.codmeta = codmeta;
     }
 
 
