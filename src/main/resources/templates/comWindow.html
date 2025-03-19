@@ -22,6 +22,8 @@
     .large       {width: 240px;}
     .extralarge  {width: 300px;}
 
+    .labelpainel {color: #eaeaea !important;}
+
     body {background-color: #1d3561;}
 
     div#dbarramenulateral {float: left;
@@ -48,7 +50,7 @@
     div#ddireita {float:            right;
                   background-color: #eaeaea;
                   height:           850px;
-                  width:            1190px;
+                  width:            1200px;
                   border-top-left-radius:    8px;
                   border-bottom-left-radius: 8px;
                   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);}
@@ -56,7 +58,7 @@
     div#dmetas {float:            left;
                 background-color: #dedede;
                 height:           250px;
-                width:            300px;
+                width:            310px;
                 border-radius:    8px;
                 display:          flex;
                 margin-right:     10px;
@@ -247,15 +249,15 @@
 </style>
 </head>
 <body>
-    <input id ='ideusu'   name='ideusu'   type="hidden" value="LUCASSZ">
-    <input id ='wcodfunc' name='wcodfunc' type="hidden" value="1">
+    <input id ='ideusu'   name='ideusu'   type="hidden" value="">
+    <input id ='wcodfunc' name='wcodfunc' type="hidden" value="">
 
     <div id="dbarramenulateral" class="gen">
         <div id="didentificacao" class="gen">
 
             <div id="ddescoutros" class="ddescdiv" style="height: 100px; width: 220px;">
                 <div class="gen" style="padding: 5px; height: 35px; width: 140px; float: right;">
-                    <h1 id="huser">Usuario</h1>                
+                    <h1 id="huser"></h1>                
                 </div>
     
                 <div class="gen" style="padding: 5px;height: 17px; width: 140px; float: right; padding-right: 10px;">
@@ -263,7 +265,7 @@
                 </div>
     
                 <div class="gen" style="float: right; width: 140px; height: 17px; padding: 0px; padding-right: 10px;">
-                    <label id="lid">Id</label>
+                    <label id="lid"></label>
                 </div>
             </div>
         </div>
@@ -348,39 +350,39 @@
                 <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Metas</label></div>
             
                 <div id="ddescgraficometa" style="background-color: #3e5680; display: inline-block; width: 280px; height: 185px; border-radius: 10px; justify-content: center;">
-                    <div style="background-color: rgb(0, 12, 0); width: 89%; height: 50px; margin-top: 5px; margin-left: 5px; padding: 10px;">
+                    <div style="width: 100%; height: 50px; background: #223961; padding-block: 10px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; margin-bottom: 10px;">
                         <div>
-                            <label>Valor Efetivado: R$ </label>
-                            <label>123456.85</label> 
+                            <label class="labelpainel" style="padding-left: 10px;">Valor Efetivado: R$ </label>
+                            <label class="labelpainel" id="vlrefetivadometa" name="vlrefetivadometa"></label> 
                         </div>
                               
                         <div style="padding-top: 10px;">
-                            <label>Valor Meta: R$ </label>
-                            <label>987654.45</label> 
+                            <label class="labelpainel" style="padding-left: 10px;">Valor Meta: R$ </label>
+                            <label class="labelpainel" id="vlrmeta" name="vlrmeta"></label> 
                         </div>
                     </div>
                     
-                    <div id="dgrafico" style="background-color: #bcc943; display: flex; width: 80%; height: 30px; margin-top: 5px; flex-direction: row; margin-left: 40px; border-radius: 3px;">
-                        <div id="dgraficointerno" style="background-color: #0d13c3; display: flex; width: 5px; height: 30px; border-bottom-left-radius: 3px; border-top-left-radius: 3px;"></div>
+                    <div id="dgrafico" style="background-color: #eaeaea; display: flex; width: 90%; height: 30px; margin-top: 5px; flex-direction: row; margin-left: 15px; border-radius: 3px;">
+                        <div id="dgraficointerno" style="background-color: #003490; display: flex; height: 30px; border-bottom-left-radius: 3px; border-top-left-radius: 3px;"></div>
                     </div>
-                    <div id="dsetagrafico" style="background-color: #91937f; display: flex; width: 80%; height: 30px; margin-top: 5px; flex-direction: row; margin-left: 40px;">
+                    <div id="dsetagrafico" style=" display: flex; width: 90%; height: 30px; margin-top: 5px; flex-direction: row; margin-left: 15px;">
                         <div id="dlinhagrafico" style="background-color: #0f0f0f; display: flex; width: 255px; height: 5px; flex-direction: row; margin-top: 4px;">
                             <div style=" width: 2px; height: 12px; background-color: red; margin-inline: 25%; transform: translateY(-2px);">
-                                <label style="transform: translateY(50%) translateX(-50%);">25%</label>
+                                <label class="labelpainel" style="transform: translateY(50%) translateX(-50%);">25%</label>
                             </div> <!-- 25% -->
                             <div style=" width: 2px; height: 12px; background-color: red; margin-right:  25%; transform: translateY(-2px);">
-                                <label style="transform: translateY(50%) translateX(-50%);">50%</label>
+                                <label class="labelpainel" style="transform: translateY(50%) translateX(-50%);">50%</label>
                             </div> <!-- 50% -->
                             <div style=" width: 2px; height: 12px; background-color: red; transform: translateY(-2px);">
-                                <label style="transform: translateY(50%) translateX(-50%);">75%</label>
+                                <label class="labelpainel" style="transform: translateY(50%) translateX(-50%);">75%</label>
                             </div> <!-- 75% -->
                         </div>
                         <div id="dsetagrafico" style=" display: flex; width: 5px; height: 5px; flex-direction: row; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid #000;"></div>
                     </div>
 
-                    <div style="background-color: rgb(0, 12, 0); width: 89%; margin: 5px; padding: 10px;">
-                            <label style="font-size: 13px;">Prazo Final da Meta: </label>
-                            <label style="font-size: 13px;">17/02/2024</label> 
+                    <div style="width: 89%; margin: 5px; padding: 10px;">
+                            <label class="labelpainel" style="font-size: 13px; margin-left: -8px;">Prazo Final da Meta: </label>
+                            <label class="labelpainel" style="font-size: 14px;" id="datperiodometa" name="datperidometa"></label> 
                     </div>
 
                 </div>

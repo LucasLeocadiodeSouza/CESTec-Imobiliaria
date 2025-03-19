@@ -28,8 +28,6 @@ public class contratoController {
 
     @GetMapping("/{ideusu}/getNomeByIdeusu")
     public String getNomeByIdeusu(@PathVariable String ideusu) {
-        System.out.println("ideusu " + ideusu);
-        System.out.println("aa " + contratoService.getNomeByIdeusu(ideusu));
         return contratoService.getNomeByIdeusu(ideusu);
     }
 

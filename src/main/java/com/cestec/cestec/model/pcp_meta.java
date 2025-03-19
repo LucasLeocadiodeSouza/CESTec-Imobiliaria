@@ -28,8 +28,20 @@ public class pcp_meta {
     private Integer situacao;
     private Date    datregistro;
     private String  ideusu;
- 
 
+    public pcp_meta(){}
+
+    public pcp_meta(pcp_corretor pcp_corretor, double valor_meta, Date datinicio, Date datfinal, Integer situacao, Date datregistro, String ideusu) {
+        this.pcp_corretor = pcp_corretor;
+        this.valor_meta   = valor_meta;
+        this.datinicio    = datinicio;
+        this.datfinal     = datfinal;
+        this.situacao     = situacao;
+        this.datregistro  = datregistro;
+        this.ideusu       = ideusu;
+    }
+
+    
     public Integer getCodmeta() {
         return codmeta;
     }

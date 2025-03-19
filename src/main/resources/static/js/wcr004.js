@@ -154,6 +154,7 @@ function controlaTela(opc){
         desabilitaCampo('mvlrnegociado', ehConsulta());
         desabilitaCampo('mvlrimovel',    true);
         desabilitaCampo('mvendedor',     ehConsulta());
+        desabilitaCampo('mnome',         ehConsulta());
         desabilitaCampo('mperiodoini',   ehConsulta());
         desabilitaCampo('mperiodofin',   ehConsulta());
         desabilitaCampo('bcadastro',     ehConsulta());
@@ -184,7 +185,8 @@ function limparTela(opc){
         form('mtpcontrato').value   = "";
         form('mvlrimovel').value    = "";
         form('mvlrnegociado').value = "";
-        form('mvendedor').value    = "0";
+        form('mvendedor').value     = "";
+        form('mnome').value         = "";
         form("mperiodoini").value   = "";
         form("mperiodofin").value   = "";
     }
@@ -288,7 +290,8 @@ function buscarContratoGrid(){
                                "codcontrato,codcliente,nomeCliente,codproprietario,nomeProp,codimovel,tipo,negociacao,preco",
                                "Contrato,Cod,Nome,Cod,Nome,Cod,Tipo,Contrato,Valor",
                                "10,10,15,10,15,10,10,10,10",
-                               data);})
+                               data);
+                            console.log(data)})
     .catch(error => alert(error.message))
 }
 
