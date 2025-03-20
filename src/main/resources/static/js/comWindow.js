@@ -9,7 +9,40 @@ window.addEventListener("load", function () {
     buscarUserName("huser");
         
     iniciarEventos();
+    carregaMes();
 });
+
+const dates = document.querySelector(".diadomes");
+const nomeMes= ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+let date = new Date();
+let mes  = date.getMonth();
+let ano  = date.getFullYear();
+
+function carregaMes(){
+    const comeco = new Date(ano, mes, 1).getDay();
+    const dataFinal = new Date(ano, mes + 1, 0).getDate();
+    const final = new Date(ano, mes, dataFinal).getDay();
+    const dataFinalPrev = new Date(ano, mes, 0).getDate();
+
+    let diasDoMes = "";
+
+    for(let i = comeco; i > 0; i--){
+        diasDoMes += `<li class="inativa">${dataFinalPrev - i + 1}</li>`;
+    }
+
+    for(let i = 1; i<= dataFinal; i++){
+        let classHoje = (i === date.getDate() && mes === new Date().getMonth() && ano === new Date().getFullYear() ? "class='hoje'":"");
+        
+        diasDoMes += `<li ${classHoje}>${i}</li>`;
+    }
+
+    for(let i = final; i < 6; i++){
+        diasDoMes += `<li class="inativa">${i - final + 1}</li>`;
+    }
+
+    dates.innerHTML = diasDoMes;
+    form("lnomeMes").innerText = `${nomeMes[mes]}`;
+}
 
 function iniciarEventos() {
         controlaTela("inicio");

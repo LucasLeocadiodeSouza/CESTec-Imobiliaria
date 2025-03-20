@@ -24,6 +24,9 @@
 
     .labelpainel {color: #eaeaea !important;}
 
+    .esquerda {}
+    .direita {}
+
     body {background-color: #1d3561;}
 
     div#dbarramenulateral {float: left;
@@ -73,31 +76,59 @@
                    margin-right:     10px; 
                    box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);}
 
-    div#dagenda {float:            left;
+    div#doutros    {float:            left;
+                    background-color: #dedede;
+                    height:           250px;
+                    width:            380px;
+                    border-radius:    8px;
+                    display:          flex;
+                    margin-right:     10px;
+                    box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);}
+
+    div.agenda {width: 66%; display: flex; flex-direction: column; margin: auto; }
+
+    .agenda header {display: flex; align-items: center; justify-content: space-between;}
+
+    #calendariosemanal{display: flex; justify-content: center; background-color: #26334975; border-top-left-radius: 10px; border-top-right-radius: 10px; height: 15%; margin-inline: 3px; font-family: Poppins, sans-serif; font-size: 14px;}
+
+    .days li {color: #FFF !important;}
+
+    #calendariosemanal section {width: 97%;}
+
+    #calendariosemanal ul li {width: calc(100% / 7);}
+
+    #calendariosemanal ul {list-style: none; display: flex; padding: 0; margin-top: 2%; }
+
+    #calendariosemanal li {margin-inline: 5px; color: #cbcbcb; font-weight: bold;}
+
+    #calendariodiario ul{padding: 5px; margin: 2px; list-style: none; display: flex; flex-wrap: wrap; justify-content: center;}
+
+    #calendariodiario li{padding: 5px; margin: 2px; color: #FFF; width: calc(100% / 11); height: 13px; display: flex; align-items: center; justify-content: center; text-align: center;}
+
+    #calendariodiario {height: 85%;}
+
+    .inativa {padding: 0; color: #b0b0b0 !important;}
+
+    .hoje {color: #000 !important; background-color: #FFF; border-radius: 10px;}
+
+    div#dagenda {float:            right;
                  background-color: #dedede;      
-                 height:           250px;
-                 width:            430px;
+                 height:           270px;
+                 width:            440px;
                  border-radius:    8px;                   
                  display:          flex;
                  box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);
-                 flex-direction:   column;}
+                 flex-direction:   column;
+                 margin-top:       20px;}
 
     div#dcontratos {float:            left;
                     background-color: #dedede;
                     height:           220px;
-                    width:            450px;
+                    width:            650px;
                     border-radius:    8px;
-                    margin-top:       50px;
-                    margin-left:      80px;
-                    box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);}
-
-    div#doutros    {float:            right;
-                    background-color: #dedede;
-                    height:           220px;
-                    width:            500px;
-                    border-radius:    8px;
-                    margin-top:       50px;
-                    box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);}
+                    margin-top:       20px;
+                    margin-left:      30px;
+                    box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);}    
 
     div#dacessos { background-color: #dedede;
                    height:           235px;
@@ -204,16 +235,17 @@
     #dnextagenda:hover {background-color: #3e5680;}
 
     .dagendadias { background-color: #334970 ;
-                   height:           90%;
-                   width:            100%;
+                   height:           78%;
+                   width:            99%;
                    border-radius:    8px;                   
                    box-shadow:       0 0 4px rgb(18 22 85);
-                   padding:          5px;}
+                   padding:          5px;
+                   display: flex;}
 
     .ddescagenda { float: right; 
                    background-color: #26334975 ;
-                   height:           184px;
-                   width:            140px;
+                   height:           99%;
+                   width:            33%;
                    border-radius:    8px;
                    box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);}
 
@@ -346,7 +378,7 @@
 
     <div id="ddireita" class="gen">
         <div id="dmetas" class="gen">
-            <div id="ddescmetas" class="ddescdiv" stylus="width: 280px;">
+            <div id="ddescmetas" class="ddescdiv" style="width: 280px;">
                 <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Metas</label></div>
             
                 <div id="ddescgraficometa" style="background-color: #3e5680; display: inline-block; width: 280px; height: 185px; border-radius: 10px; justify-content: center;">
@@ -384,9 +416,7 @@
                             <label class="labelpainel" style="font-size: 13px; margin-left: -8px;">Prazo Final da Meta: </label>
                             <label class="labelpainel" style="font-size: 14px;" id="datperiodometa" name="datperidometa"></label> 
                     </div>
-
                 </div>
-            
             </div>
         </div>
 
@@ -396,30 +426,53 @@
             </div>
         </div>
 
-        <div id="dagenda" class="gen" style="justify-content: center; align-items: center;">
-            <div id="ddescagendabutton" class="botoesmenuesq" style="padding-left: 0px; padding-right: 0px; width: 315px; height: 15px; background-color: #334970;">
-                <div id="dbackagenda"><label style="font-size:  19px; color: white; font-weight: bolder; display: flex; padding-left: 8px;"> < </label></div>
-                <div id="dmesagenda"><label style="font-size:  19px; color: white; font-weight: normal; display: flex; justify-content: center;"> Fevereiro </label></div>
-                <div id="dnextagenda"><label style="font-size:  19px; color: white; font-weight: bolder; display: flex; padding-right: 8px;"> > </label></div>
-            </div>
-
-            <div id="dagendadias" class="dagendadias">
-                <div id="ddescagenda" class="ddescagenda"></div>
-            </div>
-
-        </div>
-
-        <div id="dcontratos" class="gen">
-            <div id="ddesccontrato" class="ddescdiv" style="height: 203px; width: 430px;">
-                <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Contratos</label></div>
-                <div id="ddesccontratoslegenda" class="ddescagenda" style="height: 203px;"></div>
-            </div>
-        </div>
-
         <div id="doutros" class="gen">
             <div id="ddescoutros" class="ddescdiv" style="height: 203px; width: 480px;">
                 <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Outros</label></div>
             </div>
+        </div>
+
+        <div id="dcontratos" class="gen">
+            <div id="ddesccontrato" class="ddescdiv" style="height: 90%; width: 97%;">
+                <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Contratos</label></div>
+                <div id="ddesccontratoslegenda" class="ddescagenda"></div>
+            </div>
+        </div>
+        
+        <div id="dagenda" class="gen" style="justify-content: center; align-items: center;">
+            <div id="ddescagendabutton" class="botoesmenuesq" style="padding-left: 0px; padding-right: 0px; width: 315px; height: 15px; background-color: #334970;">
+                <div id="dbackagenda"><label style="font-size:  19px; color: white; font-weight: bolder; display: flex; padding-left: 8px;"> < </label></div>
+                <div id="dmesagenda"><label id="lnomeMes" style="font-size:  19px; color: white; font-weight: normal; display: flex; justify-content: center;"></label></div>
+                <div id="dnextagenda"><label style="font-size:  19px; color: white; font-weight: bolder; display: flex; padding-right: 8px;"> > </label></div>
+            </div>
+
+
+            <div id="dagendadias" class="dagendadias">
+                <div id="agenda" name="agenda" class="agenda esquerda">
+                    <div id="calendariosemanal" name="calendariosemanal">
+                        <section>
+                            <ul class="days">
+                                <li>Dom</li>
+                                <li>Seg</li>
+                                <li>Ter</li>
+                                <li>Qua</li>
+                                <li>Qui</li>
+                                <li>Sex</li>
+                                <li>Sab</li>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <div id="calendariodiario" name="calendariodiario">
+                        <section>
+                            <ul class="diadomes"></ul>
+                        </section>
+                    </div>
+                </div>
+
+                <div id="ddescagenda" class="ddescagenda direita"></div>
+            </div>
+
         </div>
 
         <div id="dacessos" class="gen">
