@@ -18,31 +18,6 @@ let date = new Date();
 let mes  = date.getMonth();
 let ano  = date.getFullYear();
 
-function carregaMes(){
-    const comeco = new Date(ano, mes, 1).getDay();
-    const dataFinal = new Date(ano, mes + 1, 0).getDate();
-    const final = new Date(ano, mes, dataFinal).getDay();
-    const dataFinalPrev = new Date(ano, mes, 0).getDate();
-
-    let diasDoMes = "";
-
-    for(let i = comeco; i > 0; i--){
-        diasDoMes += `<li class="inativa">${dataFinalPrev - i + 1}</li>`;
-    }
-
-    for(let i = 1; i<= dataFinal; i++){
-        let classHoje = (i === date.getDate() && mes === new Date().getMonth() && ano === new Date().getFullYear() ? "class='hoje'":"");
-        
-        diasDoMes += `<li ${classHoje}>${i}</li>`;
-    }
-
-    for(let i = final; i < 6; i++){
-        diasDoMes += `<li class="inativa">${i - final + 1}</li>`;
-    }
-
-    dates.innerHTML = diasDoMes;
-    form("lnomeMes").innerText = `${nomeMes[mes]}`;
-}
 
 function iniciarEventos() {
         controlaTela("inicio");
@@ -54,6 +29,8 @@ function iniciarEventos() {
         event_click("bimcnovocliente");
         event_click("bimcnovocontrato");
         event_click("bimccadastrometa");
+        event_click("dnextagenda");
+        event_click("dbackagenda");
 
         valorMetaMensal();
         setGraficoMeta();
@@ -103,6 +80,39 @@ function event_click(obj) {
     if(obj == "bimccadastrometa"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/contratosCadastroMetas";
+        });
+    }
+
+    if(obj == "dbackagenda"){
+        document.getElementById(obj).addEventListener("click", function() {
+            if(mes === 0){
+                ano--;
+                mes = 11;
+            }else{
+                mes = mes - 1;
+            }
+
+            date = new Date(ano,mes, new Date().getDate());
+            ano  = date.getFullYear();
+            mes = date.getMonth();
+
+            carregaMes();
+        });
+    }
+    if(obj == "dnextagenda"){
+        document.getElementById(obj).addEventListener("click", function() {
+            if(mes === 11){
+                ano++;
+                mes = 0;
+            }else{
+                mes = mes + 1;
+            }
+
+            date = new Date(ano,mes, new Date().getDate());
+            ano  = date.getFullYear();
+            mes = date.getMonth();
+
+            carregaMes();
         });
     }
 }
@@ -218,4 +228,30 @@ function getPeriodoMeta(){
     .then(response => {return response.text()})
     .then(data => {form("datperiodometa").innerText = data})
     .catch(error => alert("Erro ao buscar Período da meta: " + error.message))
+}
+
+function carregaMes(){ //IM: 00004 
+    const comeco        = new Date(ano, mes, 1).getDay();
+    const dataFinal     = new Date(ano, mes + 1, 0).getDate();
+    const final         = new Date(ano, mes, dataFinal).getDay();
+    const dataFinalPrev = new Date(ano, mes, 0).getDate();
+
+    let diasDoMes = "";
+
+    for(let i = comeco; i > 0; i--){
+        diasDoMes += `<li class="inativa">${dataFinalPrev - i + 1}</li>`;
+    }
+
+    for(let i = 1; i<= dataFinal; i++){
+        let classHoje = (i === date.getDate() && mes === new Date().getMonth() && ano === new Date().getFullYear() ? "class='hoje'":"");
+        
+        diasDoMes += `<li ${classHoje}>${i}</li>`;
+    }
+
+    for(let i = final; i < 6; i++){
+        diasDoMes += `<li class="inativa">${i - final + 1}</li>`;
+    }
+
+    dates.innerHTML = diasDoMes;
+    form("lnomeMes").innerText = `${nomeMes[mes]}`;
 }
