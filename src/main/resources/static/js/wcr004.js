@@ -43,7 +43,7 @@ function event_click_table(id,index){
     }
 }
 
-function event_click(obj) {
+function event_click(obj,dado) {
     if(obj == "bnovabusca"){
         form(obj).addEventListener("click", function () {
             controlaTela("buscar");
@@ -257,14 +257,15 @@ function preencherModal(index){
     })
     .then(response => {return response.json()})
     .then(data => { form('mcodprop').value     = data.codproprietario;
-                    getOptionImovel();
                     tipo = data.tipo;
                     negociacao = data.negociacao;
                     
+                    getOptionImovel().then(()=>{form('msimovel').value = data.codimovel});
+
                     if(tipo==1){tipo = "Apartamento"}
                     if(tipo==2){tipo = "Casa"}
                     if(tipo==3){tipo = "Terreno"};                
-                    negociacao = negociacao==1?"Aluguel":"Venda";
+                    negociacao = negociacao==1?"Aluguel":"Venda";                    
 
                    form('mcodcliente').value   = data.codcliente;
                    form('mdesccliente').value  = data.nomeCliente;                   
@@ -274,8 +275,7 @@ function preencherModal(index){
                    form('mtpcontrato').value   = negociacao;
                    form('mvlrimovel').value    = data.preco;
                    form('mvlrnegociado').value = data.valor;
-                   form("mperiodoini").value   = data.datinicio;
-                   form('msimovel').value      = data.codimovel; //nao esta selecionando
+                   form("mperiodoini").value   = data.datinicio;                   
                    form("mperiodofin").value   = data.datfinal;})
     .catch(error => alert(error.message))
 }
@@ -290,8 +290,7 @@ function buscarContratoGrid(){
                                "codcontrato,codcliente,nomeCliente,codproprietario,nomeProp,codimovel,tipo,negociacao,preco",
                                "Contrato,Cod,Nome,Cod,Nome,Cod,Tipo,Contrato,Valor",
                                "10,10,15,10,15,10,10,10,10",
-                               data);
-                            console.log(data)})
+                               data)})
     .catch(error => alert(error.message))
 }
 
@@ -317,15 +316,15 @@ function inserirAlterarContrato(){
     .catch(error => alert(error.message));
 }
 
-function getOptionImovel(){
-    fetch(`/contratosCadastroClientes/proprietario/${form("mcodprop").value}/getOptionImovel`,{
-        method: "GET",
-        headers: {"Content-Type":"application/json"}
-    })
-    .then(response => {return response.text()})
-    .then(data => { fillSelect("msimovel", data);
-                    form("msimovel").options[0].disabled = true; })
-    .catch(error => alert(error.message))
+async function getOptionImovel(){
+    return fetch(`/contratosCadastroClientes/proprietario/${form("mcodprop").value}/getOptionImovel`,{
+                method: "GET",
+                headers: {"Content-Type":"application/json"}
+            })
+            .then(response => {return response.text()})
+            .then(data => { fillSelect("msimovel", data);
+                            form("msimovel").options[0].disabled = true; })
+            .catch(error => alert(error.message))
 }
 
 function getTipoImovel(){
@@ -385,8 +384,7 @@ function getDescCorretor(){
         headers: {"Content-type":"application/json"}
     })
     .then(response => { return response.text()})
-    .then(data => {form("mnome").value = data;
-                   console.log(data) })
+    .then(data => {form("mnome").value = data })
     .catch(error => alert(error.message))
 }
 
@@ -468,12 +466,14 @@ function createGrid(id,column,columnName,columnWidth,dados){
     const tbody = document.createElement("tbody");
     tbody.setAttribute("id", `${id}-tbody`);
     table.appendChild(tbody);
-
+    
+    pi = 0;
     dados.forEach((dado,index) => {
         const row = document.createElement("tr");        
-
+        
         colunas.forEach(coluna => {
             const td  = document.createElement("td");
+            td.id = coluna + dado.codcontrato;
             var valor = dado[coluna.trim()];
             if(coluna == "tipo"){
                 if(valor==1){valor = "Apartamento"}
@@ -484,8 +484,18 @@ function createGrid(id,column,columnName,columnWidth,dados){
                 valor = valor==1?"Aluguel":"Venda";
             }
 
-            td.textContent = valor? valor :"N/A";
             row.appendChild(td);
+
+            if(td.id == "codcontrato"+dado.codcontrato) {
+                td.innerHTML = "<a id='fichaContrato" + pi + "'>" + (valor? valor :"N/A") + "</a>"
+                
+                td.addEventListener("click", function (event) {
+                    event.stopPropagation();
+                    localStorage.setItem("CODCONTRATO", dado.codcontrato);
+                    window.open("http://localhost:8080/fichaContrato","FichaDeContrato","_blank,width=600,height=600");
+                });
+            }
+            else{ td.textContent = valor? valor :"N/A" }            
         });    
 
         row.addEventListener("click", ()=>{
@@ -497,9 +507,11 @@ function createGrid(id,column,columnName,columnWidth,dados){
         });
 
         tbody.appendChild(row);
+
+        pi++;
     });
 
-    var pi = 0;
+    pi = 0;
     colunas.forEach((coluna, index)=>{
         form("th"+pi).innerText   = columnName.split(",")[pi];
         form("th"+pi).style.width = columnWidth.split(",")[pi] +"%"; 
