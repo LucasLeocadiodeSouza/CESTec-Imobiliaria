@@ -1,0 +1,100 @@
+<!-- 
+    Dev: Lucas Leocadio de Souza
+    Data: 04/03/25
+    IM: 00013
+-->
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/padrao.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <title>Ficha de Contratos</title>
+    <script src="/js/wcr00401.js" defer></script>
+    
+<style>
+    .ppp         {width: 32px;}
+    .p           {width: 60px;}
+    .small       {width: 100px;}   
+    .medium      {width: 120px;}
+    .Intermedium {width: 180px;}
+    .large       {width: 240px;}
+    .extralarge  {width: 300px;}
+
+    fieldset {margin: 5px;
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 2px;}
+
+    .labelfiltro {width: 155px;
+                  text-align: right;}
+
+    .dado {display: flex;
+          justify-content: center;
+          align-items: center;}
+
+    p {width: 180px;}
+
+    .grid {width: 99%;
+           height: 400px;
+           margin-top: 25px;
+           margin-inline: 7px;
+           overflow-y: scroll;}
+    ::-webkit-scrollbar {
+        width: 1px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+</style>
+</head>
+<body>
+    <div style=" height: 100vh; display: flex; justify-content: center; padding: 15px;flex-direction: column;justify-content: flex-start;">
+        <div class="titulo">
+            
+        </div>
+        
+        <fieldset style="margin-top: 10px;"> <!--tem que por flex ai de alguma forma, apesar que nao tem como aumentar de largura ne sla -->
+            <legend>Imovel</legend>
+            <div class='if dado'>
+                <label class="labelfiltro">Código do Imovel: </label>
+                <p id="codimovel">1</p>
+            </div>
+
+            <div class='if dado'>
+                <label class="labelfiltro">Tipo Imovel: </label>
+                <p id="tpimovel">Terreno</p>
+            </div>
+
+            <div class='if dado'>
+                <label class="labelfiltro">Valor Solicitado (R$): </label>
+                <p id="vlrimovel">12345,56</p>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Contrato</legend>
+            <div class='if dado'>
+                <label class="labelfiltro">Contrato: </label>
+                <p id="tpcontrato">Aluguel</p>
+            </div>
+
+            <div class='if dado'>
+                <label class="labelfiltro">Valor Negociado (R$): </label>
+                <p id="vlrcontrato">1234,56</p>
+            </div>
+
+            <div class='if dado'>
+                <label class="labelfiltro">Período do Contrato: </label>
+                <p id="periodocontrato">12/10/2024 - 10/12/2025</p>
+            </div>
+        </fieldset>
+    </div>
+</body>
+</html>

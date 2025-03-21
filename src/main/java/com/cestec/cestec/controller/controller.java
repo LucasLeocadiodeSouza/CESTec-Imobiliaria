@@ -37,6 +37,11 @@ public class controller {
         return "wcr005";
     }
 
+    @GetMapping("/fichaContrato") 
+    public String fichaContrato() {
+        return "wcr00401";
+    }
+
     @GetMapping("/login") 
     public String login() {
         return "wlog";

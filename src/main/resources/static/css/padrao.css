@@ -51,7 +51,7 @@ body .gen {padding: 10px}
 
 .gen a      {font-weight:     bolder;
              color:           #0060d4;
-             text-decoration: none;}
+             text-decoration: underline;}
 
 .gen select {height:           27px;
              width:            100px;
