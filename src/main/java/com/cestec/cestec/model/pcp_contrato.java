@@ -36,6 +36,7 @@ public class pcp_contrato {
 
     private Date    datinicio;
     private Date    datfinal;
+    private Integer situacao;
     private Date    datiregistro;
     private float   valor;
     private boolean ativo;
@@ -123,5 +124,13 @@ public class pcp_contrato {
 
     public void setPcp_corretor(pcp_corretor pcp_corretor) {
         this.pcp_corretor = pcp_corretor;
+    }
+
+    public Integer getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(Integer situacao) {
+        this.situacao = situacao;
     }
 }

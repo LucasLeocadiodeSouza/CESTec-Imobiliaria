@@ -120,15 +120,15 @@ body .gen {padding: 10px}
 .bpc:hover {opacity: 0.3;}
 
 input {font-family:      "Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
-       font-weight:      180;
-       font-size:        14px;
-       color:            #000000;
-       background-color: #94ad912b;
-       box-shadow:       black;
-       border-radius:    0.3vw;
-       box-shadow:       0 0 0 .15vw rgba(135, 207, 235, 0.186);
-       padding:          2.5px;
-       transition:       .2s;}
+      font-weight:      180;
+      font-size:        14px;
+      color:            #000000;
+      background-color: #94ad912b;
+      box-shadow:       black;
+      border-radius:    0.3vw;
+      box-shadow:       0 0 0 .15vw rgba(135, 207, 235, 0.186);
+      padding:          2.5px;
+      transition:       .2s;}
 
 input:hover {box-shadow: 0 0 .4vw rgba(0,0,0,0.5), 0 0 0 .15vw transparent;}
 
@@ -137,6 +137,26 @@ input:focus {box-shadow: 0 0 0 .15vw skyblue; } /* colocar uma cor do sistema */
 input[type="button"], 
 input[type="submit"], 
 input[type="reset"] {box-shadow: none;}
+
+textarea {font-family:      "Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
+          font-weight:      180;
+          font-size:        14px;
+          color:            #000000;
+          background-color: #94ad912b;
+          box-shadow:       black;
+          border-radius:    0.3vw;
+          box-shadow:       0 0 0 .15vw rgba(135, 207, 235, 0.186);
+          padding:          2.5px;
+          transition:       .2s;
+          resize: none;}
+
+textarea:hover {box-shadow: 0 0 .4vw rgba(0,0,0,0.5), 0 0 0 .15vw transparent;}
+
+textarea:focus {box-shadow: 0 0 0 .15vw skyblue; }
+
+textarea[type="button"], 
+textarea[type="submit"], 
+textarea[type="reset"] {box-shadow: none;}
 
 .DMF_external {width:  100%;
                height: 100%;
@@ -154,12 +174,11 @@ div.grid {display: flex;
 
 tr {font-size: 16px;}
 
-th {background-color: #a9a9a9;}
+th {background-color: #cecece;}
 
 td {border-bottom: 0;}
 
-th, td {text-align: left;
-        padding: 16px;
+th, td {padding: 11px;
         box-sizing: border-box;}
 
 td {border: solid 1px #bbbbbb;  
@@ -175,15 +194,15 @@ tr:last-child td {
 
 table {
      font-size: 16px;
-     border-collapse: collapse;
-     display: table;
      width: 100%;
+     border: 2px solid #d4d4d4;
        th {
-         color: #f2f2f2;
+         color: #000;
          font-weight: normal;
          border-bottom: solid 2px #d8d8d8;
          position: sticky;
          top: 0;
+         border: 1px solid black;
        }
        td {
          border: solid 1px #bbbbbb;

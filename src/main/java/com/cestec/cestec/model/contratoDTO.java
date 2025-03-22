@@ -17,7 +17,6 @@ public class contratoDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date    datfinal;
 
-    private Integer codtipo;
     private Integer codcorretor;
     private String  ideusuCorretor;
     private boolean ativo;
@@ -27,7 +26,9 @@ public class contratoDTO {
     private double  negociacao;
     private String  nomeProp;
     private String  nomeCliente;
+    private String  nomeCorretor;
     private double  valor;
+    private Integer situacao;
     private String  ideusu;
 
     public contratoDTO(){}    
@@ -46,8 +47,25 @@ public class contratoDTO {
         this.datfinal        = datfinal;
         this.valor           = valor;
         this.endereco        = endereco;
-    } 
+    }
     
+    public contratoDTO(Integer codcontrato, Integer codimovel, Integer codproprietario, Integer codcliente, Date datinicio, Date datfinal, Integer tipo, Integer codcorretor, double preco, double negociacao, String nomeProp, String nomeCliente, String nomeCorretor, double valor) {
+        this.codcontrato     = codcontrato;
+        this.codimovel       = codimovel;
+        this.codproprietario = codproprietario;
+        this.codcliente      = codcliente;
+        this.datinicio       = datinicio;
+        this.datfinal        = datfinal;
+        this.tipo            = tipo;
+        this.codcorretor     = codcorretor;
+        this.preco           = preco;
+        this.negociacao      = negociacao;
+        this.nomeProp        = nomeProp;
+        this.nomeCliente     = nomeCliente;
+        this.nomeCorretor    = nomeCorretor;
+        this.valor           = valor;
+    }
+
     public contratoDTO(Integer codcontrato, Integer codcliente, Integer codimovel, Integer codproprietario, Date datfinal, Date datinicio, double tipo, double negociacao, double preco) {
         this.codcontrato     = codcontrato;
         this.codimovel       = codimovel;
@@ -64,14 +82,6 @@ public class contratoDTO {
 
     public void setCodcontrato(Integer codcontrato) {
         this.codcontrato = codcontrato;
-    }
-
-    public Integer getCodtipo() {
-        return codtipo;
-    }
-
-    public void setCodtipo(Integer codtipo) {
-        this.codtipo = codtipo;
     }
     
     public Integer getCodproprietario() {
@@ -200,5 +210,21 @@ public class contratoDTO {
 
     public void setIdeusuCorretor(String ideusuCorretor) {
         this.ideusuCorretor = ideusuCorretor;
+    }
+
+    public String getNomeCorretor() {
+        return nomeCorretor;
+    }
+
+    public void setNomeCorretor(String nomeCorretor) {
+        this.nomeCorretor = nomeCorretor;
+    }
+
+    public Integer getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(Integer situacao) {
+        this.situacao = situacao;
     }
 }

@@ -1,7 +1,7 @@
 <!-- 
     Dev: Lucas Leocadio de Souza
-    Data: 04/03/25
-    IM: 00013
+    Data: 22/03/25
+    IM: 00008
 -->
 
 <!DOCTYPE html>
@@ -13,8 +13,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-    <title>Cadastro de Contratos</title>
-    <script src="/js/wcr004.js" defer></script>
+    <title>Aprovacão de Contratos</title>
+    <script src="/js/wcr006.js" defer></script>
     
 <style>
     .ppp         {width: 32px;}
@@ -25,37 +25,59 @@
     .large       {width: 240px;}
     .extralarge  {width: 300px;}
 
+    #bcadastro {background-color: #099000 !important; color: #FFF;}
+
+    #breprovar {background-color: #ff0000 !important; color: #FFF;}
+
     .fieldset {margin: 10px;
                display: flex;
                justify-content: flex-start;
                margin-top: 0px;}
 
     .labelfiltro {font-weight: 600;
-                  width: 185px;
+                  width: 190px !important;
                   text-align: right;}
 
     .labelmodal {font-weight: 600;
                  width: 190px;
                  text-align: right;}
 
-    .grid {width: 99%;
+    .contrato  {height: auto !important;}
+    .aprovacao {height: 75px !important;}
+
+    #fichacontrato {height: 100%;}
+    #fichacompleta {height: auto !important; padding-top: 0 !important;}
+    .ciclo {display: none !important;}
+
+    .grid {display: block !important;
            height: 400px;
            margin-top: 25px;
            margin-inline: 7px;
-           overflow-y: scroll;}
-    ::-webkit-scrollbar {
+           overflow-y: auto;
+           overflow-x:scroll;}
+
+    /* ::-webkit-scrollbar {
         width: 1px;
-    }
+    }    
 
     ::-webkit-scrollbar-track {
         background: transparent;
-    }
+    } */
 
-    #dmodalf_contrato {width: 600px;
-                       height: 450px;
-                       opacity: 1;
-                       background-color: aliceblue;
-                       box-shadow: 0 0 .4vw rgba(0,0,0,0.5);}
+    #botoes {display: none !important;}
+
+    .dmf {width: auto !important;
+          margin-inline: 15px;}
+
+    #dmodalf_aprovacao {width: calc(100% - 300px); /* Subtrai 150px de cada lado */
+                        height: auto; /* Subtrai 50px de cada lado, considerando a margem superior e inferior */
+                        opacity: 1;
+                        display: flex;
+                        flex-direction: column;
+                        background-color: aliceblue;
+                        box-shadow: 0 0 .4vw rgba(0,0,0,0.5);
+                        margin-inline: 150px;  /* Margem de 150px nas laterais */
+                        margin-block: 50px;}
 
     body {background-color: #1d3561;}
 </style>
@@ -87,6 +109,12 @@
             </div>
 
             <div class='if'>
+                <label class="labelfiltro">Código do Corretor: </label>
+                <input type="text" id="codcorretor"  name="codcorretor"  class="ppp">
+                <input type="text" id="desccorretor" name="desccorretor" class="large" disabled>
+            </div>
+
+            <div class='if'>
                 <label class="labelfiltro">Tipo de Imóvel:</label>
 
                 <input type="radio" id="raluguel" name="rimovel" value="1">
@@ -106,14 +134,13 @@
         
         <div class='if' style="display: flex; margin-left: 5px;">                            
             <input type="button" id="bimprimir" name="bimprimir" class="button" value="Imprimir" data-icon="/icons/printer.png">
-            <input type="button" id="binserir"  name="binserir"  class="button" value="Inserir"  data-icon="/icons/incluir.png">
         </div>
 
-        <div class='grid'><table id="tabela_contrato" class="table"></table></div>
+        <div class='grid'><table id="tabela_aprovacao" class="table"></table></div>
 
         <!--  MODAL -->
         <div id="DMF_external" class="DMF_external">
-            <div id="dmodalf_contrato">
+            <div id="dmodalf_aprovacao">
                 <div class='dmf' style="display: flex; justify-content: flex-end;align-items: center; height: 35px;">
                     <div id="bclose" class="bpc"><img src="/icons/fechartela.png" style="width: 80%; height: 80%; margin: 0px;"></div>                
                 </div>
@@ -123,62 +150,25 @@
                     <span     id="sacao"   name="sacao" style="display: none"></span>
                 </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Negociante: </label>
-                    <input type="text" id="mcodcliente"   name="mcodcliente"   class="ppp">
-                    <input type="text" id="mdesccliente"  name="mdesccliente"  class="large">
+                <div class='dmf contrato'>
+                    <div id="fichacontrato"></div>
                 </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Proprietario: </label>
-                    <input type="text" id="mcodprop"   name="mcodprop"   class="ppp">
-                    <input type="text" id="mdescprop"  name="mdescprop"  class="large">
+                <div class='dmf aprovacao'>
+                    <div class='dmf'>
+                        <label class="labelmodal">Valor Liberado: </label>
+                        <input type="text" id="mvlrlib"  name="mvlrlib"  class="large">
+                    </div>
+
+                    <div class='dmf'>
+                        <label class="labelmodal">Observacão: </label>
+                        <textarea id="mobs"  name="mobs"  class="extralarge"></textarea>                        
+                    </div>
                 </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Imovel: </label>
-                    <select id="msimovel"   name="msimovel" class="large">
-                        <option value="0" disabled>Selecione um imovel</option>
-                    </select>
-                    <input type="text" id="mtpimovel"  name="mtpimovel"  class="Intermedium" disabled>
-                </div>
-
-                <div class='dmf'>
-                    <label class="labelmodal">Endereco: </label>
-                    <input type="text" id="mloc"  name="mloc"  class="large" disabled>
-                </div>
-
-                <div class='dmf'>
-                    <label class="labelmodal">Tipo Contrato: </label>
-                    <input type="text" id="mtpcontrato"  name="mtpcontrato"  class="medium" disabled>
-                </div>
-
-                <div class='dmf'>
-                    <label class="labelmodal">Valor do Imovel (R$): </label>
-                    <input type="text" id="mvlrimovel"  name="mvlrimovel"  class="medium" disabled>
-                </div>
-
-                <div class='dmf'>
-                    <label class="labelmodal">Valor negociado (R$): </label>
-                    <input type="text" id="mvlrnegociado"  name="mvlrnegociado"  class="medium">
-                </div>
-
-                <div class='dmf'>
-                    <label class="labelmodal">Vendedor: </label>
-                    <input type="text" id="mvendedor" name="mvendedor" class="small">
-                    <input type="text" id="mnome"     name="mnome"     class="large" disabled>
-                </div>
-
-                <div class='dmf'>
-                    <label class="labelmodal">Inicio do Contrato: </label>
-                    <input type="date" id="mperiodoini" name="mperiodoini" class="medium">
-                    <input type="date" id="mperiodofin" name="mperiodofin" class="medium">
-                </div>
-
-                <div class='if' style="display: flex; margin-left: 5px;"></div>
-
-                <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
-                    <input type="button" id="bcadastro" name="bcadastro" class="button" value="Cadastrar" data-icon="/icons/cadastro.png">
+                <div class='dmf' style="display: flex; justify-content: center; align-items: center; margin: 25px;">                            
+                    <input type="button" id="bcadastro" name="bcadastro" class="button" value="Aprovar"  data-icon="/icons/ok-icon.png">
+                    <input type="button" id="breprovar" name="breprovar" class="button" value="Reprovar" data-icon="/icons/cancel.png">
                 </div>
             </div>
         </div>
