@@ -12,8 +12,8 @@ window.addEventListener("load", function () {
     carregaMes();
 });
 
-const dates = document.querySelector(".diadomes");
-const nomeMes= ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const dates   = document.querySelector(".diadomes");
+const nomeMes = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 let date = new Date();
 let mes  = date.getMonth();
 let ano  = date.getFullYear();
@@ -31,6 +31,9 @@ function iniciarEventos() {
         event_click("bimccadastrometa");
         event_click("dnextagenda");
         event_click("dbackagenda");
+        event_click("bimcaprovacao");
+        event_click("bimcboletoscont");
+        event_click("ditenspagamentoint");
 
         valorMetaMensal();
         setGraficoMeta();
@@ -57,6 +60,12 @@ function event_click(obj) {
             controlaTela("relatorio");
         });
     }
+    if(obj == "ditenspagamentoint"){
+        document.getElementById(obj).addEventListener("click", function() {
+            form("ditenspagamentoext").style.backgroundColor = form("bimcboletoscont").style.display == "flex"?"#dedede":"#192B4A";
+            controlaTela("pagamento");
+        });
+    }
     if(obj == "bimcnovoimovel"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/contratosCadastro"; 
@@ -80,6 +89,16 @@ function event_click(obj) {
     if(obj == "bimccadastrometa"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/contratosCadastroMetas";
+        });
+    }
+    if(obj == "bimcaprovacao"){
+        document.getElementById(obj).addEventListener("click", function() {
+            window.location.href = "/contratoAprovacao";
+        });
+    }
+    if(obj == "bimcboletoscont"){
+        document.getElementById(obj).addEventListener("click", function() {
+            window.location.href = "/contratoAprovacao";
         });
     }
 
@@ -127,6 +146,7 @@ function controlaTela(opc){
             form("bimcassinatura").style.display    = "none";
             form("bimcaprovacao").style.display     = "none";
             form("bimccadastrometa").style.display  = "none";
+            form("bimcboletoscont").style.display  = "none";
             form("dimrimovel").style.display        = "none"; 
     }
     if(opc == "menu"){
@@ -139,6 +159,9 @@ function controlaTela(opc){
         form("bimcassinatura").style.display    = form("bimcassinatura").style.display   == "flex"?"none":"flex";
         form("bimcaprovacao").style.display     = form("bimcaprovacao").style.display    == "flex"?"none":"flex";
         form("bimcnovocliente").style.display   = form("bimcnovocliente").style.display   == "flex"?"none":"flex"; 
+    }
+    if(opc == "pagamento"){
+        form("bimcboletoscont").style.display  = form("bimcboletoscont").style.display == "flex"?"none":"flex";
     }
     if(opc == "relatorio"){
         form("bimccadastrometa").style.display  = form("bimccadastrometa").style.display == "flex"?"none":"flex";

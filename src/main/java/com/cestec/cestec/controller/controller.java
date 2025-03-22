@@ -33,14 +33,24 @@ public class controller {
         return "wcr004";
     }
     
+    @GetMapping("/fichaContrato") 
+    public String fichaContrato() {
+        return "wcr00401";
+    }
+
     @GetMapping("/contratosCadastroMetas") 
     public String contratosCadastroMetas() {
         return "wcr005";
     }
 
-    @GetMapping("/fichaContrato") 
-    public String fichaContrato() {
-        return "wcr00401";
+    @GetMapping("/contratoAprovacao") 
+    public String contratoAprovacao() {
+        return "wcr006";
+    }
+
+    @GetMapping("/gerarCredito") 
+    public String gerarCredito() {
+        return "wcr007";
     }
 
     @GetMapping("/login") 

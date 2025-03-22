@@ -1,13 +1,14 @@
 /* 
     Dev: Lucas Leocadio de Souza
-    Data: 13/03/25
-    IM: 00017
+    Data: 22/03/25
+    IM: 00008
 */
 window.addEventListener("load", function () {
-    createGrid("tabela_metas",
-               "codmeta,codcorretor,nome,vlrmeta,datiniciometa,situacao",
-               "Código,Código,Nome,Meta,Periodo,Situacão",
-               "10,40,10,20,20");
+    createGrid("tabela_aprovacao",
+               "codcontrato,negociacao,codimovel,tipo,codproprietario,nomeProp,codcliente,nomeCliente,codcorretor,nomeCorretor,datinicio,datfinal,preco,valor",
+               "Cód. Contrato,Contrato,Cód. Imovel,Tipo Imovel,Código Prop,Proprietario,Código Cliente,Cliente,Código Corretor,Corretor,Inicio,Final,Preco,Valor negoc.",
+               "6,5,6,6,6,10,6,10,6,10,7,7,6,6",
+               "2200");
     
     iniciarEventos();
     buscarUserName();
@@ -20,48 +21,22 @@ function iniciarEventos() {
 
     event_click("bnovabusca");
     event_click("bbuscar");
-    event_click("binserir");
-    event_click("blimpar");
     event_click("bclose");
-    event_click("bcadastro");
+    event_click("blimpar");
+    // event_click("bcadastro");
     
+    event_change("codproprietario");
+    event_change("codcliente");
     event_change("codcorretor");
-    event_change("mcodcorretor");
 
     imgFormat();
 }
 
-function event_click_table(id,index){
-    if(id == "tabela_metas"){
-        form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
-        form("stitulo").innerText = "Cadastro de Metas - " + form("sacao").innerText;
-        
-        //preencherModal(index);
 
-        controlaTela("modal");
-        form("DMF_external").style.display = "flex"; 
-    }
-}
-
-function event_click(obj) {
+function event_click(obj,dado) {
     if(obj == "bnovabusca"){
         form(obj).addEventListener("click", function () {
             controlaTela("buscar");
-        });
-    }
-    if(obj == "bbuscar"){
-        form(obj).addEventListener("click", function () {
-            controlaTela("novabusca");
-            buscarMetasCorretoresGrid();
-        });        
-    }
-    if(obj == 'binserir'){
-        form(obj).addEventListener("click", function () {
-            form("sacao").innerText   = "Inserindo";
-            form("stitulo").innerText = "Cadastro de Meta - " + form("sacao").innerText;
-                        
-            controlaTela("modal");
-            form("DMF_external").style.display = "flex";
         });
     }
     if(obj == 'blimpar'){
@@ -69,77 +44,79 @@ function event_click(obj) {
             controlaTela("inicia");
         });
     }
+    if(obj == "bbuscar"){
+        form(obj).addEventListener("click", function () {
+            controlaTela("novabusca");
+
+            buscarContratoAprovacao();
+        });        
+    }
     if(obj == 'bclose'){
         form(obj).addEventListener("click", function () {
-            form("DMF_external").style.display = "none";
-        });
-    }
-    if(obj == 'bcadastro'){
-        form(obj).addEventListener("click", function () {
-            salvarMetaCorretor();
-
             form("DMF_external").style.display = "none";
         });
     }
 }
 
 function event_change(obj){
-    if(obj == "mcodcorretor"){
+    if(obj == "codproprietario"){
         form(obj).addEventListener("change", function(){
-            getDescCorretor('mcodcorretor', "mdesccorretor");           
+            form("descproprietario").value = form(obj).value!=""?descProprietario(obj) : "Todos";
+        });
+    }
+    if(obj == "codcliente"){
+        form(obj).addEventListener("change", function(){
+            form("desccliente").value = form(obj).value!=""? getDescCliente(obj) : "Todos os Clientes";
         });
     }
     if(obj == "codcorretor"){
         form(obj).addEventListener("change", function(){
-            getDescCorretor('codcorretor', "desccorretor");           
+            form("desccorretor").value = form(obj).value != ""? getDescCorretor(obj):"Todos os Corretores";           
         });
+    }
+}
+
+function event_click_table(id,index){
+    if(id == "tabela_aprovacao"){
+        form("sacao").innerText   = ehConsulta()?"Consultando":"Analisando";
+        form("stitulo").innerText = form("sacao").innerText + " o Contrato - " + form("sacao").innerText;
+        
+        puxarFichaContrato(3);
+
+        controlaTela("modal");
+        form("DMF_external").style.display = "flex"; 
     }
 }
 
 function controlaTela(opc){
     limparTela(opc);
     if(opc == "inicia" || opc == 'buscar'){
-        desabilitaCampo('bnovabusca',    true);
-        desabilitaCampo('bbuscar',       false);
-        desabilitaCampo('codcorretor',   false);
-        desabilitaCampo('periodoini',    false);
-        desabilitaCampo('periodofin',    false);
-
-        form("binserir").style.display     = form("aba1").style.pointerEvents == 'visible'?"flex":"none";
-        form("DMF_external").style.display = "none";
+        desabilitaCampo('bnovabusca',        true);
+        desabilitaCampo('bbuscar',           false);
+        desabilitaCampo('codproprietario',   false);
+        desabilitaCampo('codcliente',        false);
+        desabilitaCampo('codcorretor',       false);
     }
     if(opc == "novabusca"){
-        desabilitaCampo('bnovabusca',    false);
-        desabilitaCampo('bbuscar',       true);
-        desabilitaCampo('codcorretor',   true);
-        desabilitaCampo('periodoini',    true);
-        desabilitaCampo('periodofin',    true);
-    }
-    if(opc == "modal"){
-        desabilitaCampo('mvlrmeta',     ehConsulta());
-        desabilitaCampo('mcodcorretor', ehConsulta());
-        desabilitaCampo('mperiodoini',  ehConsulta());
-        desabilitaCampo('mperiodofin',  ehConsulta());
-        desabilitaCampo('bcadastro',    ehConsulta());
+        desabilitaCampo('bnovabusca',       false);
+        desabilitaCampo('bbuscar',          true);
+        desabilitaCampo('codproprietario',  true);
+        desabilitaCampo('codcliente',       true);
+        desabilitaCampo('codcorretor',      true);
     }
 }
 
 
 function limparTela(opc){
-    if(opc == "inicia" || opc == 'buscar'){        
-        form('codcorretor').value  = "";
-        form('desccorretor').value = "Todos os Corretores";
-        form('periodoini').value   = "";
-        form('periodofin').value   = "";
-
-        form("binserir").style.display     = form("aba1").style.pointerEvents == 'visible'?"flex":"none";
+    if(opc == "inicia" || opc == 'buscar'){
+        form('codproprietario').value   = "";
+        form('descproprietario').value  = "Todos os Proprietarios";
+        form('codcliente').value        = "";
+        form('desccliente').value       = "Todos os Clientes";
+        form('codcorretor').value       = "";
+        form('desccorretor').value      = "Todos os Corretores";
+        
         form("DMF_external").style.display = "none";
-    }
-    if(opc == "modal"){
-        form('mvlrmeta').value      = "0";
-        form('mcodcorretor').value  = "";
-        form("mperiodoini").value   = "";
-        form("mperiodofin").value   = "";
     }
 } 
 
@@ -187,6 +164,13 @@ function ehManutencao(){
     return form("aba2").classList.contains('ativa');
 }
 
+function puxarFichaContrato(codcontrato){
+    fetch(`http://localhost:8080/fichaContrato?codcontrato=${codcontrato}`)
+    .then(response => response.text())
+    .then(data => {form('fichacontrato').innerHTML = data})
+    .catch(error => console.error('Não foi possivel carregar a ficha. \n', error));
+}
+
 function preencherModal(index){
     fetch(`/contrato/${index}/buscarContratoGrid`, {
         method: "GET",
@@ -197,15 +181,37 @@ function preencherModal(index){
     .catch(error => alert(error.message))
 }
 
-function buscarMetasCorretoresGrid(){
-    fetch("/wcr005/buscarMetasCorretoresGrid",{
-        method:  "GET",
+function buscarContratoAprovacao(){
+    fetch(`/wcr006c/buscarContratoAprovacao`,{
+        method: "GET",
         headers: {"Content-Type":"application/json"}
     })
     .then(response => {return response.json()})
-    .then(data => {carregaGrid("tabela_metas",
-                                 data) })
+    .then(data     => {carregaGrid("tabela_aprovacao",data)})
+    .catch(error   => alert("Erro ao puxar os dados buscarContratoAprovacao. \n" + error.message))
+}
+
+function getDescCliente(codigo, retorno){
+    fetch(`/cliente/${form(codigo).value}/findNomeClienteById`,{
+        method: "GET",
+        headers: {"Content-Type":"application/json"}
+    })
+    .then(response => {return response.text()})
+    .then(data => { return data })
     .catch(error => alert(error.message))
+}
+
+function descProprietario(codigo,retorno) {
+    fetch(`/contratosCadastroClientes/proprietario/${form(codigo).value}/nomepropri`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(form(codigo).value)
+    })
+    .then(response => {return response.text()})
+    .then(data => { return data })
+    .catch(error => alert(error.message));
 }
 
 function getDescCorretor(obj, retorno){
@@ -214,27 +220,8 @@ function getDescCorretor(obj, retorno){
         headers: {"Content-type":"application/json"}
     })
     .then(response => { return response.text()})
-    .then(data => {form(retorno).value = data})
+    .then(data => {return data })
     .catch(error => alert(error.message))
-}
-
-function salvarMetaCorretor(){
-    const meta = { login:         form("mcodcorretor").value,
-                   vlrmeta:       form("mvlrmeta").value,
-                   datiniciometa: form("mperiodoini").value,
-                   datfinalmeta:  form("mperiodofin").value,
-                   nome:          form("ideusu").value
-                 };
-
-    fetch(`/wcr005/salvarMetaCorretor`,{
-        method:  "POST",
-        headers: {
-            "Content-type":"application/json"
-        },
-        body: JSON.stringify(meta)
-    })
-    .then(response => {return response.json()})
-    .catch(error => alert(error.message));
 }
 
 function buscarUserName(){
@@ -277,11 +264,10 @@ function desabilitaCampo(obj,desahabilita){
     form(obj).style.cursor = desahabilita?'not-allowed':'pointer';
 }
 
-function createGrid(id,column,columnName,columnWidth){
-    form(id).innerText = '';
+function createGrid(id,column,columnName,columnWidth,width){    
     const table     = document.getElementById(id);
     const thead     = document.createElement("thead");
-    const headerRow = document.createElement("tr");      
+    const headerRow = document.createElement("tr");
     const colunas   = column.split(",");
 
     var pi = 0;
@@ -305,6 +291,8 @@ function createGrid(id,column,columnName,columnWidth){
         form(coluna.trim() + "__" + pi).style.width = columnWidth.split(",")[pi] +"%"; 
         pi += 1;
     });
+
+    table.style.width = width + "px";
     return table;
 }
 
@@ -340,8 +328,8 @@ function carregaGrid(id,dados){
 }
 
 function clearGrid(id){
-    const linha = form(id).rows;
-    for(var i = 1; i < linha.length; i++){
-        linha[i].innerText = "";
+    const tbody = document.getElementById(id).querySelector('tbody');
+    while (tbody.rows.length > 0) {
+        tbody.deleteRow(0);
     }
 }

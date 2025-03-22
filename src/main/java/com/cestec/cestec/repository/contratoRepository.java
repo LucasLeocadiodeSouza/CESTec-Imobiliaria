@@ -23,6 +23,16 @@ public interface contratoRepository extends JpaRepository<pcp_contrato, Integer>
             "JOIN con.pcp_imovel i")
     List<contratoDTO> buscarContratoGrid();
     
+    @Query("SELECT new com.cestec.cestec.model.contratoDTO( " +
+            "con.codcontrato, i.codimovel, p.codproprietario, c.codcliente, con.datinicio, con.datfinal, i.tipo, corr.codcorretor, i.preco, i.negociacao, p.nome, c.nome, func.nome, con.valor) " +
+            "FROM pcp_contrato con "       + 
+            "JOIN con.pcp_corretor corr "  +
+            "JOIN corr.funcionario func "  +
+            "JOIN con.pcp_proprietario p " + 
+            "JOIN con.pcp_cliente c "      +
+            "JOIN con.pcp_imovel i")
+    List<contratoDTO> buscarContratoAprovacao();
+
     @Query("SELECT con.valor "          +
           " FROM pcp_contrato con "     +
           " JOIN con.pcp_corretor cor " +
@@ -30,6 +40,7 @@ public interface contratoRepository extends JpaRepository<pcp_contrato, Integer>
           " JOIN cor.funcionario func " +
           " JOIN func.sp_user sp "      +
           " WHERE sp.login = :ideusu "  +
+          " AND con.situacao = 2 " +
           " AND con.datiregistro BETWEEN meta.datinicio AND meta.datfinal")          
     List<Double> buscarValoresContratoByIdeusu(@Param("ideusu") String ideusu);
 }
