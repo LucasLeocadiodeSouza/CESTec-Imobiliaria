@@ -24,8 +24,11 @@
 
     .labelpainel {color: #eaeaea !important;}
 
-    .esquerda {}
-    .direita {}
+    .ciclo {padding:       5px;
+            margin:        2px;
+            margin-inline: 6px;
+            display:       flex;
+            border:        1px solid black;}
 
     body {background-color: #1d3561;}
 
@@ -286,18 +289,23 @@
 
     <div id="dbarramenulateral" class="gen">
         <div id="didentificacao" class="gen">
+            <div id="ddescoutros" class="ddescdiv" style="height: 100px; width: 220px; display: flex;">
+                <div id="logoEmpresa" class="logoEmpresa">
+                    <img src="/icons/iconLogoEmpresa.png" alt="Carregando" style="width: 100%; height: 100%">
+                </div>
 
-            <div id="ddescoutros" class="ddescdiv" style="height: 100px; width: 220px;">
-                <div class="gen" style="padding: 5px; height: 35px; width: 140px; float: right;">
-                    <h1 id="huser"></h1>                
-                </div>
-    
-                <div class="gen" style="padding: 5px;height: 17px; width: 140px; float: right; padding-right: 10px;">
-                    <label id="lcargo" value="ccargo">Cargo</label>
-                </div>
-    
-                <div class="gen" style="float: right; width: 140px; height: 17px; padding: 0px; padding-right: 10px;">
-                    <label id="lid"></label>
+                <div style="display: flex; flex-direction: column; width: 60%;">
+                    <div class="gen" style="padding: 5px; height: 35px; width: 140px; float: right;">
+                        <h1 id="huser"></h1>                
+                    </div>
+        
+                    <div class="gen" style="padding: 5px;height: 17px; width: 140px; float: right; padding-right: 10px;">
+                        <label id="lcargo" value="ccargo">Cargo</label>
+                    </div>
+        
+                    <div class="gen" style="float: right; width: 140px; height: 17px; padding: 0px; padding-right: 10px;">
+                        <label id="lid"></label>
+                    </div>
                 </div>
             </div>
         </div>
