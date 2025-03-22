@@ -58,6 +58,8 @@ body .gen {padding: 10px}
              background-color: #d5d4d4c2;
              border-color:     #9392929a;}             
 
+.logoEmpresa {display: flex; width: 100%; justify-content: center; align-items: center;}
+
 .titulo {border: 2px solid rgb(104, 104, 104);
          border-bottom: none; 
          background-color: #c4c4c4;

@@ -491,8 +491,7 @@ function createGrid(id,column,columnName,columnWidth,dados){
                 
                 td.addEventListener("click", function (event) {
                     event.stopPropagation();
-                    localStorage.setItem("CODCONTRATO", dado.codcontrato);
-                    window.open("http://localhost:8080/fichaContrato","FichaDeContrato","_blank,width=600,height=600");
+                    window.open(`http://localhost:8080/fichaContrato?codcontrato=${dado.codcontrato}`,"FichaDeContrato","_blank,width=760,height=600");
                 });
             }
             else{ td.textContent = valor? valor :"N/A" }            
