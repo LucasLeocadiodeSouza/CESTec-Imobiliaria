@@ -98,7 +98,7 @@ function event_click(obj) {
     }
     if(obj == "bimcboletoscont"){
         document.getElementById(obj).addEventListener("click", function() {
-            window.location.href = "/contratoAprovacao";
+            window.location.href = "/gerarCredito";
         });
     }
 
