@@ -88,32 +88,14 @@
 
         <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
             <div class='if'>
-                <label class="labelfiltro">Código do Proprietario: </label>
-                <input type="text" id="codproprietario" name="codproprietario" class="ppp">
-                <input type="text" id="descproprietario" name="descproprietario" class="large" disabled>
+                <label class="labelfiltro">Número Boleto: </label>
+                <input type="text" id="codboleto" name="codboleto" class="p">
             </div>
 
             <div class='if'>
-                <label class="labelfiltro">Código do Cliente: </label>
-                <input type="text" id="codcliente"  name="codcliente"  class="ppp">
-                <input type="text" id="desccliente" name="desccliente" class="large" disabled>
-            </div>
-
-            <div class='if'>
-                <label class="labelfiltro">Código do Corretor: </label>
-                <input type="text" id="codcorretor"  name="codcorretor"  class="ppp">
-                <input type="text" id="desccorretor" name="desccorretor" class="large" disabled>
-            </div>
-
-            <div class='if'>
-                <label class="labelfiltro">Tipo de Imóvel:</label>
-
-                <input type="radio" id="raluguel" name="rimovel" value="1">
-                <label class="labelfiltro" style="text-align: left; width: 80px" for="raluguel">Aluguel</label>
-
-                <input type="radio" id="rvenda" name="rimovel" value="2">
-                <label class="labelfiltro" style="text-align: left; width: 80px" for="rvenda">Venda</label>
-            </div>
+                <label class="labelfiltro">CPF/CNPJ: </label>
+                <input type="text" id="codcliente"  name="codcliente"  class="medium">            
+            </div>           
 
             <div  class='if' style="display: flex; height: auto;">
                 <label class="labelfiltro"></label>                
@@ -125,6 +107,7 @@
         
         <div class='if' style="display: flex; margin-left: 5px;">                            
             <input type="button" id="bimprimir" name="bimprimir" class="button" value="Imprimir" data-icon="/icons/printer.png">
+            <input type="button" id="binserir"  name="binserir"  class="button" value="Nova Busca"  data-icon="/icons/incluir.png">
         </div>
 
         <div class='grid'><table id="tabela_aprovacao" class="table"></table></div>

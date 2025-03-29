@@ -23,12 +23,8 @@ function iniciarEventos() {
     event_click("bbuscar");
     event_click("bclose");
     event_click("blimpar");
-    // event_click("bcadastro");
-    
-    event_change("codproprietario");
-    event_change("codcliente");
-    event_change("codcorretor");
-
+    event_click("binserir");
+    // event_click("bcadastro");    
     imgFormat();
 }
 
@@ -56,24 +52,19 @@ function event_click(obj,dado) {
             form("DMF_external").style.display = "none";
         });
     }
+    if(obj == 'binserir'){
+        form(obj).addEventListener("click", function () {
+            form("DMF_external").style.display = "block";
+        });
+    }
 }
 
 function event_change(obj){
-    if(obj == "codproprietario"){
-        form(obj).addEventListener("change", function(){
-            form("descproprietario").value = form(obj).value!=""?descProprietario(obj) : "Todos";
-        });
-    }
-    if(obj == "codcliente"){
-        form(obj).addEventListener("change", function(){
-            form("desccliente").value = form(obj).value!=""? getDescCliente(obj) : "Todos os Clientes";
-        });
-    }
-    if(obj == "codcorretor"){
-        form(obj).addEventListener("change", function(){
-            form("desccorretor").value = form(obj).value != ""? getDescCorretor(obj):"Todos os Corretores";           
-        });
-    }
+    // if(obj == "codproprietario"){
+    //     form(obj).addEventListener("change", function(){
+    //         form("descproprietario").value = form(obj).value!=""?descProprietario(obj) : "Todos";
+    //     });
+    // }
 }
 
 function event_click_table(id,index){
@@ -81,7 +72,7 @@ function event_click_table(id,index){
         form("sacao").innerText   = ehConsulta()?"Consultando":"Analisando";
         form("stitulo").innerText = form("sacao").innerText + " o Contrato - " + form("sacao").innerText;
         
-        puxarFichaContrato(3);
+        //puxarFichaContrato(3);
 
         controlaTela("modal");
         form("DMF_external").style.display = "flex"; 
@@ -93,29 +84,16 @@ function controlaTela(opc){
     if(opc == "inicia" || opc == 'buscar'){
         desabilitaCampo('bnovabusca',        true);
         desabilitaCampo('bbuscar',           false);
-        desabilitaCampo('codproprietario',   false);
-        desabilitaCampo('codcliente',        false);
-        desabilitaCampo('codcorretor',       false);
     }
     if(opc == "novabusca"){
         desabilitaCampo('bnovabusca',       false);
         desabilitaCampo('bbuscar',          true);
-        desabilitaCampo('codproprietario',  true);
-        desabilitaCampo('codcliente',       true);
-        desabilitaCampo('codcorretor',      true);
     }
 }
 
 
 function limparTela(opc){
-    if(opc == "inicia" || opc == 'buscar'){
-        form('codproprietario').value   = "";
-        form('descproprietario').value  = "Todos os Proprietarios";
-        form('codcliente').value        = "";
-        form('desccliente').value       = "Todos os Clientes";
-        form('codcorretor').value       = "";
-        form('desccorretor').value      = "Todos os Corretores";
-        
+    if(opc == "inicia" || opc == 'buscar'){        
         form("DMF_external").style.display = "none";
     }
 } 
