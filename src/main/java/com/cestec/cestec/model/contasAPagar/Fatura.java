@@ -3,50 +3,54 @@ package com.cestec.cestec.model.contasAPagar;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.EqualsAndHashCode;
 
 @Entity
+@Table(name = "fatura")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-@MappedSuperclass
+//@MappedSuperclass
 public class Fatura {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Long          id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private TipoFatura    tipo;
 
     @Enumerated(EnumType.STRING)
-    private TipoPagamento tpPagamento;
+    private TipoPagamento tipoPagamento;
 
     @Enumerated(EnumType.STRING)
     private SituacaoFat   situacao;
 
     private BigDecimal    valor;
-    private LocalDate     dtVenc;
-    private String        numDocumento;
-    private String        nossoNumero;
+    private LocalDate     data_vencimento;
 
-    @CreationTimestamp
-    private LocalDate     criadoEm;
+    private String numeroDocumento;
+    private String nossoNumero;
+
+    private LocalDateTime criadoEm;
 
     @UpdateTimestamp
-    private LocalDate     atualizadoEm;
+    private LocalDateTime atualizadoEm;
 
     @ManyToOne
     @JoinColumn(name="conta_id")
@@ -60,6 +64,13 @@ public class Fatura {
     @JoinColumn(name="pessoa_id")
     private Pessoa pessoa;
 
+    
+    public LocalDate getDataVencimento() {
+        return data_vencimento;
+    }
+    public void setDataVencimento(LocalDate data_vencimento) {
+        this.data_vencimento = data_vencimento;
+    }
     public Long getId() {
         return id;
     }
@@ -72,23 +83,17 @@ public class Fatura {
     public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
-    public LocalDate getDtVenc() {
-        return dtVenc;
-    }
-    public void setDtVenc(LocalDate dtVenc) {
-        this.dtVenc = dtVenc;
-    }
     public TipoFatura getTipo() {
         return tipo;
     }
     public void setTipo(TipoFatura tipo) {
         this.tipo = tipo;
     }
-    public TipoPagamento getTpPagamento() {
-        return tpPagamento;
+    public TipoPagamento getTipoPagamento() {
+        return tipoPagamento;
     }
-    public void setTpPagamento(TipoPagamento tpPagamento) {
-        this.tpPagamento = tpPagamento;
+    public void setTipoPagamento(TipoPagamento tipoPagamento) {
+        this.tipoPagamento = tipoPagamento;
     }
     public SituacaoFat getSituacao() {
         return situacao;
@@ -96,11 +101,11 @@ public class Fatura {
     public void setSituacao(SituacaoFat situacao) {
         this.situacao = situacao;
     }
-    public String getNumDocumento() {
-        return numDocumento;
+    public String getNumeroDocumento() {
+        return numeroDocumento;
     }
-    public void setNumDocumento(String numDocumento) {
-        this.numDocumento = numDocumento;
+    public void setNumeroDocumento(String numeroDocumento) {
+        this.numeroDocumento = numeroDocumento;
     }
     public String getNossoNumero() {
         return nossoNumero;
@@ -108,16 +113,16 @@ public class Fatura {
     public void setNossoNumero(String nossoNumero) {
         this.nossoNumero = nossoNumero;
     }
-    public LocalDate getCriadoEm() {
+    public LocalDateTime getCriadoEm() {
         return criadoEm;
     }
-    public void setCriadoEm(LocalDate criadoEm) {
+    public void setCriadoEm(LocalDateTime criadoEm) {
         this.criadoEm = criadoEm;
     }
-    public LocalDate getAtualizadoEm() {
+    public LocalDateTime getAtualizadoEm() {
         return atualizadoEm;
     }
-    public void setAtualizadoEm(LocalDate atualizadoEm) {
+    public void setAtualizadoEm(LocalDateTime atualizadoEm) {
         this.atualizadoEm = atualizadoEm;
     }
     public Conta getConta() {
@@ -131,6 +136,12 @@ public class Fatura {
     }
     public void setConvenio(Convenio convenio) {
         this.convenio = convenio;
+    }
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     

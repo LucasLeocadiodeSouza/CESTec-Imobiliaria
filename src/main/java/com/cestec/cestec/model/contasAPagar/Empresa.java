@@ -1,6 +1,7 @@
 package com.cestec.cestec.model.contasAPagar;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,47 +10,49 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import lombok.EqualsAndHashCode;
 
 @Entity
+@Table(name = "empresa")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-@MappedSuperclass
+//@MappedSuperclass
 public class Empresa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long        id;
 
-    @CreationTimestamp
-    private LocalDate   criadoEm;
+    private LocalDateTime   criadoEm;
 
-    @UpdateTimestamp
-    private LocalDate   atualizadoEm;
+    private LocalDateTime   atualizadoEm;
 
+    @Column(length = 70)
     private String      razaoSocial;
+
+    @Column(length = 20)
     private String      cnpj;
 
-    @Column(name = "endereco_logradouro")
+    @Column(length = 80)
     private String endereco_logradouro;
 
-    @Column(name = "endereco_numero")
+    @Column(length = 10)
     private String endereco_numero;
 
-    @Column(name = "endereco_cidade")
+    @Column(length =  70)
     private String endereco_cidade;
 
-    @Column(name = "endereco_bairro")
+    @Column(length = 70)
     private String endereco_bairro;
 
-    @Column(name = "endereco_complemento")
+    @Column(length = 40)
     private String endereco_complemento;
 
-    @Column(name = "endereco_uf")
+    @Column(length = 2)
     private String endereco_uf;
 
-    @Column(name = "endereco_cep")
+    @Column(length = 20)
     private String endereco_cep;
 
 
@@ -59,16 +62,16 @@ public class Empresa {
     public void setId(Long id) {
         this.id = id;
     }
-    public LocalDate getCriadoEm() {
+    public LocalDateTime getCriadoEm() {
         return criadoEm;
     }
-    public void setCriadoEm(LocalDate criadoEm) {
+    public void setCriadoEm(LocalDateTime criadoEm) {
         this.criadoEm = criadoEm;
     }
-    public LocalDate getAtualizadoEm() {
+    public LocalDateTime getAtualizadoEm() {
         return atualizadoEm;
     }
-    public void setAtualizadoEm(LocalDate atualizadoEm) {
+    public void setAtualizadoEm(LocalDateTime atualizadoEm) {
         this.atualizadoEm = atualizadoEm;
     }
     public String getRazaoSocial() {
