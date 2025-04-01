@@ -57,7 +57,7 @@ function event_click(obj) {
     }
     if(obj == 'bcadastro'){
         form(obj).addEventListener("click", function () {
-            adicionarProprietario();
+            adicionarCliente();
             form("DMF_external").style.display = "none";
         });
     }
@@ -122,11 +122,14 @@ function buscarClienteGrid(index){
     .then(data => {
         form("mcodcliente").value = data.codcliente;
         form("mnome").value       = data.nome;
-        form("mcpf").value        = data.cpf;
+        form("mcpf").value        = data.documento;
         form("mddd").value        = data.numtel.substring(0,2);
         form("mtelefone").value   = data.numtel.substring(2);
         form("memail").value      = data.email;
-        form("mloc").value        = data.endereco;
+        form('mbairro').value     = data.endereco_bairro;
+        form('mnmr').value        = data.endereco_numero;
+        form('mcidade').value     = data.endereco_cidade;
+        form('muf').value         = data.endereco_uf;
     })
     .catch(error => alert(error.message));
 }
@@ -136,22 +139,25 @@ function buscarDadosTable(){
         .then(response => {return response.json()}) //quando chega a mensagem vc converte para json
         .then(data => {                    // quando chega o dados na forma de JSON vc faz  ...           
             createGrid("tabela_clientes",
-                       "codcliente,nome,cpf,endereco,numtel",
-                       "Cod. Cliente, Nome, CPF, Endereco, Telefone",
+                       "codcliente,nome,documento,endereco_bairro,numtel",
+                       "Cod. Cliente, Nome, Documento, Endereco, Telefone",
                        "10,40,10,30,10",
                        data);
         })
         .catch(error => console.log("Erro ao buscar dados: ",error));
 }
 
-function adicionarProprietario() {
-    const cliente     = { codcliente: form("mcodcliente").value,
-                          nome:       form("mnome").value,
-                          cpf:        form("mcpf").value,
-                          cnpj:       '0',
-                          numtel:     form("mddd").value + form("mtelefone").value,
-                          email:      form("memail").value,
-                          endereco:   form("mloc").value };
+function adicionarCliente() {
+    const cliente     = { codcliente:      form("mcodcliente").value,
+                          nome:            form("mnome").value,
+                          documento:       form("mcpf").value,                          
+                          numtel:          form("mddd").value + form("mtelefone").value,
+                          email:           form("memail").value,
+                          endereco_bairro: form('mbairro').value,
+                          endereco_numero: form('mnmr').value,
+                          endereco_cidade: form('mcidade').value,
+                          endereco_uf:     form('muf').value
+                        };
 
     fetch("/cliente/salvarCliente", {
         method: "POST",
@@ -160,9 +166,7 @@ function adicionarProprietario() {
         },
         body: JSON.stringify(cliente)
     })
-    .then(response => {
-        return response.json();
-    })
+    .then(response => {console.log(response.json()); return response.json();})
     .then(data => {        
         alert("Dados Salvos Com Sucesso!");
         if(form("sacao").innerText == "Inserindo")if(confirm("Deseja enviar um Email de Boas Vindas para o cliente?")) enviarEmail();
@@ -217,7 +221,10 @@ function controlaTela(opc){
         desabilitaCampo('mddd',      ehConsulta());
         desabilitaCampo('mtelefone', ehConsulta());
         desabilitaCampo('memail',    ehConsulta());
-        desabilitaCampo('mloc',      ehConsulta());
+        desabilitaCampo('mbairro',   ehConsulta());
+        desabilitaCampo('mnmr',      ehConsulta());
+        desabilitaCampo('mcidade',   ehConsulta());
+        desabilitaCampo('muf',       ehConsulta());
         desabilitaCampo('bcadastro', ehConsulta());
     }
 }
@@ -237,7 +244,10 @@ function limparTela(opc){
         form('mddd').value          = "";
         form('mtelefone').value     = "";
         form('memail').value        = "";
-        form('mloc').value          = "";
+        form('mbairro').value       = "";
+        form('mnmr').value          = "";
+        form('mcidade').value       = "";
+        form('muf').value           = "";
     }
 }
 

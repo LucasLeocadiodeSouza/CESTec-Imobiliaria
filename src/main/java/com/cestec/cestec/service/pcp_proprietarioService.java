@@ -1,5 +1,6 @@
 package com.cestec.cestec.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public class pcp_proprietarioService {
     private imovelRepository imovelRepository;
 
     public String validaProprietario(pcp_proprietario proprietario){
-        if(proprietario.getCpf() == ""){
+        if(proprietario.getDocumento() == ""){
             return "Proprietario Não pode ser cadastrado sem um CPF";
         }
         if(proprietario.getEmail() == ""){
@@ -47,12 +48,21 @@ public class pcp_proprietarioService {
         pcp_proprietario proprietarioAnalise = proprietarioRepository.findByCodproprietario(pcp_proprietario.getCodproprietario());
 
         if(proprietarioAnalise != null){
-            proprietarioAnalise.setCpf(pcp_proprietario.getCpf());
+            proprietarioAnalise.setDocumento(pcp_proprietario.getDocumento());
             proprietarioAnalise.setEmail(pcp_proprietario.getEmail());
-            proprietarioAnalise.setEndereco(pcp_proprietario.getEndereco());
+            proprietarioAnalise.setEndereco_bairro(proprietarioAnalise.getEndereco_bairro());
+            proprietarioAnalise.setEndereco_cep(proprietarioAnalise.getEndereco_cep());
+            proprietarioAnalise.setEndereco_cidade(proprietarioAnalise.getEndereco_cidade());
+            proprietarioAnalise.setEndereco_complemento(proprietarioAnalise.getEndereco_complemento());
+            proprietarioAnalise.setEndereco_numero(proprietarioAnalise.getEndereco_numero());
+            proprietarioAnalise.setEndereco_uf(proprietarioAnalise.getEndereco_uf());
+            proprietarioAnalise.setEndereco_logradouro(proprietarioAnalise.getEndereco_logradouro());
             proprietarioAnalise.setNome(pcp_proprietario.getNome());
             proprietarioAnalise.setNumtel(pcp_proprietario.getNumtel());
-        };
+        }else{ pcp_proprietario.setCriado_em(LocalDateTime.now()); }
+
+
+        pcp_proprietario.setAtualizado_em(LocalDateTime.now());
 
         pcp_proprietario salvo = proprietarioRepository.save(pcp_proprietario);
         return ResponseEntity.ok(salvo);

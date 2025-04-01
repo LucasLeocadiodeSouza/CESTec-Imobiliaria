@@ -58,6 +58,8 @@ C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repositor
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\funcionarioRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\imovelRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\metaRepository.java
+C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\pagamento\contaRepository.java
+C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\pagamento\convenioRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\pagamento\faturaRegistradaRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\pagamento\faturaRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\pagamento\pessoaRepository.java

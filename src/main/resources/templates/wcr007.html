@@ -25,9 +25,11 @@
     .large       {width: 240px;}
     .extralarge  {width: 300px;}
 
-    #bcadastro {background-color: #099000 !important; color: #FFF;}
+    th {padding: 9px !important;}
 
-    #breprovar {background-color: #ff0000 !important; color: #FFF;}
+    #bsalvar     {background-size: 20px 20px !important;}
+
+    #benviaboleto {background-size: 17px 17px !important; width: 125px;}
 
     .fieldset {margin: 10px;
                display: flex;
@@ -39,15 +41,15 @@
                   text-align: right;}
 
     .labelmodal {font-weight: 600;
-                 width: 190px;
+                 width: 178px;
                  text-align: right;}
+
+    .container {height: auto;}
 
     .grid {display: block !important;
            height: 400px;
            margin-top: 25px;
-           margin-inline: 7px;
-           overflow-y: auto;
-           overflow-x:scroll;}
+           margin-inline: 7px;}
 
     /* ::-webkit-scrollbar {
         width: 1px;
@@ -57,18 +59,33 @@
         background: transparent;
     } */
 
+    .inv {display: none !important;}
+
     .dmf {width: auto;
           margin-inline: 15px;}
 
-    #dmodalf_aprovacao {width: calc(100% - 300px); /* Subtrai 150px de cada lado */
-                        height: auto; /* Subtrai 50px de cada lado, considerando a margem superior e inferior */
-                        opacity: 1;
-                        display: flex;
-                        flex-direction: column;
-                        background-color: aliceblue;
-                        box-shadow: 0 0 .4vw rgba(0,0,0,0.5);
-                        margin-inline: 150px;  /* Margem de 150px nas laterais */
-                        margin-block: 50px;}
+    .botaoconfirm {padding-left: 0px !important;
+                   width: 80px;
+                   height: 35px;}
+
+    #dmodalf_visuboleto {width: 730px;
+                         height: 400px;
+                         display: flex;
+                         flex-direction: column;
+                         background-color: aliceblue;
+                         box-shadow: 0 0 .4vw rgba(0,0,0,0.5);
+                         margin-inline: 150px;  /* Margem de 150px nas laterais */
+                         margin-block: 50px;}
+
+    #dmodalf_geracaoboleto {width: 730px; /* Subtrai 150px de cada lado */
+                            height: 400px; /* Subtrai 50px de cada lado, considerando a margem superior e inferior */
+                            opacity: 1;
+                            display: flex;
+                            flex-direction: column;
+                            background-color: aliceblue;
+                            box-shadow: 0 0 .4vw rgba(0,0,0,0.5);
+                            margin-inline: 150px;  /* Margem de 150px nas laterais */
+                            margin-block: 50px;}
 
     body {background-color: #1d3561;}
 </style>
@@ -78,7 +95,7 @@
         <input type="hidden" id="ideusu" name="ideusu">
 
         <div class="titulo">
-            <h2>Cadastro de Contratos</h2>
+            <h2>Geracão de Crédito</h2>
         </div>
 
         <div id='abas' class="gen" style="height: 40px; width: 90%; justify-content: center; margin: 10px; margin-bottom: 0px;padding: 0px; display: flex; justify-content: flex-start;">            
@@ -90,6 +107,11 @@
             <div class='if'>
                 <label class="labelfiltro">Número Boleto: </label>
                 <input type="text" id="codboleto" name="codboleto" class="p">
+            </div>
+
+            <div class='if'>
+                <label class="labelfiltro">Convênio: </label>
+                <input type="text" id="codconvenio"  name="codconvenio"  class="medium">            
             </div>
 
             <div class='if'>
@@ -110,12 +132,12 @@
             <input type="button" id="binserir"  name="binserir"  class="button" value="Nova Busca"  data-icon="/icons/incluir.png">
         </div>
 
-        <div class='grid'><table id="tabela_aprovacao" class="table"></table></div>
+        <div class='grid'><table id="tabela_boletos" class="table"></table></div>
 
         <!--  MODAL -->
         <div id="DMF_external" class="DMF_external">
-            <div id="dmodalf_aprovacao">
-                <div class='dmf' style="display: flex; justify-content: flex-end;align-items: center; height: 35px;">
+            <div id="dmodalf_geracaoboleto">
+                <div style="display: flex; justify-content: flex-end;align-items: center; height: 35px;">
                     <div id="bclose" class="bpc"><img src="/icons/fechartela.png" style="width: 80%; height: 80%; margin: 0px;"></div>                
                 </div>
 
@@ -124,26 +146,65 @@
                     <span     id="sacao"   name="sacao" style="display: none"></span>
                 </div>
 
-                <div class='dmf contrato'>
-                    <div id="fichacontrato"></div>
-                </div>
-
-                <div class='dmf aprovacao'>
-                    <div class='dmf'>
-                        <label class="labelmodal">Valor Liberado: </label>
-                        <input type="text" id="mvlrlib"  name="mvlrlib"  class="large">
+                <div class='dmf container'>
+                    <div id="dfatura" class='dmf'>
+                        <label class="labelmodal">Fatura: </label>
+                        <input type="text" id="mfatura" name="mfatura" class="ppp">
                     </div>
 
                     <div class='dmf'>
-                        <label class="labelmodal">Observacão: </label>
-                        <textarea id="mobs"  name="mobs"  class="extralarge"></textarea>                        
+                        <label class="labelmodal">Beneficiario: </label>
+                        <input type="text" id="mcodcliente"  name="mcodcliente"  class="ppp">
+                        <input type="text" id="mbenef"       name="mbenef"       class="large">
+                    </div>
+
+                    <div class='dmf'>
+                        <label class="labelmodal">Documento: </label>
+                        <input type="text" id="mdocumento"  name="mdocumento"  class="medium">
+                    </div>
+
+                    <div class='dmf'>
+                        <label class="labelmodal">Código do Contrato: </label>
+                        <input type="text" id="mcodcontrato"  name="mcodcontrato"  class="medium">
+                    </div>
+
+                    <div id="dnmrboleto" class='dmf'>
+                        <label class="labelmodal">Número do Boleto: </label>
+                        <input type="text" id="mnmrboleto"  name="mnmrboleto"  class="large"></input>
+                    </div>
+
+                    <div class='dmf'>
+                        <label class="labelmodal">Valor (R$): </label>
+                        <input type="text" id="mvlr"  name="mvlr"  class="medium">&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <div id="dsituacao">
+                            <label class="labelmodal" style=" width: auto !important;">Situacão: </label>
+                            <p id="msituacao" name="msituacao"></p>
+                        </div>                        
+                    </div>
+
+                    <div class='dmf'>
+                        <label class="labelmodal">Data do Vencimento: </label>
+                        <input type="date" id="mdatavenc"  name="mdatavenc"></input>
                     </div>
                 </div>
 
                 <div class='dmf' style="display: flex; justify-content: center; align-items: center; margin: 25px;">                            
-                    <input type="button" id="bcadastro" name="bcadastro" class="button" value="Aprovar"  data-icon="/icons/ok-icon.png">
-                    <input type="button" id="breprovar" name="breprovar" class="button" value="Reprovar" data-icon="/icons/cancel.png">
+                    <input type="button" id="bsalvar"      name="bsalvar"      class="button" value="Salvar"        data-icon="/icons/save-icon.png">
+                    <input type="button" id="benviaboleto" name="benviaboleto" class="button" value="Enviar Boleto" data-icon="/icons/seta_direita.png">
                 </div>
+
+                <div id="dmodalf_visuboleto" class="inv">
+                    <div style="display: flex; flex-direction: row; padding-inline: 30px;">
+                        <img src="/icons/alert_icon.png" style="width: 50px !important; height: 50px !important">
+                        <p>Deseja visualizar o Boleto enviado para o Beneficiario?</p>
+                    </div>
+                    
+                    <div class='dmf' style="display: flex; justify-content: center; align-items: center; margin: 15px;">
+                        <input type="button" id="bfechar"     name="bfechar"     class="button botaoconfirm" value="Fechar">
+                        <input type="button" id="bvisualizar" name="bvisualizar" class="button botaoconfirm" value="Visualizar">
+                    </div>                    
+                </div>                
             </div>
         </div>
 

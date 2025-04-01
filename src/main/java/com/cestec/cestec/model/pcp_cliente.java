@@ -1,15 +1,22 @@
 package com.cestec.cestec.model;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "pcp_cliente")
 public class pcp_cliente {
@@ -22,59 +29,45 @@ public class pcp_cliente {
     @JsonIgnore
     private pcp_contrato pcp_contrato;
 
+    @Column(length = 80)
     private String nome;
-    private String cpf;
-    private String cnpj;
-    private String numtel;
-    private String email;
-    private String endereco;
+
+    @Column(length = 20)
+    private String documento;
     
-    public pcp_contrato getPcp_contrato() {
-        return pcp_contrato;
+    private String        numtel;
+    private String        email;
+    private LocalDateTime criado_em;
+    private LocalDateTime atualizado_em;
+
+    @Column(columnDefinition = "TINYINT(1)")
+    private boolean pessoa_fisica;
+
+    @Column(length = 80)
+    private String endereco_logradouro;
+
+    @Column(length = 10)
+    private String endereco_numero;
+
+    @Column(length =  70)
+    private String endereco_cidade;
+
+    @Column(length = 70)
+    private String endereco_bairro;
+
+    @Column(length = 40)
+    private String endereco_complemento;
+
+    @Column(length = 2)
+    private String endereco_uf;
+
+    @Column(length = 20)
+    private String endereco_cep;
+
+    public boolean isPf() {
+        return pessoa_fisica;
     }
-    public void setPcp_contrato(pcp_contrato pcp_contrato) {
-        this.pcp_contrato = pcp_contrato;
-    }
-    public Integer getCodcliente() {
-        return codcliente;
-    }
-    public void setCodcliente(Integer codcliente) {
-        this.codcliente = codcliente;
-    }
-    public String getCpf() {
-        return cpf;
-    }
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-    public String getCnpj() {
-        return cnpj;
-    }
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
-    public String getNumtel() {
-        return numtel;
-    }
-    public void setNumtel(String numtel) {
-        this.numtel = numtel;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public String getEndereco() {
-        return endereco;
-    }
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-    public String getNome() {
-        return nome;
-    }
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setPf(boolean pessoa_fisica) {
+        this.pessoa_fisica = pessoa_fisica;
     }
 }
