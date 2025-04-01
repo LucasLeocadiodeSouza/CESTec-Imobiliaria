@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-    <title>Cadastro de proprietario</title>
+    <title>Cadastro de Cliente</title>
     <script src="/js/wcr003.js" defer></script>
     
 <style>
@@ -51,7 +51,7 @@
     }
 
     #dmodalf_cliente {width: 600px;
-                      height: 320px;
+                      height: 360px;
                       opacity: 1;
                       background-color: aliceblue;
                       box-shadow: 0 0 .4vw rgba(0,0,0,0.5);}
@@ -116,7 +116,7 @@
                 </div>
 
                 <div class='dmf'>
-                    <label class="labelmodal">CPF: </label>
+                    <label class="labelmodal">Documento: </label>
                     <input type="text" id="mcpf"  name="mcpf"  class="medium">
                 </div>
 
@@ -132,8 +132,19 @@
                 </div>
 
                 <div class='dmf'>
-                    <label class="labelmodal">Endereco: </label>
-                    <input type="text" id="mloc"  name="mloc"  class="large">
+                    <label class="labelmodal">Bairro: </label>
+                    <input type="text" id="mbairro"  name="mbairro"  class="large">&nbsp;&nbsp;
+
+                    <label class="labelmodal" style="width: auto !important;">N: </label>
+                    <input type="text" id="mnmr"  name="mnmr"  class="ppp">
+                </div>
+                
+                <div class='dmf'>
+                    <label class="labelmodal">Cidade: </label>
+                    <input type="text" id="mcidade"  name="mcidade"  class="medium"> &nbsp;
+                
+                    <label class="labelmodal" style="width: auto !important;">UF: </label>
+                    <input type="text" id="muf"  name="muf"  class="ppp">
                 </div>
 
                 <div class='if' style="display: flex; margin-left: 5px;"></div>

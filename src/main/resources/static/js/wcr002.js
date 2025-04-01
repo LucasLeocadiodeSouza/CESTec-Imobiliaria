@@ -123,11 +123,14 @@ function buscarPropriGrid(index){
     .then(data => {
         form("mcodproprietario").value  = data.codproprietario;
         form("mnome").value         	= data.nome;
-        form("mcpf").value          	= data.cpf;
+        form("mcpf").value          	= data.documento;
         form("mddd").value          	= data.numtel.substring(0,2);
         form("mtelefone").value     	= data.numtel.substring(2);
         form("memail").value        	= data.email;
-        form("mloc").value          	= data.endereco;
+        form('mbairro').value           = data.endereco_bairro;
+        form('mnmr').value              = data.endereco_numero;
+        form('mcidade').value           = data.endereco_cidade;
+        form('muf').value               = data.endereco_uf;
     })
     .catch(error => alert(error.message));
 }
@@ -137,8 +140,8 @@ function buscarDadosTable(){
         .then(response => response.json()) //quando chega a mensagem vc converte para json
         .then(data => {                    // quando chega o dados na forma de JSON vc faz  ...           
             createGrid("tabela_contrato",
-                       "codproprietario,nome,cpf,endereco,numtel",
-                       "Cod. Prop., Nome, CPF, Endereco, Telefone",
+                       "codproprietario,nome,documento,endereco_bairro,numtel",
+                       "Cod. Prop., Nome, Documento, Endereco, Telefone",
                        "10,40,10,30,10",
                        data);
         })
@@ -148,11 +151,13 @@ function buscarDadosTable(){
 function adicionarProprietario() {
     const proprietario = { codproprietario: form("mcodproprietario").value,
                            nome:            form("mnome").value,
-                           cpf:             form("mcpf").value,
-                           cnpj:            '0',
+                           documento:       form("mcpf").value,
                            numtel:          form("mddd").value + form("mtelefone").value,
                            email:           form("memail").value,
-                           endereco:        form("mloc").value };
+                           endereco_bairro: form('mbairro').value,
+                           endereco_numero: form('mnmr').value,
+                           endereco_cidade: form('mcidade').value,
+                           endereco_uf:     form('muf').value };
 
     fetch("/contratosCadastroClientes/proprietario", {
         method: "POST",
@@ -212,7 +217,10 @@ function controlaTela(opc){
         desabilitaCampo('mddd',      ehConsulta());
         desabilitaCampo('mtelefone', ehConsulta());
         desabilitaCampo('memail',    ehConsulta());
-        desabilitaCampo('mloc',      ehConsulta());
+        desabilitaCampo('mbairro',   ehConsulta());
+        desabilitaCampo('mnmr',      ehConsulta());
+        desabilitaCampo('mcidade',   ehConsulta());
+        desabilitaCampo('muf',       ehConsulta());
         desabilitaCampo('bcadastro', ehConsulta());
     }
 }
@@ -230,7 +238,10 @@ function limparTela(opc){
         form('mddd').value      = "";
         form('mtelefone').value = "";
         form('memail').value    = "";
-        form('mloc').value      = "";
+        form('mbairro').value   = "";
+        form('mnmr').value      = "";
+        form('mcidade').value   = "";
+        form('muf').value       = "";
     }
 }
 

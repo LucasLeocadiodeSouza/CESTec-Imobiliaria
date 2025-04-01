@@ -4,11 +4,11 @@
     IM: 00008
 */
 window.addEventListener("load", function () {
-    createGrid("tabela_aprovacao",
-               "codcontrato,negociacao,codimovel,tipo,codproprietario,nomeProp,codcliente,nomeCliente,codcorretor,nomeCorretor,datinicio,datfinal,preco,valor",
-               "Cód. Contrato,Contrato,Cód. Imovel,Tipo Imovel,Código Prop,Proprietario,Código Cliente,Cliente,Código Corretor,Corretor,Inicio,Final,Preco,Valor negoc.",
-               "6,5,6,6,6,10,6,10,6,10,7,7,6,6",
-               "2200");
+    createGrid("tabela_boletos",
+               "id,nmrBoleto,codconvenio,certificado,nome,situacao,vlrboleto",
+               "Código,Número do Boleto,Número do Convênio,CNPJ/CPF,Nome,Situacão,Valor (R$)",
+               "10,10,10,20,20,10,10",
+               "auto");
     
     iniciarEventos();
     buscarUserName();
@@ -24,7 +24,9 @@ function iniciarEventos() {
     event_click("bclose");
     event_click("blimpar");
     event_click("binserir");
-    // event_click("bcadastro");    
+    event_click("benviaboleto");
+
+    event_change("mcodcliente");
     imgFormat();
 }
 
@@ -44,7 +46,6 @@ function event_click(obj,dado) {
         form(obj).addEventListener("click", function () {
             controlaTela("novabusca");
 
-            buscarContratoAprovacao();
         });        
     }
     if(obj == 'bclose'){
@@ -54,21 +55,31 @@ function event_click(obj,dado) {
     }
     if(obj == 'binserir'){
         form(obj).addEventListener("click", function () {
-            form("DMF_external").style.display = "block";
+            form("sacao").innerText   = "Gerando";
+            form("stitulo").innerText = form("sacao").innerText + " o Metodo de Pagamento";
+            controlaTela("modal");
+
+
+            form("DMF_external").style.display = "flex";
         });
+    }
+    if(obj == "benviaboleto"){
+        form(obj).addEventListener("click", ()=>{
+            registrarFatura();
+        })
     }
 }
 
 function event_change(obj){
-    // if(obj == "codproprietario"){
-    //     form(obj).addEventListener("change", function(){
-    //         form("descproprietario").value = form(obj).value!=""?descProprietario(obj) : "Todos";
-    //     });
-    // }
+    if(obj == "mcodcliente"){
+        form(obj).addEventListener("change", function(){
+            form("mbenef").value = getDescCliente(obj);
+        });
+    }
 }
 
 function event_click_table(id,index){
-    if(id == "tabela_aprovacao"){
+    if(id == "tabela_boletos"){
         form("sacao").innerText   = ehConsulta()?"Consultando":"Analisando";
         form("stitulo").innerText = form("sacao").innerText + " o Contrato - " + form("sacao").innerText;
         
@@ -82,19 +93,41 @@ function event_click_table(id,index){
 function controlaTela(opc){
     limparTela(opc);
     if(opc == "inicia" || opc == 'buscar'){
-        desabilitaCampo('bnovabusca',        true);
-        desabilitaCampo('bbuscar',           false);
+        desabilitaCampo("codboleto",        false);
+        desabilitaCampo("codconvenio",      false);
+        desabilitaCampo("codcliente",       false);
+        desabilitaCampo('bnovabusca',       true);
+        desabilitaCampo('bbuscar',          false);
     }
     if(opc == "novabusca"){
+        desabilitaCampo("codboleto",        true);
+        desabilitaCampo("codconvenio",      true);
+        desabilitaCampo("codcliente",       true);
         desabilitaCampo('bnovabusca',       false);
         desabilitaCampo('bbuscar',          true);
+    }
+    if(opc == "modal"){
+        desabilitaCampo("mbenef",           true);
+        desabilitaCampo("mdocumento",       true);
+        desabilitaCampo("mcodcontrato",     true);
+        form("dsituacao").style.display  = form("sacao").innerText == "Gerando"?"none":"block";
+        form("dnmrboleto").style.display = form("sacao").innerText == "Gerando"?"none":"block";
+        form("dfatura").style.display    = form("sacao").innerText == "Gerando"?"none":"block";
     }
 }
 
 
 function limparTela(opc){
-    if(opc == "inicia" || opc == 'buscar'){        
+    if(opc == "inicia" || opc == 'buscar'){
+        form('codboleto').value    = "";
+        form('codconvenio').value  = "";
+        form('codcliente').value   = "";
+
+        form("binserir").style.display     = form("aba1").style.pointerEvents == 'visible'?"flex":"none";
         form("DMF_external").style.display = "none";
+    }
+    if(opc == "modal"){
+        form("mfatura").value = "0";
     }
 } 
 
@@ -159,16 +192,6 @@ function preencherModal(index){
     .catch(error => alert(error.message))
 }
 
-function buscarContratoAprovacao(){
-    fetch(`/wcr006c/buscarContratoAprovacao`,{
-        method: "GET",
-        headers: {"Content-Type":"application/json"}
-    })
-    .then(response => {return response.json()})
-    .then(data     => {carregaGrid("tabela_aprovacao",data)})
-    .catch(error   => alert("Erro ao puxar os dados buscarContratoAprovacao. \n" + error.message))
-}
-
 function getDescCliente(codigo, retorno){
     fetch(`/cliente/${form(codigo).value}/findNomeClienteById`,{
         method: "GET",
@@ -179,19 +202,6 @@ function getDescCliente(codigo, retorno){
     .catch(error => alert(error.message))
 }
 
-function descProprietario(codigo,retorno) {
-    fetch(`/contratosCadastroClientes/proprietario/${form(codigo).value}/nomepropri`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(form(codigo).value)
-    })
-    .then(response => {return response.text()})
-    .then(data => { return data })
-    .catch(error => alert(error.message));
-}
-
 function getDescCorretor(obj, retorno){
     fetch(`/contrato/${form(obj).value}/getNomeByIdeusu`,{
         method: "GET",
@@ -199,6 +209,37 @@ function getDescCorretor(obj, retorno){
     })
     .then(response => { return response.text()})
     .then(data => {return data })
+    .catch(error => alert(error.message))
+}
+
+function registrarFatura(){
+    const json = {  "id"              : form("mfatura").value,
+                    "tipo"            : "RECEITA",
+                    "situacao"        : "NAO_PAGA",
+                    "valor"           : form("mvlr").value,
+                    "data_vencimento" : form("mdatavenc").value
+                 }
+
+    fetch(`/faturas/registrarFatura/${form("mcodcliente").value}`, {
+        method:  "POST",
+        headers: {"Content-Type":"application/json"},
+        body:   JSON.stringify(json)
+    })
+    .then(response => {return response.json()})
+    .then(data => {})
+    .catch(error => alert(error.message))
+}
+
+function salvarBoleto(){
+    const json = {}
+
+    fetch(`/faturas/registrarBoleto/${form("mfatura").value}`, {
+        method:  "POST",
+        headers: {"Content-Type":"application/json"},
+        body:    json
+    })
+    .then(response => {return response.json()})
+    .then(data => {})
     .catch(error => alert(error.message))
 }
 

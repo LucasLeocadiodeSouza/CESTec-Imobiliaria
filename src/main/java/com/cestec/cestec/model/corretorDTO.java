@@ -2,6 +2,12 @@ package com.cestec.cestec.model;
 
 import java.sql.Date;
 
+import jakarta.persistence.Column;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class corretorDTO {
     
     private Integer codfuncionario;
@@ -11,15 +17,38 @@ public class corretorDTO {
     private double  salario;
     private String  nome;
     private Date    datinasc;
-    private String  cpf;
+    private String  documento;
     private String  numtel;
-    private String  endereco;
     private String  email;
     private String  login;
     private double  vlrmeta;
     private Date    datiniciometa;
     private Date    datfinalmeta;
     private Integer situacao;
+
+    @Column(columnDefinition = "TINYINT(1)")
+    private boolean pessoa_fisica;
+
+    @Column(length = 80)
+    private String endereco_logradouro;
+
+    @Column(length = 10)
+    private String endereco_numero;
+
+    @Column(length =  70)
+    private String endereco_cidade;
+
+    @Column(length = 70)
+    private String endereco_bairro;
+
+    @Column(length = 40)
+    private String endereco_complemento;
+
+    @Column(length = 2)
+    private String endereco_uf;
+
+    @Column(length = 20)
+    private String endereco_cep;
 
     public corretorDTO(){}
 
@@ -40,126 +69,5 @@ public class corretorDTO {
         this.datfinalmeta  = datfinalmeta;
         this.situacao      = situacao;
     }
-
-    public double getVlrmeta() {
-        return vlrmeta;
-    }
-
-    public void setVlrmeta(double vlrmeta) {
-        this.vlrmeta = vlrmeta;
-    }
-
-    public Date getDatiniciometa() {
-        return datiniciometa;
-    }
-
-    public void setDatiniciometa(Date datiniciometa) {
-        this.datiniciometa = datiniciometa;
-    }
-
-    public Date getDatfinalmeta() {
-        return datfinalmeta;
-    }
-
-    public void setDatfinalmeta(Date datfinalmeta) {
-        this.datfinalmeta = datfinalmeta;
-    }
-
-    public Integer getSituacao() {
-        return situacao;
-    }
-
-    public void setSituacao(Integer situacao) {
-        this.situacao = situacao;
-    }
-
-    public Integer getCodfuncionario() {
-        return codfuncionario;
-    }
-
-    public void setCodfuncionario(Integer codfuncionario) {
-        this.codfuncionario = codfuncionario;
-    }
-
-    public Integer getCodcorretor() {
-        return codcorretor;
-    }
-
-    public void setCodcorretor(Integer codcorretor) {
-        this.codcorretor = codcorretor;
-    }
-
-    public double getSalario() {
-        return salario;
-    }
-
-    public void setSalario(double salario) {
-        this.salario = salario;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Date getDatinasc() {
-        return datinasc;
-    }
-
-    public void setDatinasc(Date datinasc) {
-        this.datinasc = datinasc;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getNumtel() {
-        return numtel;
-    }
-
-    public void setNumtel(String numtel) {
-        this.numtel = numtel;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-    
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public Integer getCodmeta() {
-        return codmeta;
-    }
-
-    public void setCodmeta(Integer codmeta) {
-        this.codmeta = codmeta;
-    }
-
 
 }

@@ -1,5 +1,6 @@
 package com.cestec.cestec.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +18,21 @@ public class pcp_clienteService {
         pcp_cliente clienteAnalise = clienteRepository.findByCodcliente(cliente.getCodcliente());
 
         if(clienteAnalise != null){
-            clienteAnalise.setCpf(cliente.getCpf());
+            clienteAnalise.setDocumento(cliente.getDocumento());
             clienteAnalise.setEmail(cliente.getEmail());
-            clienteAnalise.setEndereco(cliente.getEndereco());
+            clienteAnalise.setEndereco_bairro(cliente.getEndereco_bairro());
+            clienteAnalise.setEndereco_cep(cliente.getEndereco_cep());
+            clienteAnalise.setEndereco_cidade(cliente.getEndereco_cidade());
+            clienteAnalise.setEndereco_complemento(cliente.getEndereco_complemento());
+            clienteAnalise.setEndereco_numero(cliente.getEndereco_numero());
+            clienteAnalise.setEndereco_uf(cliente.getEndereco_uf());
+            clienteAnalise.setEndereco_logradouro(cliente.getEndereco_logradouro());
             clienteAnalise.setNome(cliente.getNome());
             clienteAnalise.setNumtel(cliente.getNumtel());
-        };
+        }else{ cliente.setCriado_em(LocalDateTime.now()); }
+
+
+        cliente.setAtualizado_em(LocalDateTime.now());
         return clienteRepository.save(cliente);
     }
 

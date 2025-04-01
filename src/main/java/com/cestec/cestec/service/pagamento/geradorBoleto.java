@@ -40,7 +40,7 @@ public interface geradorBoleto {
     }
 
     default Datas criarDatas(Fatura fatura){
-        var vencimento = fatura.getDataVencimento();
+        var vencimento = fatura.getData_vencimento();
         var criadoEm = fatura.getCriadoEm();
         var atualizaEm = fatura.getAtualizadoEm();
 

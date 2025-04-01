@@ -15,11 +15,14 @@ import com.cestec.cestec.infra.pagamento.JurosMoraInput;
 import com.cestec.cestec.infra.pagamento.MultaInput;
 import com.cestec.cestec.infra.pagamento.PagadorInput;
 import com.cestec.cestec.infra.pagamento.controller.AcessTokenController;
+import com.cestec.cestec.model.pcp_cliente;
 import com.cestec.cestec.model.contasAPagar.BoletoRegistrado;
 import com.cestec.cestec.model.contasAPagar.Cobranca;
 import com.cestec.cestec.model.contasAPagar.Fatura;
 import com.cestec.cestec.model.contasAPagar.FaturaRegistrada;
-import com.cestec.cestec.model.contasAPagar.Pessoa;
+import com.cestec.cestec.repository.clienteRepository;
+import com.cestec.cestec.repository.pagamento.contaRepository;
+import com.cestec.cestec.repository.pagamento.convenioRepository;
 import com.cestec.cestec.repository.pagamento.faturaRegistradaRepository;
 import com.cestec.cestec.repository.pagamento.faturaRepository;
 import com.cestec.cestec.util.Normalizador;
@@ -31,6 +34,15 @@ public class faturaService {
     
     @Autowired
 	private faturaRepository repository;
+
+    @Autowired
+	private contaRepository contarepository;
+
+	@Autowired
+	private convenioRepository conveniorepository;
+
+	@Autowired
+	private clienteRepository clienterepository;
 
     @Autowired
 	private AcessTokenController acessTokenController;
@@ -52,12 +64,9 @@ public class faturaService {
         return geradorboleto.gerar(fatura, cobranca);
     }
 
-    @Transactional
-    public BoletoRegistrado registrarBoleto(Long faturaId, Cobranca cobranca){
-        System.out.println("");
+  
+    public BoletoRegistrado registrarBoleto(Long faturaId, Cobranca cobranca){        
         var token  = acessTokenController.requisitarToken(cobranca.getClienteId(),cobranca.getClienteSecret());
-        System.out.println("token: " + token);
-        System.out.println("");
         
         var fatura = repository.getOne(faturaId);
 
@@ -81,6 +90,19 @@ public class faturaService {
 		return criarFatura(fatura);
 	}
 
+    public Fatura salvarFaturaNoBanco(Integer clienteId, Fatura fatura){
+        var conta    = contarepository.findById( 1);
+		var convenio = conveniorepository.findById(1);
+		var pessoa   = clienterepository.findByCodcliente(clienteId);
+
+		fatura.setNumeroDocumento("71900");
+		fatura.setConta(conta);
+		fatura.setConvenio(convenio);
+		fatura.setPessoa(pessoa);
+        
+		return repository.save(fatura);
+    }
+
     public CobrancaInput criarFatura(Fatura fatura){
         
         var desconto = DescontoInput.builder()
@@ -98,7 +120,7 @@ public class faturaService {
 
         var multa = MultaInput.builder()
                               .tipo(2)
-                              .data(converterData(fatura.getDataVencimento().plusDays(2)))
+                              .data(converterData(fatura.getData_vencimento().plusDays(2)))
                               .porcentagem(fatura.getConvenio().getJurosPorcentagem())
                               .valor(BigDecimal.ZERO)
                               .build();
@@ -106,21 +128,21 @@ public class faturaService {
         var pessoa = fatura.getPessoa();
 
         var pagamento = PagadorInput.builder()
-                                     .tipoInscricao(pessoa.isPf()?1:2)
-                                     .numeroInscricao(pessoa.getDocumento())
-                                     .nome(Normalizador.norm(pessoa.getNome()))
-                                     .cep(Long.valueOf(pessoa.getEndereco_cep().replaceAll("[^\\d]", "")))
-                                     .cidade(Normalizador.norm(pessoa.getEndereco_cidade()))
-                                     .bairro(Normalizador.abreviar(Normalizador.norm(pessoa.getEndereco_bairro())))
-                                     .uf(pessoa.getEndereco_uf())
-                                     .endereco(criarEnderecoCompleto(pessoa,40)) //o endereco deve ter 40 caracteres por causa da api do banco do brasil
-                                     .build();
+                                    .tipoInscricao(pessoa.isPf()?1:2)
+                                    .numeroInscricao(pessoa.getDocumento())
+                                    .nome(Normalizador.norm(pessoa.getNome()))
+                                    .cep(Long.valueOf(pessoa.getEndereco_cep().replaceAll("[^\\d]", "")))
+                                    .cidade(Normalizador.norm(pessoa.getEndereco_cidade()))
+                                    .bairro(Normalizador.abreviar(Normalizador.norm(pessoa.getEndereco_bairro())))
+                                    .uf(pessoa.getEndereco_uf())
+                                    .endereco(criarEnderecoCompleto(pessoa,40)) //o endereco deve ter 40 caracteres por causa da api do banco do brasil
+                                    .build();
 
         return CobrancaInput.builder()
                             .numeroConvenio(Long.valueOf(fatura.getConvenio().getNumeroContrato()))
                             .numeroCarteira(Integer.valueOf(fatura.getConvenio().getCarteira()))
                             .numeroVariacaoCarteira(Integer.valueOf(fatura.getConvenio().getVariacaoCarteira()))
-                            .dataVencimento(converterData(fatura.getDataVencimento()))
+                            .dataVencimento(converterData(fatura.getData_vencimento()))
                             .dataEmissao(converterData(LocalDate.now()))
                             .valorOriginal(fatura.getValor())
                             .indicadorAceiteTituloVencido("S")
@@ -149,7 +171,7 @@ public class faturaService {
 		return String.format("%010d", Long.valueOf(fatura.getConvenio().getNumeroContrato())).concat(String.format("%010d", Long.valueOf(fatura.getNumeroDocumento())));
 	}
 
-    private String criarEnderecoCompleto(Pessoa pessoa, int tamanhoMaximoEndereco) {
+    private String criarEnderecoCompleto(pcp_cliente pessoa, int tamanhoMaximoEndereco) {
 		var enderecoCompleto = "";
 
 		var logradouro = Normalizador.abreviar(Normalizador.norm(pessoa.getEndereco_logradouro())).concat(", ");

@@ -1,17 +1,23 @@
 package com.cestec.cestec.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "pcp_proprietario")
 public class pcp_proprietario {
@@ -23,76 +29,48 @@ public class pcp_proprietario {
     @OneToMany(mappedBy = "pcp_proprietario", cascade = CascadeType.ALL, orphanRemoval = false)
     @JsonIgnore
     private List<pcp_imovel> imoveis;
-
-    private String cpf;
-    private String cnpj;
+    
+    @Column(length = 20)
+    private String documento;
+    
     private String numtel;
     private String email;
-    private String endereco; 
+
+    @Column(length = 80)
     private String nome;
 
-    public List<pcp_imovel> getImoveis() {
-        return imoveis;
-    }
+    private LocalDateTime criado_em;
+    private LocalDateTime atualizado_em;
 
-    public void setImoveis(List<pcp_imovel> imoveis) {
-        this.imoveis = imoveis;
-    }
+    @Column(columnDefinition = "TINYINT(1)")
+    private boolean pessoa_fisica;
 
-    public String getCpf() {
-        return cpf;
-    }
+    @Column(length = 80)
+    private String endereco_logradouro;
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
+    @Column(length = 10)
+    private String endereco_numero;
 
-    public String getCnpj() {
-        return cnpj;
-    }
+    @Column(length =  70)
+    private String endereco_cidade;
 
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
+    @Column(length = 70)
+    private String endereco_bairro;
 
-    public String getNumtel() {
-        return numtel;
-    }
+    @Column(length = 40)
+    private String endereco_complemento;
 
-    public void setNumtel(String numtel) {
-        this.numtel = numtel;
-    }
+    @Column(length = 2)
+    private String endereco_uf;
 
-    public String getEmail() {
-        return email;
-    }
+    @Column(length = 20)
+    private String endereco_cep;
 
-    public void setEmail(String email) {
-        this.email = email;
+    public boolean isPf() {
+        return pessoa_fisica;
     }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    public Integer getCodproprietario(){
-        return codproprietario;
-    }
-
-    public void setCodproprietario(Integer codproprietario){
-        this.codproprietario = codproprietario;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setPf(boolean pessoa_fisica) {
+        this.pessoa_fisica = pessoa_fisica;
     }
 
 }

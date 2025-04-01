@@ -33,7 +33,7 @@ public class config {
                                                      .requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN")
                                                      .requestMatchers(HttpMethod.GET,"/contratosCadastroPropri","/contratosCadastroClientes").hasRole("ADMIN")
                                                      .requestMatchers(HttpMethod.GET, "/contratosCadastro","/contratosCadastroContrato").hasRole("SALER")
-                                                     .anyRequest().hasAnyRole("USER") 
+                                                     .anyRequest().permitAll() //hasAnyRole("USER") 
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
