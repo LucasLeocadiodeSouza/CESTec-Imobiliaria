@@ -3,6 +3,7 @@ package com.cestec.cestec.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class pcp_clienteController {
     private pcp_clienteService pcp_clienteService;
 
     @PostMapping("/salvarCliente")
-    public pcp_cliente salvarCliente(@RequestBody pcp_cliente pcp_cliente){
+    public ResponseEntity<?> salvarCliente(@RequestBody pcp_cliente pcp_cliente){
         return pcp_clienteService.salvarClientes(pcp_cliente);
     }
     

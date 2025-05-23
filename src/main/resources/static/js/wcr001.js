@@ -4,8 +4,19 @@
     IM: 00007
 */
 window.addEventListener("load", function () {
-    iniciarEventos();
+    wcr001_init();
 });
+
+import { GridForm_init } from "./gridForm.js";
+
+var CLIENTE_GRID;
+
+function wcr001_init(){
+    CLIENTE_GRID = new GridForm_init();
+
+
+    iniciarEventos();
+}
 
 function iniciarEventos() {
     controlaTela("inicia");
@@ -24,7 +35,7 @@ function iniciarEventos() {
 
     imgFormat();
 
-    buscarDadosTable();
+
 }
 
 function event_click_table(id,index){
@@ -228,16 +239,7 @@ function ehManutencao(){
 }
 
 function buscarDadosTable(){
-    fetch("/contratosCadastroClientes/proprietario/buscarImoveis")
-        .then(response => response.json()) //quando chega a mensagem vc converte para json
-        .then(data => {                    // quando chega o dados na forma de JSON vc faz  ...           
-            createGrid("tabela_CTO",
-                        "codimovel,codproprietario,nome,tipo,status,preco,negociacao",
-                        "Cód.Imovel,Cod. Prop., Nome,Tipo,Situacao,Valor(R$),Contrato",
-                        "5,8,35,20,18,5,10",
-                        data);
-        })
-        .catch(error => console.log("Erro ao buscar dados: ",error));
+
 }
 
 function adicionarContratoImovel() {
@@ -306,7 +308,7 @@ function desabilitaCampo(obj,desahabilita){
     form(obj).style.cursor = desahabilita?'not-allowed':'pointer';
 }
 
-
+/*
 function createGrid(id,column,columnName,columnWidth,dados){
     form(id).innerText = '';
     const table     = document.getElementById(id);
@@ -371,4 +373,4 @@ function createGrid(id,column,columnName,columnWidth,dados){
 
 
     return table;
-}
+}*/

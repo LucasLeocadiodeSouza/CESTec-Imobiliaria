@@ -6,13 +6,11 @@ com\cestec\cestec\repository\userRepository.class
 com\cestec\cestec\model\contasAPagar\TipoFatura.class
 com\cestec\cestec\model\pcp_corretor.class
 com\cestec\cestec\repository\imovelRepository.class
-com\cestec\cestec\model\contasAPagar\Pessoa.class
 com\cestec\cestec\infra\pagamento\MultaInput$MultaInputBuilder.class
 com\cestec\cestec\model\contratoDTO.class
 com\cestec\cestec\service\pcp_clienteService.class
 com\cestec\cestec\model\contasAPagar\SituacaoFat.class
 com\cestec\cestec\infra\security\SecurityFilter.class
-com\cestec\cestec\controller\pagamento\pessoaController.class
 com\cestec\cestec\controller\pcp_clienteController.class
 com\cestec\cestec\service\genService.class
 com\cestec\cestec\model\contasAPagar\Convenio.class
@@ -21,7 +19,6 @@ com\cestec\cestec\controller\pagamento\FaturaController.class
 com\cestec\cestec\model\contasAPagar\Conta.class
 com\cestec\cestec\model\contasAPagar\Fatura.class
 com\cestec\cestec\infra\pagamento\AccessTokenBB.class
-com\cestec\cestec\service\pagamento\pessoaService.class
 com\cestec\cestec\controller\authentController.class
 com\cestec\cestec\infra\security\config.class
 com\cestec\cestec\CestecApplication.class
@@ -35,7 +32,6 @@ com\cestec\cestec\infra\pagamento\MultaInput.class
 com\cestec\cestec\model\securityLogin\sp_user.class
 com\cestec\cestec\repository\funcionarioRepository.class
 com\cestec\cestec\repository\proprietarioRepository.class
-com\cestec\cestec\repository\pagamento\pessoaRepository.class
 com\cestec\cestec\controller\contratoController.class
 com\cestec\cestec\model\contasAPagar\Banco.class
 com\cestec\cestec\infra\security\tokenService.class

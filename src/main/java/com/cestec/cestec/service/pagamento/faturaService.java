@@ -17,32 +17,17 @@ import com.cestec.cestec.infra.pagamento.PagadorInput;
 import com.cestec.cestec.infra.pagamento.controller.AcessTokenController;
 import com.cestec.cestec.model.pcp_cliente;
 import com.cestec.cestec.model.contasAPagar.BoletoRegistrado;
-import com.cestec.cestec.model.contasAPagar.Cobranca;
 import com.cestec.cestec.model.contasAPagar.Fatura;
 import com.cestec.cestec.model.contasAPagar.FaturaRegistrada;
-import com.cestec.cestec.repository.clienteRepository;
-import com.cestec.cestec.repository.pagamento.contaRepository;
-import com.cestec.cestec.repository.pagamento.convenioRepository;
 import com.cestec.cestec.repository.pagamento.faturaRegistradaRepository;
 import com.cestec.cestec.repository.pagamento.faturaRepository;
 import com.cestec.cestec.util.Normalizador;
-
-import jakarta.transaction.Transactional;
 
 @Service
 public class faturaService {
     
     @Autowired
 	private faturaRepository repository;
-
-    @Autowired
-	private contaRepository contarepository;
-
-	@Autowired
-	private convenioRepository conveniorepository;
-
-	@Autowired
-	private clienteRepository clienterepository;
 
     @Autowired
 	private AcessTokenController acessTokenController;
@@ -65,17 +50,21 @@ public class faturaService {
     }
 
   
-    public BoletoRegistrado registrarBoleto(Long faturaId, Cobranca cobranca){        
-        var token  = acessTokenController.requisitarToken(cobranca.getClienteId(),cobranca.getClienteSecret());
+    public BoletoRegistrado registrarBoleto(Long faturaId){
+        String appkey       = ("16ca2cda2585435613a5d2d8475432f4");
+        String clientClient = ("eyJpZCI6IjM5MyIsImNvZGlnb1B1YmxpY2Fkb3IiOjAsImNvZGlnb1NvZnR3YXJlIjoxMjk4OTUsInNlcXVlbmNpYWxJbnN0YWxhY2FvIjoxfQ");
+        String clientSecret = ("eyJpZCI6ImYiLCJjb2RpZ29QdWJsaWNhZG9yIjowLCJjb2RpZ29Tb2Z0d2FyZSI6MTI5ODk1LCJzZXF1ZW5jaWFsSW5zdGFsYWNhbyI6MSwic2VxdWVuY2lhbENyZWRlbmNpYWwiOjEsImFtYmllbnRlIjoiaG9tb2xvZ2FjYW8iLCJpYXQiOjE3NDI4NTkyNDUwMDl9");
+
+        var token  = acessTokenController.requisitarToken(clientClient,clientSecret);
         
         var fatura = repository.getOne(faturaId);
 
-
-        var boletoRegistrado = cobrancacontroller.register(transformarFaturaEmCobranca(faturaId),token,cobranca.getAppKey());        
+        var boletoRegistrado = cobrancacontroller.register(transformarFaturaEmCobranca(faturaId),token,appkey);        
 
         System.out.println(Long.valueOf(boletoRegistrado.getNumero()).toString());
 
         fatura.setNossoNumero(Long.valueOf(boletoRegistrado.getNumero()).toString());
+        repository.save(fatura);
 
         var faturaReg = new FaturaRegistrada().criar(fatura, boletoRegistrado.getLinhaDigitavel(), boletoRegistrado.getQrCode().getUrl(),boletoRegistrado.getQrCode().getEmv());
 
@@ -89,19 +78,6 @@ public class faturaService {
 		
 		return criarFatura(fatura);
 	}
-
-    public Fatura salvarFaturaNoBanco(Integer clienteId, Fatura fatura){
-        var conta    = contarepository.findById( 1);
-		var convenio = conveniorepository.findById(1);
-		var pessoa   = clienterepository.findByCodcliente(clienteId);
-
-		fatura.setNumeroDocumento("71900");
-		fatura.setConta(conta);
-		fatura.setConvenio(convenio);
-		fatura.setPessoa(pessoa);
-        
-		return repository.save(fatura);
-    }
 
     public CobrancaInput criarFatura(Fatura fatura){
         
@@ -137,6 +113,8 @@ public class faturaService {
                                     .uf(pessoa.getEndereco_uf())
                                     .endereco(criarEnderecoCompleto(pessoa,40)) //o endereco deve ter 40 caracteres por causa da api do banco do brasil
                                     .build();
+
+        System.out.println("aaaa " + criarNossoNumero(fatura));
 
         return CobrancaInput.builder()
                             .numeroConvenio(Long.valueOf(fatura.getConvenio().getNumeroContrato()))

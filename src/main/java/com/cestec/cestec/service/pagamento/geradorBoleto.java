@@ -72,6 +72,9 @@ public interface geradorBoleto {
         var nomeBene = empresa.getRazaoSocial();
         var conta    = fatura.getConta();
 
+        String nossoNumero = fatura.getNossoNumero().substring(0, 17);
+        fatura.setNossoNumero(nossoNumero);
+
         var endereco = Endereco.novoEndereco()
                                 .comLogradouro(empresa.getEndereco_logradouro().concat(", ").concat(empresa.getEndereco_numero()))
                                 .comBairro(empresa.getEndereco_bairro())

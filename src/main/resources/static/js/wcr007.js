@@ -65,7 +65,7 @@ function event_click(obj,dado) {
     }
     if(obj == "benviaboleto"){
         form(obj).addEventListener("click", ()=>{
-            registrarFatura();
+            registrarBoleto();
         })
     }
 }
@@ -230,16 +230,13 @@ function registrarFatura(){
     .catch(error => alert(error.message))
 }
 
-function salvarBoleto(){
-    const json = {}
-
+function registrarBoleto(){
     fetch(`/faturas/registrarBoleto/${form("mfatura").value}`, {
         method:  "POST",
-        headers: {"Content-Type":"application/json"},
-        body:    json
+        headers: {"Content-Type":"application/json"}
     })
     .then(response => {return response.json()})
-    .then(data => {})
+    .then(data => { /* mostrarBoletoEmIframe(form("mfatura").value) */ })
     .catch(error => alert(error.message))
 }
 
@@ -282,6 +279,26 @@ function desabilitaCampo(obj,desahabilita){
     form(obj).disabled = desahabilita;
     form(obj).style.cursor = desahabilita?'not-allowed':'pointer';
 }
+
+function downloadPDF(base64, filename) {
+    const link = document.createElement('a');
+    link.href = `data:application/pdf;base64,${base64}`;
+    link.download = filename;
+    link.click();
+}
+
+function mostrarBoletoEmIframe(faturaId) {
+    const iframe = document.createElement('iframe');
+    iframe.src = `/faturas/${faturaId}/boleto/pdf`;
+    iframe.style.width = '100%';
+    iframe.style.height = '100vh';
+    iframe.style.border = 'none';
+    
+    // Abre nova janela e adiciona o iframe
+    const novaJanela = window.open('', '_blank');
+    novaJanela.document.body.appendChild(iframe);
+    novaJanela.document.title = 'Boleto - ' + faturaId;
+  }
 
 function createGrid(id,column,columnName,columnWidth,width){    
     const table     = document.getElementById(id);

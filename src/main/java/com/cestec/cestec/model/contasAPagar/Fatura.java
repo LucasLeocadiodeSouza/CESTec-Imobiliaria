@@ -53,6 +53,7 @@ public class Fatura {
     private String numeroDocumento;
     private String nossoNumero;
 
+    @CreationTimestamp
     private LocalDateTime criadoEm;
 
     @UpdateTimestamp

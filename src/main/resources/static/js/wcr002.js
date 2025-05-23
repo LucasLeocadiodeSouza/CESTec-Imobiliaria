@@ -7,6 +7,7 @@
 //import { createGrid } from './gridForm.js';
 
 window.addEventListener("load", function () {
+    buscarUserName();
     iniciarEventos();
 });
 
@@ -131,6 +132,9 @@ function buscarPropriGrid(index){
         form('mnmr').value              = data.endereco_numero;
         form('mcidade').value           = data.endereco_cidade;
         form('muf').value               = data.endereco_uf;
+        form('mlogradouro').value       = data.endereco_logradouro;
+        form('mcepini').value           = data.endereco_cep.substring(0,5);
+        form('mcepdigito').value        = data.endereco_cep.substring(6,9);
     })
     .catch(error => alert(error.message));
 }
@@ -149,15 +153,18 @@ function buscarDadosTable(){
 }
 
 function adicionarProprietario() {
-    const proprietario = { codproprietario: form("mcodproprietario").value,
-                           nome:            form("mnome").value,
-                           documento:       form("mcpf").value,
-                           numtel:          form("mddd").value + form("mtelefone").value,
-                           email:           form("memail").value,
-                           endereco_bairro: form('mbairro').value,
-                           endereco_numero: form('mnmr').value,
-                           endereco_cidade: form('mcidade').value,
-                           endereco_uf:     form('muf').value };
+    const proprietario = { codproprietario:     form("mcodproprietario").value,
+                           nome:                form("mnome").value,
+                           documento:           form("mcpf").value,
+                           numtel:              form("mddd").value + form("mtelefone").value,
+                           email:               form("memail").value,
+                           endereco_bairro:     form('mbairro').value,
+                           endereco_numero:     form('mnmr').value,
+                           endereco_logradouro: form('mlogradouro').value,
+                           endereco_cep:        form('mcepini').value + "-" + form('mcepdigito').value,
+                           endereco_cidade:     form('mcidade').value,
+                           endereco_uf:         form('muf').value,
+                           id_usuario:          form('ideusu').value};
 
     fetch("/contratosCadastroClientes/proprietario", {
         method: "POST",
@@ -166,14 +173,13 @@ function adicionarProprietario() {
         },
         body: JSON.stringify(proprietario)
     })
-    .then(response => {
-        return response.json();
-    })
-    .then(data => {        
+    .then(response => { return response.text(); })
+    .then(data => {
+        if(data != "OK") return alert(data);
         alert("Dados Salvos Com Sucesso!");
         if(form("sacao").innerText == "Inserindo")if(confirm("Deseja enviar um Email de Boas Vindas para o Proprietario?")) enviarEmail();
     })
-    .catch(error => alert(error.stringify(error)));
+    .catch(error => console.log(error.message));
 }
 
 function enviarEmail(){
@@ -196,6 +202,18 @@ function enviarEmail(){
     .catch(error => alert(error.message));
 }
 
+function buscarUserName(){
+    fetch("/home/userlogin", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response =>{return response.text()})
+    .then(data => { form("ideusu").value = data })
+    .catch(error => alert(error.message));
+}
+
 function controlaTela(opc){
     limparTela(opc);
     if(opc == "inicia" || opc == 'buscar'){
@@ -212,16 +230,19 @@ function controlaTela(opc){
         desabilitaCampo('codproprietario', true);
     }
     if(opc == "modal"){
-        desabilitaCampo('mnome',     ehConsulta());
-        desabilitaCampo('mcpf',      ehConsulta());
-        desabilitaCampo('mddd',      ehConsulta());
-        desabilitaCampo('mtelefone', ehConsulta());
-        desabilitaCampo('memail',    ehConsulta());
-        desabilitaCampo('mbairro',   ehConsulta());
-        desabilitaCampo('mnmr',      ehConsulta());
-        desabilitaCampo('mcidade',   ehConsulta());
-        desabilitaCampo('muf',       ehConsulta());
-        desabilitaCampo('bcadastro', ehConsulta());
+        desabilitaCampo('mnome',       ehConsulta());
+        desabilitaCampo('mcpf',        ehConsulta());
+        desabilitaCampo('mddd',        ehConsulta());
+        desabilitaCampo('mtelefone',   ehConsulta());
+        desabilitaCampo('memail',      ehConsulta());
+        desabilitaCampo('mbairro',     ehConsulta());
+        desabilitaCampo('mnmr',        ehConsulta());
+        desabilitaCampo('mcidade',     ehConsulta());
+        desabilitaCampo('muf',         ehConsulta());
+        desabilitaCampo('bcadastro',   ehConsulta());
+        desabilitaCampo('mlogradouro', ehConsulta());
+        desabilitaCampo('mcepini',     ehConsulta());
+        desabilitaCampo('mcepdigito',  ehConsulta());
     }
 }
 
@@ -233,15 +254,18 @@ function limparTela(opc){
         form("DMF_external").style.display = "none";
     }
     if(opc == "modal"){
-        form('mnome').value     = "";
-        form('mcpf').value      = "";
-        form('mddd').value      = "";
-        form('mtelefone').value = "";
-        form('memail').value    = "";
-        form('mbairro').value   = "";
-        form('mnmr').value      = "";
-        form('mcidade').value   = "";
-        form('muf').value       = "";
+        form('mnome').value        = "";
+        form('mcpf').value         = "";
+        form('mddd').value         = "";
+        form('mtelefone').value    = "";
+        form('memail').value       = "";
+        form('mbairro').value      = "";
+        form('mnmr').value         = "";
+        form('mcidade').value      = "";
+        form('muf').value          = "";
+        form('mlogradouro').value  = "";
+        form('mcepini').value      = "";
+        form('mcepdigito').value   = "";
     }
 }
 

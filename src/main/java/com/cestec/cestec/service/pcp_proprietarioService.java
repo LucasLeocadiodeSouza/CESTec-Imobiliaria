@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cestec.cestec.model.ImovelProprietarioDTO;
 import com.cestec.cestec.model.pcp_imovel;
@@ -36,36 +37,61 @@ public class pcp_proprietarioService {
         if(proprietario.getNumtel() == ""){
             return "Deve ser informado o Numero de telefone do proprietario";
         }
+        if(proprietario.getEndereco_bairro() == ""){
+            return "Deve ser informado o Endereco [Bairro] do proprietario";
+        }
+        if(proprietario.getEndereco_numero() == ""){
+            return "Deve ser informado o Endereco [Número] do proprietario";
+        }
+        if(proprietario.getEndereco_logradouro() == ""){
+            return "Deve ser informado o Endereco [Logradouro] do proprietario";
+        }
+        if(proprietario.getEndereco_cep() == ""){
+            return "Deve ser informado o Endereco [Cep] do proprietario";
+        }
+        if(proprietario.getEndereco_cep().length() != 9){
+            return "Cep [" + proprietario.getEndereco_cep().toString() + "] Informado inválido";
+        }
+        if(proprietario.getEndereco_cidade() == ""){
+            return "Deve ser informado o Endereco [Cidade] do proprietario";
+        }
+        if(proprietario.getEndereco_uf() == ""){
+            return "Deve ser informado o Endereco [UF] do proprietario";
+        }
         return "OK";
     }
 
-    public ResponseEntity<?> salvarProprietario(pcp_proprietario pcp_proprietario) {
+    @Transactional
+    public ResponseEntity<String> salvarProprietario(pcp_proprietario pcp_proprietario) {
         String validacao = validaProprietario(pcp_proprietario);        
         if (!validacao.equals("OK")) {
-            return ResponseEntity.badRequest().body(validacao);
+            return ResponseEntity.ok(validacao);
         }
 
-        pcp_proprietario proprietarioAnalise = proprietarioRepository.findByCodproprietario(pcp_proprietario.getCodproprietario());
+        try {
+            pcp_proprietario proprietarioAnalise = proprietarioRepository.findByCodproprietario(pcp_proprietario.getCodproprietario());
 
-        if(proprietarioAnalise != null){
             proprietarioAnalise.setDocumento(pcp_proprietario.getDocumento());
             proprietarioAnalise.setEmail(pcp_proprietario.getEmail());
-            proprietarioAnalise.setEndereco_bairro(proprietarioAnalise.getEndereco_bairro());
-            proprietarioAnalise.setEndereco_cep(proprietarioAnalise.getEndereco_cep());
-            proprietarioAnalise.setEndereco_cidade(proprietarioAnalise.getEndereco_cidade());
-            proprietarioAnalise.setEndereco_complemento(proprietarioAnalise.getEndereco_complemento());
-            proprietarioAnalise.setEndereco_numero(proprietarioAnalise.getEndereco_numero());
-            proprietarioAnalise.setEndereco_uf(proprietarioAnalise.getEndereco_uf());
-            proprietarioAnalise.setEndereco_logradouro(proprietarioAnalise.getEndereco_logradouro());
+            proprietarioAnalise.setEndereco_bairro(pcp_proprietario.getEndereco_bairro());
+            proprietarioAnalise.setEndereco_cep(pcp_proprietario.getEndereco_cep());
+            proprietarioAnalise.setEndereco_cidade(pcp_proprietario.getEndereco_cidade());
+            proprietarioAnalise.setEndereco_complemento(pcp_proprietario.getEndereco_complemento());
+            proprietarioAnalise.setEndereco_numero(pcp_proprietario.getEndereco_numero());
+            proprietarioAnalise.setEndereco_uf(pcp_proprietario.getEndereco_uf());
+            proprietarioAnalise.setEndereco_logradouro(pcp_proprietario.getEndereco_logradouro());
             proprietarioAnalise.setNome(pcp_proprietario.getNome());
             proprietarioAnalise.setNumtel(pcp_proprietario.getNumtel());
-        }else{ pcp_proprietario.setCriado_em(LocalDateTime.now()); }
-
-
-        pcp_proprietario.setAtualizado_em(LocalDateTime.now());
-
-        pcp_proprietario salvo = proprietarioRepository.save(pcp_proprietario);
-        return ResponseEntity.ok(salvo);
+            proprietarioAnalise.setCriado_em(proprietarioAnalise.getCriado_em() == null?LocalDateTime.now():proprietarioAnalise.getCriado_em());
+            proprietarioAnalise.setAtualizado_em(LocalDateTime.now());
+            if(proprietarioAnalise.getCodproprietario() == null) proprietarioAnalise.setId_usuario(pcp_proprietario.getId_usuario());
+    
+    
+            proprietarioRepository.save(proprietarioAnalise);
+            return ResponseEntity.ok("OK");     
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage());    
+        }
     }
 
     public pcp_imovel salvarImovel(pcp_imovel imovel, Integer codproprietario) {

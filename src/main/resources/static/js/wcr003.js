@@ -5,6 +5,7 @@
 */
 
 window.addEventListener("load", function () {
+    buscarUserName();
     iniciarEventos();
 });
 
@@ -58,7 +59,6 @@ function event_click(obj) {
     if(obj == 'bcadastro'){
         form(obj).addEventListener("click", function () {
             adicionarCliente();
-            form("DMF_external").style.display = "none";
         });
     }
 }
@@ -148,15 +148,18 @@ function buscarDadosTable(){
 }
 
 function adicionarCliente() {
-    const cliente     = { codcliente:      form("mcodcliente").value,
-                          nome:            form("mnome").value,
-                          documento:       form("mcpf").value,                          
-                          numtel:          form("mddd").value + form("mtelefone").value,
-                          email:           form("memail").value,
-                          endereco_bairro: form('mbairro').value,
-                          endereco_numero: form('mnmr').value,
-                          endereco_cidade: form('mcidade').value,
-                          endereco_uf:     form('muf').value
+    const cliente     = {  codcliente:          form("mcodcliente").value,
+                           nome:                form("mnome").value,
+                           documento:           form("mcpf").value,
+                           numtel:              form("mddd").value + form("mtelefone").value,
+                           email:               form("memail").value,
+                           endereco_bairro:     form('mbairro').value,
+                           endereco_numero:     form('mnmr').value,
+                           endereco_logradouro: form('mlogradouro').value,
+                           endereco_cep:        form('mcepini').value + "-" + form('mcepdigito').value,
+                           endereco_cidade:     form('mcidade').value,
+                           endereco_uf:         form('muf').value,
+                           id_usuario:          form('ideusu').value
                         };
 
     fetch("/cliente/salvarCliente", {
@@ -166,8 +169,9 @@ function adicionarCliente() {
         },
         body: JSON.stringify(cliente)
     })
-    .then(response => {console.log(response.json()); return response.json();})
-    .then(data => {        
+    .then(response => { return response.text()})
+    .then(data => {
+        if(data != "OK") return alert(data);
         alert("Dados Salvos Com Sucesso!");
         if(form("sacao").innerText == "Inserindo")if(confirm("Deseja enviar um Email de Boas Vindas para o cliente?")) enviarEmail();
     })
@@ -196,6 +200,18 @@ function enviarEmail(){
         },
         body: JSON.stringify(email)        
     })
+    .catch(error => alert(error.message));
+}
+
+function buscarUserName(){
+    fetch("/home/userlogin", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response =>{return response.text()})
+    .then(data => { form("ideusu").value = data })
     .catch(error => alert(error.message));
 }
 
