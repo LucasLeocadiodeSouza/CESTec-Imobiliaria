@@ -3,7 +3,9 @@ package com.cestec.cestec.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cestec.cestec.model.pcp_cliente;
 import com.cestec.cestec.repository.clienteRepository;
@@ -14,26 +16,76 @@ public class pcp_clienteService {
     @Autowired
     private clienteRepository clienteRepository;
 
-    public pcp_cliente salvarClientes(pcp_cliente cliente){
-        pcp_cliente clienteAnalise = clienteRepository.findByCodcliente(cliente.getCodcliente());
+    public String validaCliente(pcp_cliente cliente){
+        if(cliente.getDocumento() == ""){
+            return "Proprietario Não pode ser cadastrado sem um CPF";
+        }
+        if(cliente.getEmail() == ""){
+            return "Deve ser Preenchido o Campo Email do proprietario";
+        }
+        if(cliente.getNome() == ""){
+            return "Deve ser Preenchido o Campo Nome do proprietario";
+        }
+        if(cliente.getNumtel() == ""){
+            return "Deve ser informado o Numero de telefone do proprietario";
+        }
+        if(cliente.getEndereco_bairro() == ""){
+            return "Deve ser informado o Endereco [Bairro] do proprietario";
+        }
+        if(cliente.getEndereco_numero() == ""){
+            return "Deve ser informado o Endereco [Número] do proprietario";
+        }
+        if(cliente.getEndereco_logradouro() == ""){
+            return "Deve ser informado o Endereco [Logradouro] do proprietario";
+        }
+        if(cliente.getEndereco_cep() == ""){
+            return "Deve ser informado o Endereco [Cep] do proprietario";
+        }
+        if(cliente.getEndereco_cep().length() != 9){
+            return "Cep [" + cliente.getEndereco_cep().toString() + "] Informado inválido";
+        }
+        if(cliente.getEndereco_cidade() == ""){
+            return "Deve ser informado o Endereco [Cidade] do proprietario";
+        }
+        if(cliente.getEndereco_uf() == ""){
+            return "Deve ser informado o Endereco [UF] do proprietario";
+        }
+        return "OK";
+    }
 
-        if(clienteAnalise != null){
+    @Transactional
+    public ResponseEntity<?> salvarClientes(pcp_cliente cliente){
+        String validacao = validaCliente(cliente);        
+        if (!validacao.equals("OK")) {
+            return ResponseEntity.ok(validacao);
+        }
+
+        try{
+            pcp_cliente clienteAnalise = clienteRepository.findByCodcliente(cliente.getCodcliente());
+        
             clienteAnalise.setDocumento(cliente.getDocumento());
             clienteAnalise.setEmail(cliente.getEmail());
             clienteAnalise.setEndereco_bairro(cliente.getEndereco_bairro());
+            clienteAnalise.setEndereco_numero(cliente.getEndereco_numero());
+            clienteAnalise.setEndereco_logradouro(cliente.getEndereco_logradouro());
             clienteAnalise.setEndereco_cep(cliente.getEndereco_cep());
             clienteAnalise.setEndereco_cidade(cliente.getEndereco_cidade());
-            clienteAnalise.setEndereco_complemento(cliente.getEndereco_complemento());
-            clienteAnalise.setEndereco_numero(cliente.getEndereco_numero());
             clienteAnalise.setEndereco_uf(cliente.getEndereco_uf());
-            clienteAnalise.setEndereco_logradouro(cliente.getEndereco_logradouro());
+            clienteAnalise.setEndereco_complemento(cliente.getEndereco_complemento());
             clienteAnalise.setNome(cliente.getNome());
             clienteAnalise.setNumtel(cliente.getNumtel());
-        }else{ cliente.setCriado_em(LocalDateTime.now()); }
+            clienteAnalise.setCriado_em(clienteAnalise.getCriado_em() == null?LocalDateTime.now():clienteAnalise.getCriado_em());
+            clienteAnalise.setAtualizado_em(LocalDateTime.now());
+            if(clienteAnalise.getCodcliente() == null) clienteAnalise.setId_usuario(cliente.getId_usuario());
+            
+            
 
-
-        cliente.setAtualizado_em(LocalDateTime.now());
-        return clienteRepository.save(cliente);
+            clienteRepository.save(clienteAnalise);
+            return ResponseEntity.ok("OK");
+        }catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage());    
+        }
+        
     }
 
     public List<pcp_cliente> buscarClientes(){

@@ -35,6 +35,9 @@ public class pcp_cliente {
     @Column(length = 20)
     private String documento;
     
+    @Column(length = 7)
+    private String id_usuario;
+
     private String        numtel;
     private String        email;
     private LocalDateTime criado_em;

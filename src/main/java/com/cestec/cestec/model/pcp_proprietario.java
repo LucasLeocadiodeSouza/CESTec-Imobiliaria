@@ -39,6 +39,9 @@ public class pcp_proprietario {
     @Column(length = 80)
     private String nome;
 
+    @Column(length = 7)
+    private String id_usuario;
+
     private LocalDateTime criado_em;
     private LocalDateTime atualizado_em;
 

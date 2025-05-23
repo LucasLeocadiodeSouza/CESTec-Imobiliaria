@@ -31,19 +31,37 @@ public class FaturaController {
 	@Autowired
 	private faturaService service;
 
+    @Autowired
+	private contaRepository contarepository;
+
+	@Autowired
+	private convenioRepository conveniorepository;
+
+	@Autowired
+	private clienteRepository clienterepository;
+
 	@GetMapping("/{faturaId}")
 	public CobrancaInput transformar(@PathVariable Long faturaId) {
 		return service.transformarFaturaEmCobranca(faturaId);
 	}
 
 	@PostMapping("/registrarFatura/{clienteId}")
-	public Fatura registrarFatura(@PathVariable Integer clienteId, @RequestBody Fatura fatura) {
-		return service.salvarFaturaNoBanco(clienteId, fatura);
+	public CobrancaInput registrarFatura(@PathVariable Integer clienteId, @RequestBody Fatura fatura) {
+		var conta    = contarepository.findById( 1);
+		var convenio = conveniorepository.findById(1);
+		var pessoa   = clienterepository.findByCodcliente(clienteId);
+
+		fatura.setNumeroDocumento("71900");
+		fatura.setConta(conta);
+		fatura.setConvenio(convenio);
+		fatura.setPessoa(pessoa);
+
+		return service.criarFatura(fatura);
 	}
 	
 	@PostMapping("/registrarBoleto/{id}")
-	public BoletoRegistrado registrarBoleto(@PathVariable Long id, @RequestBody Cobranca cobranca) {
-		return service.registrarBoleto(id, cobranca);
+	public BoletoRegistrado registrarBoleto(@PathVariable Long id) {
+		return service.registrarBoleto(id);
 	}
 
 	@GetMapping(path = "/{faturaId}/boleto/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
