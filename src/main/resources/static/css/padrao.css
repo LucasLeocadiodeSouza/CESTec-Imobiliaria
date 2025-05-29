@@ -62,7 +62,7 @@ body .gen {padding: 10px}
 
 .titulo {border: 2px solid rgb(104, 104, 104);
          border-bottom: none; 
-         background-color: #c4c4c4;
+         background-color: #d5d5d5;
          height: 33px; 
          width: 98%;
          justify-content: center; 
@@ -78,6 +78,15 @@ body .gen {padding: 10px}
          border: 1px solid rgb(104, 104, 104);
          border-bottom: none; 
          background-color: rgb(210, 210, 210);}
+
+.dabaexterna {height: 40px; 
+             width: 90%; 
+             justify-content: center; 
+             margin: 10px; 
+             margin-bottom: 0px;
+             padding: 0px; 
+             display: flex; 
+             justify-content: flex-start;}
 
 .abaint      {display: flex;
               justify-content: center;
@@ -109,6 +118,8 @@ body .gen {padding: 10px}
          margin-bottom: 50px;}
 
 .dmf label {font-family:Arial, Helvetica}
+
+.closediv {display: flex; justify-content: flex-end;align-items: center; height: 35px;}
 
 .bpc {display: flex;
       border: 3px solid darkgrey;
@@ -167,6 +178,9 @@ textarea[type="reset"] {box-shadow: none;}
                display: flex;
                justify-content: center;
                align-items: center;}
+
+.DMF_tema1     {border-radius: 10px;
+                background-color: #fafafa;}
 
 div.grid {display: flex;
           justify-content: center;
