@@ -7,27 +7,48 @@ window.addEventListener("load", function () {
     wcr001_init();
 });
 
-import { GridForm_init } from "./gridForm.js";
+import { GridForm_init } from "./modules/gridForm.js";
+import { DMFForm_init } from "./modules/dmfForm.js";
+import { abaForm_init } from "./modules/abaForm.js";
+import { imgFormat,form,desabilitaCampo,setDisplay } from "./modules/utils.js";
 
-var CLIENTE_GRID;
+var IMOVEIS_GRID;
+var DMFDiv, ABA;
 
 function wcr001_init(){
-    CLIENTE_GRID = new GridForm_init();
+    IMOVEIS_GRID               = new GridForm_init();
+    IMOVEIS_GRID.id            = "tabela_CTO";
+    IMOVEIS_GRID.columnName    = "codimovel,codproprietario,nome,tipo,status,preco,negociacao";
+    IMOVEIS_GRID.columnLabel   = "Cód.Imovel,Cod. Prop.,Nome,Tipo,Situacao,Valor (R$),Contrato";
+    IMOVEIS_GRID.columnWidth   = "5,8,35,17,16,8,10";
+    IMOVEIS_GRID.mousehouve    = false;
+    IMOVEIS_GRID.destacarclick = false;
+    IMOVEIS_GRID.createGrid();
 
+    ABA      = new abaForm_init();
+    ABA.id   = "abas";
+    ABA.name = "Consulta,Manutencão";
+    ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
+    ABA.createAba();
+
+    DMFDiv              = new DMFForm_init();
+    DMFDiv.divs         = "dmodalf_contrato";
+    DMFDiv.tema         = 1;
+    DMFDiv.cortinaclose = true;
+    DMFDiv.formModal();
 
     iniciarEventos();
 }
 
 function iniciarEventos() {
     controlaTela("inicia");
-    ABA_init();
-    form("aba1").classList.add('ativa');
+
+    event_click_aba();
 
     event_click("bnovabusca");
     event_click("bbuscar");
     event_click("binserir");
     event_click("blimpar");
-    event_click("bclose");
     event_click("bcadastro");
     
     event_change("codproprietario");
@@ -35,19 +56,26 @@ function iniciarEventos() {
 
     imgFormat();
 
-
+    carregaGridImoveis();
 }
 
-function event_click_table(id,index){
-    if(id == "tabela_CTO"){
-        form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
-        form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
+function event_click_table(id){
+    if(!document.getElementById(id)) return alert("Grid não encontrada");
 
-        preencherDadosModal(index);
+     document.getElementById(id).addEventListener('click', (event) => {
+        switch (id) {
+        case IMOVEIS_GRID.id: const valoresLinha = IMOVEIS_GRID.getRowNode(event.target.closest('tr'));
+                              
+                              console.log(valoresLinha);
 
-        controlaTela("modal");
-        form("DMF_external").style.display = "flex";
-    }
+                              form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
+                              form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
+
+                              controlaTela("modal");
+                              DMFDiv.openModal();
+                              break;
+        }
+    });
 }
 
 function event_click(obj) {
@@ -59,7 +87,6 @@ function event_click(obj) {
     if(obj == "bbuscar"){
         form(obj).addEventListener("click", function () {
             controlaTela("novabusca");
-            buscarDadosTable();
         });        
     }
     if(obj == 'blimpar'){
@@ -73,18 +100,13 @@ function event_click(obj) {
             form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
             
             controlaTela("modal");
-            form("DMF_external").style.display = "flex";
-        });
-    }
-    if(obj == 'bclose'){
-        form(obj).addEventListener("click", function () {
-            form("DMF_external").style.display = "none";    
+            DMFDiv.openModal("dmodalf_contrato");
         });
     }
     if(obj == 'bcadastro'){
         form(obj).addEventListener("click", function () {
             adicionarContratoImovel();
-            form("DMF_external").style.display = "none";
+            DMFDiv.closeModal();
         });
     }
 }
@@ -102,6 +124,16 @@ function event_change(obj){
     }
 }
 
+function event_click_aba(){
+    ABA.setAba_init(()=>{
+        switch (ABA.getIndex()) {
+        case 0: 
+        case 1: controlaTela("inicio");
+                break;
+        }
+    });
+}
+
 function controlaTela(opc){
     limparTela(opc);
     if(opc == "inicia" || opc == 'buscar'){
@@ -115,8 +147,7 @@ function controlaTela(opc){
         desabilitaCampo('raluguel',        false);
         desabilitaCampo('rvenda',          false);
 
-        form("binserir").style.display     = form("aba1").style.pointerEvents == 'visible'?"flex":"none";
-        form("DMF_external").style.display = "none";
+        setDisplay("binserir", ehManutencao()?"block":"none");
     }
     if(opc == "novabusca"){
         desabilitaCampo('bnovabusca',      false);
@@ -131,7 +162,6 @@ function controlaTela(opc){
     }
     if(opc == "modal"){
         desabilitaCampo('mcodproprietario',  ehConsulta());
-        desabilitaCampo('mdescproprietario', ehConsulta());
         desabilitaCampo('mstpimovel',        ehConsulta());
         desabilitaCampo('mstpcontrato',      ehConsulta());
         desabilitaCampo('mmetrosquad',       ehConsulta());
@@ -149,9 +179,6 @@ function limparTela(opc){
     if(opc == "inicia" || opc == 'buscar'){        
         form('codproprietario').value  = "0";
         form('descproprietario').value = "0";
-
-        form("binserir").style.display     = form("aba1").style.pointerEvents == 'visible'?"flex":"none";
-        form("DMF_external").style.display = "none";
     }
     if(opc == "modal"){
         form('mcodproprietario').value     = "";
@@ -165,44 +192,6 @@ function limparTela(opc){
         form('mvlr').value                 = "";
         form('mperiodoini').value          = "";
     }
-} 
-
-function ABA_init(){
-    document.querySelectorAll(".aba").forEach(aba => {
-        aba.addEventListener("click", function () {
-
-            document.querySelectorAll(".aba").forEach(abareset => {
-                abareset.querySelector('.indentaba').style.backgroundColor =  'rgb(81, 81, 81)';
-                abareset.querySelector('.indentaba').style.removeProperty("background-color"); 
-                abareset.querySelector('.abaint').style.removeProperty("background-color");
-                abareset.querySelector('.abaint').style.pointerEvents = 'visible';
-                abareset.classList.remove('ativa'); 
-            });
-            this.classList.add('ativa');
-
-            let abatraco   = this.querySelector(".indentaba");
-            let abainterna = this.querySelector(".abaint");                
-
-            abatraco.style.backgroundColor   = "rgb(41, 76, 141)";                
-            abainterna.style.pointerEvents   = 'none';
-            abainterna.style.backgroundColor = "rgb(193, 192, 192)";
-        });
-        form('aba1').addEventListener("click", function () {
-            form('aba2').style.pointerEvents   = 'visible';              
-            form('aba1').style.pointerEvents   = 'none';
-            controlaTela('inicia');
-        });
-        form('aba2').addEventListener("click", function () {
-            form('aba1').style.pointerEvents   = 'visible';               
-            form('aba2').style.pointerEvents   = 'none';
-            controlaTela('inicia');
-        });
-        
-
-        aba.addEventListener("click", function () {
-            buscarDadosTable();
-        });
-    });
 }
 
 function preencherDadosModal(index){
@@ -231,15 +220,11 @@ function preencherDadosModal(index){
 }
 
 function ehConsulta(){
-    return form("aba1").classList.contains('ativa');
+    return ABA.getIndex() === 0;
 }
 
 function ehManutencao(){
-    return form("aba2").classList.contains('ativa');
-}
-
-function buscarDadosTable(){
-
+    return ABA.getIndex() === 1;
 }
 
 function adicionarContratoImovel() {
@@ -281,96 +266,6 @@ function descProprietario(codigo,retorno) {
     .catch(error => alert(error.message));
 }
 
-function imgFormat(){
-    document.querySelectorAll(".button").forEach(button => {
-        let iconUrl = button.getAttribute("data-icon");
-        button.style.paddingLeft = "30px";
-        button.style.position    = "relative";
-        
-        button.style.setProperty("--icon-url",          `url(${iconUrl})`);
-        button.style.setProperty("content",             `""`);
-        button.style.setProperty("background-image",    `url(${iconUrl})`);
-        button.style.setProperty("background-position", "10px center");
-        button.style.setProperty("background-repeat",   "no-repeat");
-        button.style.setProperty("background-size",     "20px 25px");
-    });
+function carregaGridImoveis(){
+    IMOVEIS_GRID.carregaGrid("/contratosCadastroClientes/proprietario/buscarImoveis","","");
 }
-
-function form(obj){
-    return document.getElementById(obj);
-}
-
-function desabilitaCampo(obj,desahabilita){
-    if (obj.substring(0,1) == "b"){
-        form(obj).style.backgroundColor =  desahabilita?'rgb(210 212 218)': '#b4b6ba';
-    }
-    form(obj).disabled = desahabilita;
-    form(obj).style.cursor = desahabilita?'not-allowed':'pointer';
-}
-
-/*
-function createGrid(id,column,columnName,columnWidth,dados){
-    form(id).innerText = '';
-    const table     = document.getElementById(id);
-    const thead     = document.createElement("thead");
-    const headerRow = document.createElement("tr");      
-    const colunas   = column.split(",");
-
-    var pi = 0;
-    colunas.forEach((coluna,index) => {
-        const th = document.createElement("th");
-        th.id = "th" + pi;
-        th.textContent =  coluna.trim();
-        headerRow.appendChild(th);
-        pi += 1;
-    });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
-
-    const tbody = document.createElement("tbody");
-    tbody.setAttribute("id", `${id}-tbody`);
-    table.appendChild(tbody);
-
-    dados.forEach((dado,index) => {
-        const row = document.createElement("tr");        
-
-        colunas.forEach(coluna => {
-            const td  = document.createElement("td");
-            var valor = dado[coluna.trim()];
-            if(coluna == "tipo"){
-                if(valor==1){valor = "Apartamento"}
-                if(valor==2){valor = "Casa"}
-                if(valor==3){valor = "Terreno"};
-            }
-            if(coluna == "status"){
-                valor = valor==1?"Disponivel":"Indisponivel";
-            }
-            if(coluna == "negociacao"){
-                valor = valor==1?"Aluguel":"Venda";
-            }
-
-            td.textContent = valor? valor :"N/A";
-            row.appendChild(td);
-        });    
-
-        row.addEventListener("click", ()=>{
-            form(id).querySelectorAll("tr").forEach(row => {
-                row.style.border = "none";
-            });            
-            event_click_table(id,index);
-            row.style.border = " 2px solid black";
-        });
-
-        tbody.appendChild(row);
-    });
-
-    var pi = 0;
-    colunas.forEach((coluna, index)=>{
-        form("th"+pi).innerText   = columnName.split(",")[pi];
-        form("th"+pi).style.width = columnWidth.split(",")[pi] +"%"; 
-        pi += 1;
-    });
-
-
-    return table;
-}*/

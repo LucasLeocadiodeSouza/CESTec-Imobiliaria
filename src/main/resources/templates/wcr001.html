@@ -17,12 +17,12 @@
     <script type="module" src="/js/wcr001.js" defer></script>
     
 <style>
-    .ppp         {width: 32px;}
-    .p           {width: 60px;}
-    .medium      {width: 120px;}
-    .Intermedium {width: 180px;}
-    .large       {width: 240px;}
-    .extralarge  {width: 300px;}
+    .ppp         {width: 32px  !important;}
+    .p           {width: 60px  !important;}
+    .medium      {width: 120px !important;}
+    .Intermedium {width: 180px !important;}
+    .large       {width: 240px !important;}
+    .extralarge  {width: 300px !important;}
 
     .fieldset {margin: 10px;
                display: flex;
@@ -33,11 +33,6 @@
                  width: 165px;
                  text-align: right;}
 
-    .grid {width: 99%;
-           height: 400px;
-           margin-top: 25px;
-           margin-inline: 7px;
-           overflow-y: scroll;}
     ::-webkit-scrollbar {
         width: 1px;
     }
@@ -46,7 +41,7 @@
         background: transparent;
     }
 
-    #dmodalf_contrato {width: 800px;
+    #dmodalf_contrato {width: 700px;
                        height: 470px;
                        opacity: 1;
                        background-color: aliceblue;
@@ -61,10 +56,8 @@
             <h2>Cadastro de Imóvel</h2>
         </div>
 
-        <div id='abas' class="gen" style="height: 40px; width: 90%; justify-content: center; margin: 10px; margin-bottom: 0px;padding: 0px; display: flex; justify-content: flex-start;">            
-            <div id="aba1" class="aba"><div class="indentaba" style="background-color: rgb(41, 76, 141)"></div><div class="abaint" style="background-color: rgb(193, 192, 192)"><img src="/icons/consultaLupa.png"   class="gen"><label style="margin-block: 0px;"> Consulta</label></div></div>
-            <div id="aba2" class="aba"><div class="indentaba"></div><div class="abaint"><img src="/icons/manutencaoIcon.png" class="gen"><label style="margin-block: 0px;"> Manutencão</label></div></div>
-        </div>
+        <div id='abas'></div>
+
         <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
             <div class='if'>
                 <label class="labelmodal">Código do Contrato: </label>
@@ -110,83 +103,77 @@
             <input type="button" id="binserir"  name="binserir"  class="button" value="Inserir"  data-icon="/icons/incluir.png">
         </div>
 
-        <div class='grid'><table id="tabela_CTO" class="table"></table></div>
+        <div id="tabela_CTO"></div>
 
         <!--  MODAL -->
-        <div id="DMF_external" class="DMF_external">
-            <div id="dmodalf_contrato">
-                <input type="hidden" id="mcodimovel" name="mcodimovel">
-                <input type="hidden" id="msituacao"  name="msituacao">
+        <div id="dmodalf_contrato">
+            <input type="hidden" id="mcodimovel" name="mcodimovel">
+            <input type="hidden" id="msituacao"  name="msituacao">
 
-                <div class='dmf' style="display: flex; justify-content: flex-end;align-items: center; height: 35px;">
-                    <div id="bclose" class="bpc"><img src="/icons/fechartela.png" style="width: 80%; height: 80%; margin: 0px;"></div>                
-                </div>
+            <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
+                <h2><span id="stitulo" name="stitulo"></span></h2>
+                <span     id="sacao"   name="sacao" style="display: none"></span>
+            </div>
 
-                <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
-                    <h2><span id="stitulo" name="stitulo"></span></h2>
-                    <span     id="sacao"   name="sacao" style="display: none"></span>
-                </div>
+            <div class='dmf'>
+                <label class="labelmodal">Proprietario: </label>
+                <input type="text" id="mcodproprietario"  name="mcodproprietario"  class="ppp">
+                <input type="text" id="mdescproprietario" name="mdescproprietario" class="large" disabled>
+            </div>                
 
-                <div class='dmf'>
-                    <label class="labelmodal">Proprietario: </label>
-                    <input type="text" id="mcodproprietario"  name="mcodproprietario"  class="ppp">
-                    <input type="text" id="mdescproprietario" name="mdescproprietario" class="large" disabled>
-                </div>                
+            <div class='dmf'>
+                <label class="labelmodal">Tipo de Imovel: </label>
+                <select id="mstpimovel" name="mstpimovel" class="Intermedium">
+                    <option value="0">Selecione o Tipo de imovel</option>
+                    <option value="1">Apartamento</option>
+                    <option value="2">Casa</option>
+                    <option value="3">Terreno</option>
+                </select>
+            </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Tipo de Imovel: </label>
-                    <select id="mstpimovel" name="mstpimovel" style="width: 140px;">
-                        <option value="0">Selecione o Tipo de imovel</option>
-                        <option value="1">Apartamento</option>
-                        <option value="2">Casa</option>
-                        <option value="3">Terreno</option>
-                    </select>
-                </div>
+            <div class='dmf'>
+                <label class="labelmodal">Tipo de Contrato: </label>
+                <select id="mstpcontrato" name="mstpcontrato" class="Intermedium">
+                    <option value="0">Selecione o Tipo de contrato</option>
+                    <option value="1">Aluguel</option>
+                    <option value="2">Venda</option>
+                </select>
+            </div>
+            
+            <div class='dmf'>
+                <label class="labelmodal">Area Total(M²): </label>
+                <input type="text" id="mmetrosquad" name="mmetrosquad" class="ppp">
+            </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Tipo de Contrato: </label>
-                    <select id="mstpcontrato" name="mstpcontrato" class="medium">
-                        <option value="0">Selecione o Tipo de contrato</option>
-                        <option value="1">Aluguel</option>
-                        <option value="2">Venda</option>
-                    </select>
-                </div>
-                
-                <div class='dmf'>
-                    <label class="labelmodal">Area Total(M²): </label>
-                    <input type="text" id="mmetrosquad" name="mmetrosquad" class="ppp">
-                </div>
+            <div class='dmf'>
+                <label class="labelmodal">Quartos: </label>
+                <input type="text" id="mquartos" name="mquartos" class="ppp">
+            </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Quartos: </label>
-                    <input type="text" id="mquartos" name="mquartos" class="ppp">
-                </div>
+            <div class='dmf'>
+                <label class="labelmodal">Condomínio(R$): </label>
+                <input type="text" id="mcondominio" name="mcondominio" class="p">
+            </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Condomínio(R$): </label>
-                    <input type="text" id="mcondominio" name="mcondominio" class="p">
-                </div>
+            <div class='dmf'>
+                <label class="labelmodal">Localização: </label>
+                <input type="text" id="mloc" name="mloc" class="extralarge">
+            </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Localização: </label>
-                    <input type="text" id="mloc" name="mloc" class="extralarge">
-                </div>
+            <div class='dmf'>
+                <label class="labelmodal">Valor (R$): </label>
+                <input type="text" id="mvlr" name="mvlr" class="medium">
+            </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Valor (R$): </label>
-                    <input type="text" id="mvlr" name="mvlr" class="medium">
-                </div>
+            <div class='dmf'>
+                <label class="labelmodal">Inicio do Contrato: </label>
+                <input type="date" id="mperiodoini" name="mperiodoini" class="medium">
+            </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Inicio do Contrato: </label>
-                    <input type="date" id="mperiodoini" name="mperiodoini" class="medium">
-                </div>
+            <div class='if' style="display: flex; margin-left: 5px;"></div>
 
-                <div class='if' style="display: flex; margin-left: 5px;"></div>
-
-                <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
-                    <input type="button" id="bcadastro" name="bcadastro" class="button" value="Cadastrar" data-icon="/icons/cadastro.png">
-                </div>
+            <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
+                <input type="button" id="bcadastro" name="bcadastro" class="button" value="Cadastrar" data-icon="/icons/cadastro.png">
             </div>
         </div>
 
