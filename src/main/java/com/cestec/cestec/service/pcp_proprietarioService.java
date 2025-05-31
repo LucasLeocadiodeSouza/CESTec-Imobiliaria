@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.cestec.cestec.model.ImovelProprietarioDTO;
 import com.cestec.cestec.model.pcp_imovel;
@@ -157,7 +159,10 @@ public class pcp_proprietarioService {
     }
 
     public String getNomeProp(Integer codProprietario){
-        return proprietarioRepository.findById(codProprietario).get().getNome();
+        pcp_proprietario proprietario = proprietarioRepository.findById(codProprietario).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, // Status HTTP 404
+                                                                                                                                       "Código do proprietario [" + codProprietario + "] não encontrado"));
+
+        return proprietario.getNome();
     }
 
     public List<ImovelProprietarioDTO> buscarImoveis(){
@@ -165,7 +170,10 @@ public class pcp_proprietarioService {
     }
 
     public String getEnderecoImovel(Integer codImovel){
-        return imovelRepository.findById(codImovel).get().getEndereco();
+        pcp_imovel imovel = imovelRepository.findById(codImovel).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                                                                                               "Não encontrado imovel para o código informado [" + codImovel + "]"));
+
+        return imovel.getEndereco();
     }
 
     public String getTipoContratoImovel(Integer codImovel){

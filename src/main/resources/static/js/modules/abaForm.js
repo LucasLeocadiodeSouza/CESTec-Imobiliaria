@@ -13,7 +13,7 @@ export function abaForm_init(){
         const icons = this.icon.split(",");
 
         const divAbaExt = document.createElement("div");
-        divAbaExt.className = "dabaexterna gen";
+        divAbaExt.className = "dabaexterna";
 
         var pi = 0;
         abas.forEach(abafe=>{
