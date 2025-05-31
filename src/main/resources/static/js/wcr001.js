@@ -7,13 +7,14 @@ window.addEventListener("load", function () {
     wcr001_init();
 });
 
-import { GridForm_init } from "./modules/gridForm.js";
-import { DMFForm_init } from "./modules/dmfForm.js";
-import { abaForm_init } from "./modules/abaForm.js";
+import { GridForm_init }   from "./modules/gridForm.js";
+import { DMFForm_init }    from "./modules/dmfForm.js";
+import { abaForm_init }    from "./modules/abaForm.js";
+import { consulForm_init } from "./modules/consulForm.js";
 import { imgFormat,form,desabilitaCampo,setDisplay } from "./modules/utils.js";
 
 var IMOVEIS_GRID;
-var DMFDiv, ABA;
+var DMFDiv, ABA, CONSUL;
 
 function wcr001_init(){
     IMOVEIS_GRID               = new GridForm_init();
@@ -37,6 +38,8 @@ function wcr001_init(){
     DMFDiv.tema         = 1;
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
+
+    CONSUL = new consulForm_init();
 
     iniciarEventos();
 }
@@ -237,29 +240,17 @@ function adicionarContratoImovel() {
                      datiregistro:      new Date().toISOString().split('T')[0],
                      datinicontrato:    form("mperiodoini").value};
 
-    fetch(`/contratosCadastroClientes/proprietario/${form("mcodproprietario").value}/salvarImovel`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(imovel,form("mcodproprietario").value)
-    })
-    .then(response => {return response.json()})
-    .then(data => {})
-    .catch(error => alert("Error: " + error.message));
+    CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form("mcodproprietario").value}/salvarImovel`,"POST","",JSON.stringify(imovel))
+    .then(data =>{
+        alert("Imóvel adicionado com sucesso!");
+    });
 }
 
-function descProprietario(codigo,retorno) {
-    fetch(`/contratosCadastroClientes/proprietario/${form(codigo).value}/nomepropri`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(form(codigo).value)
-    })
-    .then(response => {return response.text()})
-    .then(data => { form(retorno).value = data })
-    .catch(error => alert(error.message));
+function descProprietario(codigo) {
+    CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form(codigo).value}/nomepropri`)
+    .then(data =>{
+        form("mdescproprietario").value = data;
+    });
 }
 
 function carregaGridImoveis(){

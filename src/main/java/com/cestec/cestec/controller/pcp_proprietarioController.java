@@ -85,7 +85,7 @@ public class pcp_proprietarioController {
         return pcp_proprietarioService.buscarImoveis();
     }
 
-    @PostMapping("/{codProprietario}/nomepropri")
+    @GetMapping("/{codProprietario}/nomepropri")
     public String getNomeProp(@PathVariable Integer codProprietario) {
         return pcp_proprietarioService.getNomeProp(codProprietario);
     }
