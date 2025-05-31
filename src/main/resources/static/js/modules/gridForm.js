@@ -4,14 +4,19 @@
    IM: 00009
 */
 
+var init_click;
+
 export function GridForm_init(){
     this.id            = "";
     this.columnName    = "";
     this.columnLabel   = "";
     this.columnWidth   = "";
+    this.columnAlign   = "";
     this.gridWidth     = "";
     this.mousehouve    = false;
     this.destacarclick = false;
+
+    this.click_table = '';
 
     this.createGrid = ()=>{
         //
@@ -28,14 +33,13 @@ export function GridForm_init(){
         const headerRow    = document.createElement("tr");
         const colunas      = this.columnName.split(",");
 
-        table.id = this.id + "tab"; 
+        table.id = this.id + "tabcolumn"; 
 
         //
         //estilos
-        divtable.style.border       = "1px solid #000";
-        divtable .style.marginBlock = "20px";
+        divtable.style.marginBlock = "20px";
 
-        table.style.borderCollapse = "collapse";
+        table.classList.add("tablecolun");
 
         //
         //criar colunas
@@ -43,7 +47,7 @@ export function GridForm_init(){
         colunas.forEach(coluna => {
             const th = document.createElement("th");
 
-            th.id          = coluna.trim() + "_" + pi;
+            th.id          = coluna.trim() + "__" + pi;
             th.textContent = this.columnLabel.split(",")[pi];
 
             headerRow.appendChild(th);
@@ -54,9 +58,6 @@ export function GridForm_init(){
         thead.appendChild(headerRow);
         table.appendChild(thead);
 
-        //const tbody = document.createElement("tbody");
-        //tbody.setAttribute("id", `${table.id}-tbody`);
-        //table.appendChild(tbody);
         divtable.appendChild(table);
         divtableinit.appendChild(divtable);
 
@@ -75,7 +76,7 @@ export function GridForm_init(){
 
         pi = 0;
         colunas.forEach((coluna, index)=>{
-            document.getElementById(coluna.trim() + "_" + pi).style.width = this.columnWidth.split(",")[pi] +"%"; 
+            document.getElementById(coluna.trim() + "__" + pi).style.width = this.columnWidth.split(",")[pi] +"%"; 
             pi++;
         });
 
@@ -105,14 +106,72 @@ export function GridForm_init(){
         .then(response =>{
             if(!response.ok) throw new Error("Ocorreu um erro ao tentar executar a consulta para o caminho " + path + ". Erro:" + response.status + " - " +  response.statusText);
             
-            return response.json()
+            return response.json();
         })
-        .then(data => { 
+        .then(data => {
+            const colunas = this.columnName.split(",");
+            const aligns  = this.columnAlign.split(",");
             const dados = data;
             
-            console.log(dados);
+            const table = document.createElement("table");
+            table.classList.add("tabledata2");
 
-            //document.getElementById(this.id).childNodes[0].childNodes[1]
+            if(!Array.isArray(dados)) throw new Error("Ocorreu um erro ao tentar consultar os dados, o retorno não esta na forma de um array. Retorno atual: " + dados);
+
+            const headerbody = document.createElement("thead");
+            const trbody     = document.createElement("tr");
+
+            headerbody.style.visibility = "collapse";
+
+            var si = 0;
+            colunas.forEach(coluna =>{
+                const th             = document.createElement("th");
+                const colunaorignode = document.getElementById(this.id).childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[si];
+
+                th.id = coluna.trim() + "_res_" + si;
+                th.textContent = this.columnLabel.split(",")[si];
+
+                th.style.width = colunaorignode.style.width;
+                    
+                trbody.appendChild(th);
+                si++;
+            })
+            headerbody.appendChild(trbody);
+
+            const tbody = document.createElement("tbody");
+
+            dados.forEach(opc => {
+                const row = document.createElement("tr");
+                
+                var ni = 0;
+                colunas.forEach(coluna =>{
+                    const idcoluna = coluna.split("__" + ni)[0];
+
+                    if(!opc[idcoluna]) throw new Error("Ocorreu um erro ao tentar consultar os dados com o id informado [" + idcoluna + "], o retorno não esta na forma esperado.");
+
+                    const td  = document.createElement("td");
+                    const tdtext = opc[idcoluna]? opc[idcoluna] : "N/A";
+                    td.textContent = tdtext;
+
+                    if(aligns[ni] === "e") td.classList.add("tdalign-esq");
+                    if(aligns[ni] === "c") td.classList.add("tdalign-cen");
+                    if(aligns[ni] === "d") td.classList.add("tdalign-dir");
+                    else td.classList.add("tdalign-esq");
+
+                    row.onclick = this.click_table;
+                    
+                    row.appendChild(td); 
+
+                    ni++;
+                });
+
+                tbody.appendChild(row);
+            });
+        
+            table.appendChild(headerbody);
+            table.appendChild(tbody);
+            document.getElementById(this.id).childNodes[0].appendChild(table);
+            
             })
         .catch(error => alert(error.message));
     }
@@ -120,11 +179,7 @@ export function GridForm_init(){
     //
     //retornos grid
     this.getTableNode = ()=>{
-        if(!document.getElementById(this.id).childNodes[0].childNodes[0] == document.getElementById(this.id + "tab")) {
-            throw new Error("Erro ao retornar " + this.id + ".getTableNode. Erro: Tabela não encontrada");
-        }
-
-        return document.getElementById(this.id).childNodes[0].childNodes[0].childNodes;
+        return document.getElementById(this.id).childNodes[0].childNodes[1].childNodes[1].childNodes;
     }
 
    this.getRowNode = (row)=>{
@@ -132,9 +187,6 @@ export function GridForm_init(){
     }
 
     this.getTable = ()=>{
-        return document.getElementById(this.id + "tab");
+        return document.getElementById(this.id + "tabcolumn");
     }
-    
-    //
-    //click na table
 }

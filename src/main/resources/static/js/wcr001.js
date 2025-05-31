@@ -21,6 +21,7 @@ function wcr001_init(){
     IMOVEIS_GRID.columnName    = "codimovel,codproprietario,nome,tipo,status,preco,negociacao";
     IMOVEIS_GRID.columnLabel   = "Cód.Imovel,Cod. Prop.,Nome,Tipo,Situacao,Valor (R$),Contrato";
     IMOVEIS_GRID.columnWidth   = "5,8,35,17,16,8,10";
+    IMOVEIS_GRID.columnAlign   = "c,c,e,c,c,d,c";
     IMOVEIS_GRID.mousehouve    = false;
     IMOVEIS_GRID.destacarclick = false;
     IMOVEIS_GRID.createGrid();
@@ -43,6 +44,7 @@ function wcr001_init(){
 function iniciarEventos() {
     controlaTela("inicia");
 
+    event_click_table();
     event_click_aba();
 
     event_click("bnovabusca");
@@ -59,23 +61,17 @@ function iniciarEventos() {
     carregaGridImoveis();
 }
 
-function event_click_table(id){
-    if(!document.getElementById(id)) return alert("Grid não encontrada");
+function event_click_table(){
+    IMOVEIS_GRID.click_table = ()=>{
+        const valoresLinha = IMOVEIS_GRID.getRowNode(event.target.closest('tr'));                      
+        console.log(valoresLinha);
 
-     document.getElementById(id).addEventListener('click', (event) => {
-        switch (id) {
-        case IMOVEIS_GRID.id: const valoresLinha = IMOVEIS_GRID.getRowNode(event.target.closest('tr'));
-                              
-                              console.log(valoresLinha);
+        form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
+        form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
 
-                              form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
-                              form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
-
-                              controlaTela("modal");
-                              DMFDiv.openModal();
-                              break;
-        }
-    });
+        controlaTela("modal");
+        DMFDiv.openModal("dmodalf_contrato");
+    };
 }
 
 function event_click(obj) {
@@ -128,7 +124,7 @@ function event_click_aba(){
     ABA.setAba_init(()=>{
         switch (ABA.getIndex()) {
         case 0: 
-        case 1: controlaTela("inicio");
+        case 1: controlaTela("inicia");
                 break;
         }
     });
