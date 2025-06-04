@@ -20,7 +20,7 @@ public interface imovelRepository extends JpaRepository<pcp_imovel, Integer> {
     pcp_imovel existeimovel(@Param("codimovel") Integer codimovel, @Param("codproprietario") Integer codproprietario);
 
     @Query("SELECT new com.cestec.cestec.model.ImovelProprietarioDTO(" +
-           "i.codimovel, p.codproprietario, p.nome, i.tipo, i.status, i.preco, i.negociacao) " +
+           "i.codimovel, p.codproprietario, p.nome, i.tipo, i.status, i.preco, i.negociacao, i.endereco, i.area, i.quartos, i.vlrcondominio, i.datinicontrato) " +
            "FROM pcp_imovel i JOIN i.pcp_proprietario p")
     List<ImovelProprietarioDTO> buscarimoveis();    
 

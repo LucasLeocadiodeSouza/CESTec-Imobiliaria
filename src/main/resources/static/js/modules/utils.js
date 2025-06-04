@@ -1,5 +1,5 @@
 export function imgFormat(){
-    document.querySelectorAll(".button").forEach(button => {
+    /*document.querySelectorAll(".button").forEach(button => {
         let iconUrl = button.getAttribute("data-icon");
         button.style.paddingLeft = "30px";
         button.style.position    = "relative";
@@ -10,7 +10,7 @@ export function imgFormat(){
         button.style.setProperty("background-position", "10px center");
         button.style.setProperty("background-repeat",   "no-repeat");
         button.style.setProperty("background-size",     "20px 25px");
-    });
+    });*/
 }
 
 export function form(obj){

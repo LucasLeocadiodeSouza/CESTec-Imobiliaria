@@ -13,6 +13,8 @@ export function GridForm_init(){
     this.columnWidth   = "";
     this.columnAlign   = "";
     this.gridWidth     = "";
+    this.scroll        = false;
+    this.clickgrid     = true;
     this.mousehouve    = false;
     this.destacarclick = false;
 
@@ -44,11 +46,14 @@ export function GridForm_init(){
         //
         //criar colunas
         pi = 0;
-        colunas.forEach(coluna => {
-            const th = document.createElement("th");
+        colunas.forEach((coluna,index) => {
+            const th           = document.createElement("th");
+            const colunasLabel = this.columnLabel.split(",");
 
             th.id          = coluna.trim() + "__" + pi;
-            th.textContent = this.columnLabel.split(",")[pi];
+            th.textContent = colunasLabel[pi];
+
+            if(!colunasLabel[index]) th.style.display = "none";
 
             headerRow.appendChild(th);
 
@@ -86,9 +91,9 @@ export function GridForm_init(){
     //
     //limpar a grid
     this.clearGrid = ()=>{
-        if(!this.id) throw new Error("Objeto da grid " + this.id + " não encontrado.");
+        if(!document.getElementById(this.id)) throw new Error("Objeto da grid " + this.id + " não encontrado.");
 
-        document.getElementById(this.id + "res").childNodes[1].innerHTML = "";
+        if(document.getElementById(this.id + "res")) document.getElementById(this.id + "res").remove();
     }
 
     //carregar dados para a grid
@@ -109,12 +114,18 @@ export function GridForm_init(){
             return response.json();
         })
         .then(data => {
-            const colunas = this.columnName.split(",");
-            const aligns  = this.columnAlign.split(",");
-            const dados = data;
+            const colunas      = this.columnName.split(",");
+            const colunasLabel = this.columnLabel.split(",");
+            const aligns       = this.columnAlign.split(",");
+            const dados        = data;
             
+            if(document.getElementById(this.id + "res")) this.clearGrid;
+
             const table = document.createElement("table");
+            table.id    = this.id + "res";
             table.classList.add("tabledata2");
+
+            if(this.scroll) table.style.overflowY = "scroll";
 
             if(!Array.isArray(dados)) throw new Error("Ocorreu um erro ao tentar consultar os dados, o retorno não esta na forma de um array. Retorno atual: " + dados);
 
@@ -124,7 +135,7 @@ export function GridForm_init(){
             headerbody.style.visibility = "collapse";
 
             var si = 0;
-            colunas.forEach(coluna =>{
+            colunas.forEach((coluna,index) =>{
                 const th             = document.createElement("th");
                 const colunaorignode = document.getElementById(this.id).childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[si];
 
@@ -132,7 +143,8 @@ export function GridForm_init(){
                 th.textContent = this.columnLabel.split(",")[si];
 
                 th.style.width = colunaorignode.style.width;
-                    
+                if(!colunasLabel[index]) th.style.display = "none";
+
                 trbody.appendChild(th);
                 si++;
             })
@@ -143,27 +155,34 @@ export function GridForm_init(){
             dados.forEach(opc => {
                 const row = document.createElement("tr");
                 
-                var ni = 0;
-                colunas.forEach(coluna =>{
-                    const idcoluna = coluna.split("__" + ni)[0];
+                colunas.forEach((coluna,index) =>{
+                    const idcoluna = coluna.split("__" + index)[0];
 
-                    if(!opc[idcoluna]) throw new Error("Ocorreu um erro ao tentar consultar os dados com o id informado [" + idcoluna + "], o retorno não esta na forma esperado.");
+                    if(!opc.hasOwnProperty(idcoluna)) throw new Error("Ocorreu um erro ao tentar consultar os dados com o id informado [" + idcoluna + "], o retorno não esta na forma esperado.");
 
                     const td  = document.createElement("td");
                     const tdtext = opc[idcoluna]? opc[idcoluna] : "N/A";
                     td.textContent = tdtext;
 
-                    if(aligns[ni] === "e") td.classList.add("tdalign-esq");
-                    if(aligns[ni] === "c") td.classList.add("tdalign-cen");
-                    if(aligns[ni] === "d") td.classList.add("tdalign-dir");
+                    if(aligns[index] === "e") td.classList.add("tdalign-esq");
+                    if(aligns[index] === "c") td.classList.add("tdalign-cen");
+                    if(aligns[index] === "d") td.classList.add("tdalign-dir");
                     else td.classList.add("tdalign-esq");
 
-                    row.onclick = this.click_table;
-                    
-                    row.appendChild(td); 
+                    if(!colunasLabel[index]) td.style.display = "none";
 
-                    ni++;
+                    row.appendChild(td);
                 });
+
+                
+                row.onclick = this.click_table;
+                
+                //
+                //cor mouse hover
+                if(this.mousehouve){
+                    row.addEventListener("mouseover", ()=>{row.classList.add("mouseovercolor")});
+                    row.addEventListener("mouseout",  ()=>{row.classList.remove("mouseovercolor")});
+                }
 
                 tbody.appendChild(row);
             });
@@ -172,6 +191,9 @@ export function GridForm_init(){
             table.appendChild(tbody);
             document.getElementById(this.id).childNodes[0].appendChild(table);
             
+            if(this.clickgrid){
+                clickRowBorder(table.id);
+            }
             })
         .catch(error => alert(error.message));
     }
@@ -183,10 +205,52 @@ export function GridForm_init(){
     }
 
    this.getRowNode = (row)=>{
-        return row.childNodes;
+        const rowsnode = row.childNodes;
+        let rowsInner = [];
+
+        rowsnode.forEach(row =>{
+            rowsInner.push(row.innerText);
+        });
+
+        return rowsInner;
     }
 
     this.getTable = ()=>{
         return document.getElementById(this.id + "tabcolumn");
     }
+}
+
+function clickRowBorder(idtable){
+    const table = document.getElementById(idtable);
+
+    if(!table) throw new Error("Ocorreu um erro ao tentar consultar a tabela com o id informado [" + idtable + "]. Div não encontrada.");
+    
+    const tbody = table.querySelector('tbody');
+    if (!tbody) return;
+    
+    const rows = tbody.querySelectorAll('tr');
+    
+    rows.forEach(row => {
+        row.addEventListener('click', () => {
+            rows.forEach(otherRow => {
+                otherRow.classList.remove('clicktableborder');
+            });
+
+            row.classList.add('clicktableborder');
+        });
+
+        document.addEventListener('click', function(event) {
+            const clicouFora = !row.contains(event.target);
+            
+            const elementosBody = Array.from(document.body.children);
+            const gridIndex     = elementosBody.indexOf(table);
+            const targetIndex   = elementosBody.indexOf(event.target);
+            
+            const mesmoIndice = targetIndex === gridIndex;
+
+            if (clicouFora && mesmoIndice) {
+                row.classList.remove("clicktableborder");
+            }
+        });
+    });    
 }
