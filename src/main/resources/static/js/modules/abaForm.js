@@ -75,7 +75,6 @@ export function abaForm_init(){
                     obj2.divAbaInt.style.backgroundColor = ''; // Remove o background-color inline
                 });
 
-
                 obj.divAba.classList.add('ativa');
 
                 obj.linhaDecor.style.backgroundColor   = "rgb(41, 76, 141)";

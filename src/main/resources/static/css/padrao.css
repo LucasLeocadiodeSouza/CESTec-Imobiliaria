@@ -23,7 +23,8 @@ body .gen {padding: 10px}
          border: none;
          cursor: pointer;
          border-radius: 6px;
-         width: 110px;
+         width: auto;
+         min-width: 100px;
          height: 40px;
          transition: 0.2s;
          margin-inline: 5px;
@@ -51,6 +52,8 @@ body .gen {padding: 10px}
                box-shadow: 0 0 0 1px #5151525f;
                color: #fff;}
 
+.buttonfe {width: 100%; height: 100%; display: flex; flex-direction: row;}
+
 .gen a      {font-weight:     bolder;
              color:           #0060d4;
              text-decoration: underline;}
@@ -75,7 +78,7 @@ body .gen {padding: 10px}
 .aba    {height: 40px;
          width: 180px;
          display: flex;
-         justify-content: center;
+         justify-content: flex-start;
          flex-direction: column;
          border: 1px solid rgb(104, 104, 104);
          border-bottom: none; 
@@ -93,7 +96,7 @@ body .gen {padding: 10px}
 .abaint      {display: flex;
               justify-content: center;
               align-items: center;
-              height: 31px;}
+              height: 100%;}
 
 .abaint:hover {background-color: rgb(205, 204, 204);}
 
@@ -103,10 +106,10 @@ body .gen {padding: 10px}
             font-weight: 500;
             font-style: normal;}
 
-.indentaba       {background-color: rgb(81, 81, 81);
-                  height: 9px;
-                  width: 100%;
-                  margin-top: 0px;}
+.indentaba {background-color: rgb(81, 81, 81);
+            height: 4px;
+            width: 100%;
+            margin-top: 0px;}
 
 .aba:hover .indentaba {background-color: #39537f}
 
@@ -234,4 +237,9 @@ table {
 .tdalign-cen {text-align: center;}
 .tdalign-dir {text-align: right;}
 
-.tabledata2 {border-collapse: collapse;}
+.tabledata2 {border-collapse: collapse; border-top: hidden;}
+
+.tabledata2 tbody {border-top: hidden;}
+
+.mouseovercolor   {background-color: rgb(176, 193, 223)}
+.clicktableborder {border: solid #1c1c1c !important;}
