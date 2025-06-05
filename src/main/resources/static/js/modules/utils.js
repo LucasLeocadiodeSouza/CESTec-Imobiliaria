@@ -18,9 +18,20 @@ export function form(obj){
 }
 
 export function desabilitaCampo(obj,desahabilita){
-    if (obj.substring(0,1) == "b"){
-        form(obj).style.backgroundColor =  desahabilita?'rgb(210 212 218)': '#b4b6ba';
+    const element = form(obj);
+
+     const isButton = element.tagName === 'BUTTON' ||
+                    (element.tagName === "DIV" && 
+                     element.className === "button") ||
+                    (element.tagName === 'INPUT' && 
+                     (element.type === 'button' || element.type === 'submit' || element.type === 'reset'));
+    
+    if (isButton) {
+        element.style.opacity = desahabilita ? '0.4' : '1';
+    } else {
+        element.style.backgroundColor = desahabilita ? '#d2d4da' : '';
     }
+
     form(obj).disabled = desahabilita;
     form(obj).style.cursor = desahabilita?'not-allowed':'pointer';
 }
