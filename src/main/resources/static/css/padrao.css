@@ -10,7 +10,7 @@ body .gen {padding: 10px}
 
 .gen label {font-family: "Inter";
             font-size: 17px;
-            color: #444;            
+            color: #444;
             display: inline-block;
             background: none;}
 
@@ -19,13 +19,14 @@ body .gen {padding: 10px}
             font-weight: normal;
             display: flex;}
 
-.button {background-color: #b4b6ba;            
+.button {background-color: #94adde;
+         color: #35425d;
          border: none;
          cursor: pointer;
          border-radius: 6px;
          width: auto;
-         min-width: 100px;
-         height: 40px;
+         min-width: 85px;
+         height: 35px;
          transition: 0.2s;
          margin-inline: 5px;
          padding: 2px;
@@ -52,7 +53,17 @@ body .gen {padding: 10px}
                box-shadow: 0 0 0 1px #5151525f;
                color: #fff;}
 
-.buttonfe {width: 100%; height: 100%; display: flex; flex-direction: row;}
+.buttonfe {width: 100%;
+           height: 100%; 
+           display: flex; 
+           flex-direction: row;
+           gap: 2px;}
+
+.buttonfe input {background: transparent;
+                 border: transparent;
+                 font-family: sans-serif;
+                 font-size: 13px;
+                 font-weight: 700;}
 
 .gen a      {font-weight:     bolder;
              color:           #0060d4;
@@ -67,13 +78,15 @@ body .gen {padding: 10px}
 
 .titulo {border: 2px solid rgb(104, 104, 104);
          border-bottom: none; 
-         background-color: #d5d5d5;
+         border-radius: 6px;
+         background-color: #cfdaec;
          height: 33px; 
          width: 98%;
          justify-content: center; 
          display: flex;}
 
-.titulo h2 {margin-top: 0px;}
+.titulo h2 {margin-top: 0px;
+            color: #274d8c;}
 
 .aba    {height: 40px;
          width: 180px;

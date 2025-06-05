@@ -21,23 +21,28 @@ export function elementsForm_init(){
         const divimg = document.createElement("div");
         const img    = document.createElement("img");
         img.src      = iconUrl;
-        img.style.width     = "90%";
-        img.style.height    = "90%";
-        divimg.style.width  = "20px";
-        divimg.style.height = "100%";
+        img.style.width             = "20px";
+        img.style.height            = "60%";
+        img.style.margin            = "3px";
+        img.style.marginLeft        = "6px";
+        divimg.style.width          = "20px";
+        divimg.style.height         = "100%";
+        divimg.style.display        = "flex";
+        divimg.style.justifyContent = "center";
+        divimg.style.alignItems     = "center";
 
         divimg.appendChild(img);
 
         const divlabel = document.createElement("div");
-        divlabel.style.width = "calc(100% - 20px)";
-        divlabel.style.display = "flex";
-        divlabel.style.justifyContent = "center";
-        divlabel.style.alignItems = "center";
+        divlabel.style.width          = "calc(100% - 20px)";
+        divlabel.style.display        = "flex";
+        divlabel.style.justifyContent = "flex-start";
+        divlabel.style.alignItems     = "center";
 
-        const inputlabel = document.createElement("input");
-        inputlabel.type  = "button";
-        inputlabel.className = "button";
-        inputlabel.value = blabel;
+        const inputlabel     = document.createElement("input");
+        inputlabel.type      = "button";
+        inputlabel.className = "buttonfe";
+        inputlabel.value     = blabel;
 
         divlabel.appendChild(inputlabel);
 
