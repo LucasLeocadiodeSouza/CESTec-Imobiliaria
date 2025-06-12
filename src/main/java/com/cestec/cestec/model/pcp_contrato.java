@@ -9,8 +9,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "pcp_contrato")
 public class pcp_contrato {
 
@@ -40,8 +48,6 @@ public class pcp_contrato {
     private Date    datiregistro;
     private float   valor;
     private boolean ativo;
-
-    public pcp_contrato(){}
     
     public pcp_contrato(pcp_cliente pcp_cliente,
                         pcp_imovel pcp_imovel,
@@ -49,6 +55,7 @@ public class pcp_contrato {
                         Date datinicio, 
                         Date datfinal, 
                         Date datiregistro,
+                        Integer situacao,
                         pcp_corretor pcp_corretor, 
                         float valor, 
                         boolean ativo) {
@@ -59,78 +66,9 @@ public class pcp_contrato {
         this.datinicio        = datinicio;
         this.datfinal         = datfinal;
         this.datiregistro     = datiregistro;
+        this.situacao         = situacao;
         this.pcp_corretor     = pcp_corretor;
         this.valor            = valor;
         this.ativo            = ativo;
-    }
-
-    public Integer getCodcontrato() {
-        return codcontrato;
-    }
-    public void setCodcontrato(Integer codcontrato) {
-        this.codcontrato = codcontrato;
-    }
-    public pcp_cliente getPcp_cliente() {
-        return pcp_cliente;
-    }
-    public void setPcp_cliente(pcp_cliente pcp_cliente) {
-        this.pcp_cliente = pcp_cliente;
-    }
-    public pcp_imovel getPcp_imovel() {
-        return pcp_imovel;
-    }
-    public void setPcp_imovel(pcp_imovel pcp_imovel) {
-        this.pcp_imovel = pcp_imovel;
-    }
-    public pcp_proprietario getPcp_proprietario() {
-        return pcp_proprietario;
-    }
-    public void setPcp_proprietario(pcp_proprietario pcp_proprietario) {
-        this.pcp_proprietario = pcp_proprietario;
-    }
-    public Date getDatinicio() {
-        return datinicio;
-    }
-    public void setDatinicio(Date datinicio) {
-        this.datinicio = datinicio;
-    }
-    public Date getDatfinal() {
-        return datfinal;
-    }
-    public void setDatfinal(Date datfinal) {
-        this.datfinal = datfinal;
-    }
-    public Date getDatiregistro() {
-        return datiregistro;
-    }
-    public void setDatiregistro(Date datiregistro) {
-        this.datiregistro = datiregistro;
-    }
-    public float getValor() {
-        return valor;
-    }
-    public void setValor(float valor) {
-        this.valor = valor;
-    }
-    public boolean isAtivo() {
-        return ativo;
-    }
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
-    public pcp_corretor getPcp_corretor() {
-        return pcp_corretor;
-    }
-
-    public void setPcp_corretor(pcp_corretor pcp_corretor) {
-        this.pcp_corretor = pcp_corretor;
-    }
-
-    public Integer getSituacao() {
-        return situacao;
-    }
-
-    public void setSituacao(Integer situacao) {
-        this.situacao = situacao;
     }
 }

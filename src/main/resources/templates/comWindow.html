@@ -33,30 +33,36 @@
     body {background-color: #1d3561;}
 
     div#dbarramenulateral {float: left;
-                           position: fixed;
                            background-color: #CCCCCC;
-                           height: 760px;
-                           width:  260px;
+                           height: 98%;
+                           width:  16%;
+                           padding: 10px;
                            border-top-right-radius:    8px;
                            border-bottom-right-radius: 8px;
-                           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);}
+                           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+                           display: flex;
+                           flex-direction: column;}
 
     div#didentificacao {background-color: #D3D3D3;
                         height:           120px;
+                        padding:          10px;
                         border-top-right-radius: 8px;
                         border-top-left-radius: 8px;
                         box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.1);}
 
     div#ditens {background-color: #dedede;
-                height:           600px;
+                height:           65%;
+                flex:             1;
+                min-height:       0;
+                overflow-y:       auto;
                 border-bottom-right-radius: 8px;
-                border-bottom-left-radius: 8px;
+                border-bottom-left-radius:  8px;
                 box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.1);}
 
-    div#ddireita {float:            right;
+    div#ddireita {overflow-y: scroll;
                   background-color: #eaeaea;
-                  height:           850px;
-                  width:            1200px;
+                  height:           98%;
+                  width:            84%;
                   border-top-left-radius:    8px;
                   border-bottom-left-radius: 8px;
                   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);}
@@ -64,7 +70,7 @@
     div#dmetas {float:            left;
                 background-color: #dedede;
                 height:           250px;
-                width:            310px;
+                width:            30%;
                 border-radius:    8px;
                 display:          flex;
                 margin-right:     10px;
@@ -73,7 +79,7 @@
     div#dvendatri {float:            left;
                    background-color: #dedede;
                    height:           250px;
-                   width:            380px;
+                   width:            36%;
                    border-radius:    8px;                   
                    display:          flex;
                    margin-right:     10px; 
@@ -82,7 +88,7 @@
     div#doutros    {float:            left;
                     background-color: #dedede;
                     height:           250px;
-                    width:            380px;
+                    width:            34%;
                     border-radius:    8px;
                     display:          flex;
                     margin-right:     10px;
@@ -114,6 +120,22 @@
 
     .hoje {color: #000 !important; background-color: #FFF; border-radius: 10px;}
 
+    .logoEmpresa {width: 40%;}
+
+    .ident-usuario {display: flex; flex-direction: column; width: 60%; overflow: hidden; text-overflow: ellipsis;}
+
+    .container-direita-1 {display: flex; flex-direction: row; width: 100%; gap: 5px;}
+    .container-direita-2 {display: flex; flex-direction: row; width: 100%; gap: 5px; justify-content: space-around; margin-block: 10px;}
+    .container-direita-3 {display: flex; flex-direction: row; width: 100%; justify-content: center;}
+
+    #ddescgraficometa {background-color: #3e5680; display: inline-block; width:100%; height: 185px; border-radius: 10px; justify-content: center;}
+
+    #ddescacesso {height: 250px; display: flex; flex-direction: column; gap: 10px;}
+
+    #dacessosint {display: flex; justify-content: center; height: 67%;}
+
+    #ddesctri {width: 100%;}
+
     div#dagenda {float:            right;
                  background-color: #dedede;      
                  height:           270px;
@@ -121,12 +143,11 @@
                  border-radius:    8px;                   
                  display:          flex;
                  box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);
-                 flex-direction:   column;
-                 margin-top:       20px;}
+                 flex-direction:   column;}
 
     div#dcontratos {float:            left;
                     background-color: #dedede;
-                    height:           220px;
+                    height:           250px;
                     width:            650px;
                     border-radius:    8px;
                     margin-top:       20px;
@@ -134,16 +155,15 @@
                     box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);}    
 
     div#dacessos { background-color: #dedede;
-                   height:           235px;
-                   width:            1170px;
+                   height:           100%;
+                   width:            100%;
                    border-radius:    8px;
                    display:          block;
-                   margin-top:       590px;
                    align-items:      center;
                    justify-content:  flex-start;}
 
     div#dlacessosext { float:            left;
-                       background-color: #2b3f6030  ;
+                       background-color: #2b3f6030;
                        height:           30px;
                        width:            160px;
                        border-radius:    25px;
@@ -174,41 +194,64 @@
                  padding-right: 10px;
                  font-size: x-large;}
 
-    #lcargo     {float: left;
-                 padding-left: 17px;
-                 color:  #090909;}
+    #container-label-infotop label {color:  #090909;}
 
-    #lid        {float: left;
-                 padding-left: 17px;
-                 color:  #121212;} 
+    .container-infotop {width: 140px; height: 17px; padding-left: 5px; padding-bottom: 3px;}
 
     .botoesmenuesq { float:             left;
-                     background-color:  #2e4266 ;
+                     background-color:  #2e4266;
                      height:            30px;
-                     width:             220px;
+                     width:             100%;
                      border-radius:     25px;
                      box-shadow:        0 0 4px rgb(0, 0, 0);
                      display:           flex;
                      align-items:       center;
+                     padding-block:     10px;
                      justify-content:   center;
-                     padding:           10px;
                      margin-bottom:     10px;
                      transition:        0.2s;
                      user-select:       none;}
 
     .botoesmenuesq:hover {background-color: #384e73 ;}
 
-    .obssobre      { position:         absolute;
-                     float:            left;
-                     background-color: #29426e ;
-                     height:           90px;
-                     width:            220px;
+    .botoesinternosapl {margin-top: 5px;
+                        width: 90%;
+                        height: 30px;
+                        border-radius: 25px;
+                        display: flex;
+                        padding-block: 10px;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 0 4px rgb(0, 0, 0);
+                        margin-inline: 5px;
+                        margin-bottom: 12px;
+                        background-color:  #2e4266;
+                        transition: 0.1s;
+                        user-select: none;}
+
+    .botoesinternosapl:hover {background-color: #384e73;}
+
+    .container-botoes-int {display: flex; flex-direction: column; width: 100%; align-items: center}
+
+    .container-botao {background-color: transparent; border-radius: 25px; width: 100%; margin-bottom: 10px; box-shadow: none; display: inline-table; padding-inline: 0px;padding-block: 0px;}
+
+    .container-sobre {width: 100%; 
+                      display: flex; 
+                      align-items: center; 
+                      justify-content: center; 
+                      margin-top: 15px;}
+
+    .childrenflex    {margin: 10px;}
+    .childrenflex div{display: flex; 
+                      flex-direction: row;}
+
+    .obssobre      { background-color: #29426e ;
+                     width:            100%;
                      border-radius:    25px;
                      box-shadow:       0 0 4px rgb(0, 0, 0);
                      display:          flex;
-                     padding:          10px;
                      margin-bottom:    10px;
-                     bottom:           60px;
+                     padding:          2px;
                      flex-direction:   column;}
 
     #dbackagenda {background-color: #334970 ;
@@ -254,7 +297,7 @@
 
     .ddescdiv   { background-color:  #334970 ;
                    height:           230px;
-                   width:            400px;
+                   width:            99%;
                    border-radius:    8px;                   
                    box-shadow:       0 0 6px #334970 ;
                    padding:          10px;
@@ -273,6 +316,7 @@
                 margin-left:       14px;
                 margin-right:      150px;
                 margin-bottom:     10px;}
+
     ::-webkit-scrollbar {
         width: 1px;
     }
@@ -284,221 +328,247 @@
 </style>
 </head>
 <body>
-    <input id ='ideusu'   name='ideusu'   type="hidden" value="">
-    <input id ='wcodfunc' name='wcodfunc' type="hidden" value="">
+    <input id ='ideusu'   name='ideusu'   type="hidden">
+    <input id ='wcodfunc' name='wcodfunc' type="hidden">
 
-    <div id="dbarramenulateral" class="gen">
-        <div id="didentificacao" class="gen">
-            <div id="ddescoutros" class="ddescdiv" style="height: 100px; width: 220px; display: flex;">
-                <div id="logoEmpresa" class="logoEmpresa">
-                    <img src="/icons/iconLogoEmpresa.png" alt="Carregando" style="width: 100%; height: 100%">
+    <div style="width: 100dvw; height: 97dvh; gap: 1%; position: fixed; display: flex; flex-direction: row;">
+        <div id="dbarramenulateral">
+            <div id="didentificacao">
+                <div id="ddescoutros" class="ddescdiv" style="height: 100px; width: auto; display: flex;">
+                    <div id="logoEmpresa" class="logoEmpresa">
+                        <img src="/icons/iconLogoEmpresa.png" alt="Carregando" style="width: 100%; height: 100%">
+                    </div>
+
+                    <div class="ident-usuario">
+                        <div class="container-infotop" style="height: 35px;">
+                            <h1 id="huser"></h1>                
+                        </div>
+
+                        <div class="container-infotop">
+                            <div id="container-label-infotop" class="container-row">
+                                <label>Cargo:</label>&nbsp;
+                                <label id="lcargo" name="lcargo"></label>
+                            </div>
+                        </div>
+            
+                        <div class="container-infotop">
+                            <div id="container-label-infotop" class="container-row">
+                                <label>Id:</label>&nbsp;
+                                <label id="lid"></label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <div style="display: flex; flex-direction: column; width: 60%;">
-                    <div class="gen" style="padding: 5px; height: 35px; width: 140px; float: right;">
-                        <h1 id="huser"></h1>                
+            <div id="ditens" class="gen">
+                <div style="max-height: 100%; overflow-x: hidden; flex-grow: 1; overscroll-behavior-y: none;">
+                    <div id="ditensmenuext" class="container-botao">
+                        <div id="bimmenuint" class="botoesmenuesq bimmenu">
+                            <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Menu</label>
+                        </div>     
+                        
+                        <div class="container-botoes-int">
+                            <div id="dimmfinanciamento" class="botoesinternosapl bimmenu">
+                                <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Simular Financiamento</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="ditenscontratoext" class="container-botao">
+                        <div id="dimcontratoint" class="botoesmenuesq bimmenu">
+                            <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Contratos</label>
+                        </div>    
+                        
+                        <div class="container-botoes-int">
+                            <div id="bimcnovocontrato" class="bimmenu botoesinternosapl">
+                                <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Cadastro de Contrato</label>
+                            </div>
+
+                            <div id="bimcnovoimovel" class="bimmenu botoesinternosapl">
+                                <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Cadastro de Imóvel</label>
+                            </div>
+
+                            <div id="bimcnovocliente" class="bimmenu botoesinternosapl">
+                                <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Cadastro de Cliente</label>
+                            </div>
+
+                            <div id="bimcnovopropr" class="bimmenu botoesinternosapl">
+                                <label style="size:  20px; color: white; font-weight: normal; display: flex;">Cadastro de Proprietario</label>
+                            </div>
+            
+                            <div id="bimcassinatura" class="bimmenu botoesinternosapl">
+                                <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Assinaturas</label>
+                            </div>
+            
+                            <div id="bimcaprovacao" class="bimmenu botoesinternosapl">
+                                <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Aprovacão</label>
+                            </div>
+                        </div>
                     </div>
         
-                    <div class="gen" style="padding: 5px;height: 17px; width: 140px; float: right; padding-right: 10px;">
-                        <label id="lcargo" value="ccargo">Cargo</label>
+                    <div id="ditenspagamentoext" class="container-botao">
+                        <div id="ditenspagamentoint" class="botoesmenuesq bimmenu">                  
+                            <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Pagamentos</label>
+                        </div>
+
+                        <div class="container-botoes-int">
+                            <div id="bimcboletoscont" class="botoesinternosapl bimmenu">
+                                <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Gerar Crédito</label>
+                            </div>
+                        </div>
                     </div>
-        
-                    <div class="gen" style="float: right; width: 140px; height: 17px; padding: 0px; padding-right: 10px;">
-                        <label id="lid"></label>
+
+                    <div id="ditensrelatorioext" class="container-botao">
+                        <div id="ditensrelatorioint" class="botoesmenuesq bimmenu">                  
+                            <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Relatorio</label>
+                        </div>
+
+                        <div class="container-botoes-int">
+                            <div id="bimccadastrometa" class="botoesinternosapl bimmenu">
+                                <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Cadastro de Metas</label>
+                            </div>
+
+                            <div id="dimrimovel" class="botoesinternosapl bimmenu">
+                                <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Relatório do Imovel</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div id="ditens" class="gen">
-            <div style="height: 430px; overflow-x: hidden; flex-grow: 1; overscroll-behavior-y: none;">
-                <div id="ditensmenuext" class="gen botoesmenuesq" style="background-color: transparent; box-shadow: none; display: inline-table; padding-inline: 0px;padding-block: 0px;">
-                    <div id="bimmenuint" class="botoesmenuesq bimmenu" style="margin-top: 3px;">                  
-                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Menu</label>
-                    </div>     
-                    
-                    <div id="dimmfinanciamento" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">            
-                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Simular Financiamento</label>
-                    </div>
-                </div>
-                
-                <div id="ditenscontratoext" class="botoesmenuesq" style="background-color: transparent; box-shadow: none; display: inline-table; padding-inline: 0px;padding-block: 0px;">
-                    <div id="dimcontratoint" class="gen botoesmenuesq bimmenu">                  
-                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Contratos</label>
-                    </div>    
-                    
-                    <div id="bimcnovocontrato" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
-                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Cadastro de Contrato</label>
-                    </div>
-
-                    <div id="bimcnovoimovel" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
-                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Cadastro de Imóvel</label>
-                    </div>
-
-                    <div id="bimcnovocliente" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
-                        <label style="font-size:  17px; color: white; font-weight: normal; display: flex;">Cadastro de Cliente</label>
-                    </div>
-
-                    <div id="bimcnovopropr" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
-                        <label style="font-size:  17px; color: white; font-weight: normal; display: flex;">Cadastro de Proprietario</label>
-                    </div> 
-    
-                    <div id="bimcassinatura" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
-                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Assinaturas</label>
-                    </div>
-    
-                    <div id="bimcaprovacao" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
-                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Aprovacão</label>
-                    </div>
-                                  
-                </div>
-    
-                <div id="ditenspagamentoext" class="botoesmenuesq" style="background-color: transparent; box-shadow: none; display: inline-table; padding-inline: 0px;padding-block: 0px;">
-                    <div id="ditenspagamentoint" class="gen botoesmenuesq bimmenu">                  
-                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Pagamentos</label>
-                    </div>
-
-                    <div id="bimcboletoscont" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
-                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Gerar Crédito</label>
-                    </div>
-                </div>
-
-                <div id="ditensrelatorioext" class="botoesmenuesq" style="background-color: transparent; box-shadow: none; display: inline-table; padding-inline: 0px;padding-block: 0px;">
-                    <div id="ditensrelatorioint" class="gen botoesmenuesq bimmenu">                  
-                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Relatorio</label>
-                    </div>
-
-                    <div id="bimccadastrometa" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
-                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Cadastro de Metas</label>
-                    </div>
-
-                    <div id="dimrimovel" class="gen botoesmenuesq bimmenu" style="margin-top: 5px;width: 170px;margin-left: 25px;transition: 0.1s;">                  
-                        <label style="font-size:  20px; color: white; font-weight: normal; display: flex;">Relatório do Imovel</label>
-                    </div>
-                </div>
-            </div>
-            
-
-            <div id="ditenssobre" class="obssobre">
-                <div class="gen">
-                    <label style="font-size:  20px; color: white; font-weight: normal; display: flex; ">Versão: 0.1</label>
-                </div>
-                <div class="gen" style="padding-bottom: 1px; padding-top: 7px;">
-                    <label style="font-size:  15px; color: rgb(210, 209, 209); font-weight: normal; display: flex; ">Sistema Reponsavel: CESTec</label>
-                </div>
-                <div class="gen" style="padding-bottom: 1px; padding-top: 7px;">
-                    <label style="font-size:  15px; color: rgb(210, 209, 209); font-weight: normal; display: flex; ">CNPJ: 12.345.678/1234-56</label>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div id="ddireita" class="gen">
-        <div id="dmetas" class="gen">
-            <div id="ddescmetas" class="ddescdiv" style="width: 280px;">
-                <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Metas</label></div>
-            
-                <div id="ddescgraficometa" style="background-color: #3e5680; display: inline-block; width: 280px; height: 185px; border-radius: 10px; justify-content: center;">
-                    <div style="width: 100%; height: 50px; background: #223961; padding-block: 10px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; margin-bottom: 10px;">
+            <div class="container-sobre">
+                <div id="ditenssobre" class="obssobre">
+                    <div class="childrenflex">
                         <div>
-                            <label class="labelpainel" style="padding-left: 10px;">Valor Efetivado: R$ </label>
-                            <label class="labelpainel" id="vlrefetivadometa" name="vlrefetivadometa"></label> 
+                            <label style="color: white; font-weight: normal; display: flex; ">Versão: 0.1</label>
                         </div>
-                              
-                        <div style="padding-top: 10px;">
-                            <label class="labelpainel" style="padding-left: 10px;">Valor Meta: R$ </label>
-                            <label class="labelpainel" id="vlrmeta" name="vlrmeta"></label> 
+                        <div style="padding-bottom: 1px; padding-top: 7px;">
+                            <label style="color: rgb(210, 209, 209); font-weight: normal; display: flex; ">Sistema Reponsavel: CESTec</label>
+                        </div>
+                        <div style="padding-bottom: 1px; padding-top: 7px;">
+                            <label style="color: rgb(210, 209, 209); font-weight: normal; display: flex; ">CNPJ: 12.345.678/1234-56</label>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="ddireita" class="gen">
+            <div class="container-direita-1">
+                <div id="dmetas" class="gen">
+                    <div id="ddescmetas" class="ddescdiv" style="width: 95%">
+                        <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Metas</label></div>
                     
-                    <div id="dgrafico" style="background-color: #eaeaea; display: flex; width: 90%; height: 30px; margin-top: 5px; flex-direction: row; margin-left: 15px; border-radius: 3px;">
-                        <div id="dgraficointerno" style="background-color: #003490; display: flex; height: 30px; border-bottom-left-radius: 3px; border-top-left-radius: 3px;"></div>
-                    </div>
-                    <div id="dsetagrafico" style=" display: flex; width: 90%; height: 30px; margin-top: 5px; flex-direction: row; margin-left: 15px;">
-                        <div id="dlinhagrafico" style="background-color: #0f0f0f; display: flex; width: 255px; height: 5px; flex-direction: row; margin-top: 4px;">
-                            <div style=" width: 2px; height: 12px; background-color: red; margin-inline: 25%; transform: translateY(-2px);">
-                                <label class="labelpainel" style="transform: translateY(50%) translateX(-50%);">25%</label>
-                            </div> <!-- 25% -->
-                            <div style=" width: 2px; height: 12px; background-color: red; margin-right:  25%; transform: translateY(-2px);">
-                                <label class="labelpainel" style="transform: translateY(50%) translateX(-50%);">50%</label>
-                            </div> <!-- 50% -->
-                            <div style=" width: 2px; height: 12px; background-color: red; transform: translateY(-2px);">
-                                <label class="labelpainel" style="transform: translateY(50%) translateX(-50%);">75%</label>
-                            </div> <!-- 75% -->
+                        <div id="ddescgraficometa">
+                            <div style="width: 100%; height: 50px; background: #223961; padding-block: 10px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; margin-bottom: 10px;">
+                                <div>
+                                    <label class="labelpainel" style="padding-left: 10px;">Valor Efetivado: R$ </label>
+                                    <label class="labelpainel" id="vlrefetivadometa" name="vlrefetivadometa"></label> 
+                                </div>
+                                    
+                                <div style="padding-top: 10px;">
+                                    <label class="labelpainel" style="padding-left: 10px;">Valor Meta: R$ </label>
+                                    <label class="labelpainel" id="vlrmeta" name="vlrmeta"></label> 
+                                </div>
+                            </div>
+                            
+                            <div id="dgrafico" style="background-color: #eaeaea; display: flex; width: 90%; height: 30px; margin-top: 5px; flex-direction: row; margin-left: 15px; border-radius: 3px;">
+                                <div id="dgraficointerno" style="background-color: #003490; display: flex; height: 30px; border-bottom-left-radius: 3px; border-top-left-radius: 3px;"></div>
+                            </div>
+                            <div id="dsetagrafico" style=" display: flex; width: 90%; height: 30px; margin-top: 5px; flex-direction: row; margin-left: 15px;">
+                                <div id="dlinhagrafico" style="background-color: #0f0f0f; display: flex; width: 100%; height: 5px; flex-direction: row; margin-top: 4px;">
+                                    <div style=" width: 2px; height: 12px; background-color: red; margin-inline: 25%; transform: translateY(-2px);">
+                                        <label class="labelpainel" style="transform: translateY(50%) translateX(-50%);">25%</label>
+                                    </div> <!-- 25% -->
+                                    <div style=" width: 2px; height: 12px; background-color: red; margin-right:  25%; transform: translateY(-2px);">
+                                        <label class="labelpainel" style="transform: translateY(50%) translateX(-50%);">50%</label>
+                                    </div> <!-- 50% -->
+                                    <div style=" width: 2px; height: 12px; background-color: red; transform: translateY(-2px);">
+                                        <label class="labelpainel" style="transform: translateY(50%) translateX(-50%);">75%</label>
+                                    </div> <!-- 75% -->
+                                </div>
+                                <div id="dsetagrafico" style=" display: flex; width: 5px; height: 5px; flex-direction: row; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid #000;"></div>
+                            </div>
+
+                            <div style="width: 100%; margin: 5px; padding: 10px;">
+                                    <label class="labelpainel" style="font-size: 13px; margin-left: -8px;">Prazo Final da Meta: </label>
+                                    <label class="labelpainel" style="font-size: 14px;" id="datperiodometa" name="datperidometa"></label> 
+                            </div>
                         </div>
-                        <div id="dsetagrafico" style=" display: flex; width: 5px; height: 5px; flex-direction: row; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 5px solid #000;"></div>
-                    </div>
-
-                    <div style="width: 89%; margin: 5px; padding: 10px;">
-                            <label class="labelpainel" style="font-size: 13px; margin-left: -8px;">Prazo Final da Meta: </label>
-                            <label class="labelpainel" style="font-size: 14px;" id="datperiodometa" name="datperidometa"></label> 
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="dvendatri" class="gen">
-            <div id="ddesctri" class="ddescdiv">
-                <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Trimestre</label></div>
-            </div>
-        </div>
-
-        <div id="doutros" class="gen">
-            <div id="ddescoutros" class="ddescdiv" style="height: 203px; width: 480px;">
-                <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Outros</label></div>
-            </div>
-        </div>
-
-        <div id="dcontratos" class="gen">
-            <div id="ddesccontrato" class="ddescdiv" style="height: 90%; width: 97%;">
-                <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Contratos</label></div>
-                <div id="ddesccontratoslegenda" class="ddescagenda"></div>
-            </div>
-        </div>
-        
-        <div id="dagenda" class="gen" style="justify-content: center; align-items: center;">
-            <div id="ddescagendabutton" class="botoesmenuesq" style="padding-left: 0px; padding-right: 0px; width: 315px; height: 15px; background-color: #334970;">
-                <div id="dbackagenda"><label style="font-size:  19px; color: white; font-weight: bolder; display: flex; padding-left: 8px;"> < </label></div>
-                <div id="dmesagenda"><label id="lnomeMes" style="font-size:  19px; color: white; font-weight: normal; display: flex; justify-content: center;"></label></div>
-                <div id="dnextagenda"><label style="font-size:  19px; color: white; font-weight: bolder; display: flex; padding-right: 8px;"> > </label></div>
-            </div>
-
-
-            <div id="dagendadias" class="dagendadias">
-                <div id="agenda" name="agenda" class="agenda esquerda">
-                    <div id="calendariosemanal" name="calendariosemanal">
-                        <section>
-                            <ul class="days">
-                                <li>Dom</li>
-                                <li>Seg</li>
-                                <li>Ter</li>
-                                <li>Qua</li>
-                                <li>Qui</li>
-                                <li>Sex</li>
-                                <li>Sab</li>
-                            </ul>
-                        </section>
-                    </div>
-
-                    <div id="calendariodiario" name="calendariodiario">
-                        <section>
-                            <ul class="diadomes"></ul>
-                        </section>
                     </div>
                 </div>
 
-                <div id="ddescagenda" class="ddescagenda direita"></div>
+                <div id="dvendatri" class="gen">
+                    <div id="ddesctri" class="ddescdiv">
+                        <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Trimestre</label></div>
+                    </div>
+                </div>
+
+                <div id="doutros" class="gen">
+                    <div id="ddescoutros" class="ddescdiv" style="width: 480px;">
+                        <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Outros</label></div>
+                    </div>
+                </div>
             </div>
 
-        </div>
-
-        <div id="dacessos" class="gen">
-            <div id="ddescacesso" class="ddescdiv" style="height: 215px; width: 1150px;">                
-                <div id="dlacessosext" class="gen"><div id="dlacessosint" class="gen"><label>Acessos</label></div></div>
+            <div class="container-direita-2">
+                <div id="dcontratos" class="gen">
+                    <div id="ddesccontrato" class="ddescdiv" style="height: 90%; width: 97%;">
+                        <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Contratos</label></div>
+                        <div id="ddesccontratoslegenda" class="ddescagenda"></div>
+                    </div>
+                </div>
                 
+                <div id="dagenda" class="gen" style="justify-content: center; align-items: center;">
+                    <div id="ddescagendabutton" class="botoesmenuesq" style="padding-left: 0px; padding-right: 0px; width: 315px; height: 15px; background-color: #334970;">
+                        <div id="dbackagenda"><label style="font-size:  19px; color: white; font-weight: bolder; display: flex; padding-left: 8px;"> < </label></div>
+                        <div id="dmesagenda"><label id="lnomeMes" style="font-size:  19px; color: white; font-weight: normal; display: flex; justify-content: center;"></label></div>
+                        <div id="dnextagenda"><label style="font-size:  19px; color: white; font-weight: bolder; display: flex; padding-right: 8px;"> > </label></div>
+                    </div>
 
-                <div class="ddescdiv" style="height: 135px; width: 1130px; background-color:  #495d8130; margin-top: 62px;"></div>
+
+                    <div id="dagendadias" class="dagendadias">
+                        <div id="agenda" name="agenda" class="agenda esquerda">
+                            <div id="calendariosemanal" name="calendariosemanal">
+                                <section>
+                                    <ul class="days">
+                                        <li>Dom</li>
+                                        <li>Seg</li>
+                                        <li>Ter</li>
+                                        <li>Qua</li>
+                                        <li>Qui</li>
+                                        <li>Sex</li>
+                                        <li>Sab</li>
+                                    </ul>
+                                </section>
+                            </div>
+
+                            <div id="calendariodiario" name="calendariodiario">
+                                <section>
+                                    <ul class="diadomes"></ul>
+                                </section>
+                            </div>
+                        </div>
+
+                        <div id="ddescagenda" class="ddescagenda direita"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-direita-3">
+                <div id="dacessos" class="gen">
+                    <div id="ddescacesso" class="ddescdiv">                
+                        <div id="dlacessosext" class="gen">
+                            <div id="dlacessosint" class="gen">
+                                <label>Acessos</label>
+                            </div>
+                        </div>
+                        <div id="dacessosint">
+                            <div class="ddescdiv" style="height: 100%; width: 98%; background-color: #495d8130;"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

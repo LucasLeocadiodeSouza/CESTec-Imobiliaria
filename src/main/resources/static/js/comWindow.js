@@ -38,7 +38,8 @@ function iniciarEventos() {
         valorMetaMensal();
         setGraficoMeta();
         getVlrEfetivadoCorretor();
-        getPeriodoMeta();
+        getCargoIdeusu();
+        //getPeriodoMeta();
 }
 
 function event_click(obj) {
@@ -239,6 +240,18 @@ function getVlrEfetivadoCorretor(){
     .then(response => {return response.text()})
     .then(data     => { form("vlrefetivadometa").innerText = data })
     .catch(error   => alert("Erro ao buscar Valor Efetivado: " + error.message))
+}
+
+function getCargoIdeusu(){
+    fetch("/home/getCargoIdeusu", {
+        method: "GET",
+        headers: {
+            "Content-Type":"application/json"
+        }
+    })
+    .then(response => {return response.text()})
+    .then(data     => { form("lcargo").innerText = data })
+    .catch(error   => alert("Erro ao buscar Cargo: " + error.message))
 }
 
 function getPeriodoMeta(){

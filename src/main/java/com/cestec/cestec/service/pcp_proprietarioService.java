@@ -129,8 +129,8 @@ public class pcp_proprietarioService {
         return imovelRepository.findAll();
     }
 
-    public pcp_proprietario buscarProprietario(Integer index){
-        return proprietarioRepository.findAll().get(index);
+    public List<pcp_proprietario> buscarProprietario(){
+        return proprietarioRepository.findAll();
     }
 
     public ImovelProprietarioDTO buscarImovelGrid(Integer index){

@@ -241,6 +241,8 @@ function adicionarContratoImovel() {
     CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form("mcodproprietario").value}/salvarImovel`,"POST","",JSON.stringify(imovel))
     .then(data =>{
         alert("Imóvel adicionado com sucesso!");
+
+        DMFDiv.closeModal();
     });
 }
 

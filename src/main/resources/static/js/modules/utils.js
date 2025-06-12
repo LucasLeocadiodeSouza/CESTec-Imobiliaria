@@ -27,7 +27,8 @@ export function desabilitaCampo(obj,desahabilita){
                      (element.type === 'button' || element.type === 'submit' || element.type === 'reset'));
     
     if (isButton) {
-        element.style.opacity = desahabilita ? '0.4' : '1';
+        element.style.opacity       = desahabilita ? '0.4' : '1';
+        element.style.pointerEvents =  desahabilita?"none":"auto";
     } else {
         element.style.backgroundColor = desahabilita ? '#d2d4da' : '';
     }

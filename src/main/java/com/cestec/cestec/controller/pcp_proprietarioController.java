@@ -39,9 +39,9 @@ public class pcp_proprietarioController {
         return pcp_proprietarioService.listarProprietarios();
     }
 
-    @PostMapping("/{index}/buscarPropriGrid")
-    public pcp_proprietario buscarProprietario(@PathVariable Integer index){
-        return pcp_proprietarioService.buscarProprietario(index);
+    @GetMapping("/buscarPropriGrid")
+    public List<pcp_proprietario> buscarProprietario(){
+        return pcp_proprietarioService.buscarProprietario();
     }
 
     @GetMapping("/{codProprietario}/imoveis")

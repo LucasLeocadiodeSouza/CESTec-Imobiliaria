@@ -22,7 +22,7 @@ export function consulForm_init(){
                 throw new Error(`Erro na requisição: ${response.status} - ${response.statusText}`);
             }
 
-            const contentType = response.headers.get('content-type');
+            const contentType = response.headers.get('Content-Type');
             if (contentType?.includes('application/json')) {
                 return await response.json();
             } else {

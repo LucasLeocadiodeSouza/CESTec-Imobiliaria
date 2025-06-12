@@ -26,9 +26,9 @@ public class contratoController {
         return contratoService.buscarContratoGrid();
     }
 
-    @GetMapping("/{ideusu}/getNomeByIdeusu")
-    public String getNomeByIdeusu(@PathVariable String ideusu) {
-        return contratoService.getNomeByIdeusu(ideusu);
+    @GetMapping("/{id}/getNomeByIdeusu")
+    public String getNomeByIdeusu(@PathVariable Integer id) {
+        return contratoService.getNomeByIdeusu(id);
     }
 
     @GetMapping("/{index}/buscarContratoGrid")
