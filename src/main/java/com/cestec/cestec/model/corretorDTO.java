@@ -3,11 +3,15 @@ package com.cestec.cestec.model;
 import java.sql.Date;
 
 import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class corretorDTO {
     
     private Integer codfuncionario;
@@ -21,6 +25,7 @@ public class corretorDTO {
     private String  numtel;
     private String  email;
     private String  login;
+    private Integer idlogin;
     private double  vlrmeta;
     private Date    datiniciometa;
     private Date    datfinalmeta;
@@ -49,8 +54,6 @@ public class corretorDTO {
 
     @Column(length = 20)
     private String endereco_cep;
-
-    public corretorDTO(){}
 
     public corretorDTO(Integer codcorretor, String email, Integer codfuncionario, String nome, String login) {
         this.codfuncionario = codfuncionario;

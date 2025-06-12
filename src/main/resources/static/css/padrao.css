@@ -130,7 +130,12 @@ body .gen {padding: 10px}
      height: 30px;}
 
 .dmf {width: 100%; 
-      height: 30px;}
+      height: auto;
+      margin-top: 6px;}
+
+.container-row {display: flex; flex-direction: row;}
+
+.dmf div.button {margin-top: 10px;}
 
 .dmf h2 {margin-top: 0px;
          margin-bottom: 50px;}
@@ -246,9 +251,10 @@ table {
 
 .tablecolun {border: 1px solid rgb(0, 0, 0); border-collapse: collapse;}
 
-.tdalign-esq {text-align: left;}
-.tdalign-cen {text-align: center;}
-.tdalign-dir {text-align: right;}
+.tdalign-esq          {text-align: left;}
+.tdalign-cen          {text-align: center;}
+.tdalign-dir          {text-align: right;}
+.tdalign-esqoverellip {text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
 
 .tabledata2 {border-collapse: collapse; border-top: hidden;}
 

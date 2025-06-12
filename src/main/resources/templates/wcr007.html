@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
     <title>Geracao de Credito</title>
-    <script src="/js/wcr007.js" defer></script>
+    <script type="module" src="/js/wcr007.js" defer></script>
     
 <style>
     .ppp         {width: 32px;}
@@ -98,10 +98,7 @@
             <h2>Geracão de Crédito</h2>
         </div>
 
-        <div id='abas' class="gen" style="height: 40px; width: 90%; justify-content: center; margin: 10px; margin-bottom: 0px;padding: 0px; display: flex; justify-content: flex-start;">            
-            <div id="aba1" class="aba"><div class="indentaba" style="background-color: rgb(41, 76, 141)"></div><div class="abaint" style="background-color: rgb(193, 192, 192)"><img src="/icons/consultaLupa.png"   class="gen"><label style="margin-block: 0px;"> Consulta</label></div></div>
-            <div id="aba2" class="aba"><div class="indentaba"></div><div class="abaint"><img src="/icons/manutencaoIcon.png" class="gen"><label style="margin-block: 0px;"> Manutencão</label></div></div>
-        </div>
+        <div id='abas'></div>
 
         <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
             <div class='if'>
@@ -121,89 +118,83 @@
 
             <div  class='if' style="display: flex; height: auto;">
                 <label class="labelfiltro"></label>                
-                <input type="button" id="bbuscar"    name="bbuscar"    class="button" value="Buscar"      data-icon="/icons/buscar.png">                
-                <input type="button" id="bnovabusca" name="bnovabusca" class="button" value="Nova Busca"  data-icon="/icons/novaPesquisa.png">
-                <input type="button" id="blimpar"    name="blimpar"    class="button" value="Limpar"      data-icon="/icons/limparIcon.png">
+                <div id="bbuscar"    name="bbuscar"    class="button" value="Buscar"      data-icon="/icons/buscar.png"></div>
+                <div id="bnovabusca" name="bnovabusca" class="button" value="Nova Busca"  data-icon="/icons/novaPesquisa.png"></div>
+                <div id="blimpar"    name="blimpar"    class="button" value="Limpar"      data-icon="/icons/limparIcon.png"></div>
             </div>
         </fieldset>
         
         <div class='if' style="display: flex; margin-left: 5px;">                            
-            <input type="button" id="bimprimir" name="bimprimir" class="button" value="Imprimir" data-icon="/icons/printer.png">
-            <input type="button" id="binserir"  name="binserir"  class="button" value="Nova Busca"  data-icon="/icons/incluir.png">
+            <div id="bimprimir" name="bimprimir" class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
+            <div id="binserir"  name="binserir"  class="button" value="Nova Busca"  data-icon="/icons/incluir.png"></div>
         </div>
 
-        <div class='grid'><table id="tabela_boletos" class="table"></table></div>
+        <div id='tabela_boletos'></div>
 
         <!--  MODAL -->
-        <div id="DMF_external" class="DMF_external">
-            <div id="dmodalf_geracaoboleto">
-                <div style="display: flex; justify-content: flex-end;align-items: center; height: 35px;">
-                    <div id="bclose" class="bpc"><img src="/icons/fechartela.png" style="width: 80%; height: 80%; margin: 0px;"></div>                
+        <div id="dmodalf_geracaoboleto">
+            <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
+                <h2><span id="stitulo" name="stitulo"></span></h2>
+                <span     id="sacao"   name="sacao" style="display: none"></span>
+            </div>
+
+            <div class='dmf container'>
+                <div id="dfatura" class='dmf'>
+                    <label class="labelmodal">Fatura: </label>
+                    <input type="text" id="mfatura" name="mfatura" class="ppp">
                 </div>
 
-                <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
-                    <h2><span id="stitulo" name="stitulo"></span></h2>
-                    <span     id="sacao"   name="sacao" style="display: none"></span>
+                <div class='dmf'>
+                    <label class="labelmodal">Beneficiario: </label>
+                    <input type="text" id="mcodcliente"  name="mcodcliente"  class="ppp">
+                    <input type="text" id="mbenef"       name="mbenef"       class="large">
                 </div>
 
-                <div class='dmf container'>
-                    <div id="dfatura" class='dmf'>
-                        <label class="labelmodal">Fatura: </label>
-                        <input type="text" id="mfatura" name="mfatura" class="ppp">
-                    </div>
-
-                    <div class='dmf'>
-                        <label class="labelmodal">Beneficiario: </label>
-                        <input type="text" id="mcodcliente"  name="mcodcliente"  class="ppp">
-                        <input type="text" id="mbenef"       name="mbenef"       class="large">
-                    </div>
-
-                    <div class='dmf'>
-                        <label class="labelmodal">Documento: </label>
-                        <input type="text" id="mdocumento"  name="mdocumento"  class="medium">
-                    </div>
-
-                    <div class='dmf'>
-                        <label class="labelmodal">Código do Contrato: </label>
-                        <input type="text" id="mcodcontrato"  name="mcodcontrato"  class="medium">
-                    </div>
-
-                    <div id="dnmrboleto" class='dmf'>
-                        <label class="labelmodal">Número do Boleto: </label>
-                        <input type="text" id="mnmrboleto"  name="mnmrboleto"  class="large"></input>
-                    </div>
-
-                    <div class='dmf'>
-                        <label class="labelmodal">Valor (R$): </label>
-                        <input type="text" id="mvlr"  name="mvlr"  class="medium">&nbsp;&nbsp;&nbsp;&nbsp;
-
-                        <div id="dsituacao">
-                            <label class="labelmodal" style=" width: auto !important;">Situacão: </label>
-                            <p id="msituacao" name="msituacao"></p>
-                        </div>                        
-                    </div>
-
-                    <div class='dmf'>
-                        <label class="labelmodal">Data do Vencimento: </label>
-                        <input type="date" id="mdatavenc"  name="mdatavenc"></input>
-                    </div>
+                <div class='dmf'>
+                    <label class="labelmodal">Documento: </label>
+                    <input type="text" id="mdocumento"  name="mdocumento"  class="medium">
                 </div>
 
-                <div class='dmf' style="display: flex; justify-content: center; align-items: center; margin: 25px;">
-                    <input type="button" id="benviaboleto" name="benviaboleto" class="button" value="Enviar Boleto" data-icon="/icons/seta_direita.png">
+                <div class='dmf'>
+                    <label class="labelmodal">Código do Contrato: </label>
+                    <input type="text" id="mcodcontrato"  name="mcodcontrato"  class="medium">
                 </div>
 
-                <div id="dmodalf_visuboleto" class="inv">
-                    <div style="display: flex; flex-direction: row; padding-inline: 30px;">
-                        <img src="/icons/alert_icon.png" style="width: 50px !important; height: 50px !important">
-                        <p>Deseja visualizar o Boleto enviado para o Beneficiario?</p>
-                    </div>
-                    
-                    <div class='dmf' style="display: flex; justify-content: center; align-items: center; margin: 15px;">
-                        <input type="button" id="bfechar"     name="bfechar"     class="button botaoconfirm" value="Fechar">
-                        <input type="button" id="bvisualizar" name="bvisualizar" class="button botaoconfirm" value="Visualizar">
-                    </div>                    
-                </div>                
+                <div id="dnmrboleto" class='dmf'>
+                    <label class="labelmodal">Número do Boleto: </label>
+                    <input type="text" id="mnmrboleto"  name="mnmrboleto"  class="large"></input>
+                </div>
+
+                <div class='dmf'>
+                    <label class="labelmodal">Valor (R$): </label>
+                    <input type="text" id="mvlr"  name="mvlr"  class="medium">&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <div id="dsituacao">
+                        <label class="labelmodal" style=" width: auto !important;">Situacão: </label>
+                        <p id="msituacao" name="msituacao"></p>
+                    </div>                        
+                </div>
+
+                <div class='dmf'>
+                    <label class="labelmodal">Data do Vencimento: </label>
+                    <input type="date" id="mdatavenc"  name="mdatavenc"></input>
+                </div>
+            </div>
+
+            <div class='dmf' style="display: flex; justify-content: center; align-items: center; margin: 25px;">
+                <div id="benviaboleto" name="benviaboleto" class="button" value="Enviar Boleto" data-icon="/icons/seta_direita.png"></div>
+            </div>
+
+            <div id="dmodalf_visuboleto" class="inv">
+                <div style="display: flex; flex-direction: row; padding-inline: 30px;">
+                    <img src="/icons/alert_icon.png" style="width: 50px !important; height: 50px !important">
+                    <p>Deseja visualizar o Boleto enviado para o Beneficiario?</p>
+                </div>
+                
+                <div class='dmf' style="display: flex; justify-content: center; align-items: center; margin: 15px;">
+                    <div id="bfechar"     name="bfechar"     class="button botaoconfirm" value="Fechar"></div>
+                    <div id="bvisualizar" name="bvisualizar" class="button botaoconfirm" value="Visualizar"></div>
+                </div>                    
             </div>
         </div>
 

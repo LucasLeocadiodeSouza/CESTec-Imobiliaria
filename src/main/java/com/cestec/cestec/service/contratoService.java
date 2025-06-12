@@ -45,8 +45,9 @@ public class contratoService {
         return contratoRepository.buscarContratoGrid();
     }
 
-    public String getNomeByIdeusu(String ideusu){
-        return funcionarioRepository.findByUser(ideusu).getNome();
+    public String getNomeByIdeusu(Integer id){
+        System.out.println(funcionarioRepository.findNameByUser(id) + " aaaaa " + id);
+        return funcionarioRepository.findNameByUser(id);
     }
 
    public pcp_contrato salvarContrato(contratoDTO contrato){
@@ -61,6 +62,7 @@ public class contratoService {
                                                      contrato.getDatinicio(),
                                                      contrato.getDatfinal(), 
                                                      Date.valueOf(LocalDate.now()),
+                                                     1,
                                                      corretor, 
                                                      (float) contrato.getPreco(),
                                                      true);

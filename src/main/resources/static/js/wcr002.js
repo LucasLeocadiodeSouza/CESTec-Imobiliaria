@@ -7,45 +7,77 @@
 //import { createGrid } from './gridForm.js';
 
 window.addEventListener("load", function () {
-    buscarUserName();
     iniciarEventos();
+    buscarUserName();
 });
 
+import { GridForm_init }   from "./modules/gridForm.js";
+import { DMFForm_init }    from "./modules/dmfForm.js";
+import { abaForm_init }    from "./modules/abaForm.js";
+import { consulForm_init } from "./modules/consulForm.js";
+import { elementsForm_init } from "./modules/elementsForm.js";
+import { imgFormat,form,desabilitaCampo,setDisplay } from "./modules/utils.js";
+
+var ABA,DMFDiv,CONSUL,PROPRI_GRID;
+
 function iniciarEventos() {
-    controlaTela("inicia");
-    ABA_init();
-    form("aba1").classList.add('ativa');
+    elementsForm_init();
+
+    PROPRI_GRID               = new GridForm_init();
+    PROPRI_GRID.id            = "tabela_propri";
+    PROPRI_GRID.columnName    = "codproprietario,nome,documento,endereco_bairro,numtel,email,endereco_logradouro,endereco_numero,endereco_cidade,endereco_uf,endereco_cep";
+    PROPRI_GRID.columnLabel   = "Cod. Prop.,Nome,Documento,Endereço,Telefone";
+    PROPRI_GRID.columnWidth   = "10,40,10,30,10";
+    PROPRI_GRID.columnAlign   = "c,e,c,e,c";
+    PROPRI_GRID.mousehouve    = true;
+    PROPRI_GRID.destacarclick = false;
+    PROPRI_GRID.createGrid();
+    
+    ABA      = new abaForm_init();
+    ABA.id   = "abas";
+    ABA.name = "Consulta,Manutencão";
+    ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
+    ABA.createAba();
+
+    DMFDiv              = new DMFForm_init();
+    DMFDiv.divs         = "dmodalf_proprietario";
+    DMFDiv.tema         = 1;
+    DMFDiv.cortinaclose = true;
+    DMFDiv.formModal();
+
+    CONSUL = new consulForm_init();
 
     event_click("bnovabusca");
     event_click("bbuscar");
     event_click("binserir");
     event_click("blimpar");
-    event_click("bclose");
     event_click("bcadastro");
-    imgFormat();
 
-    buscarDadosTable();         
+    event_click_table();
+    event_click_aba();
+
+    controlaTela("inicia");     
 }
 
 function event_click(obj) {
     if(obj == "bnovabusca"){
         form(obj).addEventListener("click", function () {
-            controlaTela("buscar");
+            controlaTela("novabusca");
         });
     }
     if(obj == "bbuscar"){
         form(obj).addEventListener("click", function () {
-            controlaTela("novabusca");
+            controlaTela("buscar");
             buscarDadosTable(); 
-        });        
+        });
     }
     if(obj == 'binserir'){
         form(obj).addEventListener("click", function () {
             form("sacao").innerText   = "Inserindo";
             form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
 
-            form("DMF_external").style.display = "flex";
             controlaTela("modal");
+            DMFDiv.openModal("dmodalf_proprietario");
         });
     }
     if(obj == 'blimpar'){
@@ -53,92 +85,59 @@ function event_click(obj) {
             controlaTela("inicia");
         });
     }
-    if(obj == 'bclose'){
-        form(obj).addEventListener("click", function () {
-            form("DMF_external").style.display = "none";
-        }); 
-    }
     if(obj == 'bcadastro'){
         form(obj).addEventListener("click", function () {
             adicionarProprietario();
-            form("DMF_external").style.display = "none";
+            DMFDiv.closeModal();
         });
     }
 }
 
-function event_click_table(id,index){
-    if(id == "tabela_contrato"){
+function event_click_table(){
+    PROPRI_GRID.click_table = ()=>{
+        const valoresLinha = PROPRI_GRID.getRowNode(event.target.closest('tr'));
+
+        controlaTela("modal");
+
         form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
         form("stitulo").innerText = "Cadastro de Proprietario - " + form("sacao").innerText;
 
-        buscarPropriGrid(index);                
-        controlaTela("modal");
-        form("DMF_external").style.display = "flex";
+        buscarPropriGrid(valoresLinha);
+
+        DMFDiv.openModal("dmodalf_proprietario");
     }
 }
 
-function ABA_init(){
-    document.querySelectorAll(".aba").forEach(aba => {
-        aba.addEventListener("click", function () {
-
-            document.querySelectorAll(".aba").forEach(abareset => {
-                abareset.querySelector('.indentaba').style.backgroundColor =  'rgb(81, 81, 81)';
-                abareset.querySelector('.indentaba').style.removeProperty("background-color"); 
-                abareset.querySelector('.abaint').style.removeProperty("background-color");
-                abareset.querySelector('.abaint').style.pointerEvents = 'visible';
-                abareset.classList.remove('ativa'); 
-            });
-            this.classList.add('ativa');
-
-            let abatraco   = this.querySelector(".indentaba");
-            let abainterna = this.querySelector(".abaint");                
-
-            abatraco.style.backgroundColor   = "rgb(41, 76, 141)";                
-            abainterna.style.pointerEvents   = 'none';
-            abainterna.style.backgroundColor = "rgb(193, 192, 192)";
-        });
-        form('aba1').addEventListener("click", function () {
-            form('aba2').style.pointerEvents   = 'visible';              
-            form('aba1').style.pointerEvents   = 'none';
-            controlaTela('inicia');
-        });
-        form('aba2').addEventListener("click", function () {
-            form('aba1').style.pointerEvents   = 'visible';               
-            form('aba2').style.pointerEvents   = 'none';
-            controlaTela('inicia');
-        });
-        
-
-        aba.addEventListener("click", function () {
-            buscarDadosTable();
-        });
+function event_click_aba(){
+    ABA.setAba_init(()=>{
+        switch (ABA.getIndex()) {
+        case 0: 
+        case 1: controlaTela("inicia");
+                break;
+        }
     });
 }
 
-function buscarPropriGrid(index){
-    fetch(`/contratosCadastroClientes/proprietario/${index}/buscarPropriGrid`,{
-        method: "POST",
-        headers: {"Content-Type": "application/json"}
-    })
-    .then(response =>{return response.json()})
-    .then(data => {
-        form("mcodproprietario").value  = data.codproprietario;
-        form("mnome").value         	= data.nome;
-        form("mcpf").value          	= data.documento;
-        form("mddd").value          	= data.numtel.substring(0,2);
-        form("mtelefone").value     	= data.numtel.substring(2);
-        form("memail").value        	= data.email;
-        form('mbairro').value           = data.endereco_bairro;
-        form('mnmr').value              = data.endereco_numero;
-        form('mcidade').value           = data.endereco_cidade;
-        form('muf').value               = data.endereco_uf;
-        form('mlogradouro').value       = data.endereco_logradouro;
-        form('mcepini').value           = data.endereco_cep.substring(0,5);
-        form('mcepdigito').value        = data.endereco_cep.substring(6,9);
-    })
-    .catch(error => alert(error.message));
+function buscarPropriGrid(valoresLinha){
+    form("mcodproprietario").value  = valoresLinha[0];
+    form("mnome").value         	= valoresLinha[1];
+    form("mcpf").value          	= valoresLinha[2];
+    form("mddd").value          	= valoresLinha[4].substring(0,2);
+    form("mtelefone").value     	= valoresLinha[4].substring(2);
+    form("memail").value        	= valoresLinha[5];
+    form('mbairro').value           = valoresLinha[3];
+    form('mnmr').value              = valoresLinha[7];
+    form('mcidade').value           = valoresLinha[8];
+    form('muf').value               = valoresLinha[9];
+    form('mlogradouro').value       = valoresLinha[6];
+    form('mcepini').value           = valoresLinha[10].substring(0,5);
+    form('mcepdigito').value        = valoresLinha[10].substring(6,9);
 }
 
+function buscarDadosTable(){
+    PROPRI_GRID.carregaGrid(`/contratosCadastroClientes/proprietario/buscarPropriGrid`,"","");
+}
+/*
 function buscarDadosTable(){
     fetch("/contratosCadastroClientes/proprietario")
         .then(response => response.json()) //quando chega a mensagem vc converte para json
@@ -150,7 +149,7 @@ function buscarDadosTable(){
                        data);
         })
         .catch(error => console.log("Erro ao buscar dados: ",error));
-}
+}*/
 
 function adicionarProprietario() {
     const proprietario = { codproprietario:     form("mcodproprietario").value,
@@ -166,65 +165,57 @@ function adicionarProprietario() {
                            endereco_uf:         form('muf').value,
                            id_usuario:          form('ideusu').value};
 
-    fetch("/contratosCadastroClientes/proprietario", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(proprietario)
-    })
-    .then(response => { return response.text(); })
+    CONSUL.consultar(`/contratosCadastroClientes/proprietario`,"POST","",proprietario)
     .then(data => {
         if(data != "OK") return alert(data);
         alert("Dados Salvos Com Sucesso!");
         if(form("sacao").innerText == "Inserindo")if(confirm("Deseja enviar um Email de Boas Vindas para o Proprietario?")) enviarEmail();
-    })
-    .catch(error => console.log(error.message));
+
+        form("bnovabusca").click();
+        form("bbuscar").click();
+    });
 }
 
 function enviarEmail(){
     const email = {
         to: form("memail").value,
         subject: "Bem Vinda a CESTec Enterprise 😊",
-        body: "Somos Uma Imobiliaria que focamos em oferecer o melhor Atendimento e Serviços para nossos colaboradores! \n"
-            + "Gostariamos de Agradecer pela confiança e compromisso."
-    }
+        body: "<html>"
+            + "<head>"
+            + "</head>"
+            + "<body style='font-family: Arial, sans-serif; color: #333;'>"
+            + '<div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">'
+            + "<h2>Olá Colaborador!</h2>"
+            + "<p>É com grande satisfação que damos as boas-vindas à nossa equipe.</p>"
+            + "<p>Na <strong>CESTec Enterprise</strong>, atuamos no setor imobiliário com o compromisso de oferecer os melhores serviços e um atendimento de excelência tanto aos nossos clientes quanto aos nossos colaboradores.</p>"
+            + "<p>Agradecemos pela sua confiança e por fazer parte do nosso time. Valorizamos o profissionalismo, a colaboração e a dedicação de cada membro da equipe para construirmos juntos uma trajetória de sucesso.</p>"
+            + "<p>Conte conosco para o que precisar!</p>"
+            + "<p>Atenciosamente,<br>"
+            + "<strong>Equipe CESTec Enterprise</strong></p>"
+            + "</div>"
+            + "</body>"
+            + "</html>"}
 
-    fetch("/email", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(email)        
-    })
-    .then(response => {})
-    .then(data => {})
-    .catch(error => alert(error.message));
+    CONSUL.consultar(`/email`,"POST","",email)
 }
 
 function buscarUserName(){
-    fetch("/home/userlogin", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response =>{return response.text()})
-    .then(data => { form("ideusu").value = data })
-    .catch(error => alert(error.message));
+    CONSUL.consultar(`/home/userlogin`)
+    .then(data =>{
+        form("ideusu").value = data
+    });
 }
 
 function controlaTela(opc){
     limparTela(opc);
-    if(opc == "inicia" || opc == 'buscar'){
+    if(opc == "inicia" || opc == 'novabusca'){
         desabilitaCampo('bnovabusca',      true);
         desabilitaCampo('bbuscar',         false);
         desabilitaCampo('codproprietario', false);
 
-        form("binserir").style.display     = form("aba1").style.pointerEvents == 'visible'?"flex":"none";
-        form("DMF_external").style.display = "none";
+        form("binserir").style.display     = ehManutencao()?"flex":"none";
     }
-    if(opc == "novabusca"){
+    if(opc == "buscar"){
         desabilitaCampo('bnovabusca',      false);
         desabilitaCampo('bbuscar',         true);        
         desabilitaCampo('codproprietario', true);
@@ -247,11 +238,11 @@ function controlaTela(opc){
 }
 
 function limparTela(opc){
-    if(opc == "inicia" || opc == 'buscar'){        
+    if(opc == "inicia" || opc == 'novabusca'){        
         form('codproprietario').value = "0";
-
-        form("binserir").style.display     = form("aba1").style.pointerEvents == 'visible'?"flex":"none";
-        form("DMF_external").style.display = "none";
+    }
+    if(opc === "inicia" || opc === "novabusca"){
+        PROPRI_GRID.clearGrid();
     }
     if(opc == "modal"){
         form('mnome').value        = "";
@@ -271,89 +262,9 @@ function limparTela(opc){
 
 
 function ehConsulta(){
-    return form("aba1").classList.contains('ativa');
+    return ABA.getIndex() === 0;
 }
 
 function ehManutencao(){
-    return form("aba2").classList.contains('ativa');
-}
-
-
-function imgFormat(){
-    document.querySelectorAll(".button").forEach(button => {
-        let iconUrl = button.getAttribute("data-icon");
-        button.style.paddingLeft = "30px";
-        button.style.position    = "relative";
-        
-        button.style.setProperty("--icon-url",          `url(${iconUrl})`);
-        button.style.setProperty("content",             `""`);
-        button.style.setProperty("background-image",    `url(${iconUrl})`);
-        button.style.setProperty("background-position", "10px center");
-        button.style.setProperty("background-repeat",   "no-repeat");
-        button.style.setProperty("background-size",     "20px 25px");
-    });
-}
-
-function form(obj){
-    return document.getElementById(obj);
-}
-
-function desabilitaCampo(obj,desahabilita){
-    if (obj.substring(0,1) == "b"){
-        form(obj).style.backgroundColor =  desahabilita?'rgb(210 212 218)': '#b4b6ba';
-    }
-    form(obj).disabled = desahabilita;
-    form(obj).style.cursor = desahabilita?'not-allowed':'pointer';
-}
-
-function createGrid(id,column,columnName,columnWidth,dados){
-    form(id).innerText = '';
-    const table     = document.getElementById(id);
-    const thead     = document.createElement("thead");
-    const headerRow = document.createElement("tr");      
-    const colunas   = column.split(",");
-
-    var pi = 0;
-    colunas.forEach((coluna,index) => {
-        const th = document.createElement("th");
-        th.id = "th" + pi;
-        th.textContent =  coluna.trim();
-        headerRow.appendChild(th);
-        pi += 1;
-    });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
-
-    const tbody = document.createElement("tbody");
-    tbody.setAttribute("id", `${id}-tbody`);
-    table.appendChild(tbody);
-
-    dados.forEach((dado, index ) => {
-        const row = document.createElement("tr");        
-
-        colunas.forEach(coluna => {
-            const td = document.createElement("td");
-            const valor = dado[coluna.trim()];
-            td.textContent = valor? valor :"N/A";
-            row.appendChild(td);
-        });    
-
-        row.addEventListener("click", ()=>{
-            form(id).querySelectorAll("tr").forEach(row => {
-                row.style.border = "none";
-            });            
-            event_click_table(id,index);
-            row.style.border = " 2px solid black";
-        });
-
-        tbody.appendChild(row);
-    });
-
-    var pi = 0;
-    colunas.forEach((coluna, index)=>{
-        form("th"+pi).innerText = columnName.split(",")[pi];
-        form("th"+pi).style.width = columnWidth.split(",")[pi] +"%"; 
-        pi += 1;
-    });
-    return table;
+    return ABA.getIndex() === 1;
 }

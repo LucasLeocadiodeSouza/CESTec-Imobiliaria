@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
     <title>Cadastro de Cliente</title>
-    <script src="/js/wcr003.js" defer></script>
+    <script type="module" src="/js/wcr003.js" defer></script>
     
 <style>
     .ppp         {width: 32px;}
@@ -67,10 +67,8 @@
             <h2>Cadastro de Clientes</h2>
         </div>
 
-        <div id='abas' class="gen" style="height: 40px; width: 90%; justify-content: center; margin: 10px; margin-bottom: 0px;padding: 0px; display: flex; justify-content: flex-start;">            
-            <div id="aba1" class="aba"><div class="indentaba" style="background-color: rgb(41, 76, 141)"></div><div class="abaint" style="background-color: rgb(193, 192, 192)"><img src="/icons/consultaLupa.png"   class="gen"><label style="margin-block: 0px;"> Consulta</label></div></div>
-            <div id="aba2" class="aba"><div class="indentaba"></div><div class="abaint"><img src="/icons/manutencaoIcon.png" class="gen"><label style="margin-block: 0px;"> Manutencão</label></div></div>
-        </div>
+        <div id='abas'></div>
+
         <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
             <div class='if'>
                 <label class="labelfiltro">Código do Imovel: </label>
@@ -85,86 +83,77 @@
 
             <div  class='if' style="display: flex; height: auto;">
                 <label class="labelfiltro"></label>                
-                <input type="button" id="bbuscar"    name="bbuscar"    class="button" value="Buscar"      data-icon="/icons/buscar.png">                
-                <input type="button" id="bnovabusca" name="bnovabusca" class="button" value="Nova Busca"  data-icon="/icons/novaPesquisa.png">
-                <input type="button" id="blimpar"    name="blimpar"    class="button" value="Limpar"      data-icon="/icons/limparIcon.png">
+                <div id="bbuscar"    name="bbuscar"    class="button" value="Buscar"      data-icon="/icons/buscar.png"></div>
+                <div id="bnovabusca" name="bnovabusca" class="button" value="Nova Busca"  data-icon="/icons/novaPesquisa.png"></div>
+                <div id="blimpar"    name="blimpar"    class="button" value="Limpar"      data-icon="/icons/limparIcon.png"></div>
             </div>
         </fieldset>
         
         <div class='if' style="display: flex; margin-left: 5px;">                            
-            <input type="button" id="bimprimir" name="bimprimir" class="button" value="Imprimir" data-icon="/icons/printer.png">
-            <input type="button" id="binserir"  name="binserir"  class="button" value="Inserir"  data-icon="/icons/incluir.png">
+            <div id="bimprimir" class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
+            <div id="binserir"  class="button" value="Inserir"  data-icon="/icons/incluir.png"></div>
         </div>
 
-        <div class='grid'><table id="tabela_clientes" class="table"></table></div>
+        <div id="tabela_clientes"></div>
 
         <!--  MODAL -->
-        <div id="DMF_external" class="DMF_external">
-            <div id="dmodalf_cliente">
-                <div class='dmf' style="display: flex; justify-content: flex-end;align-items: center; height: 35px;">                    
-                    <div id="bclose" class="bpc"><img src="/icons/fechartela.png" style="width: 80%; height: 80%; margin: 0px;"></div>                
-                </div>
+        <div id="dmodalf_cliente">
+            <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
+                <h2><span id="stitulo" name="stitulo"></span></h2>
+                <span     id="sacao"   name="sacao" style="display: none"></span>
+            </div>
+            
+            <input type="hidden" id="mcodcliente" name="mcodcliente">
 
-                <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
-                    <h2><span id="stitulo" name="stitulo"></span></h2>
-                    <span     id="sacao"   name="sacao" style="display: none"></span>
-                </div>                
-                
-                <input type="hidden" id="mcodcliente" name="mcodcliente">
+            <div class='dmf'>
+                <label class="labelmodal">Cliente: </label>
+                <input type="text" id="mnome"  name="mnome"  class="large">
+            </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Cliente: </label>
-                    <input type="text" id="mnome"  name="mnome"  class="large">
-                </div>
+            <div class='dmf'>
+                <label class="labelmodal">Documento: </label>
+                <input type="text" id="mcpf"  name="mcpf"  class="medium">
+            </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Documento: </label>
-                    <input type="text" id="mcpf"  name="mcpf"  class="medium">
-                </div>
+            <div class='dmf'>
+                <label class="labelmodal">Telefone: </label>
+                <input type="text" id="mddd"  name="mddd"  maxlength="3" class="ppp">
+                <input type="text" id="mtelefone" name="mtelefone" class="medium">
+            </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Telefone: </label>
-                    <input type="text" id="mddd"  name="mddd"  maxlength="3" class="ppp">
-                    <input type="text" id="mtelefone" name="mtelefone" class="medium">
-                </div>
+            <div class='dmf'>
+                <label class="labelmodal">Email: </label>
+                <input type="text" id="memail"  name="memail"  class="large">
+            </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Email: </label>
-                    <input type="text" id="memail"  name="memail"  class="large">
-                </div>
+            <div class='dmf'>
+                <label class="labelmodal">Bairro: </label>
+                <input type="text" id="mbairro"  name="mbairro"  class="large">&nbsp;&nbsp;
 
-                <div class='dmf'>
-                    <label class="labelmodal">Bairro: </label>
-                    <input type="text" id="mbairro"  name="mbairro"  class="large">&nbsp;&nbsp;
+                <label class="labelmodal" style="width: auto !important;">N: </label>
+                <input type="text" id="mnmr"  name="mnmr"  class="ppp">
+            </div>
+            
+            <div class='dmf'>
+                <label class="labelmodal">Logradouro: </label>
+                <input type="text" id="mlogradouro"  name="mlogradouro"  class="large">&nbsp;&nbsp;
 
-                    <label class="labelmodal" style="width: auto !important;">N: </label>
-                    <input type="text" id="mnmr"  name="mnmr"  class="ppp">
-                </div>
-                
-                <div class='dmf'>
-                    <label class="labelmodal">Logradouro: </label>
-                    <input type="text" id="mlogradouro"  name="mlogradouro"  class="large">&nbsp;&nbsp;
+                <label class="labelmodal" style="width: auto !important;">CEP: </label>
+                <input type="text" id="mcepini"    name="mcepini" maxlength="5" class="p">
+                <label class="labelmodal" style="width: auto !important;">-</label>
+                <input type="text" id="mcepdigito" name="mcepdigito" maxlength="3" class="ppp">
+            </div>
 
-                    <label class="labelmodal" style="width: auto !important;">CEP: </label>
-                    <input type="text" id="mcepini"    name="mcepini" maxlength="5" class="p">
-                    <label class="labelmodal" style="width: auto !important;">-</label>
-                    <input type="text" id="mcepdigito" name="mcepdigito" maxlength="3" class="ppp">
-                </div>
+            <div class='dmf'>
+                <label class="labelmodal">Cidade: </label>
+                <input type="text" id="mcidade"  name="mcidade"  class="medium"> &nbsp;
+            
+                <label class="labelmodal" style="width: auto !important;">UF: </label>
+                <input type="text" id="muf"  name="muf"  class="ppp">
+            </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Cidade: </label>
-                    <input type="text" id="mcidade"  name="mcidade"  class="medium"> &nbsp;
-                
-                    <label class="labelmodal" style="width: auto !important;">UF: </label>
-                    <input type="text" id="muf"  name="muf"  class="ppp">
-                </div>
-
-                <div class='if' style="display: flex; margin-left: 5px;"></div>
-
-
-                <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
-                    <input type="button" id="bcadastro" name="bcadastro" class="button" value="Cadastrar" data-icon="/icons/cadastro.png">
-                </div>
+            <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
+                <div id="bcadastro" name="bcadastro" class="button" value="Cadastrar" data-icon="/icons/cadastro.png"></div>
             </div>
         </div>
 

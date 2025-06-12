@@ -68,4 +68,8 @@ public class comWindowController {
         return comWindowService.getPercentMetaMes(getUserName(request));
     }
     
+    @GetMapping("/getCargoIdeusu")
+    public String getCargoIdeusu(HttpServletRequest request) {
+        return comWindowService.getCargoFuncionario(getUserName(request));
+    }
 }

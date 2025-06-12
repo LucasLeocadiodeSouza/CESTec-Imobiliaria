@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.cestec.cestec.model.corretorDTO;
 import com.cestec.cestec.model.pcp_meta;
 import com.cestec.cestec.repository.contratoRepository;
+import com.cestec.cestec.repository.funcionarioRepository;
 import com.cestec.cestec.repository.metaRepository;
 
 @Service
@@ -21,6 +22,9 @@ public class comWindowService {
 
     @Autowired
     private contratoRepository contratoRepository;
+
+    @Autowired
+    private funcionarioRepository funcionarioRepository;
 
     public Double getMetaCorretorMensal(String ideusu){
         List<corretorDTO> corretores = metaRepository.findMetaMensalByIdeusu(ideusu);
@@ -41,9 +45,16 @@ public class comWindowService {
         }
     }
 
+    public String getCargoFuncionario(String ideusu){
+        Integer codfunc = funcionarioRepository.findCodFuncByIdeusu(ideusu);
+
+        return funcionarioRepository.findCargoIdByNome(codfunc);
+    }
+
     public Double getVlrEfetivadoCorretor(String ideusu){
         List<Double> valoresContrato = contratoRepository.buscarValoresContratoByIdeusu(ideusu);
         Double vlr = 0.0;
+
         for(int i = 0; i < valoresContrato.size(); i++){
             vlr += valoresContrato.get(i);
         }
@@ -64,7 +75,6 @@ public class comWindowService {
 
         String periodo = sdf.format(meta.getDatinicio()).toString() + " - " + sdf.format(meta.getDatfinal()).toString();
 
-        System.out.println("periodo " + periodo);
         return periodo;
     }
 }

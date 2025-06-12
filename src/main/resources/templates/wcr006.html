@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
     <title>Aprovacão de Contratos</title>
-    <script src="/js/wcr006.js" defer></script>
+    <script type="module" src="/js/wcr006.js" defer></script>
     
 <style>
     .ppp         {width: 32px;}
@@ -56,14 +56,6 @@
            overflow-y: auto;
            overflow-x:scroll;}
 
-    /* ::-webkit-scrollbar {
-        width: 1px;
-    }    
-
-    ::-webkit-scrollbar-track {
-        background: transparent;
-    } */
-
     #botoes {display: none !important;}
 
     .dmf {width: auto !important;
@@ -79,6 +71,11 @@
                         margin-inline: 150px;  /* Margem de 150px nas laterais */
                         margin-block: 50px;}
 
+    #dmodalf_aprovacao img {filter: invert(100%);}
+
+    .buttonsmodal {display: flex; justify-content: center; align-items: center; margin: 25px;}
+    div.buttonsmodal input{color: #FFF;}
+
     body {background-color: #1d3561;}
 </style>
 </head>
@@ -87,13 +84,10 @@
         <input type="hidden" id="ideusu" name="ideusu">
 
         <div class="titulo">
-            <h2>Cadastro de Contratos</h2>
+            <h2>Analise de Contratos</h2>
         </div>
 
-        <div id='abas' class="gen" style="height: 40px; width: 90%; justify-content: center; margin: 10px; margin-bottom: 0px;padding: 0px; display: flex; justify-content: flex-start;">            
-            <div id="aba1" class="aba"><div class="indentaba" style="background-color: rgb(41, 76, 141)"></div><div class="abaint" style="background-color: rgb(193, 192, 192)"><img src="/icons/consultaLupa.png"   class="gen"><label style="margin-block: 0px;"> Consulta</label></div></div>
-            <div id="aba2" class="aba"><div class="indentaba"></div><div class="abaint"><img src="/icons/manutencaoIcon.png" class="gen"><label style="margin-block: 0px;"> Manutencão</label></div></div>
-        </div>
+        <div id='abas'></div>
 
         <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
             <div class='if'>
@@ -126,50 +120,44 @@
 
             <div  class='if' style="display: flex; height: auto;">
                 <label class="labelfiltro"></label>                
-                <input type="button" id="bbuscar"    name="bbuscar"    class="button" value="Buscar"      data-icon="/icons/buscar.png">                
-                <input type="button" id="bnovabusca" name="bnovabusca" class="button" value="Nova Busca"  data-icon="/icons/novaPesquisa.png">
-                <input type="button" id="blimpar"    name="blimpar"    class="button" value="Limpar"      data-icon="/icons/limparIcon.png">
+                <div id="bbuscar"    name="bbuscar"    class="button" value="Buscar"      data-icon="/icons/buscar.png"></div>
+                <div id="bnovabusca" name="bnovabusca" class="button" value="Nova Busca"  data-icon="/icons/novaPesquisa.png"></div>
+                <div id="blimpar"    name="blimpar"    class="button" value="Limpar"      data-icon="/icons/limparIcon.png"></div>
             </div>
         </fieldset>
         
         <div class='if' style="display: flex; margin-left: 5px;">                            
-            <input type="button" id="bimprimir" name="bimprimir" class="button" value="Imprimir" data-icon="/icons/printer.png">
+            <div id="bimprimir" name="bimprimir" class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
         </div>
 
-        <div class='grid'><table id="tabela_aprovacao" class="table"></table></div>
+        <div id='tabela_aprovacao'></div>
 
         <!--  MODAL -->
-        <div id="DMF_external" class="DMF_external">
-            <div id="dmodalf_aprovacao">
-                <div class='dmf' style="display: flex; justify-content: flex-end;align-items: center; height: 35px;">
-                    <div id="bclose" class="bpc"><img src="/icons/fechartela.png" style="width: 80%; height: 80%; margin: 0px;"></div>                
+        <div id="dmodalf_aprovacao">
+            <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
+                <h2><span id="stitulo" name="stitulo"></span></h2>
+                <span     id="sacao"   name="sacao" style="display: none"></span>
+            </div>
+
+            <div class='dmf contrato'>
+                <div id="fichacontrato"></div>
+            </div>
+
+            <div class='dmf aprovacao'>
+                <div class='dmf'>
+                    <label class="labelmodal">Valor Liberado: </label>
+                    <input type="text" id="mvlrlib"  name="mvlrlib"  class="large">
                 </div>
 
-                <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
-                    <h2><span id="stitulo" name="stitulo"></span></h2>
-                    <span     id="sacao"   name="sacao" style="display: none"></span>
+                <div class='dmf'>
+                    <label class="labelmodal">Observacão: </label>
+                    <textarea id="mobs"  name="mobs"  class="extralarge"></textarea>                        
                 </div>
+            </div>
 
-                <div class='dmf contrato'>
-                    <div id="fichacontrato"></div>
-                </div>
-
-                <div class='dmf aprovacao'>
-                    <div class='dmf'>
-                        <label class="labelmodal">Valor Liberado: </label>
-                        <input type="text" id="mvlrlib"  name="mvlrlib"  class="large">
-                    </div>
-
-                    <div class='dmf'>
-                        <label class="labelmodal">Observacão: </label>
-                        <textarea id="mobs"  name="mobs"  class="extralarge"></textarea>                        
-                    </div>
-                </div>
-
-                <div class='dmf' style="display: flex; justify-content: center; align-items: center; margin: 25px;">                            
-                    <input type="button" id="bcadastro" name="bcadastro" class="button" value="Aprovar"  data-icon="/icons/ok-icon.png">
-                    <input type="button" id="breprovar" name="breprovar" class="button" value="Reprovar" data-icon="/icons/cancel.png">
-                </div>
+            <div class='dmf buttonsmodal'>                            
+                <div id="bcadastro" name="bcadastro" class="button" value="Aprovar"  data-icon="/icons/ok-icon.png"></div>
+                <div id="breprovar" name="breprovar" class="button" value="Reprovar" data-icon="/icons/cancel.png"></div>
             </div>
         </div>
 

@@ -142,7 +142,7 @@ export function GridForm_init(){
                 th.id = coluna.trim() + "_res_" + si;
                 th.textContent = this.columnLabel.split(",")[si];
 
-                th.style.width = colunaorignode.style.width;
+                th.style.width = colunaorignode.style.width
                 if(!colunasLabel[index]) th.style.display = "none";
 
                 trbody.appendChild(th);
@@ -167,6 +167,7 @@ export function GridForm_init(){
                     if(aligns[index] === "e") td.classList.add("tdalign-esq");
                     if(aligns[index] === "c") td.classList.add("tdalign-cen");
                     if(aligns[index] === "d") td.classList.add("tdalign-dir");
+                    if(aligns[index] === "eoe") td.classList.add("tdalign-esqoverellip");
                     else td.classList.add("tdalign-esq");
 
                     if(!colunasLabel[index]) td.style.display = "none";

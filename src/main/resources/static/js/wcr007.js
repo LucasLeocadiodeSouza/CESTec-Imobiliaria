@@ -14,10 +14,17 @@ window.addEventListener("load", function () {
     buscarUserName();
 });
 
+import { GridForm_init }     from "./modules/gridForm.js";
+import { DMFForm_init }      from "./modules/dmfForm.js";
+import { abaForm_init }      from "./modules/abaForm.js";
+import { consulForm_init }   from "./modules/consulForm.js";
+import { elementsForm_init } from "./modules/elementsForm.js";
+import { imgFormat,form,desabilitaCampo,setDisplay } from "./modules/utils.js";
+
+var ABA,DMFDiv,CONSUL,METAS_GRID;
+
 function iniciarEventos() {
     controlaTela("inicia");
-    ABA_init();
-    form("aba1").classList.add('ativa');
 
     event_click("bnovabusca");
     event_click("bbuscar");
@@ -131,42 +138,6 @@ function limparTela(opc){
     }
 } 
 
-function ABA_init(){
-    document.querySelectorAll(".aba").forEach(aba => {
-        aba.addEventListener("click", function () {
-
-            document.querySelectorAll(".aba").forEach(abareset => {
-                abareset.querySelector('.indentaba').style.backgroundColor =  'rgb(81, 81, 81)';
-                abareset.querySelector('.indentaba').style.removeProperty("background-color"); 
-                abareset.querySelector('.abaint').style.removeProperty("background-color");
-                abareset.querySelector('.abaint').style.pointerEvents = 'visible';
-                abareset.classList.remove('ativa'); 
-            });
-            this.classList.add('ativa');
-
-            let abatraco   = this.querySelector(".indentaba");
-            let abainterna = this.querySelector(".abaint");                
-
-            abatraco.style.backgroundColor   = "rgb(41, 76, 141)";                
-            abainterna.style.pointerEvents   = 'none';
-            abainterna.style.backgroundColor = "rgb(193, 192, 192)";
-        });
-        form('aba1').addEventListener("click", function () {
-            form('aba2').style.pointerEvents   = 'visible';              
-            form('aba1').style.pointerEvents   = 'none';
-            controlaTela('inicia');
-        });
-        form('aba2').addEventListener("click", function () {
-            form('aba1').style.pointerEvents   = 'visible';               
-            form('aba2').style.pointerEvents   = 'none';
-            controlaTela('inicia');
-        });        
-
-        aba.addEventListener("click", function () {
-        });
-    });
-}
-
 function ehConsulta(){
     return form("aba1").classList.contains('ativa');
 }
@@ -252,33 +223,6 @@ function buscarUserName(){
     .catch(error => alert(error.message));
 }
 
-
-function imgFormat(){
-    document.querySelectorAll(".button").forEach(button => {
-        let iconUrl = button.getAttribute("data-icon");
-        button.style.paddingLeft = "30px";
-        button.style.position    = "relative";
-        
-        button.style.setProperty("--icon-url",          `url(${iconUrl})`);
-        button.style.setProperty("content",             `""`);
-        button.style.setProperty("background-image",    `url(${iconUrl})`);
-        button.style.setProperty("background-position", "10px center");
-        button.style.setProperty("background-repeat",   "no-repeat");
-        button.style.setProperty("background-size",     "20px 25px");
-    });
-}
-
-function form(obj){
-    return document.getElementById(obj);
-}
-
-function desabilitaCampo(obj,desahabilita){
-    if (obj.substring(0,1) == "b"){
-        form(obj).style.backgroundColor =  desahabilita?'rgb(210 212 218)': '#b4b6ba';
-    }
-    form(obj).disabled = desahabilita;
-    form(obj).style.cursor = desahabilita?'not-allowed':'pointer';
-}
 
 function downloadPDF(base64, filename) {
     const link = document.createElement('a');

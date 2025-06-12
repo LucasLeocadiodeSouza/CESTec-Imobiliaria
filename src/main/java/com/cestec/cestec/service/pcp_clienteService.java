@@ -18,7 +18,7 @@ public class pcp_clienteService {
 
     public String validaCliente(pcp_cliente cliente){
         if(cliente.getDocumento() == ""){
-            return "Proprietario Não pode ser cadastrado sem um CPF";
+            return "Proprietario não pode ser cadastrado sem um CPF";
         }
         if(cliente.getEmail() == ""){
             return "Deve ser Preenchido o Campo Email do proprietario";
@@ -62,7 +62,8 @@ public class pcp_clienteService {
 
         try{
             pcp_cliente clienteAnalise = clienteRepository.findByCodcliente(cliente.getCodcliente());
-        
+            if(!existeCliente(cliente.getCodcliente())) clienteAnalise = new pcp_cliente();
+
             clienteAnalise.setDocumento(cliente.getDocumento());
             clienteAnalise.setEmail(cliente.getEmail());
             clienteAnalise.setEndereco_bairro(cliente.getEndereco_bairro());
@@ -76,9 +77,8 @@ public class pcp_clienteService {
             clienteAnalise.setNumtel(cliente.getNumtel());
             clienteAnalise.setCriado_em(clienteAnalise.getCriado_em() == null?LocalDateTime.now():clienteAnalise.getCriado_em());
             clienteAnalise.setAtualizado_em(LocalDateTime.now());
-            if(clienteAnalise.getCodcliente() == null) clienteAnalise.setId_usuario(cliente.getId_usuario());
-            
-            
+
+            if(!existeCliente(clienteAnalise.getCodcliente())) clienteAnalise.setId_usuario(cliente.getId_usuario());
 
             clienteRepository.save(clienteAnalise);
             return ResponseEntity.ok("OK");
@@ -98,5 +98,9 @@ public class pcp_clienteService {
 
     public String findNomeClienteById(Integer codcliente){
         return clienteRepository.findById(codcliente).get().getNome();
+    }
+
+    public Boolean existeCliente(Integer codcliente){
+        return clienteRepository.findByCodcliente(codcliente) != null;
     }
 }

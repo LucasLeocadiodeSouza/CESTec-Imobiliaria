@@ -4,39 +4,67 @@
     IM: 00008
 */
 window.addEventListener("load", function () {
-    createGrid("tabela_aprovacao",
-               "codcontrato,negociacao,codimovel,tipo,codproprietario,nomeProp,codcliente,nomeCliente,codcorretor,nomeCorretor,datinicio,datfinal,preco,valor",
-               "Cód. Contrato,Contrato,Cód. Imovel,Tipo Imovel,Código Prop,Proprietario,Código Cliente,Cliente,Código Corretor,Corretor,Inicio,Final,Preco,Valor negoc.",
-               "6,5,6,6,6,10,6,10,6,10,7,7,6,6",
-               "2200");
-    
     iniciarEventos();
     buscarUserName();
 });
 
+import { GridForm_init }     from "./modules/gridForm.js";
+import { DMFForm_init }      from "./modules/dmfForm.js";
+import { abaForm_init }      from "./modules/abaForm.js";
+import { consulForm_init }   from "./modules/consulForm.js";
+import { elementsForm_init } from "./modules/elementsForm.js";
+import { imgFormat,form,desabilitaCampo,setDisplay } from "./modules/utils.js";
+
+var ABA,DMFDiv,CONSUL,CONTRATOS_GRID;
+
 function iniciarEventos() {
-    controlaTela("inicia");
-    ABA_init();
-    form("aba1").classList.add('ativa');
+    elementsForm_init();
+
+    CONTRATOS_GRID               = new GridForm_init();
+    CONTRATOS_GRID.id            = "tabela_aprovacao";
+    CONTRATOS_GRID.columnName    = "codcontrato,negociacao,codimovel,tipo,codproprietario,nomeProp,codcliente,nomeCliente,codcorretor,nomeCorretor,datinicio,datfinal,preco,valor";
+    CONTRATOS_GRID.columnLabel   = "Cód. Contrato,Contrato,Cód. Imovel,Tipo Imovel,Código Prop,Proprietario,Código Cliente,Cliente,Código Corretor,Corretor,Inicio,Final,Preco,Valor negoc. (R$)";
+    CONTRATOS_GRID.columnWidth   = "6,5,6,6,6,10,6,10,6,10,7,7,6,6";
+    CONTRATOS_GRID.columnAlign   = "c,c,c,c,c,c,c,c,c,c,c,c,c,c";
+    CONTRATOS_GRID.mousehouve    = true;
+    CONTRATOS_GRID.destacarclick = false;
+    CONTRATOS_GRID.createGrid();
+
+    ABA      = new abaForm_init();
+    ABA.id   = "abas";
+    ABA.name = "Consulta,Manutencão";
+    ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
+    ABA.createAba();
+
+    DMFDiv              = new DMFForm_init();
+    DMFDiv.divs         = "dmodalf_aprovacao";
+    DMFDiv.tema         = 1;
+    DMFDiv.cortinaclose = true;
+    DMFDiv.formModal();
+
+    CONSUL = new consulForm_init();
 
     event_click("bnovabusca");
     event_click("bbuscar");
     event_click("bclose");
     event_click("blimpar");
     // event_click("bcadastro");
+
+    event_click_aba();
+    event_click_table();
     
     event_change("codproprietario");
     event_change("codcliente");
     event_change("codcorretor");
 
-    imgFormat();
+    controlaTela("inicia");
 }
 
 
-function event_click(obj,dado) {
+function event_click(obj) {
     if(obj == "bnovabusca"){
         form(obj).addEventListener("click", function () {
-            controlaTela("buscar");
+            controlaTela("novabusca");
         });
     }
     if(obj == 'blimpar'){
@@ -46,15 +74,10 @@ function event_click(obj,dado) {
     }
     if(obj == "bbuscar"){
         form(obj).addEventListener("click", function () {
-            controlaTela("novabusca");
+            controlaTela("buscar");
 
             buscarContratoAprovacao();
         });        
-    }
-    if(obj == 'bclose'){
-        form(obj).addEventListener("click", function () {
-            form("DMF_external").style.display = "none";
-        });
     }
 }
 
@@ -76,28 +99,40 @@ function event_change(obj){
     }
 }
 
-function event_click_table(id,index){
-    if(id == "tabela_aprovacao"){
+function event_click_table(){
+    CONTRATOS_GRID.click_table = ()=>{
+        const valoresLinha = CONTRATOS_GRID.getRowNode(event.target.closest('tr'));
+        controlaTela("modal");
+
         form("sacao").innerText   = ehConsulta()?"Consultando":"Analisando";
         form("stitulo").innerText = form("sacao").innerText + " o Contrato - " + form("sacao").innerText;
-        
-        puxarFichaContrato(3);
 
-        controlaTela("modal");
-        form("DMF_external").style.display = "flex"; 
+        puxarFichaContrato(valoresLinha[0]);
+        //preencherModal(valoresLinha);
+        DMFDiv.openModal("dmodalf_aprovacao");
     }
+}
+
+function event_click_aba(){
+    ABA.setAba_init(()=>{
+        switch (ABA.getIndex()) {
+        case 0: 
+        case 1: controlaTela("inicia");
+                break;
+        }
+    });
 }
 
 function controlaTela(opc){
     limparTela(opc);
-    if(opc == "inicia" || opc == 'buscar'){
+    if(opc == "inicia" || opc == 'novabusca'){
         desabilitaCampo('bnovabusca',        true);
         desabilitaCampo('bbuscar',           false);
         desabilitaCampo('codproprietario',   false);
         desabilitaCampo('codcliente',        false);
         desabilitaCampo('codcorretor',       false);
     }
-    if(opc == "novabusca"){
+    if(opc == "buscar"){
         desabilitaCampo('bnovabusca',       false);
         desabilitaCampo('bbuscar',          true);
         desabilitaCampo('codproprietario',  true);
@@ -108,60 +143,25 @@ function controlaTela(opc){
 
 
 function limparTela(opc){
-    if(opc == "inicia" || opc == 'buscar'){
+    if(opc == "inicia" || opc == 'novabusca'){
         form('codproprietario').value   = "";
         form('descproprietario').value  = "Todos os Proprietarios";
         form('codcliente').value        = "";
         form('desccliente').value       = "Todos os Clientes";
         form('codcorretor').value       = "";
         form('desccorretor').value      = "Todos os Corretores";
-        
-        form("DMF_external").style.display = "none";
+    }
+    if(opc === "inicia" || opc === "novabusca"){
+        CONTRATOS_GRID.clearGrid();
     }
 } 
 
-function ABA_init(){
-    document.querySelectorAll(".aba").forEach(aba => {
-        aba.addEventListener("click", function () {
-
-            document.querySelectorAll(".aba").forEach(abareset => {
-                abareset.querySelector('.indentaba').style.backgroundColor =  'rgb(81, 81, 81)';
-                abareset.querySelector('.indentaba').style.removeProperty("background-color"); 
-                abareset.querySelector('.abaint').style.removeProperty("background-color");
-                abareset.querySelector('.abaint').style.pointerEvents = 'visible';
-                abareset.classList.remove('ativa'); 
-            });
-            this.classList.add('ativa');
-
-            let abatraco   = this.querySelector(".indentaba");
-            let abainterna = this.querySelector(".abaint");                
-
-            abatraco.style.backgroundColor   = "rgb(41, 76, 141)";                
-            abainterna.style.pointerEvents   = 'none';
-            abainterna.style.backgroundColor = "rgb(193, 192, 192)";
-        });
-        form('aba1').addEventListener("click", function () {
-            form('aba2').style.pointerEvents   = 'visible';              
-            form('aba1').style.pointerEvents   = 'none';
-            controlaTela('inicia');
-        });
-        form('aba2').addEventListener("click", function () {
-            form('aba1').style.pointerEvents   = 'visible';               
-            form('aba2').style.pointerEvents   = 'none';
-            controlaTela('inicia');
-        });        
-
-        aba.addEventListener("click", function () {
-        });
-    });
-}
-
 function ehConsulta(){
-    return form("aba1").classList.contains('ativa');
+    return ABA.getIndex() === 0;
 }
 
 function ehManutencao(){
-    return form("aba2").classList.contains('ativa');
+    return ABA.getIndex() === 1;
 }
 
 function puxarFichaContrato(codcontrato){
@@ -171,165 +171,45 @@ function puxarFichaContrato(codcontrato){
     .catch(error => console.error('Não foi possivel carregar a ficha. \n', error));
 }
 
-function preencherModal(index){
-    fetch(`/contrato/${index}/buscarContratoGrid`, {
-        method: "GET",
-        headers: {"Content-Type":"application/json"}
-    })
-    .then(response => {return response.json()})
-    .then(data => {})
-    .catch(error => alert(error.message))
+function preencherModal(valoresLinha){
+    const situacao = valoresLinha[5] == '1'?"Não batida":"Concluída";
+
+    form("mcodcorretor").value  = valoresLinha[1];
+    form("mdesccorretor").value = valoresLinha[2];
+    form("mvlrmeta").value      = valoresLinha[3];
+    form("mperiodoini").value   = valoresLinha[4];
+    form("ssituacao").innerText = "* " + situacao;
+    form("mperiodofin").value   = valoresLinha[6];
+
+    if(valoresLinha[5] !== 2) form("ssituacao").classList.add("vermelho");
+    else {
+        form("ssituacao").classList.remove("vermelho");
+        form("ssituacao").classList.add("verde");
+    }
 }
 
 function buscarContratoAprovacao(){
-    fetch(`/wcr006c/buscarContratoAprovacao`,{
-        method: "GET",
-        headers: {"Content-Type":"application/json"}
-    })
-    .then(response => {return response.json()})
-    .then(data     => {carregaGrid("tabela_aprovacao",data)})
-    .catch(error   => alert("Erro ao puxar os dados buscarContratoAprovacao. \n" + error.message))
+    CONTRATOS_GRID.carregaGrid("/wcr006c/buscarContratoAprovacao","","");
 }
 
-function getDescCliente(codigo, retorno){
-    fetch(`/cliente/${form(codigo).value}/findNomeClienteById`,{
-        method: "GET",
-        headers: {"Content-Type":"application/json"}
-    })
-    .then(response => {return response.text()})
-    .then(data => { return data })
-    .catch(error => alert(error.message))
+function getDescCliente(codigo){
+    CONSUL.consultar(`/cliente/${form(codigo).value}/findNomeClienteById`)
+    .then(data =>{return data});
 }
 
-function descProprietario(codigo,retorno) {
-    fetch(`/contratosCadastroClientes/proprietario/${form(codigo).value}/nomepropri`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(form(codigo).value)
-    })
-    .then(response => {return response.text()})
-    .then(data => { return data })
-    .catch(error => alert(error.message));
+function descProprietario(codigo) {
+    CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form(codigo).value}/nomepropri`)
+    .then(data =>{return data});
 }
 
-function getDescCorretor(obj, retorno){
-    fetch(`/contrato/${form(obj).value}/getNomeByIdeusu`,{
-        method: "GET",
-        headers: {"Content-type":"application/json"}
-    })
-    .then(response => { return response.text()})
-    .then(data => {return data })
-    .catch(error => alert(error.message))
+function getDescCorretor(obj){
+    CONSUL.consultar(`/contrato/${form(obj).value}/getNomeByIdeusu`)
+    .then(data =>{return data});
 }
 
 function buscarUserName(){
-    fetch("/home/userlogin", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response =>{return response.text()})
-    .then(data => { form("ideusu").value = data })
-    .catch(error => alert(error.message));
-}
-
-
-function imgFormat(){
-    document.querySelectorAll(".button").forEach(button => {
-        let iconUrl = button.getAttribute("data-icon");
-        button.style.paddingLeft = "30px";
-        button.style.position    = "relative";
-        
-        button.style.setProperty("--icon-url",          `url(${iconUrl})`);
-        button.style.setProperty("content",             `""`);
-        button.style.setProperty("background-image",    `url(${iconUrl})`);
-        button.style.setProperty("background-position", "10px center");
-        button.style.setProperty("background-repeat",   "no-repeat");
-        button.style.setProperty("background-size",     "20px 25px");
+    CONSUL.consultar(`/home/userlogin`)
+    .then(data =>{
+        form("ideusu").value = data
     });
-}
-
-function form(obj){
-    return document.getElementById(obj);
-}
-
-function desabilitaCampo(obj,desahabilita){
-    if (obj.substring(0,1) == "b"){
-        form(obj).style.backgroundColor =  desahabilita?'rgb(210 212 218)': '#b4b6ba';
-    }
-    form(obj).disabled = desahabilita;
-    form(obj).style.cursor = desahabilita?'not-allowed':'pointer';
-}
-
-function createGrid(id,column,columnName,columnWidth,width){    
-    const table     = document.getElementById(id);
-    const thead     = document.createElement("thead");
-    const headerRow = document.createElement("tr");
-    const colunas   = column.split(",");
-
-    var pi = 0;
-    colunas.forEach((coluna,index) => {
-        const th = document.createElement("th");
-        th.id = coluna.trim() + "__" + pi;        
-        th.textContent =  coluna.trim();
-        headerRow.appendChild(th);
-        pi += 1;
-    });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
-
-    const tbody = document.createElement("tbody");
-    tbody.setAttribute("id", `${id}-tbody`);
-    table.appendChild(tbody);
-
-    var pi = 0;
-    colunas.forEach((coluna, index)=>{
-        form(coluna.trim() + "__" + pi).innerText   = columnName.split(",")[pi];
-        form(coluna.trim() + "__" + pi).style.width = columnWidth.split(",")[pi] +"%"; 
-        pi += 1;
-    });
-
-    table.style.width = width + "px";
-    return table;
-}
-
-function carregaGrid(id,dados){
-    clearGrid(id);
-    let colunas = form(id).children[0].children[0].children;
-
-    for(var i = 0; i < dados.length; i++){
-        const row = document.createElement("tr");
-
-        for(var j = 0; j < colunas.length; j++){
-            const td  = document.createElement("td");
-            var valor = dados[i][colunas[j].id.replace("__" + j ,"").trim()];
-            if(colunas[j].id.replace("__"+j,"") == "situacao"){
-                if(valor == "0") valor = "Não Concluida"
-                if(valor == "1") valor = "Em progresso"
-                if(valor == "2") valor = "Concluida"
-            }
-            td.textContent = valor? valor :"N/A";
-            row.appendChild(td);
-            
-            row.addEventListener("click", ()=>{
-                form(id).querySelectorAll("tr").forEach(row => {
-                    row.style.border = "none";
-                });            
-                event_click_table(id,i);
-                row.style.border = " 2px solid black";
-            });
-        }
-
-        form(id).appendChild(row);
-    }
-}
-
-function clearGrid(id){
-    const tbody = document.getElementById(id).querySelector('tbody');
-    while (tbody.rows.length > 0) {
-        tbody.deleteRow(0);
-    }
 }

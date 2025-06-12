@@ -3,11 +3,11 @@ package com.cestec.cestec.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cestec.cestec.model.corretorDTO;
-import com.cestec.cestec.model.pcp_meta;
 import com.cestec.cestec.service.wcr005s;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +26,7 @@ public class wcr005c {
     }
     
     @PostMapping("/salvarMetaCorretor")
-    public pcp_meta salvarMetaCorretor(@RequestBody corretorDTO meta) {
+    public ResponseEntity<?> salvarMetaCorretor(@RequestBody corretorDTO meta) {
         return wcr005s.salvarMetaCorretor(meta);
     }
 }
