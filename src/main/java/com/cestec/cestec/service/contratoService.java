@@ -46,7 +46,6 @@ public class contratoService {
     }
 
     public String getNomeByIdeusu(Integer id){
-        System.out.println(funcionarioRepository.findNameByUser(id) + " aaaaa " + id);
         return funcionarioRepository.findNameByUser(id);
     }
 

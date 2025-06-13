@@ -25,7 +25,7 @@ function iniciarEventos() {
 
     PROPRI_GRID               = new GridForm_init();
     PROPRI_GRID.id            = "tabela_propri";
-    PROPRI_GRID.columnName    = "codproprietario,nome,documento,endereco_bairro,numtel,email,endereco_logradouro,endereco_numero,endereco_cidade,endereco_uf,endereco_cep";
+    PROPRI_GRID.columnName    = "codproprietario,nome,documento,enderecocompl,numtel,email,endereco_logradouro,endereco_numero,endereco_cidade,endereco_uf,endereco_cep";
     PROPRI_GRID.columnLabel   = "Cod. Prop.,Nome,Documento,Endereço,Telefone";
     PROPRI_GRID.columnWidth   = "10,40,10,30,10";
     PROPRI_GRID.columnAlign   = "c,e,c,e,c";

@@ -16,6 +16,7 @@ import com.cestec.cestec.model.pcp_imovel;
 import com.cestec.cestec.model.pcp_proprietario;
 import com.cestec.cestec.repository.imovelRepository;
 import com.cestec.cestec.repository.proprietarioRepository;
+import com.cestec.cestec.util.utilForm;
 
 @Service
 public class pcp_proprietarioService {
@@ -129,15 +130,35 @@ public class pcp_proprietarioService {
         return imovelRepository.findAll();
     }
 
-    public List<pcp_proprietario> buscarProprietario(){
-        return proprietarioRepository.findAll();
+    public List<?> buscarProprietario(){
+        List<pcp_proprietario> proprietarios = proprietarioRepository.findAll();
+
+        utilForm.initGrid();
+        for(int i = 0;i < proprietarios.size(); i++){
+            String enderecocompl =  proprietarios.get(i).getEndereco_bairro() + ", " + proprietarios.get(i).getEndereco_numero() + ", " + proprietarios.get(i).getEndereco_cidade() +  ", " + proprietarios.get(i).getEndereco_uf();
+
+            utilForm.criarRow();
+            utilForm.criarColuna(proprietarios.get(i).getCodproprietario().toString());
+            utilForm.criarColuna(proprietarios.get(i).getNome());
+            utilForm.criarColuna(proprietarios.get(i).getDocumento().toString());
+            utilForm.criarColuna(enderecocompl);
+            utilForm.criarColuna(proprietarios.get(i).getNumtel().toString());
+            utilForm.criarColuna(proprietarios.get(i).getEmail());
+            utilForm.criarColuna(proprietarios.get(i).getEndereco_logradouro());
+            utilForm.criarColuna(proprietarios.get(i).getEndereco_numero());
+            utilForm.criarColuna(proprietarios.get(i).getEndereco_cidade());
+            utilForm.criarColuna(proprietarios.get(i).getEndereco_uf());
+            utilForm.criarColuna(proprietarios.get(i).getEndereco_cep());
+        }
+
+       return utilForm.criarGrid();
     }
 
     public ImovelProprietarioDTO buscarImovelGrid(Integer index){
         return imovelRepository.buscarImovelGrid(imovelRepository.buscarimoveis().get(index).getCodimovel(), imovelRepository.buscarimoveis().get(index).getCodproprietario());
     }
 
-    public String getTipoImovel(Integer codImovel){
+    public String getBuscaTipoImovel(Integer codImovel){
         Integer tipo = imovelRepository.findById(codImovel).get().getTipo();
         
         switch (tipo) {
@@ -148,12 +169,28 @@ public class pcp_proprietarioService {
         return "Tipo do imovel não encontrado";
     }
 
+    public String getTipoImovel(Integer codImovel){
+        switch (codImovel) {
+            case 1: return "Apartamento";
+            case 2: return "Casa";
+            case 3: return "Terreno";
+        }
+        return "Tipo do imovel não encontrado";
+    }
+
     public String getDescTipos(Integer tipo){
         switch (tipo) {
-            case 1:
-                return "Aluguel";
-            case 2:
-                return "Venda";        
+            case 1: return "Aluguel";
+            case 2: return "Venda";
+        }
+        return "Descricão não encontrada";
+    }
+
+    public String getDescStatus(Integer status){
+        switch (status) {
+            case 1: return "Ativo";
+            case 2: return "Ocupado";
+            case 3: return "Inativo";
         }
         return "Descricão não encontrada";
     }
@@ -165,8 +202,33 @@ public class pcp_proprietarioService {
         return proprietario.getNome();
     }
 
-    public List<ImovelProprietarioDTO> buscarImoveis(){
-       return imovelRepository.buscarimoveis();
+    public List<?> buscarImoveis(){
+        List<ImovelProprietarioDTO> imoveis = imovelRepository.buscarimoveis();
+
+        utilForm.initGrid();
+        for(int i = 0;i < imoveis.size(); i++){
+            String desctipoimov = getTipoImovel(imoveis.get(i).getTipo());
+            String descstatus   = getDescStatus(imoveis.get(i).getStatus());
+            String desctiponego = getDescTipos(imoveis.get(i).getNegociacao());
+
+            utilForm.criarRow();
+            utilForm.criarColuna(imoveis.get(i).getCodimovel().toString());
+            utilForm.criarColuna(imoveis.get(i).getCodproprietario().toString());
+            utilForm.criarColuna(imoveis.get(i).getNome());
+            utilForm.criarColuna(desctipoimov);
+            utilForm.criarColuna(descstatus);
+            utilForm.criarColuna(imoveis.get(i).getPreco().toString());
+            utilForm.criarColuna(desctiponego);
+            utilForm.criarColuna(imoveis.get(i).getEndereco());
+            utilForm.criarColuna(imoveis.get(i).getArea().toString());
+            utilForm.criarColuna(imoveis.get(i).getQuartos().toString());
+            utilForm.criarColuna(imoveis.get(i).getVlrcondominio().toString());
+            utilForm.criarColuna(imoveis.get(i).getDatinicontrato().toString());
+            utilForm.criarColuna(imoveis.get(i).getTipo().toString());
+            utilForm.criarColuna(imoveis.get(i).getNegociacao().toString());
+        }
+
+       return utilForm.criarGrid();
     }
 
     public String getEnderecoImovel(Integer codImovel){
