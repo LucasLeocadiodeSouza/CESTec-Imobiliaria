@@ -40,7 +40,7 @@ public class pcp_proprietarioController {
     }
 
     @GetMapping("/buscarPropriGrid")
-    public List<pcp_proprietario> buscarProprietario(){
+    public List<?> buscarProprietario(){
         return pcp_proprietarioService.buscarProprietario();
     }
 
@@ -81,7 +81,7 @@ public class pcp_proprietarioController {
     }
 
     @GetMapping("/buscarImoveis")
-    public List<ImovelProprietarioDTO> buscarImoveis() {
+    public List<?> buscarImoveis() {
         return pcp_proprietarioService.buscarImoveis();
     }
 

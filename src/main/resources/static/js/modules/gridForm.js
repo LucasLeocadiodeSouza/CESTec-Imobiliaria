@@ -118,7 +118,7 @@ export function GridForm_init(){
             const colunasLabel = this.columnLabel.split(",");
             const aligns       = this.columnAlign.split(",");
             const dados        = data;
-            
+
             if(document.getElementById(this.id + "res")) this.clearGrid;
 
             const table = document.createElement("table");
@@ -154,15 +154,12 @@ export function GridForm_init(){
 
             dados.forEach(opc => {
                 const row = document.createElement("tr");
+
                 
                 colunas.forEach((coluna,index) =>{
-                    const idcoluna = coluna.split("__" + index)[0];
-
-                    if(!opc.hasOwnProperty(idcoluna)) throw new Error("Ocorreu um erro ao tentar consultar os dados com o id informado [" + idcoluna + "], o retorno não esta na forma esperado.");
-
-                    const td  = document.createElement("td");
-                    const tdtext = opc[idcoluna]? opc[idcoluna] : "N/A";
-                    td.textContent = tdtext;
+                    const td     = document.createElement("td");
+                    const tdtext = opc[index];
+                    td.innerHTML = tdtext;
 
                     if(aligns[index] === "e") td.classList.add("tdalign-esq");
                     if(aligns[index] === "c") td.classList.add("tdalign-cen");

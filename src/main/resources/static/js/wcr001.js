@@ -22,7 +22,7 @@ function wcr001_init(){
 
     IMOVEIS_GRID               = new GridForm_init();
     IMOVEIS_GRID.id            = "tabela_CTO";
-    IMOVEIS_GRID.columnName    = "codimovel,codproprietario,nome,tipo,status,preco,negociacao,endereco,area,quartos,vlrcondominio,datinicontrato";
+    IMOVEIS_GRID.columnName    = "codimovel,codproprietario,nome,tipo,status,preco,negociacao,endereco,area,quartos,vlrcondominio,datinicontrato,codtipo,codnegoc";
     IMOVEIS_GRID.columnLabel   = "Cód.Imovel,Cod. Prop.,Nome,Tipo,Situacao,Valor (R$),Contrato";
     IMOVEIS_GRID.columnWidth   = "5,8,35,17,16,8,10";
     IMOVEIS_GRID.columnAlign   = "c,c,e,c,c,d,c";
@@ -61,12 +61,13 @@ function iniciarEventos() {
     
     event_change("codproprietario");
     event_change("mcodproprietario");
-
-    imgFormat();
 }
 
 function event_click_table(){
     IMOVEIS_GRID.click_table = ()=>{
+        const clickedCell = event.target.closest('td');
+        if (clickedCell && clickedCell.cellIndex === 0) return;
+
         const valoresLinha = IMOVEIS_GRID.getRowNode(event.target.closest('tr'));
 
         controlaTela("modal");
@@ -142,6 +143,7 @@ function controlaTela(opc){
         desabilitaCampo('bbuscar',         false);
         desabilitaCampo('codcontrato',     false);
         desabilitaCampo('codproprietario', false);
+        desabilitaCampo('descproprietario', false);
         desabilitaCampo('periodoini',      false);
         desabilitaCampo('periodofin',      false);
         desabilitaCampo('periodoindef',    false);
@@ -155,6 +157,7 @@ function controlaTela(opc){
         desabilitaCampo('bbuscar',         true);
         desabilitaCampo('codcontrato',     true);
         desabilitaCampo('codproprietario', true);
+        desabilitaCampo('descproprietario', true);
         desabilitaCampo('periodoini',      true);
         desabilitaCampo('periodofin',      true);
         desabilitaCampo('periodoindef',    true);
@@ -205,10 +208,10 @@ function preencherDadosModal(valores){
     form("mcodimovel").value        = valores[0];
     form("mcodproprietario").value  = valores[1];
     form("mdescproprietario").value = valores[2];
-    form("mstpimovel").value        = valores[3];
+    form("mstpimovel").value        = valores[12];
     form("msituacao").value         = valores[4];
     form("mvlr").value          	= valores[5];
-    form("mstpcontrato").value     	= valores[6];
+    form("mstpcontrato").value     	= valores[13];
     form("mloc").value     	        = valores[7];
     form("mmetrosquad").value     	= valores[8];
     form("mquartos").value       	= valores[9];
