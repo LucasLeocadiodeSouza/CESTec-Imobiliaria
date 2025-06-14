@@ -22,9 +22,9 @@ function iniciarEventos() {
 
     METAS_GRID               = new GridForm_init();
     METAS_GRID.id            = "tabela_metas";
-    METAS_GRID.columnName    = "codmeta,codcorretor,nome,vlrmeta,datiniciometa,situacao,datfinalmeta";
-    METAS_GRID.columnLabel   = "Código,Código,Nome,Meta (R$),Periodo,Situacão";
-    METAS_GRID.columnWidth   = "10,40,10,20,20";
+    METAS_GRID.columnName    = "codmeta,codcorretor,nome,vlrmeta,periodo,situacao,datiniciometa,datfinalmeta";
+    METAS_GRID.columnLabel   = "Cód. Meta,Cód. Corretor,Nome,Meta (R$),Periodo,Situacão";
+    METAS_GRID.columnWidth   = "10,10,35,10,20,15";
     METAS_GRID.columnAlign   = "c,c,e,d,c,c";
     METAS_GRID.mousehouve    = true;
     METAS_GRID.destacarclick = false;
@@ -187,14 +187,12 @@ function ehManutencao(){
 }
 
 function preencherModal(valoresLinha){
-    const situacao = valoresLinha[5] == '1'?"Não batida":"Concluída";
-
     form("mcodcorretor").value  = valoresLinha[1];
     form("mdesccorretor").value = valoresLinha[2];
     form("mvlrmeta").value      = valoresLinha[3];
-    form("mperiodoini").value   = valoresLinha[4];
-    form("ssituacao").innerText = "* " + situacao;
-    form("mperiodofin").value   = valoresLinha[6];
+    form("mperiodoini").value   = valoresLinha[6];
+    form("ssituacao").innerText = "* " + valoresLinha[5];
+    form("mperiodofin").value   = valoresLinha[7];
 
     if(valoresLinha[5] !== 2) form("ssituacao").classList.add("vermelho");
     else {

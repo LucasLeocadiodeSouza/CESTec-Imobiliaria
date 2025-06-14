@@ -22,12 +22,14 @@ function iniciarEventos() {
 
     CONTRATOS_GRID               = new GridForm_init();
     CONTRATOS_GRID.id            = "tabela_aprovacao";
-    CONTRATOS_GRID.columnName    = "codcontrato,negociacao,codimovel,tipo,codproprietario,nomeProp,codcliente,nomeCliente,codcorretor,nomeCorretor,datinicio,datfinal,preco,valor";
-    CONTRATOS_GRID.columnLabel   = "Cód. Contrato,Contrato,Cód. Imovel,Tipo Imovel,Código Prop,Proprietario,Código Cliente,Cliente,Código Corretor,Corretor,Inicio,Final,Preco,Valor negoc. (R$)";
-    CONTRATOS_GRID.columnWidth   = "6,5,6,6,6,10,6,10,6,10,7,7,6,6";
-    CONTRATOS_GRID.columnAlign   = "c,c,c,c,c,c,c,c,c,c,c,c,c,c";
+    CONTRATOS_GRID.columnName    = "codcontrato,codimovel,tipo,codproprietario,nomeProp,codcliente,nomeCliente,codcorretor,nomeCorretor,datiniciodatfinal,preco,valor";
+    CONTRATOS_GRID.columnLabel   = "Cód. Contrato,Cód. Imovel,Tipo Imovel,Código Prop,Proprietario,Código Cliente,Cliente,Código Corretor,Corretor,Periodo,Preco (R$),Valor negoc. (R$)";
+    CONTRATOS_GRID.columnWidth   = "7,6,9,6,11,6,11,6,11,11,8,8";
+    CONTRATOS_GRID.columnAlign   = "c,c,e,c,e,c,e,c,e,c,d,d";
     CONTRATOS_GRID.mousehouve    = true;
     CONTRATOS_GRID.destacarclick = false;
+    CONTRATOS_GRID.gridWidth     = "2200px";
+    CONTRATOS_GRID.gridHeight    = "auto";
     CONTRATOS_GRID.createGrid();
 
     ABA      = new abaForm_init();

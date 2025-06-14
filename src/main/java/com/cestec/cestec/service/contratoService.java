@@ -19,6 +19,7 @@ import com.cestec.cestec.repository.corretorRepository;
 import com.cestec.cestec.repository.funcionarioRepository;
 import com.cestec.cestec.repository.imovelRepository;
 import com.cestec.cestec.repository.proprietarioRepository;
+import com.cestec.cestec.util.utilForm;
 
 @Service
 public class contratoService {
@@ -41,8 +42,53 @@ public class contratoService {
     @Autowired
     private funcionarioRepository funcionarioRepository;
 
-    public List<contratoDTO> buscarContratoGrid(){
-        return contratoRepository.buscarContratoGrid();
+    public String getTipoImovel(Integer codImovel) {
+        switch (codImovel) {
+            case 1:
+                return "Apartamento";
+            case 2:
+                return "Casa";
+            case 3:
+                return "Terreno";
+        }
+        return "Tipo do imovel não encontrado";
+    }
+
+    public String getDescTipos(Integer tipo) {
+        switch (tipo) {
+            case 1:
+                return "Aluguel";
+            case 2:
+                return "Venda";
+        }
+        return "Descricão não encontrada";
+    }
+
+    public List<?> buscarContratoGrid(){
+        List<contratoDTO> contratos = contratoRepository.buscarContratoGrid();
+
+        utilForm.initGrid();
+        for (int i = 0; i < contratos.size(); i++) {
+            utilForm.criarRow();
+            utilForm.criarColuna(contratos.get(i).getCodcontrato().toString());
+            utilForm.criarColuna(contratos.get(i).getCodcliente().toString());
+            utilForm.criarColuna(contratos.get(i).getNomeCliente());
+            utilForm.criarColuna(contratos.get(i).getCodproprietario().toString());
+            utilForm.criarColuna(contratos.get(i).getNomeProp());
+            utilForm.criarColuna(contratos.get(i).getCodimovel().toString());
+            utilForm.criarColuna(getTipoImovel(contratos.get(i).getTipo()));
+            utilForm.criarColuna(getDescTipos(contratos.get(i).getNegociacao()));
+            utilForm.criarColuna(String.valueOf(contratos.get(i).getPreco()));
+            utilForm.criarColuna(contratos.get(i).getDatinicio().toString());
+            utilForm.criarColuna(contratos.get(i).getDatfinal().toString());
+            utilForm.criarColuna(String.valueOf(contratos.get(i).getValor()));
+            utilForm.criarColuna(contratos.get(i).getEndereco_bairro());
+            utilForm.criarColuna(contratos.get(i).getCodcorretor().toString());
+            utilForm.criarColuna(contratos.get(i).getTipo().toString());
+            utilForm.criarColuna(getNomeByIdeusu(contratos.get(i).getCodcorretor()));
+        }
+
+        return utilForm.criarGrid();
     }
 
     public String getNomeByIdeusu(Integer id){

@@ -26,7 +26,7 @@ public class pcp_clienteController {
     }
     
     @GetMapping("/buscarClientes")
-    public List<pcp_cliente> buscarCliente(){
+    public List<?> buscarCliente(){
         return pcp_clienteService.buscarClientes();
     }
 

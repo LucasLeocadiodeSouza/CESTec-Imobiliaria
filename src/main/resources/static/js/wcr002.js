@@ -137,19 +137,6 @@ function buscarPropriGrid(valoresLinha){
 function buscarDadosTable(){
     PROPRI_GRID.carregaGrid(`/contratosCadastroClientes/proprietario/buscarPropriGrid`,"","");
 }
-/*
-function buscarDadosTable(){
-    fetch("/contratosCadastroClientes/proprietario")
-        .then(response => response.json()) //quando chega a mensagem vc converte para json
-        .then(data => {                    // quando chega o dados na forma de JSON vc faz  ...           
-            createGrid("tabela_contrato",
-                       "codproprietario,nome,documento,endereco_bairro,numtel",
-                       "Cod. Prop., Nome, Documento, Endereco, Telefone",
-                       "10,40,10,30,10",
-                       data);
-        })
-        .catch(error => console.log("Erro ao buscar dados: ",error));
-}*/
 
 function adicionarProprietario() {
     const proprietario = { codproprietario:     form("mcodproprietario").value,

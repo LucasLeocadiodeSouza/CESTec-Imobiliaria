@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cestec.cestec.model.pcp_cliente;
 import com.cestec.cestec.repository.clienteRepository;
+import com.cestec.cestec.util.utilForm;
 
 @Service
 public class pcp_clienteService {
@@ -85,11 +86,31 @@ public class pcp_clienteService {
         }catch (Exception e) {
             return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage());    
         }
-        
     }
 
-    public List<pcp_cliente> buscarClientes(){
-        return clienteRepository.findAll();
+    public List<?> buscarClientes(){
+        List<pcp_cliente> clientes =  clienteRepository.findAll();
+
+        utilForm.initGrid();
+        for (int i = 0; i < clientes.size(); i++) {
+            String enderecocompl = clientes.get(i).getEndereco_bairro() + ", " + clientes.get(i).getEndereco_numero() + ", " + clientes.get(i).getEndereco_cidade() + ", " + clientes.get(i).getEndereco_uf();
+
+            utilForm.criarRow();
+            utilForm.criarColuna(clientes.get(i).getCodcliente().toString());
+            utilForm.criarColuna(clientes.get(i).getNome());
+            utilForm.criarColuna(clientes.get(i).getDocumento().toString());
+            utilForm.criarColuna(enderecocompl);
+            utilForm.criarColuna(clientes.get(i).getNumtel().toString());
+            utilForm.criarColuna(clientes.get(i).getEmail());
+            utilForm.criarColuna(clientes.get(i).getEndereco_logradouro());
+            utilForm.criarColuna(clientes.get(i).getEndereco_cidade());
+            utilForm.criarColuna(clientes.get(i).getEndereco_numero());
+            utilForm.criarColuna(clientes.get(i).getEndereco_bairro());
+            utilForm.criarColuna(clientes.get(i).getEndereco_uf());
+            utilForm.criarColuna(clientes.get(i).getEndereco_cep());
+        }
+
+        return utilForm.criarGrid();
     }
 
     public pcp_cliente buscarClienteGrid(Integer index){
