@@ -208,6 +208,8 @@ textarea[type="reset"] {box-shadow: none;}
 div.grid {display: flex;
           justify-content: center;
           align-items: flex-start;}
+       
+.div_table_init {display: flex; flex-direction: column; height: 100%; margin-block: 20px; border: 1px solid #c1c1c1;}
 
 tr {font-size: 16px;}
 
@@ -246,7 +248,15 @@ table {
          border-left: 0;
          border-right: 0;
          white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
        }
+}
+
+.tablecolun, .tabledata2 {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .tablecolun {border: 1px solid rgb(0, 0, 0); border-collapse: collapse;}
@@ -255,8 +265,6 @@ table {
 .tdalign-cen          {text-align: center;}
 .tdalign-dir          {text-align: right;}
 .tdalign-esqoverellip {text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
-
-.tabledata2 {border-collapse: collapse; border-top: hidden;}
 
 .tabledata2 tbody {border-top: hidden;}
 

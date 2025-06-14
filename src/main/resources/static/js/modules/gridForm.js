@@ -13,6 +13,7 @@ export function GridForm_init(){
     this.columnWidth   = "";
     this.columnAlign   = "";
     this.gridWidth     = "";
+    this.gridHeight    = "";
     this.scroll        = false;
     this.clickgrid     = true;
     this.mousehouve    = false;
@@ -39,7 +40,11 @@ export function GridForm_init(){
 
         //
         //estilos
-        divtable.style.marginBlock = "20px";
+        divtableinit.classList.add("div_table_init")
+
+        if(this.scroll) divtable.style.overflowX = "scroll";
+        if(this.gridWidth !== "")  divtable.style.width  = this.gridWidth;
+        if(this.gridHeight !== "") divtable.style.height = this.gridHeight;
 
         table.classList.add("tablecolun");
 
@@ -84,8 +89,6 @@ export function GridForm_init(){
             document.getElementById(coluna.trim() + "__" + pi).style.width = this.columnWidth.split(",")[pi] +"%"; 
             pi++;
         });
-
-        if(this.gridWidth !== "") table.style.width = this.gridWidth + "px";
     }
 
     //
@@ -125,9 +128,9 @@ export function GridForm_init(){
             table.id    = this.id + "res";
             table.classList.add("tabledata2");
 
-            if(this.scroll) table.style.overflowY = "scroll";
-
             if(!Array.isArray(dados)) throw new Error("Ocorreu um erro ao tentar consultar os dados, o retorno não esta na forma de um array. Retorno atual: " + dados);
+
+            const originalHeaderCells = document.querySelectorAll(`#${this.id} .tablecolun th`);
 
             const headerbody = document.createElement("thead");
             const trbody     = document.createElement("tr");
@@ -142,7 +145,11 @@ export function GridForm_init(){
                 th.id = coluna.trim() + "_res_" + si;
                 th.textContent = this.columnLabel.split(",")[si];
 
-                th.style.width = colunaorignode.style.width
+                if (originalHeaderCells[index]) {
+                    th.style.width = originalHeaderCells[index].style.width;
+                    th.style.minWidth = originalHeaderCells[index].style.width;
+                }
+
                 if(!colunasLabel[index]) th.style.display = "none";
 
                 trbody.appendChild(th);

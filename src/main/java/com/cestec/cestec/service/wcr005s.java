@@ -12,6 +12,7 @@ import com.cestec.cestec.model.pcp_corretor;
 import com.cestec.cestec.model.pcp_meta;
 import com.cestec.cestec.repository.corretorRepository;
 import com.cestec.cestec.repository.metaRepository;
+import com.cestec.cestec.util.utilForm;
 
 import jakarta.transaction.Transactional;
 
@@ -24,8 +25,33 @@ public class wcr005s {
     @Autowired
     private corretorRepository corretorRepository;
 
-    public List<corretorDTO> findAllMetasGrid(){
-        return metaRepository.findAllMetasGrid();
+    public String getDescSituacao(Integer status) {
+        switch (status) {
+            case 1:
+                return "Não batida";
+            case 2:
+                return "Concluída";
+        }
+        return "Descricão não encontrada";
+    }
+
+    public List<?> findAllMetasGrid(){
+        List<corretorDTO> metas = metaRepository.findAllMetasGrid();
+
+        utilForm.initGrid();
+        for (int i = 0; i < metas.size(); i++) {
+            utilForm.criarRow();
+            utilForm.criarColuna(metas.get(i).getCodmeta().toString());
+            utilForm.criarColuna(metas.get(i).getCodcorretor().toString());
+            utilForm.criarColuna(metas.get(i).getNome());
+            utilForm.criarColuna(String.valueOf(metas.get(i).getVlrmeta()));
+            utilForm.criarColuna(metas.get(i).getDatiniciometa() + " - " + metas.get(i).getDatfinalmeta());
+            utilForm.criarColuna(getDescSituacao(metas.get(i).getSituacao()));
+            utilForm.criarColuna(metas.get(i).getDatiniciometa().toString());
+            utilForm.criarColuna(metas.get(i).getDatfinalmeta().toString());
+        }
+
+        return utilForm.criarGrid();
     }
 
     @Transactional

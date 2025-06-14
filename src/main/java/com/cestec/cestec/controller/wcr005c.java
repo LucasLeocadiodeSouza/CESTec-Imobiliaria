@@ -21,7 +21,7 @@ public class wcr005c {
     private wcr005s wcr005s;
 
     @GetMapping("/buscarMetasCorretoresGrid")
-    public List<corretorDTO> buscarMetasCorretoresGrid(){
+    public List<?> buscarMetasCorretoresGrid(){
         return wcr005s.findAllMetasGrid();
     }
     

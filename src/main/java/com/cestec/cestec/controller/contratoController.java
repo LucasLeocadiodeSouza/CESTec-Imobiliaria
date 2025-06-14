@@ -22,18 +22,13 @@ public class contratoController {
     private contratoService contratoService;
 
     @GetMapping("/buscarContratoGrid")
-    public List<contratoDTO> buscarContratoGrid() {
+    public List<?> buscarContratoGrid() {
         return contratoService.buscarContratoGrid();
     }
 
     @GetMapping("/{id}/getNomeByIdeusu")
     public String getNomeByIdeusu(@PathVariable Integer id) {
         return contratoService.getNomeByIdeusu(id);
-    }
-
-    @GetMapping("/{index}/buscarContratoGrid")
-    public contratoDTO buscarContratoLinha(@PathVariable Integer index) {
-        return contratoService.buscarContratoGrid().get(index);
     }
     
     @PostMapping("/inserirAlterarContrato")

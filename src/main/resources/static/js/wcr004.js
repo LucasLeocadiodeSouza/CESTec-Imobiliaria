@@ -22,7 +22,7 @@ function iniciarEventos() {
 
     CONTRATOS_GRID               = new GridForm_init();
     CONTRATOS_GRID.id            = "tabela_contrato";
-    CONTRATOS_GRID.columnName    = "codcontrato,codcliente,nomeCliente,codproprietario,nomeProp,codimovel,tipo,negociacao,preco,datinicio,datfinal,valor,endereco_bairro";
+    CONTRATOS_GRID.columnName    = "codcontrato,codcliente,nomeCliente,codproprietario,nomeProp,codimovel,tipo,negociacao,preco,datinicio,datfinal,valor,endereco_bairro,codcorretor,codtipo,nomevendedor";
     CONTRATOS_GRID.columnLabel   = "Contrato,Cod,Nome,Cod,Nome,Cod,Tipo,Contrato,Valor (R$)";
     CONTRATOS_GRID.columnWidth   = "10,10,15,10,15,10,10,10,10";
     CONTRATOS_GRID.columnAlign   = "c,c,eoe,c,eoe,c,c,c,d";
@@ -246,28 +246,23 @@ function descProprietario(codigo) {
     });
 }
 
-function preencherModal(valoresLinha){
-    var tipo,negociacao;
-
-    if(valoresLinha[6]==1){tipo = "Apartamento"}
-    if(valoresLinha[6]==2){tipo = "Casa"}
-    if(valoresLinha[6]==3){tipo = "Terreno"};                
-    negociacao = valoresLinha[7]==1?"Aluguel":"Venda";                    
-
+function preencherModal(valoresLinha){                
     form('mcodprop').value      = valoresLinha[3];
     getOptionImovel();
 
     form('mcodcliente').value   = valoresLinha[1];
     form('mdesccliente').value  = valoresLinha[2];
     form('mdescprop').value     = valoresLinha[4];
-    form("msimovel").value      = valoresLinha[5];
-    form('mtpimovel').value     = tipo;
+    form("msimovel").value      = valoresLinha[14];
+    form('mtpimovel').value     = valoresLinha[6];
     form('mloc').value          = valoresLinha[12];
-    form('mtpcontrato').value   = negociacao;
+    form('mtpcontrato').value   = valoresLinha[7];
     form('mvlrimovel').value    = valoresLinha[8];
     form('mvlrnegociado').value = valoresLinha[11];
     form("mperiodoini").value   = valoresLinha[9];
     form("mperiodofin").value   = valoresLinha[10];
+    form("mvendedor").value     = valoresLinha[13];
+    form("mnome").value         = valoresLinha[15];
 }
 
 function buscarContratoGrid(){

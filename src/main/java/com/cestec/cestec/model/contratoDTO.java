@@ -3,11 +3,15 @@ package com.cestec.cestec.model;
 import java.sql.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class contratoDTO {
     
     private Integer codcontrato;
@@ -25,8 +29,8 @@ public class contratoDTO {
     private String  ideusuCorretor;
     private boolean ativo;
     private double  preco;
-    private double  tipo;
-    private double  negociacao;
+    private Integer tipo;
+    private Integer negociacao;
     private String  nomeProp;
     private String  nomeCliente;
     private String  nomeCorretor;
@@ -56,11 +60,9 @@ public class contratoDTO {
     private String endereco_uf;
 
     @Column(length = 20)
-    private String endereco_cep;
+    private String endereco_cep;  
 
-    public contratoDTO(){}    
-
-    public contratoDTO(Integer codcontrato, Integer codcliente, String nomeCliente, Integer codproprietario, String nomeProp, Integer codimovel, double tipo, double negociacao, double preco, Date datinicio, Date datfinal, double valor, String endereco) {
+    public contratoDTO(Integer codcontrato, Integer codcliente, String nomeCliente, Integer codproprietario, String nomeProp, Integer codimovel, Integer tipo, Integer negociacao, double preco, Date datinicio, Date datfinal, double valor, String endereco, Integer codcorretor) {
         this.codcontrato     = codcontrato;
         this.codimovel       = codimovel;
         this.codproprietario = codproprietario;
@@ -74,9 +76,10 @@ public class contratoDTO {
         this.datfinal        = datfinal;
         this.valor           = valor;
         this.endereco_bairro = endereco;
+        this.codcorretor     = codcorretor;
     }
     
-    public contratoDTO(Integer codcontrato, Integer codimovel, Integer codproprietario, Integer codcliente, Date datinicio, Date datfinal, Integer tipo, Integer codcorretor, double preco, double negociacao, String nomeProp, String nomeCliente, String nomeCorretor, double valor) {
+    public contratoDTO(Integer codcontrato, Integer codimovel, Integer codproprietario, Integer codcliente, Date datinicio, Date datfinal, Integer tipo, Integer codcorretor, double preco, Integer negociacao, String nomeProp, String nomeCliente, String nomeCorretor, double valor) {
         this.codcontrato     = codcontrato;
         this.codimovel       = codimovel;
         this.codproprietario = codproprietario;
@@ -93,7 +96,7 @@ public class contratoDTO {
         this.valor           = valor;
     }
 
-    public contratoDTO(Integer codcontrato, Integer codcliente, Integer codimovel, Integer codproprietario, Date datfinal, Date datinicio, double tipo, double negociacao, double preco) {
+    public contratoDTO(Integer codcontrato, Integer codcliente, Integer codimovel, Integer codproprietario, Date datfinal, Date datinicio, Integer tipo, Integer negociacao, double preco) {
         this.codcontrato     = codcontrato;
         this.codimovel       = codimovel;
         this.codproprietario = codproprietario;
