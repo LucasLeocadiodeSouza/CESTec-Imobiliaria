@@ -52,6 +52,11 @@ public class controller {
         return "wcr007";
     }
 
+    @GetMapping("/cadastroCorretor") 
+    public String cadastroCorretor() {
+        return "wcr008";
+    }
+
     @GetMapping("/login") 
     public String login() {
         return "wlog";
