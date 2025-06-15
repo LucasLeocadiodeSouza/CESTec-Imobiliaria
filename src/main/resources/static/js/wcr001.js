@@ -12,7 +12,7 @@ import { DMFForm_init }    from "./modules/dmfForm.js";
 import { abaForm_init }    from "./modules/abaForm.js";
 import { consulForm_init } from "./modules/consulForm.js";
 import { elementsForm_init } from "./modules/elementsForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay } from "./modules/utils.js";
+import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init } from "./modules/utils.js";
 
 var IMOVEIS_GRID;
 var DMFDiv, ABA, CONSUL;
@@ -24,7 +24,7 @@ function wcr001_init(){
     IMOVEIS_GRID.id            = "tabela_CTO";
     IMOVEIS_GRID.columnName    = "codimovel,codproprietario,nome,tipo,status,preco,negociacao,endereco,area,quartos,vlrcondominio,datinicontrato,codtipo,codnegoc";
     IMOVEIS_GRID.columnLabel   = "Cód.Imovel,Cod. Prop.,Nome,Tipo,Situacao,Valor (R$),Contrato";
-    IMOVEIS_GRID.columnWidth   = "5,8,35,17,16,8,10";
+    IMOVEIS_GRID.columnWidth   = "7,8,33,17,16,8,10";
     IMOVEIS_GRID.columnAlign   = "c,c,e,c,c,d,c";
     IMOVEIS_GRID.mousehouve    = false;
     IMOVEIS_GRID.destacarclick = false;
@@ -52,6 +52,7 @@ function iniciarEventos() {
 
     event_click_table();
     event_click_aba();
+    event_selected_init("codcontrato,codproprietario");
 
     event_click("bnovabusca");
     event_click("bbuscar");
@@ -143,7 +144,7 @@ function controlaTela(opc){
         desabilitaCampo('bbuscar',         false);
         desabilitaCampo('codcontrato',     false);
         desabilitaCampo('codproprietario', false);
-        desabilitaCampo('descproprietario', false);
+        desabilitaCampo('descproprietario', true);
         desabilitaCampo('periodoini',      false);
         desabilitaCampo('periodofin',      false);
         desabilitaCampo('periodoindef',    false);
@@ -182,7 +183,7 @@ function controlaTela(opc){
 function limparTela(opc){
     if(opc === "inicia" || opc === 'buscar'){        
         form('codproprietario').value  = "0";
-        form('descproprietario').value = "0";
+        form('descproprietario').value = "Todos os Proprietarios";
     }
     if(opc === "inicia" || opc === "novabusca"){
         IMOVEIS_GRID.clearGrid();

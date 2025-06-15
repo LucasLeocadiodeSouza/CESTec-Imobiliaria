@@ -13,7 +13,7 @@ import { DMFForm_init }      from "./modules/dmfForm.js";
 import { abaForm_init }      from "./modules/abaForm.js";
 import { consulForm_init }   from "./modules/consulForm.js";
 import { elementsForm_init } from "./modules/elementsForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay } from "./modules/utils.js";
+import { imgFormat,form,desabilitaCampo,setDisplay,event_blur_init,event_selected_init } from "./modules/utils.js";
 
 var ABA,DMFDiv,CONSUL,CONTRATOS_GRID;
 
@@ -22,7 +22,7 @@ function iniciarEventos() {
 
     CONTRATOS_GRID               = new GridForm_init();
     CONTRATOS_GRID.id            = "tabela_aprovacao";
-    CONTRATOS_GRID.columnName    = "codcontrato,codimovel,tipo,codproprietario,nomeProp,codcliente,nomeCliente,codcorretor,nomeCorretor,datiniciodatfinal,preco,valor";
+    CONTRATOS_GRID.columnName    = "codcontrato,codimovel,tipo,codproprietario,nomeProp,codcliente,nomeCliente,codcorretor,nomeCorretor,periodo,preco,valor,vlrcondominio,area,quartos,documento,endereco,vlrliber,observacao";
     CONTRATOS_GRID.columnLabel   = "Cód. Contrato,Cód. Imovel,Tipo Imovel,Código Prop,Proprietario,Código Cliente,Cliente,Código Corretor,Corretor,Periodo,Preco (R$),Valor negoc. (R$)";
     CONTRATOS_GRID.columnWidth   = "7,6,9,6,11,6,11,6,11,11,8,8";
     CONTRATOS_GRID.columnAlign   = "c,c,e,c,e,c,e,c,e,c,d,d";
@@ -50,11 +50,15 @@ function iniciarEventos() {
     event_click("bbuscar");
     event_click("bclose");
     event_click("blimpar");
-    // event_click("bcadastro");
+    event_click("baprovar");
+    event_click("breprovar");
 
     event_click_aba();
     event_click_table();
     
+    event_blur_init("mvlrlib");
+    event_selected_init("mvlrlib,mobs,codproprietario,codcliente,codcorretor");
+
     event_change("codproprietario");
     event_change("codcliente");
     event_change("codcorretor");
@@ -80,6 +84,20 @@ function event_click(obj) {
 
             buscarContratoAprovacao();
         });        
+    }
+    if(obj == "baprovar"){
+        form(obj).addEventListener("click", function () {
+            if(!confirm("Deseja mesmo Aprovar esse contrato?")) return;
+
+            aprovarReprovarContrato(2);
+        });
+    }
+    if(obj == "breprovar"){
+        form(obj).addEventListener("click", function () {
+            if(!confirm("Deseja mesmo Reprovar esse contrato?")) return;
+
+            aprovarReprovarContrato(3);
+        });
     }
 }
 
@@ -109,8 +127,12 @@ function event_click_table(){
         form("sacao").innerText   = ehConsulta()?"Consultando":"Analisando";
         form("stitulo").innerText = form("sacao").innerText + " o Contrato - " + form("sacao").innerText;
 
-        puxarFichaContrato(valoresLinha[0]);
-        //preencherModal(valoresLinha);
+        puxarFichaContrato(valoresLinha);
+        
+        form("hcodcorretor").value = valoresLinha[0];
+        form('mvlrlib').value      = valoresLinha[17];
+        form('mobs').value         = valoresLinha[18];
+
         DMFDiv.openModal("dmodalf_aprovacao");
     }
 }
@@ -141,6 +163,13 @@ function controlaTela(opc){
         desabilitaCampo('codcliente',       true);
         desabilitaCampo('codcorretor',      true);
     }
+    if(opc == "modal"){
+        desabilitaCampo('mvlrlib', ehConsulta());
+        desabilitaCampo('mobs',    ehConsulta());
+
+        setDisplay("baprovar",  ehManutencao()?"flex":"none");
+        setDisplay("breprovar", ehManutencao()?"flex":"none");
+    }
 }
 
 
@@ -156,6 +185,11 @@ function limparTela(opc){
     if(opc === "inicia" || opc === "novabusca"){
         CONTRATOS_GRID.clearGrid();
     }
+    if(opc === "modal"){
+        form("hcodcorretor").value = "";
+        form('mvlrlib').value      = "0";
+        form('mobs').value         = "";
+    }
 } 
 
 function ehConsulta(){
@@ -166,32 +200,66 @@ function ehManutencao(){
     return ABA.getIndex() === 1;
 }
 
-function puxarFichaContrato(codcontrato){
-    fetch(`http://localhost:8080/fichaContrato?codcontrato=${codcontrato}`)
-    .then(response => response.text())
-    .then(data => {form('fichacontrato').innerHTML = data})
-    .catch(error => console.error('Não foi possivel carregar a ficha. \n', error));
-}
-
-function preencherModal(valoresLinha){
-    const situacao = valoresLinha[5] == '1'?"Não batida":"Concluída";
-
-    form("mcodcorretor").value  = valoresLinha[1];
-    form("mdesccorretor").value = valoresLinha[2];
-    form("mvlrmeta").value      = valoresLinha[3];
-    form("mperiodoini").value   = valoresLinha[4];
-    form("ssituacao").innerText = "* " + situacao;
-    form("mperiodofin").value   = valoresLinha[6];
-
-    if(valoresLinha[5] !== 2) form("ssituacao").classList.add("vermelho");
-    else {
-        form("ssituacao").classList.remove("vermelho");
-        form("ssituacao").classList.add("verde");
-    }
+function puxarFichaContrato(valoresLinha){
+    form('codimovel').innerText       = valoresLinha[1];
+    form('tpimovel').innerText        = valoresLinha[2];
+    form('vlrimovel').innerText       = valoresLinha[10];
+    form('vlrcondominio').innerText   = valoresLinha[12];
+    form('areatotal').innerText       = valoresLinha[13];
+    form('numquartos').innerText      = valoresLinha[14];
+    form('endereco').innerText        = valoresLinha[16];
+    form('codcontrato').innerText     = valoresLinha[0];
+    form('tpcontrato').innerText      = valoresLinha[1];
+    form('vlrcontrato').innerText     = valoresLinha[11];
+    form('periodocontrato').innerText = valoresLinha[9];
+    form('corretor').innerText        = valoresLinha[7] + " - " + valoresLinha[8];
+    form('codnegociante').innerText   = valoresLinha[5];
+    form('nomecliente').innerText     = valoresLinha[6];
+    form('cpfcliente').innerText      = valoresLinha[15];
 }
 
 function buscarContratoAprovacao(){
-    CONTRATOS_GRID.carregaGrid("/wcr006c/buscarContratoAprovacao","","");
+    CONTRATOS_GRID.carregaGrid(`/wcr006c/buscarContratoAprovacao?codprop=${form("codproprietario").value}&codcliente=${form("codcliente").value}&codcorretor=${form("codcorretor").value}&acao=${ABA.getIndex()}`,"","");
+}
+
+function enviarEmailAprovacaoReprovacao(acao){
+    const email = {
+        to: form("memail").value,
+        subject: "Contrato " + (acao == 2?"Aprovado":"Reprovado") + "!",
+        body: "<html>"
+            + "<head>"
+            + "</head>"
+            + "<body style='font-family: Arial, sans-serif; color: #333;'>"
+            + '<div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">'
+            + "<p>Após análise o contrato foi " + (acao == 2?"Aprovado":"Reprovado") + " pelo gestor!</p>"
+            + "<p><strong>Código do contrato:</strong>" + form("hcodcorretor").value + "</p>"
+            + (acao == 1?"<p><strong>Valor Liberado:</strong> " + form("mvlrlib").value + "</p>":"")
+            + "<p><strong>Observacão:</strong> " + form("mobs").value + "</p>"
+            + "</div>"
+            + "</body>"
+            + "</html>"}
+
+    CONSUL.consultar(`/email`,"POST",{ "Content-Type": "application/json" },email)
+}
+
+function aprovarReprovarContrato(acao) {
+    const contrato = {codcontrato:         form("hcodcorretor").value,
+                      valorliberado:       parseFloat(form("mvlrlib").value),
+                      observacao:          form("mobs").value,
+                      situacao:            acao,
+                      ideusu:              form('ideusu').value};
+
+    CONSUL.consultar(`/wcr006c/aprovarReprovarContrato`,"POST",{ "Content-Type": "application/json" },contrato)
+    .then(data =>{
+        if(data != "OK") return alert(data);
+        alert("Contrato " + (acao == 2?"Aprovado":"Reprovado") + " com Sucesso!");
+        enviarEmailAprovacaoReprovacao(acao);
+
+        DMFDiv.closeModal();
+
+        form("bnovabusca").click();
+        form("bbuscar").click();
+    });
 }
 
 function getDescCliente(codigo){

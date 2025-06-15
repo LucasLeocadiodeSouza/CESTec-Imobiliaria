@@ -23,14 +23,14 @@ public interface contratoRepository extends JpaRepository<pcp_contrato, Integer>
     List<contratoDTO> buscarContratoGrid();
     
     @Query("SELECT new com.cestec.cestec.model.contratoDTO( " +
-            "con.codcontrato, i.codimovel, p.codproprietario, c.codcliente, con.datinicio, con.datfinal, i.tipo, corr.codcorretor, i.preco, i.negociacao, p.nome, c.nome, func.nome, con.valor) " +
-            "FROM pcp_contrato con "       + 
+            "con.codcontrato, i.codimovel, p.codproprietario, c.codcliente, con.datinicio, con.datfinal, i.tipo, corr.codcorretor, i.preco, i.negociacao, p.nome, c.nome, func.nome, con.valor, i.quartos, i.vlrcondominio, i.area, c.documento, i.endereco, con.valorliberado, con.observacao) " +
+            "FROM pcp_contrato con "       +
             "JOIN con.pcp_corretor corr "  +
             "JOIN corr.funcionario func "  +
-            "JOIN con.pcp_proprietario p " + 
+            "JOIN con.pcp_proprietario p " +
             "JOIN con.pcp_cliente c "      +
-            "JOIN con.pcp_imovel i")
-    List<contratoDTO> buscarContratoAprovacao();
+            "JOIN con.pcp_imovel i  ")
+    List<contratoDTO> buscarContratoAprovacao(@Param("acao") Integer acao);
 
     @Query("SELECT con.valor "          +
           " FROM pcp_contrato con "     +

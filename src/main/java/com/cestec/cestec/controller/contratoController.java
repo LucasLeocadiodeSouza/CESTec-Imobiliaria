@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cestec.cestec.model.contratoDTO;
@@ -22,8 +23,9 @@ public class contratoController {
     private contratoService contratoService;
 
     @GetMapping("/buscarContratoGrid")
-    public List<?> buscarContratoGrid() {
-        return contratoService.buscarContratoGrid();
+    public List<?> buscarContratoGrid(@RequestParam(value = "codprop", required = false) Integer codprop,
+                                      @RequestParam(value = "codcliente", required = false) Integer codcliente) {
+        return contratoService.buscarContratoGrid(codprop,codcliente);
     }
 
     @GetMapping("/{id}/getNomeByIdeusu")

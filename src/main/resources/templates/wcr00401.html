@@ -34,18 +34,8 @@
     .ciclo p {margin-block: 0;
               width: 120px;}
 
-    fieldset {margin:                2px;
-              display:               grid;
-              grid-template-columns: 1fr 1fr;
-              padding:               2px;}
-
     .labelfiltro {width: 155px;
                   text-align: right;}
-
-    .dado {display:         flex;
-           justify-content: center;
-           align-items:     center;
-           gap:             3px;}
 
     p {width: 180px;}
 
@@ -72,25 +62,13 @@
                 <img src="/icons/iconLogoEmpresa.png" alt="Carregando" style="width: 20% !important; height: 90% !important">
                 <img src="/icons/logoAbrvEmpresa.png" alt="Carregando" style="width: 80% !important; height: 90% !important">
             </div>
-
-            <div class="if dado" style="flex-direction: column; width: 60%; margin-block: 20px;">
-                <div style="display: flex; align-items: center;">
-                    <label class="labelfiltro">Usuário: </label>
-                    <p id="ideusu"></p>
-                </div>
-                
-                <div style="display: flex; align-items: center;">
-                    <label class="labelfiltro">Acessado: </label>
-                    <p id="dtacesso">15/10/2025</p>
-                </div>
-            </div>
         </div>
-        
+
         <fieldset style="margin-top: 10px;">
             <legend>Imovel</legend>
             <div class='if dado'>
                 <label class="labelfiltro">Código do Imovel: </label>
-                <p id="codimovel">1</p>
+                <p id="codimovel"></p>
             </div>
 
             <div class='if dado'>
