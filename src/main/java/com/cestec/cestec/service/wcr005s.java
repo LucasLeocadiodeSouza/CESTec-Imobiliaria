@@ -28,7 +28,7 @@ public class wcr005s {
     public String getDescSituacao(Integer status) {
         switch (status) {
             case 1:
-                return "Não batida";
+                return "Não paga";
             case 2:
                 return "Concluída";
         }

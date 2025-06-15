@@ -60,3 +60,7 @@ export function desabilitaCampo(obj,desahabilita){
 export function setDisplay(obj, display){
     return document.getElementById(obj).style.display = display;
 }
+
+export function getDisplay(obj){
+    return document.getElementById(obj).style.display;
+}
