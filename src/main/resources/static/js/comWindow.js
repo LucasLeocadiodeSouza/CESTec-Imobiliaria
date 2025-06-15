@@ -29,7 +29,7 @@ function iniciarEventos() {
     getCargoIdeusu();
     //getPeriodoMeta();
 
-    criarBotaoEsterno("dintensint","Menu,Contratos,Pagamentos,Relatório",["Simular Financiamento","Cadastro de Contrato,Cadastro de Imóvel,Cadastro de Cliente,Cadastro de Proprietario,Assinaturas,Aprovacão","Gerar Crédito","Cadastro de Metas,Relatório do Imovel"]);
+    criarBotaoEsterno("dintensint","Menu,Contratos,Corretores,Pagamentos,Relatório",["Liberar Aplicacão,Consulta de Tabelas","Cadastro de Contrato,Cadastro de Imóvel,Cadastro de Cliente,Cadastro de Proprietario,Assinaturas,Aprovacão,Simular Financiamento","Cadastro de Metas,Cadastrar Corretor","Gerar Crédito","Relatório do Imovel"]);
     abrirFecharContainerBotoesInt();
     controlaTela("inicio");
 
@@ -42,6 +42,7 @@ function iniciarEventos() {
     event_click("dbackagenda");
     event_click("bimaprovacãoint");
     event_click("bimgerarcréditoint");
+    event_click("bimcadastrarcorretorint");
 }
 
 function event_click(obj) {
@@ -78,6 +79,11 @@ function event_click(obj) {
     if(obj == "bimgerarcréditoint"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/gerarCredito";
+        });
+    }
+    if(obj == "bimcadastrarcorretorint"){
+        document.getElementById(obj).addEventListener("click", function() {
+            window.location.href = "/cadastroCorretor";
         });
     }
 
