@@ -2,6 +2,9 @@
     Data: 15/02/25
     IM: 00002
 */
+
+import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init,getDisplay } from "./modules/utils.js";
+
 window.addEventListener("load", function () {
     buscarUserId("lid");
     buscarUserId("wcodfunc");
@@ -20,84 +23,59 @@ let ano  = date.getFullYear();
 
 
 function iniciarEventos() {
-        controlaTela("inicio");
-        event_click("dimcontratoint");
-        event_click("bimmenuint");
-        event_click("ditensrelatorioint");
-        event_click("bimcnovoimovel"); 
-        event_click("bimcnovopropr");
-        event_click("bimcnovocliente");
-        event_click("bimcnovocontrato");
-        event_click("bimccadastrometa");
-        event_click("dnextagenda");
-        event_click("dbackagenda");
-        event_click("bimcaprovacao");
-        event_click("bimcboletoscont");
-        event_click("ditenspagamentoint");
+    valorMetaMensal();
+    setGraficoMeta();
+    getVlrEfetivadoCorretor();
+    getCargoIdeusu();
+    //getPeriodoMeta();
 
-        valorMetaMensal();
-        setGraficoMeta();
-        getVlrEfetivadoCorretor();
-        getCargoIdeusu();
-        //getPeriodoMeta();
+    criarBotaoEsterno("dintensint","Menu,Contratos,Pagamentos,Relatório",["Simular Financiamento","Cadastro de Contrato,Cadastro de Imóvel,Cadastro de Cliente,Cadastro de Proprietario,Assinaturas,Aprovacão","Gerar Crédito","Cadastro de Metas,Relatório do Imovel"]);
+    abrirFecharContainerBotoesInt();
+    controlaTela("inicio");
+
+    event_click("bimcadastrodeimóvelint"); 
+    event_click("bimcadastrodeproprietarioint");
+    event_click("bimcadastrodeclienteint");
+    event_click("bimcadastrodecontratoint");
+    event_click("bimcadastrodemetasint");
+    event_click("dnextagenda");
+    event_click("dbackagenda");
+    event_click("bimaprovacãoint");
+    event_click("bimgerarcréditoint");
 }
 
 function event_click(obj) {
-    if(obj == "dimcontratoint"){
-        document.getElementById(obj).addEventListener("click", function() {
-            form("ditenscontratoext").style.backgroundColor = form("bimcnovopropr").style.display == "flex"?"#dedede":"#192B4A";
-            controlaTela("menuitens");
-        });
-    }
-    if(obj == "bimmenuint"){
-        document.getElementById(obj).addEventListener("click", function() {
-            form("ditensmenuext").style.backgroundColor = form("dimmfinanciamento").style.display == "flex"?"#dedede":"#192B4A";
-            controlaTela("menu");
-        });
-    }
-    if(obj == "ditensrelatorioint"){
-        document.getElementById(obj).addEventListener("click", function() {
-            form("ditensrelatorioext").style.backgroundColor = form("bimccadastrometa").style.display == "flex"?"#dedede":"#192B4A";
-            controlaTela("relatorio");
-        });
-    }
-    if(obj == "ditenspagamentoint"){
-        document.getElementById(obj).addEventListener("click", function() {
-            form("ditenspagamentoext").style.backgroundColor = form("bimcboletoscont").style.display == "flex"?"#dedede":"#192B4A";
-            controlaTela("pagamento");
-        });
-    }
-    if(obj == "bimcnovoimovel"){
+    if(obj == "bimcadastrodeimóvelint"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/contratosCadastro"; 
         }); 
     }
-    if(obj == "bimcnovopropr"){
+    if(obj == "bimcadastrodeproprietarioint"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/contratosCadastroPropri"; 
         });
     }
-    if(obj == "bimcnovocliente"){
+    if(obj == "bimcadastrodeclienteint"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/contratosCadastroClientes"; 
         });
     }
-    if(obj == "bimcnovocontrato"){
+    if(obj == "bimcadastrodecontratoint"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/contratosCadastroContrato"; 
-        }); //contratosCadastroMetas
+        });
     }
-    if(obj == "bimccadastrometa"){
+    if(obj == "bimcadastrodemetasint"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/contratosCadastroMetas";
         });
     }
-    if(obj == "bimcaprovacao"){
+    if(obj == "bimaprovacãoint"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/contratoAprovacao";
         });
     }
-    if(obj == "bimcboletoscont"){
+    if(obj == "bimgerarcréditoint"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/gerarCredito";
         });
@@ -139,39 +117,109 @@ function event_click(obj) {
 
 function controlaTela(opc){
     if(opc == "inicio"){
-            form("dimmfinanciamento").style.display = "none";
-            form("bimcnovocontrato").style.display  = "none";
-            form("bimcnovopropr").style.display     = "none";
-            form("bimcnovoimovel").style.display    = "none";
-            form("bimcnovocliente").style.display   = "none";
-            form("bimcassinatura").style.display    = "none";
-            form("bimcaprovacao").style.display     = "none";
-            form("bimccadastrometa").style.display  = "none";
-            form("bimcboletoscont").style.display  = "none";
-            form("dimrimovel").style.display        = "none"; 
-    }
-    if(opc == "menu"){
-        form("dimmfinanciamento").style.display  = form("dimmfinanciamento").style.display == "flex"?"none":"flex";
-    }
-    if(opc == "menuitens"){
-        form("bimcnovocontrato").style.display  = form("bimcnovocontrato").style.display == "flex"?"none":"flex";
-        form("bimcnovopropr").style.display     = form("bimcnovopropr").style.display    == "flex"?"none":"flex";
-        form("bimcnovoimovel").style.display    = form("bimcnovoimovel").style.display   == "flex"?"none":"flex";
-        form("bimcassinatura").style.display    = form("bimcassinatura").style.display   == "flex"?"none":"flex";
-        form("bimcaprovacao").style.display     = form("bimcaprovacao").style.display    == "flex"?"none":"flex";
-        form("bimcnovocliente").style.display   = form("bimcnovocliente").style.display   == "flex"?"none":"flex"; 
-    }
-    if(opc == "pagamento"){
-        form("bimcboletoscont").style.display  = form("bimcboletoscont").style.display == "flex"?"none":"flex";
-    }
-    if(opc == "relatorio"){
-        form("bimccadastrometa").style.display  = form("bimccadastrometa").style.display == "flex"?"none":"flex";
-        form("dimrimovel").style.display        = form("dimrimovel").style.display       == "flex"?"none":"flex";
+        ocultarbotoesinternos();
     }
 }
 
-function form(obj){
-    return document.getElementById(obj);
+function ocultarbotoesinternos(){
+    const containerBotoesint = document.querySelectorAll(".container-botoes-int");
+        
+    containerBotoesint.forEach(div=>{
+        div.querySelectorAll("div").forEach(divint=>{
+            divint.style.display = "none";
+        })
+    });
+}
+
+function criarBotaoEsterno(divpai,botoesExt,botoesInt){
+    const botoessplit  = botoesExt.split(",");
+    const divprincipal = document.getElementById(divpai);
+        
+    botoessplit.forEach((botao,index) => {
+        const divexterna = document.createElement("div");
+        divexterna.id = "ditens" + botao.replace(/\s+/g, '').toLowerCase() + "ext";
+        divexterna.className = "container-botao";
+
+        const divprimint = document.createElement("div");
+        divprimint.id = "dim" + botao.replace(/\s+/g, '').toLowerCase() + "primint";
+        divprimint.className = "botoesmenuesq bimmenu botaopri";
+
+        const labelprimi = document.createElement("label");
+        labelprimi.className = "labelbotaoapl";
+        labelprimi.innerText = botao;
+
+        divprimint.appendChild(labelprimi);
+        divexterna.appendChild(divprimint);
+
+        /*
+        <div id="ditensmenuext" class="container-botao">
+            <div id="bimmenuint" class="botoesmenuesq bimmenu botaopri">
+                <label class="labelbotaoapl">Menu</label>
+            </div>
+             ...
+        */
+
+        const botoesinternos = botoesInt[index].split(",");
+
+        botoesinternos.forEach((botaoint,indexint) => {
+            /* 
+                ...
+                <div class="container-botoes-int">
+                    <div id="bimmfinanciamento" class="botoesinternosapl bimmenu botaointerno">
+                        <label class="labelbotaoapl">Simular Financiamento</label>
+                    </div>
+                </div>
+            </div>
+            */
+
+            const divcontainerbutton = document.createElement("div");
+            divcontainerbutton.className = "container-botoes-int";
+
+            const divbuttonint = document.createElement("div");
+            divbuttonint.id = "bim" + botaoint.replace(/\s+/g, '').toLowerCase()  + "int";
+            divbuttonint.className = "botoesinternosapl bimmenu botaointerno";
+
+            const labelint = document.createElement("label");
+            labelint.className = "labelbotaoapl";
+            labelint.innerText = botaoint;
+
+            divbuttonint.appendChild(labelint);
+            divcontainerbutton.appendChild(divbuttonint);
+            divexterna.appendChild(divcontainerbutton);
+        });
+
+        divprincipal.appendChild(divexterna);
+    });
+}
+
+function abrirFecharContainerBotoesInt(){
+    const botoesPrimarios = document.querySelectorAll(".botaopri");
+
+    botoesPrimarios.forEach((botaopri,index) => {
+        const divitensexterna = document.querySelectorAll(".container-botao")[index];
+
+        botaopri.addEventListener("click", function() {
+            const resultcontainerbotaoativo = containerBotaoAtivo(divitensexterna);
+            form(divitensexterna.id).style.backgroundColor = resultcontainerbotaoativo?"#dedede":"#192B4A";
+
+            const botoesinterno = divitensexterna.querySelectorAll(".botaointerno");
+
+            botoesinterno.forEach(botaoint => {
+                setDisplay(botaoint.id, resultcontainerbotaoativo?"none":"flex");
+            });
+        });
+    });
+}
+
+function containerBotaoAtivo(obj){
+    const botoesinterno = obj.querySelector(".container-botoes-int").querySelectorAll("div");
+    var condicao = false;
+
+    botoesinterno.forEach(botaoint => {
+        if(getDisplay(botaoint.id) != "none") condicao = true;
+    });
+
+    return condicao;
 }
 
 function buscarUserName(obj){
