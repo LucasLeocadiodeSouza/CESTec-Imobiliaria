@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cestec.cestec.model.pcp_cliente;
 import com.cestec.cestec.repository.clienteRepository;
+import com.cestec.cestec.repository.prjContratosCustomRepository;
 import com.cestec.cestec.util.utilForm;
 
 @Service
@@ -16,6 +17,9 @@ public class pcp_clienteService {
     
     @Autowired
     private clienteRepository clienteRepository;
+
+    @Autowired
+    private prjContratosCustomRepository contratosCustomRepository;
 
     public String validaCliente(pcp_cliente cliente){
         if(cliente.getDocumento() == ""){
@@ -88,8 +92,8 @@ public class pcp_clienteService {
         }
     }
 
-    public List<?> buscarClientes(){
-        List<pcp_cliente> clientes =  clienteRepository.findAll();
+    public List<?> buscarClientes(Integer codcliente){
+        List<pcp_cliente> clientes =  contratosCustomRepository.buscarClientes(codcliente);
 
         utilForm.initGrid();
         for (int i = 0; i < clientes.size(); i++) {

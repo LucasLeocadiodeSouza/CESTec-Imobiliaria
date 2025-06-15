@@ -13,7 +13,7 @@ import { DMFForm_init }    from "./modules/dmfForm.js";
 import { abaForm_init }    from "./modules/abaForm.js";
 import { consulForm_init } from "./modules/consulForm.js";
 import { elementsForm_init } from "./modules/elementsForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay } from "./modules/utils.js";
+import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init } from "./modules/utils.js";
 
 var ABA,DMFDiv,CONSUL,CLIENTES_GRID;
 
@@ -54,6 +54,7 @@ function iniciarEventos() {
 
     event_click_table();
     event_click_aba();
+    event_selected_init("codcliente");
 
     controlaTela("inicia");
 }
@@ -132,7 +133,7 @@ function buscarClienteGrid(valoresLinha){
 }
 
 function buscarDadosTable(){
-    CLIENTES_GRID.carregaGrid("/cliente/buscarClientes","","");
+    CLIENTES_GRID.carregaGrid(`/cliente/buscarClientes?codcliente=${form("codcliente").value}`,"","");
 }
 
 function adicionarCliente() {
@@ -198,7 +199,6 @@ function controlaTela(opc){
         desabilitaCampo('bnovabusca',      true);
         desabilitaCampo('bbuscar',         false);
         desabilitaCampo('codcliente',      false);
-        desabilitaCampo('codimovel',       false);
 
         setDisplay("binserir", ehConsulta()?"none":"flex");
     }
@@ -206,7 +206,6 @@ function controlaTela(opc){
         desabilitaCampo('bnovabusca',      false);
         desabilitaCampo('bbuscar',         true);        
         desabilitaCampo('codcliente',      true);
-        desabilitaCampo('codimovel',       true);
     }if(opc == "modal"){
         desabilitaCampo('mnome',       ehConsulta());
         desabilitaCampo('mcpf',        ehConsulta());
@@ -225,9 +224,8 @@ function controlaTela(opc){
 }
 
 function limparTela(opc){
-    if(opc == "inicia" || opc == 'buscar'){        
+    if(opc == "inicia" || opc == 'novabusca'){        
         form('codcliente').value = "0";
-        form('codimovel').value  = "0";
     }
     if(opc === "inicia" || opc === "novabusca"){
         CLIENTES_GRID.clearGrid();

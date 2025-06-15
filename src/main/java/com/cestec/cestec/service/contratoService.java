@@ -18,6 +18,7 @@ import com.cestec.cestec.repository.contratoRepository;
 import com.cestec.cestec.repository.corretorRepository;
 import com.cestec.cestec.repository.funcionarioRepository;
 import com.cestec.cestec.repository.imovelRepository;
+import com.cestec.cestec.repository.prjContratosCustomRepository;
 import com.cestec.cestec.repository.proprietarioRepository;
 import com.cestec.cestec.util.utilForm;
 
@@ -38,6 +39,9 @@ public class contratoService {
 
     @Autowired
     private corretorRepository corretorRepository;
+
+    @Autowired
+    private prjContratosCustomRepository contratosCustomRepository;
 
     @Autowired
     private funcionarioRepository funcionarioRepository;
@@ -64,8 +68,8 @@ public class contratoService {
         return "Descricão não encontrada";
     }
 
-    public List<?> buscarContratoGrid(){
-        List<contratoDTO> contratos = contratoRepository.buscarContratoGrid();
+    public List<?> buscarContratoGrid(Integer codprop, Integer codcliente){
+        List<contratoDTO> contratos = contratosCustomRepository.buscarContratoGrid(codprop,codcliente);
 
         utilForm.initGrid();
         for (int i = 0; i < contratos.size(); i++) {

@@ -13,7 +13,7 @@ import { DMFForm_init }    from "./modules/dmfForm.js";
 import { abaForm_init }    from "./modules/abaForm.js";
 import { consulForm_init } from "./modules/consulForm.js";
 import { elementsForm_init } from "./modules/elementsForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay } from "./modules/utils.js";
+import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init } from "./modules/utils.js";
 
 var ABA,DMFDiv,CONSUL,CONTRATOS_GRID;
 
@@ -23,7 +23,7 @@ function iniciarEventos() {
     CONTRATOS_GRID               = new GridForm_init();
     CONTRATOS_GRID.id            = "tabela_contrato";
     CONTRATOS_GRID.columnName    = "codcontrato,codcliente,nomeCliente,codproprietario,nomeProp,codimovel,tipo,negociacao,preco,datinicio,datfinal,valor,endereco_bairro,codcorretor,codtipo,nomevendedor";
-    CONTRATOS_GRID.columnLabel   = "Contrato,Cod,Nome,Cod,Nome,Cod,Tipo,Contrato,Valor (R$)";
+    CONTRATOS_GRID.columnLabel   = "Contrato,Cod. Cli.,Nome Cli.,Cod. Prop.,Nome Pro.,Cod. Imov.,Tipo,Contrato,Valor (R$)";
     CONTRATOS_GRID.columnWidth   = "10,10,15,10,15,10,10,10,10";
     CONTRATOS_GRID.columnAlign   = "c,c,eoe,c,eoe,c,c,c,d";
     CONTRATOS_GRID.mousehouve    = true;
@@ -46,6 +46,7 @@ function iniciarEventos() {
 
     event_click_table();
     event_click_aba();
+    event_selected_init("codproprietario,codcliente");
 
     controlaTela("inicia");
 
@@ -202,7 +203,7 @@ function controlaTela(opc){
 
 
 function limparTela(opc){
-    if(opc == "inicia" || opc == 'buscar'){        
+    if(opc == "inicia" || opc == 'novabusca'){        
         form('codproprietario').value  = "0";
         form('descproprietario').value = "";
         form('codcliente').value       = "0";
@@ -266,7 +267,7 @@ function preencherModal(valoresLinha){
 }
 
 function buscarContratoGrid(){
-    CONTRATOS_GRID.carregaGrid("/contrato/buscarContratoGrid","","");
+    CONTRATOS_GRID.carregaGrid(`/contrato/buscarContratoGrid?codprop=${form("codproprietario").value}&codcliente=${form("codcliente").value}`,"","");
 }
 
 function inserirAlterarContrato(){

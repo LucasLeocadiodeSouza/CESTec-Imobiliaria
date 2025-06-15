@@ -15,6 +15,7 @@ import com.cestec.cestec.model.ImovelProprietarioDTO;
 import com.cestec.cestec.model.pcp_imovel;
 import com.cestec.cestec.model.pcp_proprietario;
 import com.cestec.cestec.repository.imovelRepository;
+import com.cestec.cestec.repository.prjContratosCustomRepository;
 import com.cestec.cestec.repository.proprietarioRepository;
 import com.cestec.cestec.util.utilForm;
 
@@ -26,6 +27,9 @@ public class pcp_proprietarioService {
 
     @Autowired
     private imovelRepository imovelRepository;
+
+     @Autowired
+    private prjContratosCustomRepository contratosCustomRepository;
 
     public String validaProprietario(pcp_proprietario proprietario) {
         if (proprietario.getDocumento() == "") {
@@ -86,8 +90,7 @@ public class pcp_proprietarioService {
             proprietarioAnalise.setEndereco_logradouro(pcp_proprietario.getEndereco_logradouro());
             proprietarioAnalise.setNome(pcp_proprietario.getNome());
             proprietarioAnalise.setNumtel(pcp_proprietario.getNumtel());
-            proprietarioAnalise.setCriado_em(proprietarioAnalise.getCriado_em() == null ? LocalDateTime.now()
-                    : proprietarioAnalise.getCriado_em());
+            proprietarioAnalise.setCriado_em(proprietarioAnalise.getCriado_em() == null ? LocalDateTime.now() : proprietarioAnalise.getCriado_em());
             proprietarioAnalise.setAtualizado_em(LocalDateTime.now());
             if (proprietarioAnalise.getCodproprietario() == null)
                 proprietarioAnalise.setId_usuario(pcp_proprietario.getId_usuario());
@@ -134,8 +137,8 @@ public class pcp_proprietarioService {
         return imovelRepository.findAll();
     }
 
-    public List<?> buscarProprietario() {
-        List<pcp_proprietario> proprietarios = proprietarioRepository.findAll();
+    public List<?> buscarProprietario(Integer codprop) {
+        List<pcp_proprietario> proprietarios = contratosCustomRepository.buscarProprietario(codprop);
 
         utilForm.initGrid();
         for (int i = 0; i < proprietarios.size(); i++) {

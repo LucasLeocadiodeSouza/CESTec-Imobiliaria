@@ -35,6 +35,13 @@ public class contratoDTO {
     private String  nomeCliente;
     private String  nomeCorretor;
     private double  valor;
+    private String  documento;
+    private String  endereco;
+    private Integer quartos;
+    private double  area;
+    private double  vlrcondominio;
+    private double  valorliberado;
+    private String  observacao;
     private Integer situacao;
     private String  ideusu;
 
@@ -79,7 +86,7 @@ public class contratoDTO {
         this.codcorretor     = codcorretor;
     }
     
-    public contratoDTO(Integer codcontrato, Integer codimovel, Integer codproprietario, Integer codcliente, Date datinicio, Date datfinal, Integer tipo, Integer codcorretor, double preco, Integer negociacao, String nomeProp, String nomeCliente, String nomeCorretor, double valor) {
+    public contratoDTO(Integer codcontrato, Integer codimovel, Integer codproprietario, Integer codcliente, Date datinicio, Date datfinal, Integer tipo, Integer codcorretor, double preco, Integer negociacao, String nomeProp, String nomeCliente, String nomeCorretor, double valor, Integer quartos, Double vlrcondominio, Double area, String documento, String endereco, double valorliberado, String observacao) {
         this.codcontrato     = codcontrato;
         this.codimovel       = codimovel;
         this.codproprietario = codproprietario;
@@ -94,6 +101,13 @@ public class contratoDTO {
         this.nomeCliente     = nomeCliente;
         this.nomeCorretor    = nomeCorretor;
         this.valor           = valor;
+        this.quartos         = quartos;
+        this.vlrcondominio   = vlrcondominio;
+        this.area            = area;
+        this.documento       = documento;
+        this.endereco        = endereco;
+        this.valorliberado   = valorliberado;
+        this.observacao      = observacao;
     }
 
     public contratoDTO(Integer codcontrato, Integer codcliente, Integer codimovel, Integer codproprietario, Date datfinal, Date datinicio, Integer tipo, Integer negociacao, double preco) {

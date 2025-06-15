@@ -47,6 +47,9 @@ public class pcp_contrato {
     private Integer situacao;
     private Date    datiregistro;
     private float   valor;
+    private float   valorliberado;
+    private String  observacao;
+    private String  ideusu;
     private boolean ativo;
     
     public pcp_contrato(pcp_cliente pcp_cliente,

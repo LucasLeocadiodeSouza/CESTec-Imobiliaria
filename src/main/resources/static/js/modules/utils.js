@@ -17,6 +17,26 @@ export function form(obj){
     return document.getElementById(obj);
 }
 
+export function event_selected_init(obj){
+    const campos = obj.split(",");
+
+    campos.forEach(opc => {
+        form(opc).addEventListener('click', function() {
+            this.select();
+        });
+    });
+}
+
+export function event_blur_init(obj){
+    const campos = obj.split(",");
+
+    campos.forEach(opc => {
+        form(opc).addEventListener('blur', function(e) {
+            e.target.value = parseFloat(e.target.value || 0).toFixed(2);
+        });
+    });
+}
+
 export function desabilitaCampo(obj,desahabilita){
     const element = form(obj);
 

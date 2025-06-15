@@ -51,4 +51,33 @@ export function elementsForm_init(){
         divpai.appendChild(divlabel);
         botao.appendChild(divpai);
     });
+
+    document.querySelectorAll('input, select, textarea').forEach(element => {
+        element.addEventListener('keydown', function(e) {
+            // Verifica se a tecla pressionada foi Enter (código 13)
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                e.preventDefault(); // Evita o comportamento padrão do Enter
+                
+                // Obtém todos os elementos focáveis
+                const focableElements = Array.from(document.querySelectorAll(
+                    'input:not([disabled]):not([readonly]), ' +
+                    'select:not([disabled]):not([readonly]), ' +
+                    'textarea:not([disabled]):not([readonly]), ' +
+                    'button:not([disabled]), ' +
+                    '[tabindex]:not([disabled]):not([tabindex="-1"])'
+                )).filter(el => el.offsetWidth > 0 || el.offsetHeight > 0); // Filtra elementos visíveis
+                
+                // Encontra o índice do elemento atual
+                const currentIndex = focableElements.indexOf(this);
+                
+                if (currentIndex >= 0 && currentIndex < focableElements.length - 1) {
+                    // Foca no próximo elemento
+                    focableElements[currentIndex + 1].focus();
+                } else if (currentIndex === focableElements.length - 1) {
+                    // Se for o último elemento, volta para o primeiro
+                    focableElements[0].focus();
+                }
+            }
+        });
+    });
 }

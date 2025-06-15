@@ -13,7 +13,7 @@ import { DMFForm_init }      from "./modules/dmfForm.js";
 import { abaForm_init }      from "./modules/abaForm.js";
 import { consulForm_init }   from "./modules/consulForm.js";
 import { elementsForm_init } from "./modules/elementsForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay } from "./modules/utils.js";
+import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init } from "./modules/utils.js";
 
 var ABA,DMFDiv,CONSUL,METAS_GRID;
 
@@ -54,6 +54,7 @@ function iniciarEventos() {
     event_change("mcodcorretor");
 
     event_click_table();
+    event_selected_init("codcorretor");
     event_click_aba();
 
     controlaTela("inicia");
