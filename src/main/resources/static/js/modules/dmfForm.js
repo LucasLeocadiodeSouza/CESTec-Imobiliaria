@@ -4,19 +4,20 @@ export function DMFForm_init(){
     this.divs         = "";
     this.tema         = 0;
     this.cortinaclose = false;
+    this.fullScream   = false;
 
     //
     //criar cortina externa
     this.formModal = ()=>{
         const divs = this.divs.split(",");
 
+        const cortina = document.createElement("div");
+        cortina.id        = "DMF_external";
+        cortina.className = "DMF_external";
+
         divs.forEach(div => {
             const modal   = document.getElementById(div.trim());
-            const cortina = document.createElement("div");
             const body    = document.querySelector("body").childNodes[1];
-
-            cortina.id        = "DMF_external";
-            cortina.className = "DMF_external";
 
             const divfechar   = document.createElement("div");
             const botaofechar = document.createElement("div");
@@ -31,6 +32,8 @@ export function DMFForm_init(){
             imgclose.style.width  = "80%";
             imgclose.style.height = "80%";
             imgclose.style.margin = "0px";
+
+            modal.style.display = "none";
 
             botaofechar.appendChild(imgclose);
             divfechar.appendChild(botaofechar);
@@ -56,6 +59,11 @@ export function DMFForm_init(){
 
         modalStack.push(idDiv);
 
+        if(this.fullScream) {
+            modal.style.width  = "95%";
+            modal.style.height = "95%";
+        }
+
         modal.style.display = "block";
         document.getElementById("DMF_external").style.display = "flex";
     }
@@ -65,6 +73,7 @@ export function DMFForm_init(){
 
         const currentModalId = modalStack.pop();
         const currentModal = document.getElementById(currentModalId);
+        
         currentModal.style.display = "none";
         document.getElementById("DMF_external").style.display = "none";
     }

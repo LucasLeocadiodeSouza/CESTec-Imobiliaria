@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cestec.cestec.model.pcp_cliente;
 import com.cestec.cestec.repository.clienteRepository;
-import com.cestec.cestec.repository.prjContratosCustomRepository;
+import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
 import com.cestec.cestec.util.utilForm;
 
 @Service

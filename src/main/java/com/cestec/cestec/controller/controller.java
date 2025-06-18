@@ -1,60 +1,31 @@
 package com.cestec.cestec.controller;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cestec.cestec.model.sp_aplicacoes;
+import com.cestec.cestec.repository.generico.aplicacoesRepository;
 
 @Controller
 public class controller {
+
+    @Autowired
+    private aplicacoesRepository aplicacoesrepo;
 
     @GetMapping("/home") 
     public String home() {
         return "comWindow";
     }
 
-    @GetMapping("/contratosCadastro") 
-    public String contratosCadastro() {
-        return "wcr001";
-    }
-
-    @GetMapping("/contratosCadastroPropri") 
-    public String contratosCadastroPropri() {
-        return "wcr002";
-    }
-
-    
-    @GetMapping("/contratosCadastroClientes") 
-    public String contratosCadastroClientes() {
-        return "wcr003";
-    }
-    
-    @GetMapping("/contratosCadastroContrato") 
-    public String contratosCadastroContrato() {
-        return "wcr004";
-    }
-    
-    @GetMapping("/fichaContrato") 
-    public String fichaContrato() {
-        return "wcr00401";
-    }
-
-    @GetMapping("/contratosCadastroMetas") 
-    public String contratosCadastroMetas() {
-        return "wcr005";
-    }
-
-    @GetMapping("/contratoAprovacao") 
-    public String contratoAprovacao() {
-        return "wcr006";
-    }
-
-    @GetMapping("/gerarCredito") 
-    public String gerarCredito() {
-        return "wcr007";
-    }
-
-    @GetMapping("/cadastroCorretor") 
-    public String cadastroCorretor() {
-        return "wcr008";
+    @GetMapping("/buscarPath/{codapl}")
+    public String adapterGetHtmlFile(@PathVariable Integer codapl) {
+        return aplicacoesrepo.findByCodApl(codapl).getArquivo_inic();
     }
 
     @GetMapping("/login") 

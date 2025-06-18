@@ -43,12 +43,13 @@ function iniciarEventos() {
     event_click("bimaprovacãoint");
     event_click("bimgerarcréditoint");
     event_click("bimcadastrarcorretorint");
+    event_click("bimliberaraplicacãoint");
 }
 
 function event_click(obj) {
     if(obj == "bimcadastrodeimóvelint"){
         document.getElementById(obj).addEventListener("click", function() {
-            window.location.href = "/contratosCadastro"; 
+            window.location.href = "/buscarPath/"+form("hcadastrodecontrato").value; 
         }); 
     }
     if(obj == "bimcadastrodeproprietarioint"){
@@ -84,6 +85,11 @@ function event_click(obj) {
     if(obj == "bimcadastrarcorretorint"){
         document.getElementById(obj).addEventListener("click", function() {
             window.location.href = "/cadastroCorretor";
+        });
+    }
+    if(obj == "bimliberaraplicacãoint"){
+        document.getElementById(obj).addEventListener("click", function() {
+            window.location.href = "/cadastroDeApl";
         });
     }
 
@@ -181,6 +187,11 @@ function criarBotaoEsterno(divpai,botoesExt,botoesInt){
             const divcontainerbutton = document.createElement("div");
             divcontainerbutton.className = "container-botoes-int";
 
+            const inputPathHtm = document.createElement("input");
+            inputPathHtm.type  = "hidden";
+            inputPathHtm.id    = "h" + botaoint.replace(/\s+/g, '').toLowerCase();
+            inputPathHtm.value = "4";
+
             const divbuttonint = document.createElement("div");
             divbuttonint.id = "bim" + botaoint.replace(/\s+/g, '').toLowerCase()  + "int";
             divbuttonint.className = "botoesinternosapl bimmenu botaointerno";
@@ -189,8 +200,10 @@ function criarBotaoEsterno(divpai,botoesExt,botoesInt){
             labelint.className = "labelbotaoapl";
             labelint.innerText = botaoint;
 
+
             divbuttonint.appendChild(labelint);
             divcontainerbutton.appendChild(divbuttonint);
+            divcontainerbutton.appendChild(inputPathHtm);
             divexterna.appendChild(divcontainerbutton);
         });
 

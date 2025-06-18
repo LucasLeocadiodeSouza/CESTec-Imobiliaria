@@ -15,8 +15,8 @@ import com.cestec.cestec.model.ImovelProprietarioDTO;
 import com.cestec.cestec.model.pcp_imovel;
 import com.cestec.cestec.model.pcp_proprietario;
 import com.cestec.cestec.repository.imovelRepository;
-import com.cestec.cestec.repository.prjContratosCustomRepository;
 import com.cestec.cestec.repository.proprietarioRepository;
+import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
 import com.cestec.cestec.util.utilForm;
 
 @Service

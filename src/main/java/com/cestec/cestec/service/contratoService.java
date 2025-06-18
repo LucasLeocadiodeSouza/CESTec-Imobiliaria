@@ -16,10 +16,10 @@ import com.cestec.cestec.model.pcp_proprietario;
 import com.cestec.cestec.repository.clienteRepository;
 import com.cestec.cestec.repository.contratoRepository;
 import com.cestec.cestec.repository.corretorRepository;
-import com.cestec.cestec.repository.funcionarioRepository;
 import com.cestec.cestec.repository.imovelRepository;
-import com.cestec.cestec.repository.prjContratosCustomRepository;
 import com.cestec.cestec.repository.proprietarioRepository;
+import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
+import com.cestec.cestec.repository.generico.funcionarioRepository;
 import com.cestec.cestec.util.utilForm;
 
 @Service
