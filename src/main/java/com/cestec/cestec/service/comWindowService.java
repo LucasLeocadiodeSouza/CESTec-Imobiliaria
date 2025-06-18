@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import com.cestec.cestec.model.corretorDTO;
 import com.cestec.cestec.model.pcp_meta;
 import com.cestec.cestec.repository.contratoRepository;
-import com.cestec.cestec.repository.funcionarioRepository;
 import com.cestec.cestec.repository.metaRepository;
+import com.cestec.cestec.repository.generico.funcionarioRepository;
 
 @Service
 public class comWindowService {

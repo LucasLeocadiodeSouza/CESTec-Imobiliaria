@@ -1,4 +1,4 @@
-package com.cestec.cestec.repository;
+package com.cestec.cestec.repository.custom;
 
 import java.util.List;
 import org.springframework.stereotype.Repository;

@@ -45,6 +45,8 @@ export function GridForm_init(){
         if(this.scroll) divtable.style.overflowX = "scroll";
         if(this.gridWidth !== "")  divtable.style.width  = this.gridWidth;
         if(this.gridHeight !== "") divtable.style.height = this.gridHeight;
+        divtable.className = "h100";
+
 
         table.classList.add("tablecolun");
 
@@ -124,8 +126,12 @@ export function GridForm_init(){
 
             if(document.getElementById(this.id + "res")) this.clearGrid;
 
-            const table = document.createElement("table");
-            table.id    = this.id + "res";
+            const divres = document.createElement("div");
+            divres.id    = "d" + this.id + "res";
+            divres.classList.add("divtableres");
+
+            const table  = document.createElement("table");
+            table.id     = this.id + "res";
             table.classList.add("tabledata2");
 
             if(!Array.isArray(dados)) throw new Error("Ocorreu um erro ao tentar consultar os dados, o retorno não esta na forma de um array. Retorno atual: " + dados);
@@ -194,7 +200,8 @@ export function GridForm_init(){
         
             table.appendChild(headerbody);
             table.appendChild(tbody);
-            document.getElementById(this.id).childNodes[0].appendChild(table);
+            divres.appendChild(table);
+            document.getElementById(this.id).childNodes[0].appendChild(divres);
             
             if(this.clickgrid){
                 clickRowBorder(table.id);

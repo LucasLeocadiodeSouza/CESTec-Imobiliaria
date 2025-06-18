@@ -5,7 +5,7 @@ body .gen {padding: 10px}
 .gen img {width: 20px;
           padding: 0px;
           height: 25px;
-          margin-right: 6px;
+          margin-inline: 6px;
           margin-block: 6px;}
 
 .gen label {font-family: "Inter";
@@ -89,7 +89,8 @@ body .gen {padding: 10px}
             color: #274d8c;}
 
 .aba    {height: 40px;
-         width: 180px;
+         min-width: 180px;
+         width: auto;
          display: flex;
          justify-content: flex-start;
          flex-direction: column;
@@ -209,7 +210,7 @@ div.grid {display: flex;
           justify-content: center;
           align-items: flex-start;}
        
-.div_table_init {display: flex; flex-direction: column; height: 100%; margin-block: 20px; border: 1px solid #c1c1c1;}
+.div_table_init {display: flex; flex-direction: column; height: 100%; margin-block: 20px; border: 1px solid #c1c1c1; overflow: hidden;}
 
 tr {font-size: 16px;}
 
@@ -257,7 +258,12 @@ table {
     table-layout: fixed;
     width: 100%;
     border-collapse: collapse;
+
 }
+
+.h100 {height: 100%;}
+
+.divtableres {height: 100%; overflow-y: auto;}
 
 .tablecolun {border: 1px solid rgb(0, 0, 0); border-collapse: collapse;}
 
@@ -266,7 +272,8 @@ table {
 .tdalign-dir          {text-align: right;}
 .tdalign-esqoverellip {text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
 
-.tabledata2 tbody {border-top: hidden;}
+.tabledata2 {overflow-y: scroll;}
+.tabledata2 tbody {border-top: hidden; overflow-y: auto; max-height: calc(100% - 40px);}
 
 .mouseovercolor   {background-color: rgb(176, 193, 223)}
 .clicktableborder {border: solid #1c1c1c !important;}

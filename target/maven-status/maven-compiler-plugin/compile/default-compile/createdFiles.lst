@@ -30,7 +30,6 @@ com\cestec\cestec\model\securityLogin\RegisterDTO.class
 com\cestec\cestec\controller\controller.class
 com\cestec\cestec\infra\pagamento\MultaInput.class
 com\cestec\cestec\model\securityLogin\sp_user.class
-com\cestec\cestec\repository\funcionarioRepository.class
 com\cestec\cestec\repository\proprietarioRepository.class
 com\cestec\cestec\controller\contratoController.class
 com\cestec\cestec\model\contasAPagar\Banco.class
@@ -38,7 +37,6 @@ com\cestec\cestec\infra\security\tokenService.class
 com\cestec\cestec\service\sp_userService.class
 com\cestec\cestec\service\comWindowService.class
 com\cestec\cestec\infra\pagamento\JurosMoraInput$JurosMoraInputBuilder.class
-com\cestec\cestec\service\wc001Service.class
 com\cestec\cestec\infra\pagamento\JurosMoraInput.class
 com\cestec\cestec\repository\pagamento\faturaRepository.class
 com\cestec\cestec\controller\emailController.class
