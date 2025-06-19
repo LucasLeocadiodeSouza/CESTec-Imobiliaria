@@ -47,7 +47,6 @@ export function GridForm_init(){
         if(this.gridHeight !== "") divtable.style.height = this.gridHeight;
         divtable.className = "h100";
 
-
         table.classList.add("tablecolun");
 
         //

@@ -1,11 +1,15 @@
 package com.cestec.cestec.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.cestec.cestec.infra.security.tokenService;
+import com.cestec.cestec.model.sp_aplicacoes;
 import com.cestec.cestec.service.comWindowService;
 import com.cestec.cestec.service.sp_userService;
 import jakarta.servlet.http.Cookie;
@@ -38,6 +42,11 @@ public class comWindowController {
             }
         }
         return "";
+    }
+
+    @GetMapping("/getBotoesAplMenu")
+    public Map<Integer, List<sp_aplicacoes>> getBotoesAplMenu() {
+        return comWindowService.getAplicacoesAgrupadasPorModulo();
     }
 
     @GetMapping("/userid")
