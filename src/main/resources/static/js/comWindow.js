@@ -3,14 +3,10 @@
     IM: 00002
 */
 
+import { consulForm_init } from "./modules/consulForm.js";
 import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init,getDisplay } from "./modules/utils.js";
 
-window.addEventListener("load", function () {
-    buscarUserId("lid");
-    buscarUserId("wcodfunc");
-    buscarUserName("ideusu");
-    buscarUserName("huser");
-        
+window.addEventListener("load", function () {    
     iniciarEventos();
     carregaMes();
 });
@@ -20,79 +16,28 @@ const nomeMes = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","
 let date = new Date();
 let mes  = date.getMonth();
 let ano  = date.getFullYear();
-
+var CONSUL;
 
 function iniciarEventos() {
+    CONSUL = new consulForm_init();
+
+    buscarUserId("wcodfunc");
+    buscarUserName("ideusu");
+
     valorMetaMensal();
     setGraficoMeta();
     getVlrEfetivadoCorretor();
     getCargoIdeusu();
     //getPeriodoMeta();
 
-    criarBotaoEsterno("dintensint","Menu,Contratos,Corretores,Pagamentos,Relatório",["Liberar Aplicacão,Consulta de Tabelas","Cadastro de Contrato,Cadastro de Imóvel,Cadastro de Cliente,Cadastro de Proprietario,Assinaturas,Aprovacão,Simular Financiamento","Cadastro de Metas,Cadastrar Corretor","Gerar Crédito","Relatório do Imovel"]);
-    abrirFecharContainerBotoesInt();
-    controlaTela("inicio");
-
-    event_click("bimcadastrodeimóvelint"); 
-    event_click("bimcadastrodeproprietarioint");
-    event_click("bimcadastrodeclienteint");
-    event_click("bimcadastrodecontratoint");
-    event_click("bimcadastrodemetasint");
     event_click("dnextagenda");
     event_click("dbackagenda");
-    event_click("bimaprovacãoint");
-    event_click("bimgerarcréditoint");
-    event_click("bimcadastrarcorretorint");
-    event_click("bimliberaraplicacãoint");
+
+    getBotoesAplMenu();
+    controlaTela("inicio");
 }
 
 function event_click(obj) {
-    if(obj == "bimcadastrodeimóvelint"){
-        document.getElementById(obj).addEventListener("click", function() {
-            window.location.href = "/buscarPath/"+form("hcadastrodecontrato").value; 
-        }); 
-    }
-    if(obj == "bimcadastrodeproprietarioint"){
-        document.getElementById(obj).addEventListener("click", function() {
-            window.location.href = "/contratosCadastroPropri"; 
-        });
-    }
-    if(obj == "bimcadastrodeclienteint"){
-        document.getElementById(obj).addEventListener("click", function() {
-            window.location.href = "/contratosCadastroClientes"; 
-        });
-    }
-    if(obj == "bimcadastrodecontratoint"){
-        document.getElementById(obj).addEventListener("click", function() {
-            window.location.href = "/contratosCadastroContrato"; 
-        });
-    }
-    if(obj == "bimcadastrodemetasint"){
-        document.getElementById(obj).addEventListener("click", function() {
-            window.location.href = "/contratosCadastroMetas";
-        });
-    }
-    if(obj == "bimaprovacãoint"){
-        document.getElementById(obj).addEventListener("click", function() {
-            window.location.href = "/contratoAprovacao";
-        });
-    }
-    if(obj == "bimgerarcréditoint"){
-        document.getElementById(obj).addEventListener("click", function() {
-            window.location.href = "/gerarCredito";
-        });
-    }
-    if(obj == "bimcadastrarcorretorint"){
-        document.getElementById(obj).addEventListener("click", function() {
-            window.location.href = "/cadastroCorretor";
-        });
-    }
-    if(obj == "bimliberaraplicacãoint"){
-        document.getElementById(obj).addEventListener("click", function() {
-            window.location.href = "/cadastroDeApl";
-        });
-    }
-
     if(obj == "dbackagenda"){
         document.getElementById(obj).addEventListener("click", function() {
             if(mes === 0){
@@ -143,91 +88,101 @@ function ocultarbotoesinternos(){
     });
 }
 
-function criarBotaoEsterno(divpai,botoesExt,botoesInt){
-    const botoessplit  = botoesExt.split(",");
-    const divprincipal = document.getElementById(divpai);
-        
-    botoessplit.forEach((botao,index) => {
+function criarBotaoEsterno(divpai,botoes){
+    const divprincipal = document.getElementById(divpai);    
+    const olprincipal  = document.createElement("ol");
+
+    botoes.forEach(botao => {
+        const li = document.createElement("ls");
+
         const divexterna = document.createElement("div");
-        divexterna.id = "ditens" + botao.replace(/\s+/g, '').toLowerCase() + "ext";
+        divexterna.id = "ditens" + botao.menu.replace(/\s+/g, '').toLowerCase() + "ext";
         divexterna.className = "container-botao";
 
         const divprimint = document.createElement("div");
-        divprimint.id = "dim" + botao.replace(/\s+/g, '').toLowerCase() + "primint";
+        divprimint.id = "dim" + botao.menu.replace(/\s+/g, '').toLowerCase() + "primint";
         divprimint.className = "botoesmenuesq bimmenu botaopri";
 
-        const labelprimi = document.createElement("label");
-        labelprimi.className = "labelbotaoapl";
-        labelprimi.innerText = botao;
+        divprimint.addEventListener("click", ()=>{
+            const resultcontainerbotaoativo = containerBotaoAtivo(divexterna);
+            form(divexterna.id).style.backgroundColor = resultcontainerbotaoativo?"#dedede":"#192B4A";
 
-        divprimint.appendChild(labelprimi);
-        divexterna.appendChild(divprimint);
-
-        /*
-        <div id="ditensmenuext" class="container-botao">
-            <div id="bimmenuint" class="botoesmenuesq bimmenu botaopri">
-                <label class="labelbotaoapl">Menu</label>
-            </div>
-             ...
-        */
-
-        const botoesinternos = botoesInt[index].split(",");
-
-        botoesinternos.forEach((botaoint,indexint) => {
-            /* 
-                ...
-                <div class="container-botoes-int">
-                    <div id="bimmfinanciamento" class="botoesinternosapl bimmenu botaointerno">
-                        <label class="labelbotaoapl">Simular Financiamento</label>
-                    </div>
-                </div>
-            </div>
-            */
-
-            const divcontainerbutton = document.createElement("div");
-            divcontainerbutton.className = "container-botoes-int";
-
-            const inputPathHtm = document.createElement("input");
-            inputPathHtm.type  = "hidden";
-            inputPathHtm.id    = "h" + botaoint.replace(/\s+/g, '').toLowerCase();
-            inputPathHtm.value = "4";
-
-            const divbuttonint = document.createElement("div");
-            divbuttonint.id = "bim" + botaoint.replace(/\s+/g, '').toLowerCase()  + "int";
-            divbuttonint.className = "botoesinternosapl bimmenu botaointerno";
-
-            const labelint = document.createElement("label");
-            labelint.className = "labelbotaoapl";
-            labelint.innerText = botaoint;
-
-
-            divbuttonint.appendChild(labelint);
-            divcontainerbutton.appendChild(divbuttonint);
-            divcontainerbutton.appendChild(inputPathHtm);
-            divexterna.appendChild(divcontainerbutton);
-        });
-
-        divprincipal.appendChild(divexterna);
-    });
-}
-
-function abrirFecharContainerBotoesInt(){
-    const botoesPrimarios = document.querySelectorAll(".botaopri");
-
-    botoesPrimarios.forEach((botaopri,index) => {
-        const divitensexterna = document.querySelectorAll(".container-botao")[index];
-
-        botaopri.addEventListener("click", function() {
-            const resultcontainerbotaoativo = containerBotaoAtivo(divitensexterna);
-            form(divitensexterna.id).style.backgroundColor = resultcontainerbotaoativo?"#dedede":"#192B4A";
-
-            const botoesinterno = divitensexterna.querySelectorAll(".botaointerno");
+            const botoesinterno = divexterna.querySelectorAll(".botaointerno");
 
             botoesinterno.forEach(botaoint => {
                 setDisplay(botaoint.id, resultcontainerbotaoativo?"none":"flex");
             });
         });
+
+        const labelprimi = document.createElement("label");
+        labelprimi.className = "labelbotaoapl";
+        labelprimi.innerText = botao.menu;
+
+        divprimint.appendChild(labelprimi);
+        divexterna.appendChild(divprimint);
+
+        const botoesinternos = botao.botoesinternos;
+
+        const listainterna = document.createElement("ol");
+        divexterna.appendChild(listainterna);
+
+        /*
+        <ol>
+            <li>
+                <div id="ditensmenuext" class="container-botao">
+                    <div id="bimmenuint" class="botoesmenuesq bimmenu botaopri">
+                        <label class="labelbotaoapl">Menu</label>
+                    </div>
+                    ...
+        */
+
+        botoesinternos.forEach(botaoint => {
+            /*          ...
+                        <ol>
+                            <li>
+                                <div class="container-botoes-int">
+                                    <div id="bimmfinanciamento" class="botoesinternosapl bimmenu botaointerno">
+                                        <label class="labelbotaoapl">Simular Financiamento</label>
+                                    </div>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                </li>
+            </ol>
+            */
+
+            const liinterna = document.createElement("li");
+
+            const divcontainerbutton = document.createElement("div");
+            divcontainerbutton.className = "container-botoes-int";
+
+            const divbuttonint = document.createElement("div");
+            divbuttonint.id = "bim" + botaoint.descricao.replace(/\s+/g, '').toLowerCase()  + "int";
+            divbuttonint.className = "botoesinternosapl bimmenu botaointerno";
+
+            divbuttonint.addEventListener("click", ()=>{ 
+                window.location.href = "/buscarPath/" + botaoint.codapl;
+            });
+
+
+            const labelint = document.createElement("label");
+            labelint.className = "labelbotaoapl";
+            labelint.innerText = botaoint.descricao;
+
+            divbuttonint.appendChild(labelint);
+            divcontainerbutton.appendChild(divbuttonint);
+
+            liinterna.appendChild(divcontainerbutton);
+            listainterna.appendChild(liinterna);
+            li.appendChild(divexterna);
+        });
+
+        olprincipal.appendChild(li);
+        divprincipal.appendChild(olprincipal);
     });
+
+    ocultarbotoesinternos();
 }
 
 function containerBotaoAtivo(obj){
@@ -241,28 +196,42 @@ function containerBotaoAtivo(obj){
     return condicao;
 }
 
-function buscarUserName(obj){
-    fetch("/home/userlogin", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
+function getBotoesAplMenu(){
+    CONSUL.consultar(`/home/getBotoesAplMenu`)
+    .then(data => {
+        let botoes = [];
+
+        for (const idModulo in data) {
+            const dados = data[idModulo];
+
+            let botoesint    = [];
+            dados.forEach(dado =>{
+                botoesint.push({descricao:dado.descricao, codapl:dado.id});
+            });
+
+            botoes.push({menu:dados[0].modulo.descricao, botoesinternos:botoesint});
         }
-    })
-    .then(response =>{return response.text()})
-    .then(data => { form(obj).textContent = data; })    
-    .catch(error => alert(error.message));
+
+        criarBotaoEsterno("dintensint",botoes);
+    });
 }
 
-function buscarUserId(obj){
-    fetch("/home/userid", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response => {return response.text()})
-    .then(data => { form(obj).textContent = data })
-    .catch(error => alert(error.message));
+function buscarUserName(){
+    CONSUL.consultar(`/home/userlogin`)
+    .then(data => {
+        form("ideusu").value      = data;
+        form("huser").textContent = data;
+
+        //getBotoesAplMenu();
+    });
+}
+
+function buscarUserId(){
+    CONSUL.consultar(`/home/userid`)
+    .then(data => {
+        form("wcodfunc").value  = data;
+        form("lid").textContent = data;
+    });
 }
 
 function valorMetaMensal(){

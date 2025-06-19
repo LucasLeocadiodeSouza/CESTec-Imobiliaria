@@ -2,6 +2,8 @@ package com.cestec.cestec.repository.custom;
 
 import java.util.List;
 import org.springframework.stereotype.Repository;
+
+import com.cestec.cestec.model.aplicacaoDTO;
 import com.cestec.cestec.model.contratoDTO;
 import com.cestec.cestec.model.pcp_cliente;
 import com.cestec.cestec.model.pcp_proprietario;
@@ -128,6 +130,17 @@ public class prjContratosCustomRepository {
         if(codcliente != null && codcliente != 0){
             q.setParameter("codcliente", codcliente);
         }
+
+        return q.getResultList();
+    }
+
+    public List<aplicacaoDTO> buscarModulosApl(){
+        String query = "SELECT new com.cestec.cestec.model.aplicacaoDTO( " +
+                       "sp_apl.id, sp_apl.descricao, sp_mod.id, sp_mod.descricao, sp_apl.arquivo_inic) " +
+                       "FROM sp_aplicacoes sp_apl " + 
+                       "JOIN sp_apl.modulo sp_mod ";
+
+        var q = em.createQuery(query, aplicacaoDTO.class);
 
         return q.getResultList();
     }

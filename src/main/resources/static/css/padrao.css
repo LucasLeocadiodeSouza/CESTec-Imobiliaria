@@ -277,3 +277,7 @@ table {
 
 .mouseovercolor   {background-color: rgb(176, 193, 223)}
 .clicktableborder {border: solid #1c1c1c !important;}
+
+.itensint li, ul {list-style-type: none}
+.itensint ol{padding: 0;}
+.itensint {max-height: 100%; overflow-x: hidden; flex-grow: 1; overscroll-behavior-y: none;}
