@@ -14,12 +14,12 @@ window.addEventListener("load", function () {
     buscarUserName();
 });
 
-import { GridForm_init }     from "./modules/gridForm.js";
-import { DMFForm_init }      from "./modules/dmfForm.js";
-import { abaForm_init }      from "./modules/abaForm.js";
-import { consulForm_init }   from "./modules/consulForm.js";
-import { elementsForm_init } from "./modules/elementsForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay } from "./modules/utils.js";
+import { GridForm_init }     from "../modules/gridForm.js";
+import { DMFForm_init }      from "../modules/dmfForm.js";
+import { abaForm_init }      from "../modules/abaForm.js";
+import { consulForm_init }   from "../modules/consulForm.js";
+import { elementsForm_init } from "../modules/elementsForm.js";
+import { imgFormat,form,desabilitaCampo,setDisplay } from "../modules/utils.js";
 
 var ABA,DMFDiv,CONSUL,METAS_GRID;
 

@@ -98,6 +98,7 @@ export function GridForm_init(){
         if(!document.getElementById(this.id)) throw new Error("Objeto da grid " + this.id + " não encontrado.");
 
         if(document.getElementById(this.id + "res")) document.getElementById(this.id + "res").remove();
+        if(document.getElementById("d" + this.id + "res")) document.getElementById("d" + this.id + "res").remove();
     }
 
     //carregar dados para a grid

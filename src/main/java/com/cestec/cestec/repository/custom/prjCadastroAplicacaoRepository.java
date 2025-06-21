@@ -15,17 +15,10 @@ public class prjCadastroAplicacaoRepository {
     }
 
     public List<sp_aplicacoes> buscarAplicacoes(Integer codapl, Integer codmodel, String ideusu){
-        String query     = "SELECT apl FROM sp_aplicacoes apl WHERE apl.ideusu = :ideusu";
-        boolean condicao =  false;
+        String query     = "SELECT apl FROM sp_aplicacoes apl WHERE apl.ideusu = :ideusu ORDER BY apl.modulo.id";
 
-        if(codapl != 0 && codapl != null){
-            query += (condicao?" AND ":"") +  "apl.id = :codapl ";
-            condicao = true;
-        }
-        if(codmodel != 0 && codmodel != null){
-            query += (condicao?" AND ":"") +  "apl.idmodulos = :codmodel ";
-            condicao = true;
-        }
+        if(codapl   != 0 && codapl   != null) query += " AND apl.id = :codapl ";
+        if(codmodel != 0 && codmodel != null) query += " AND apl.modulo.id = :codmodel";
 
         var q = em.createQuery(query, sp_aplicacoes.class);
         q.setParameter("ideusu", ideusu);

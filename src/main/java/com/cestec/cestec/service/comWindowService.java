@@ -104,6 +104,4 @@ public class comWindowService {
                 aplicacao -> aplicacao.getModulo().getId()
             ));
     }
-
-    
 }

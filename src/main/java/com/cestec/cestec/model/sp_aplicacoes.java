@@ -1,6 +1,9 @@
 package com.cestec.cestec.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
+
+import org.hibernate.annotations.ManyToAny;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,7 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,16 +29,19 @@ public class sp_aplicacoes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="idmodulos", nullable = false)
     private sp_modulos modulo;
 
+    @ManyToOne
+    @JoinColumn(name="role", nullable = false)
+    private sp_roleacess role;
+    
     private String  descricao;
 
     @Column(length = 45)
     private String  arquivo_inic;
 
-    private Date    datregistro;
-    private String  ideusu;
-
+    private LocalDate datregistro;
+    private String    ideusu;
 }

@@ -263,9 +263,10 @@ table {
 
 .h100 {height: 100%;}
 
-.divtableres {height: 100%; overflow-y: auto;}
+.divtableres {height: calc(100% - 42px); overflow-y: auto;}
 
 .tablecolun {border: 1px solid rgb(0, 0, 0); border-collapse: collapse;}
+.tablecolun th {text-wrap: nowrap;}
 
 .tdalign-esq          {text-align: left;}
 .tdalign-cen          {text-align: center;}

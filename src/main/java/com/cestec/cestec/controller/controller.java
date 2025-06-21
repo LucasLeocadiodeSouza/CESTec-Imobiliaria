@@ -5,12 +5,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.cestec.cestec.repository.generico.aplicacoesRepository;
+import com.cestec.cestec.repository.generico.modulosRepository;
 
 @Controller
 public class controller {
 
     @Autowired
     private aplicacoesRepository aplicacoesrepo;
+
+    @Autowired
+    private modulosRepository modulosrepo;
 
     @GetMapping("/home") 
     public String home() {
@@ -19,7 +23,13 @@ public class controller {
 
     @GetMapping("/buscarPath/{codapl}")
     public String adapterGetHtmlFile(@PathVariable Integer codapl) {
-        return aplicacoesrepo.findByCodApl(codapl).getArquivo_inic();
+        String aplicacao = aplicacoesrepo.findByCodApl(codapl).getArquivo_inic();
+
+        Integer modulo = aplicacoesrepo.findByCodApl(codapl).getModulo().getId();
+
+        String indmodulo = modulosrepo.findByIdModulos(modulo).getInd();
+
+        return indmodulo + "/" + aplicacao;
     }
 
     @GetMapping("/login") 

@@ -64,3 +64,22 @@ export function setDisplay(obj, display){
 export function getDisplay(obj){
     return document.getElementById(obj).style.display;
 }
+
+export function fillSelect(id,options,selectedFirst){
+    const select = document.getElementById(id);
+
+    if(!select) throw new Error("Ocorreu um erro ao tentar buscar o elemento " + id);
+    if(select.tagName !== "SELECT") throw new Error("O elemento " + id + " é diferente do tipo permitido [select]")
+
+    if(!options) return;
+    
+    options.forEach(option =>{
+       const option_ele      = document.createElement("option");
+       option_ele.textContent = option.descricao;
+       option_ele.value       = option.id;
+
+       select.appendChild(option_ele);
+    });
+
+    if(selectedFirst) select.value = options[0].id;
+}

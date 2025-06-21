@@ -1,7 +1,7 @@
 <!-- 
     Dev: Lucas Leocadio de Souza
-    Data: 19/02/25
-    IM: 00011
+    Data: 15/06/25
+    IM: 00008
 -->
 
 <!DOCTYPE html>
@@ -13,8 +13,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-    <title>Cadastro de Proprietario</title>
-    <script type="module" src="/js/wcr002.js" defer></script>
+    <title>Cadastro de Corretores</title>
+    <script type="module" src="/js/gdc/wgdc002.js" defer></script>
     
 <style>
     .ppp         {width: 32px;}
@@ -34,7 +34,7 @@
                   text-align: right;}
 
     .labelmodal {font-weight: 600;
-                 width: 130px;
+                 width: 120px;
                  text-align: right;}
 
     .grid {width: 99%;
@@ -50,30 +50,30 @@
         background: transparent;
     }
 
-    #dmodalf_proprietario {width:  600px;
-                           height: 400px;
-                           opacity: 1;
-                           background-color: aliceblue;
-                           box-shadow: 0 0 .4vw rgba(0,0,0,0.5);}
+    #dmodalf_cliente {width: 600px;
+                      height: 380px;
+                      opacity: 1;
+                      background-color: aliceblue;
+                      box-shadow: 0 0 .4vw rgba(0,0,0,0.5);}
 
     body {background-color: #1d3561;}
 </style>
 </head>
 <body>
-    <div class="gen" style="background-color: #dedede; height: 100vh; display: flex; justify-content: center; padding: 15px;flex-direction: column;justify-content: flex-start;">
+    <div class="gen" style="background-color: #dedede; height: 100vh; display: flex; justify-content: center; padding: 15px;flex-direction: column;justify-content: flex-start;">`
         <input type="hidden" id="ideusu" name="ideusu">
-        
+
         <div class="titulo">
-            <h2>Cadastro de proprietarios</h2>
+            <h2>Cadastro de Corretores</h2>
         </div>
 
         <div id='abas'></div>
 
         <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
             <div class='if'>
-                <label class="labelfiltro">Código do Proprietario: </label>
-                <input type="text" id="codproprietario" name="codproprietario" class="ppp">
-                <input type="text" id="descproprietario" name="descproprietario" class="large" disabled>
+                <label class="labelfiltro">Código do Corretor: </label>
+                <input type="text" id="codcorretor"  name="codcorretor"  class="ppp">
+                <input type="text" id="desccorretor" name="desccorretor" class="large" disabled>
             </div>
 
             <div  class='if' style="display: flex; height: auto;">
@@ -85,34 +85,34 @@
         </fieldset>
         
         <div class='if' style="display: flex; margin-left: 5px;">                            
-            <div id="bimprimir"  class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
-            <div id="binserir"   class="button" value="Inserir"  data-icon="/icons/incluir.png"></div>
+            <div id="bimprimir" class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
+            <div id="binserir"  class="button" value="Inserir"  data-icon="/icons/incluir.png"></div>
         </div>
 
-        <div id="tabela_propri"></div>
+        <div id="tabela_corretores"></div>
 
         <!--  MODAL -->
-        <div id="dmodalf_proprietario">
-            <input type="hidden" id="mcodproprietario" name="mcodproprietario">
-            
+        <div id="dmodalf_cliente">
             <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
                 <h2><span id="stitulo" name="stitulo"></span></h2>
                 <span     id="sacao"   name="sacao" style="display: none"></span>
             </div>
+            
+            <input type="hidden" id="mcodcliente" name="mcodcliente">
 
             <div class='dmf'>
-                <label class="labelmodal">Proprietario: </label>
+                <label class="labelmodal">Cliente: </label>
                 <input type="text" id="mnome"  name="mnome"  class="large">
             </div>
-                
+
             <div class='dmf'>
-                <label class="labelmodal">CPF: </label>
+                <label class="labelmodal">Documento: </label>
                 <input type="text" id="mcpf"  name="mcpf"  class="medium">
             </div>
 
             <div class='dmf'>
                 <label class="labelmodal">Telefone: </label>
-                <input type="text" id="mddd"  name="mddd" maxlength="3" class="ppp">
+                <input type="text" id="mddd"  name="mddd"  maxlength="3" class="ppp">
                 <input type="text" id="mtelefone" name="mtelefone" class="medium">
             </div>
 
@@ -143,12 +143,12 @@
                 <label class="labelmodal">Cidade: </label>
                 <input type="text" id="mcidade"  name="mcidade"  class="medium"> &nbsp;
             
-                <label class="labelmodal" style="width: auto !important;">UF:</label>
+                <label class="labelmodal" style="width: auto !important;">UF: </label>
                 <input type="text" id="muf"  name="muf"  class="ppp">
             </div>
 
             <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
-                <div id="bcadastro" class="button" value="Cadastrar" data-icon="/icons/cadastro.png"></div>
+                <div id="bcadastro" name="bcadastro" class="button" value="Cadastrar" data-icon="/icons/cadastro.png"></div>
             </div>
         </div>
 

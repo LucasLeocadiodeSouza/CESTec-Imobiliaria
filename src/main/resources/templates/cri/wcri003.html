@@ -1,7 +1,7 @@
 <!-- 
     Dev: Lucas Leocadio de Souza
-    Data: 15/06/25
-    IM: 00008
+    Data: 19/02/25
+    IM: 00007
 -->
 
 <!DOCTYPE html>
@@ -13,8 +13,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-    <title>Cadastro de Corretores</title>
-    <script type="module" src="/js/wcr008.js" defer></script>
+    <title>Cadastro de Cliente</title>
+    <script type="module" src="/js/cri/wcri003.js" defer></script>
     
 <style>
     .ppp         {width: 32px;}
@@ -64,16 +64,16 @@
         <input type="hidden" id="ideusu" name="ideusu">
 
         <div class="titulo">
-            <h2>Cadastro de Corretores</h2>
+            <h2>Cadastro de Clientes</h2>
         </div>
 
         <div id='abas'></div>
 
         <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
             <div class='if'>
-                <label class="labelfiltro">Código do Corretor: </label>
-                <input type="text" id="codcorretor"  name="codcorretor"  class="ppp">
-                <input type="text" id="desccorretor" name="desccorretor" class="large" disabled>
+                <label class="labelfiltro">Código do Cliente: </label>
+                <input type="text" id="codcliente"  name="codcliente"  class="ppp">
+                <input type="text" id="desccliente"  name="desccliente" class="large" disabled>
             </div>
 
             <div  class='if' style="display: flex; height: auto;">
@@ -89,7 +89,7 @@
             <div id="binserir"  class="button" value="Inserir"  data-icon="/icons/incluir.png"></div>
         </div>
 
-        <div id="tabela_corretores"></div>
+        <div id="tabela_clientes"></div>
 
         <!--  MODAL -->
         <div id="dmodalf_cliente">

@@ -161,8 +161,11 @@ function criarBotaoEsterno(divpai,botoes){
             divbuttonint.id = "bim" + botaoint.descricao.replace(/\s+/g, '').toLowerCase()  + "int";
             divbuttonint.className = "botoesinternosapl bimmenu botaointerno";
 
-            divbuttonint.addEventListener("click", ()=>{ 
-                window.location.href = "/buscarPath/" + botaoint.codapl;
+            console.log(botaoint);
+
+            divbuttonint.addEventListener("click", ()=>{
+                window.open("/buscarPath/" + botaoint.codapl, "_blank", "noopener");
+                //window.location.href = "/buscarPath/" + botaoint.codapl;
             });
 
 

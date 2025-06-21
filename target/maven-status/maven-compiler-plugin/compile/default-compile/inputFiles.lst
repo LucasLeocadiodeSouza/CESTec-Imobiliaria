@@ -23,6 +23,7 @@ C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\infra\pag
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\infra\security\config.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\infra\security\SecurityFilter.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\infra\security\tokenService.java
+C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\aplicacaoDTO.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\cargo.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\contasAPagar\Banco.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\contasAPagar\BoletoRegistrado.java
@@ -56,6 +57,7 @@ C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\sec
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\securityLogin\userRole.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\sp_aplicacoes.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\sp_modulos.java
+C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\sp_roleacess.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\clienteRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\contratoRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\corretorRepository.java
@@ -65,6 +67,7 @@ C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repositor
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\generico\funcionarioRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\generico\LibAcessoRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\generico\modulosRepository.java
+C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\generico\roleacessRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\imovelRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\metaRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\pagamento\contaRepository.java

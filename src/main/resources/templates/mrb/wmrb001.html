@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
     <title>Cadastro de Aplicacão</title>
-    <script type="module" src="/js/wmrb001.js" defer></script>
+    <script type="module" src="/js/mrb/wmrb001.js" defer></script>
     
 <style>
     .ppp         {width: 32px  !important;}
@@ -80,8 +80,9 @@
         </fieldset>
         
         <div class='if' style="display: flex; margin-left: 5px;">                            
-            <div id="bimprimir" name="bimprimir" class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
-            <div id="binserir"  name="binserir"  class="button" value="Inserir"  data-icon="/icons/incluir.png"></div>
+            <div id="bliberar"   name="bliberar"   class="button" value="Liberar"  data-icon="/icons/plus_icon.png"></div>
+            <div id="bcadastrar" name="bcadastrar" class="button" value="Cadastrar"  data-icon="/icons/plus_icon.png"></div>
+            <div id="bimprimir"  name="bimprimir"  class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
         </div>
 
         <div id="tabela_libacess"></div>
@@ -102,8 +103,8 @@
 
             <div class='dmf'>
                 <label class="labelmodal">Código da aplicacão: </label>
-                <input type="text" id="mcodapl"  name="mcodapl"  class="ppp">
-                <input type="text" id="mdescapl" name="mdescapl" class="large" disabled>
+                <input type="text" id="mcodapl"     name="mcodapl"     class="ppp">
+                <input type="text" id="mdescapllib" name="mdescapllib" class="large" disabled>
             </div>
 
             <div class='dmf'>
@@ -117,6 +118,8 @@
         </div>
 
         <div id="dmodalf_cadapl">
+            <input type="hidden" id="hcodapl" name="hcodapl">
+
             <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
                 <h2><span id="stitulocadcpl" name="stitulocadcpl"></span></h2>
                 <span     id="sacaocadcpl"   name="sacaocadcpl" style="display: none"></span>
@@ -124,7 +127,7 @@
 
             <div class='dmf'>
                 <label class="labelmodal">Descricão: </label>
-                <input type="text" id="mdescapl"     name="mdescapl"     class="large">
+                <input type="text" id="mdescapl" name="mdescapl" class="large">
             </div>
 
             <div class='dmf'>
@@ -135,12 +138,12 @@
 
             <div class='dmf'>
                 <label class="labelmodal">Restringir para role: </label>
-                <select id="mrestrole" name="mrestrole" class="medium"></select>
+                <select id="mrestrole" name="mrestrole" class="Intermedium"></select>
             </div>
 
             <div class='dmf'>
                 <label class="labelmodal">Arquivo inicializador: </label>
-                <input type="text" id="marqinit"  name="marqinit"  class="p">
+                <input type="text" id="marqinit"  name="marqinit"  class="medium">
             </div>
 
             <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
