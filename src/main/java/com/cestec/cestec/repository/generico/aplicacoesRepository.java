@@ -29,4 +29,7 @@ public interface aplicacoesRepository extends JpaRepository<sp_aplicacoes, Integ
 
     @Query("SELECT a FROM sp_aplicacoes a ORDER BY a.modulo.id")
     List<sp_aplicacoes> findAllOrderedByModulo();
+
+    @Query("SELECT a FROM sp_aplicacoes a WHERE a.id = :id")
+    sp_aplicacoes findByIdApl(@Param("id") Integer id);
 }

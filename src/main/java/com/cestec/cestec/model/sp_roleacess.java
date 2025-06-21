@@ -1,11 +1,14 @@
 package com.cestec.cestec.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,17 +17,16 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "sp_modulos")
-public class sp_modulos {
+@Table(name = "sp_roleacess")
+public class sp_roleacess {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String  descricao;
-    private Date    datregistro;
-    private String  ideusu;
-    private String  ind;
+    private LocalDate datregistro;
+    private String    ideusu;
 }

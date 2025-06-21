@@ -4,20 +4,20 @@
     IM: 00007
 */
 window.addEventListener("load", function () {
-    wcr001_init();
+    wcri001_init();
 });
 
-import { GridForm_init }   from "./modules/gridForm.js";
-import { DMFForm_init }    from "./modules/dmfForm.js";
-import { abaForm_init }    from "./modules/abaForm.js";
-import { consulForm_init } from "./modules/consulForm.js";
-import { elementsForm_init } from "./modules/elementsForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init } from "./modules/utils.js";
+import { GridForm_init }   from "../modules/gridForm.js";
+import { DMFForm_init }    from "../modules/dmfForm.js";
+import { abaForm_init }    from "../modules/abaForm.js";
+import { consulForm_init } from "../modules/consulForm.js";
+import { elementsForm_init } from "../modules/elementsForm.js";
+import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init } from "../modules/utils.js";
 
 var IMOVEIS_GRID;
 var DMFDiv, ABA, CONSUL;
 
-function wcr001_init(){
+function wcri001_init(){
     elementsForm_init();
 
     IMOVEIS_GRID               = new GridForm_init();

@@ -24,11 +24,11 @@ export function DMFForm_init(){
 
             divfechar.className   = "dmf closediv";
             botaofechar.className = "bpc closediv";
-            botaofechar.id        = "bclose";
+            botaofechar.id        = "bclose" + div;
 
             const imgclose = document.createElement("img");
             imgclose.src   = "/icons/fechartela.png";
-            imgclose.id	   = "imgclose";
+            imgclose.id	   = "imgclose"+ div;
             imgclose.style.width  = "80%";
             imgclose.style.height = "80%";
             imgclose.style.margin = "0px";

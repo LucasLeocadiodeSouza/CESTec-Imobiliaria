@@ -14,31 +14,31 @@ public class LibAcessoId implements Serializable {
     @Column(name = "idusu")
     private Integer idUsuario;
     
-    @Column(name = "codapl")
-    private Integer codAplicacao;
+    @Column(name = "role")
+    private Integer role;
 
     public LibAcessoId() {}
     
-    public LibAcessoId(Integer idUsuario, Integer codAplicacao) {
+    public LibAcessoId(Integer idUsuario, Integer role) {
         this.idUsuario = idUsuario;
-        this.codAplicacao = codAplicacao;
+        this.role      = role;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         
-        LibAcessoId that = (LibAcessoId) o;
+        LibAcessoId that = (LibAcessoId) obj;
         
         if (!idUsuario.equals(that.idUsuario)) return false;
-        return codAplicacao.equals(that.codAplicacao);
+        return role.equals(that.role);
     }
 
     @Override
     public int hashCode() {
         int result = idUsuario.hashCode();
-        result = 31 * result + codAplicacao.hashCode();
+        result = 31 * result + role.hashCode();
         return result;
     }
 }

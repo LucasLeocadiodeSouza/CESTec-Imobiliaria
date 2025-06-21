@@ -92,8 +92,7 @@ public class pcp_proprietarioService {
             proprietarioAnalise.setNumtel(pcp_proprietario.getNumtel());
             proprietarioAnalise.setCriado_em(proprietarioAnalise.getCriado_em() == null ? LocalDateTime.now() : proprietarioAnalise.getCriado_em());
             proprietarioAnalise.setAtualizado_em(LocalDateTime.now());
-            if (proprietarioAnalise.getCodproprietario() == null)
-                proprietarioAnalise.setId_usuario(pcp_proprietario.getId_usuario());
+            if (proprietarioAnalise.getCodproprietario() == null) proprietarioAnalise.setId_usuario(pcp_proprietario.getId_usuario());
 
             proprietarioRepository.save(proprietarioAnalise);
             return ResponseEntity.ok("OK");
