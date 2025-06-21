@@ -23,7 +23,7 @@ function iniciarEventos() {
     METAS_GRID               = new GridForm_init();
     METAS_GRID.id            = "tabela_metas";
     METAS_GRID.columnName    = "codmeta,codcorretor,nome,vlrmeta,periodo,situacao,datiniciometa,datfinalmeta";
-    METAS_GRID.columnLabel   = "Cód. Meta,Cód. Corretor,Nome,Meta (R$),Periodo,Situacão";
+    METAS_GRID.columnLabel   = "Cód. Meta,Cód. Corretor,Nome,Meta (R$),Periodo,Situação";
     METAS_GRID.columnWidth   = "10,10,35,10,20,15";
     METAS_GRID.columnAlign   = "c,c,e,d,c,c";
     METAS_GRID.mousehouve    = true;
@@ -32,7 +32,7 @@ function iniciarEventos() {
 
     ABA      = new abaForm_init();
     ABA.id   = "abas";
-    ABA.name = "Consulta,Manutencão";
+    ABA.name = "Consulta,Manutenção";
     ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
     ABA.createAba();
 

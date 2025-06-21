@@ -161,12 +161,9 @@ function criarBotaoEsterno(divpai,botoes){
             divbuttonint.id = "bim" + botaoint.descricao.replace(/\s+/g, '').toLowerCase()  + "int";
             divbuttonint.className = "botoesinternosapl bimmenu botaointerno";
 
-            console.log(botaoint);
-
             divbuttonint.addEventListener("click", ()=>{
                 if(botaoint.codapl == "2"){
-                    window.open("/buscarPath/" + botaoint.codapl, "Consulta de Tabelas", "_blank,width=2000,height=650");
-                    console.log("aa");
+                    window.open("/buscarPath/" + botaoint.codapl, "Consulta de Tabelas", "_blank,width=1300,height=680");
                 }else{
                     window.open("/buscarPath/" + botaoint.codapl, "_blank", "noopener");
                     //window.location.href = "/buscarPath/" + botaoint.codapl;

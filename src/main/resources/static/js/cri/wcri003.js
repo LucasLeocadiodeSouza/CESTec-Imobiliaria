@@ -23,7 +23,7 @@ function iniciarEventos() {
     CLIENTES_GRID               = new GridForm_init();
     CLIENTES_GRID.id            = "tabela_clientes";
     CLIENTES_GRID.columnName    = "codcliente,nome,documento,endereco,numtel,email,endereco_logradouro,endereco_cidade,endereco_numero,endereco_bairro,endereco_uf,endereco_cep";
-    CLIENTES_GRID.columnLabel   = "Cod. Cliente,Nome,Documento,Endereco,Telefone";
+    CLIENTES_GRID.columnLabel   = "Cod. Cliente,Nome,Documento,Endereço,Telefone";
     CLIENTES_GRID.columnWidth   = "10,40,10,30,10";
     CLIENTES_GRID.columnAlign   = "c,e,c,e,c";
     CLIENTES_GRID.mousehouve    = true;
@@ -32,7 +32,7 @@ function iniciarEventos() {
 
     ABA      = new abaForm_init();
     ABA.id   = "abas";
-    ABA.name = "Consulta,Manutencão";
+    ABA.name = "Consulta,Manutenção";
     ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
     ABA.createAba();
 

@@ -1,13 +1,9 @@
 package com.cestec.cestec.service.pagamento;
 
 import java.text.ParseException;
-
 import javax.swing.text.MaskFormatter;
-
 import com.cestec.cestec.infra.pagamento.CobrancaInput;
-import com.cestec.cestec.model.contasAPagar.Cobranca;
 import com.cestec.cestec.model.contasAPagar.Fatura;
-
 import br.com.caelum.stella.boleto.Beneficiario;
 import br.com.caelum.stella.boleto.Boleto;
 import br.com.caelum.stella.boleto.Datas;
