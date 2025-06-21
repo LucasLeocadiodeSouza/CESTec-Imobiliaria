@@ -1,0 +1,116 @@
+<!-- 
+    Dev: Lucas Leocadio de Souza
+    Data: 15/06/25
+    IM: 00021
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/padrao.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
+    <title>Consulta de Tabelas</title>
+    <script type="module" src="/js/mrb/wmrb002.js" defer></script>
+    
+<style>
+    .ppp         {width: 32px  !important;}
+    .p           {width: 60px  !important;}
+    .medium      {width: 120px !important;}
+    .Intermedium {width: 180px !important;}
+    .large       {width: 240px !important;}
+    .extralarge  {width: 300px !important;}
+
+    .fieldset {margin: 10px;
+               display: flex;
+               justify-content: flex-start;
+               margin-top: 0px;}
+
+    .labelmodal {font-weight: 600; 
+                 width: auto;
+                 text-align: left;}
+
+    .fieldsetPropor {display: flex; flex-direction: column; margin-block: 15px; width: auto;}
+
+    .divisao {margin-block: 5px; width: auto;}
+
+    .flexcolumn {display: flex; flex-direction: column;}
+    .flexcolumn fieldset {padding: 0;}
+
+    .flexrow {display: flex; flex-direction: row;}
+
+    .fieldfiltro {height: 14%; padding: 5px !important; width: 96%;}
+
+    .fielddesctabelas {height: 100%; overflow-y: hidden;}
+
+    .fieldindex { overflow-y: hidden;}
+
+    #table_tabelasbanco, #table_colunasbanco, #table_indextabela {margin: 0;}
+
+    .esquerda {width: 25%; height: 100%;}
+    .direita {width: 75%; height: 100%;}
+
+    .g5 {gap: 5px;}
+
+    .w100 {width: 100%;}
+    .h100 {height: 100%;}
+    .h60 {height: 60%;}
+    .h40 {height: 40%;}
+
+    .container-princ {height: calc(100% - 33px);}
+
+    body {background-color: #1d3561;}
+</style>
+</head>
+<body>
+    <div class="gen" style="background-color: #dedede; height: 100vh; display: flex; justify-content: center; padding: 15px;flex-direction: column;justify-content: flex-start;">
+        <div class="titulo">
+            <h2>Consulta de Tabelas</h2>
+        </div>
+
+        <div class="flexrow w100 g5 container-princ">
+            <div class="esquerda">
+                <div class="flexcolumn h100">
+                    <fieldset class="fieldsetPropor fieldfiltro">
+                        <div class='divisao'>
+                            <label class="labelmodal">Nome da Tabela: </label>
+                            <input type="text" id="codtable"  name="codtable"  class="large">
+                        </div>
+
+                        <div class='divisao' style="display: flex; height: auto;">             
+                            <input type="button" id="bbuscar" name="bbuscar" value="Buscar" style="width: 55px; cursor: pointer;">
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="fieldsetPropor fielddesctabelas">
+                        <legend>Tabelas</legend>
+
+                        <div id="table_tabelasbanco"></div>
+                    </fieldset>
+                </div>
+            </div>
+
+            <div class="direita">
+                <div class="flexcolumn h100">
+                    <fieldset class="fieldsetPropor h60">
+                        <legend>Colunas</legend>
+
+                        <div id="table_colunasbanco"></div>
+                    </fieldset>
+
+                    <fieldset class="fieldsetPropor h40 fieldindex">
+                        <legend>Indexs</legend>
+
+                        <div id="table_indextabela"></div>
+                    </fieldset>
+                </div>
+            </div>
+        
+        </div>
+
+    </div>
+</body>
+</html>
