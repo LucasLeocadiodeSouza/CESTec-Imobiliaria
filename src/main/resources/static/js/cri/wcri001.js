@@ -23,7 +23,7 @@ function wcri001_init(){
     IMOVEIS_GRID               = new GridForm_init();
     IMOVEIS_GRID.id            = "tabela_CTO";
     IMOVEIS_GRID.columnName    = "codimovel,codproprietario,nome,tipo,status,preco,negociacao,endereco,area,quartos,vlrcondominio,datinicontrato,codtipo,codnegoc";
-    IMOVEIS_GRID.columnLabel   = "Cód.Imovel,Cod. Prop.,Nome,Tipo,Situacao,Valor (R$),Contrato";
+    IMOVEIS_GRID.columnLabel   = "Cód.Imovel,Cod. Prop.,Nome,Tipo,Situação,Valor (R$),Contrato";
     IMOVEIS_GRID.columnWidth   = "7,8,33,17,16,8,10";
     IMOVEIS_GRID.columnAlign   = "c,c,e,c,c,d,c";
     IMOVEIS_GRID.mousehouve    = false;
@@ -32,7 +32,7 @@ function wcri001_init(){
 
     ABA      = new abaForm_init();
     ABA.id   = "abas";
-    ABA.name = "Consulta,Manutencão";
+    ABA.name = "Consulta,Manutenção";
     ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
     ABA.createAba();
 

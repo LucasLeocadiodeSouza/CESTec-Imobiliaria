@@ -4,11 +4,11 @@
     IM: 00008
 */
 window.addEventListener("load", function () {
-    createGrid("tabela_boletos",
-               "id,nmrBoleto,codconvenio,certificado,nome,situacao,vlrboleto",
-               "Código,Número do Boleto,Número do Convênio,CNPJ/CPF,Nome,Situacão,Valor (R$)",
-               "10,10,10,20,20,10,10",
-               "auto");
+    // createGrid("tabela_boletos",
+    //            "id,nmrBoleto,codconvenio,certificado,nome,situacao,vlrboleto",
+    //            "Código,Número do Boleto,Número do Convênio,CNPJ/CPF,Nome,Situacão,Valor (R$)",
+    //            "10,10,10,20,20,10,10",
+    //            "auto");
     
     iniciarEventos();
     buscarUserName();
@@ -21,7 +21,7 @@ import { consulForm_init }   from "../modules/consulForm.js";
 import { elementsForm_init } from "../modules/elementsForm.js";
 import { imgFormat,form,desabilitaCampo,setDisplay } from "../modules/utils.js";
 
-var ABA,DMFDiv,CONSUL,METAS_GRID;
+var ABA,DMFDiv,CONSUL,PGA_GRID;
 
 function iniciarEventos() {
     controlaTela("inicia");

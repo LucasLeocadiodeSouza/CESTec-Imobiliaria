@@ -35,7 +35,7 @@ function iniciarEventos() {
     
     ABA      = new abaForm_init();
     ABA.id   = "abas";
-    ABA.name = "Consulta,Manutencão";
+    ABA.name = "Consulta,Manutenção";
     ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
     ABA.createAba();
 

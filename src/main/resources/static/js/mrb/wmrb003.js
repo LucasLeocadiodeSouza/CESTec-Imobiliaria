@@ -1,7 +1,7 @@
 /* 
     Dev: Lucas Leocadio de Souza
-    Data: 15/06/25
-    IM: 00021
+    Data: 21/06/25
+    IM: 00023
 */
 window.addEventListener("load", function () {
     wmrb001_init();
@@ -14,35 +14,25 @@ import { consulForm_init } from "../modules/consulForm.js";
 import { elementsForm_init } from "../modules/elementsForm.js";
 import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init,fillSelect } from "../modules/utils.js";
 
-var LIBACESS_GRID,CADAPL_GRID;
+var USUARIO_GRID;
 var DMFDiv, ABA, CONSUL;
 
 function wmrb001_init(){
     elementsForm_init();
 
-    LIBACESS_GRID               = new GridForm_init();
-    LIBACESS_GRID.id            = "tabela_libacess";
-    LIBACESS_GRID.columnName    = "codacess,codapl,descapl,usuario,data";
-    LIBACESS_GRID.columnLabel   = "Código acesso,Código Aplicação,Aplicação,Usuário,Data";
-    LIBACESS_GRID.columnWidth   = "15,10,35,20,20";
-    LIBACESS_GRID.columnAlign   = "c,c,e,e,c";
-    LIBACESS_GRID.mousehouve    = false;
-    LIBACESS_GRID.destacarclick = false;
-    LIBACESS_GRID.createGrid();
-
-    CADAPL_GRID               = new GridForm_init();
-    CADAPL_GRID.id            = "tabela_APL";
-    CADAPL_GRID.columnName    = "usuario,mcodmod,mdescmod,codapl,descapl,data,_role,_arqu_inic";
-    CADAPL_GRID.columnLabel   = "Usuário,Código Mod.,Módulo Referente,Código Aplicação,Aplicação,Data";
-    CADAPL_GRID.columnWidth   = "12,12,17,17,30,12";
-    CADAPL_GRID.columnAlign   = "e,c,c,c,e,c";
-    CADAPL_GRID.mousehouve    = false;
-    CADAPL_GRID.destacarclick = false;
-    CADAPL_GRID.createGrid();
+    USUARIO_GRID               = new GridForm_init();
+    USUARIO_GRID.id            = "tabela_user";
+    USUARIO_GRID.columnName    = "codacess,codapl,descapl,usuario,data";
+    USUARIO_GRID.columnLabel   = "Código acesso,Código Aplicacão,Aplicacão,Usuário,Data";
+    USUARIO_GRID.columnWidth   = "15,10,35,20,20";
+    USUARIO_GRID.columnAlign   = "c,c,e,e,c";
+    USUARIO_GRID.mousehouve    = false;
+    USUARIO_GRID.destacarclick = false;
+    USUARIO_GRID.createGrid();
 
     ABA      = new abaForm_init();
     ABA.id   = "abas";
-    ABA.name = "Liberação de Acesso,Cadastro de Aplicação";
+    ABA.name = "Liberacao de Acesso,Cadastro de Aplicacão";
     ABA.icon = "/icons/acess_icon.png,/icons/clips_icon.png";
     ABA.createAba();
 
@@ -67,7 +57,6 @@ function iniciarEventos() {
 
     event_click("bnovabusca");
     event_click("bbuscar");
-    event_click("bliberar");
     event_click("bcadastrar");
     event_click("blimpar");
     event_click("bcadastroapl");
@@ -88,15 +77,6 @@ function event_click_table(){
 
     //     DMFDiv.openModal("dmodalf_libacess");
     // };
-
-    CADAPL_GRID.click_table = ()=>{
-        const valoresLinha = CADAPL_GRID.getRowNode(event.target.closest('tr'));
-        controlaTela("modalcadasapl");
-
-        preencherDadosModalCadasApl(valoresLinha)
-
-        DMFDiv.openModal("dmodalf_cadapl");
-    };
 }
 
 function event_click(obj) {
@@ -116,32 +96,23 @@ function event_click(obj) {
             controlaTela("inicia");
         });
     }
-    if(obj == 'bliberar'){
-        form(obj).addEventListener("click", function () {
-            form("sacaolibacess").innerText   = "Inserindo";
-            form("stitulolibacess").innerText = "Liberar Acesso Usuário - " + form("sacaolibacess").innerText;
-            
-            controlaTela("modallibacess");
-            DMFDiv.openModal("dmodalf_libacess");
-        });
-    }
     if(obj == 'bcadastrar'){
         form(obj).addEventListener("click", function () {
-            form("sacaocadcpl").innerText   = "Inserindo";
-            form("stitulocadcpl").innerText = "Cadastrar Aplicação - " + form("sacaocadcpl").innerText;
+            // form("sacaocadcpl").innerText   = "Inserindo";
+            // form("stitulocadcpl").innerText = "Cadastrar Aplicacão - " + form("sacaocadcpl").innerText;
 
-            buscarRoleAcess(1);
+            // buscarRoleAcess(1);
 
-            controlaTela("modalcadasapl");
-            DMFDiv.openModal("dmodalf_cadapl");
+            // controlaTela("modalcadasapl");
+            // DMFDiv.openModal("dmodalf_cadapl");
             
         });
     }
     if(obj == 'bcadastroapl'){
         form(obj).addEventListener("click", function () {
-            if(!confirm("Deseja mesmo adicionar essa aplicação?")) return;
+            if(!confirm("Deseja mesmo adicionar essa aplicacão?")) return;
 
-            adicionarAplicacao();
+            //adicionarAplicacao();
             DMFDiv.closeModal();
         });
     }
@@ -150,7 +121,7 @@ function event_click(obj) {
 function event_change(obj){
     if(obj == "mmodulo"){
         form(obj).addEventListener("change", function(){
-            getDescricaoModulo();
+            //getDescricaoModulo();
         });
     }
 }
@@ -173,11 +144,11 @@ function controlaTela(opc){
         desabilitaCampo('bnovabusca',      true);
         desabilitaCampo('bbuscar',         false);
 
-        setDisplay("bliberar",   ehLiberacaoDeAcesso()?"block":"none");
-        setDisplay("bcadastrar", ehCadastroDeApl()?"block":"none");
+        // setDisplay("bliberar",   ehLiberacaoDeAcesso()?"block":"none");
+        // setDisplay("bcadastrar", ehCadastroDeApl()?"block":"none");
 
-        setDisplay("tabela_libacess", ehLiberacaoDeAcesso()?"block":"none");
-        setDisplay("tabela_APL",      ehCadastroDeApl()?"block":"none");
+        // setDisplay("tabela_libacess", ehLiberacaoDeAcesso()?"block":"none");
+        // setDisplay("tabela_APL",      ehCadastroDeApl()?"block":"none");
     }
     if(opc == "buscar"){
         desabilitaCampo('codapl',          true);
@@ -205,8 +176,7 @@ function limparTela(opc){
         form('codmodel').value = "0";
     }
     if(opc === "inicia" || opc === "novabusca"){
-        LIBACESS_GRID.clearGrid();
-        CADAPL_GRID.clearGrid();
+        USUARIO_GRID.clearGrid();
     }
     if(opc === "modallibacess"){
         form('mideusu').value     = "";
@@ -226,16 +196,16 @@ function limparTela(opc){
 }
 
 function preencherDadosModalCadasApl(valores){
-    form("sacaocadcpl").innerText   = "Alterando";
-    form("stitulocadcpl").innerText = "Cadastro de Aplicação - " + form("sacaocadcpl").innerText;
+    // form("sacaocadcpl").innerText   = "Alterando";
+    // form("stitulocadcpl").innerText = "Cadastro de Aplicacão - " + form("sacaocadcpl").innerText;
 
-    buscarRoleAcess(valores[6]);
+    // buscarRoleAcess(valores[6]);
     
-    form("hcodapl").value   = valores[3];
-    form("mdescapl").value  = valores[4];
-    form("mmodulo").value   = valores[1];
-    form("mdescmod").value  = valores[2];
-    form("marqinit").value  = valores[7];
+    // form("hcodapl").value   = valores[3];
+    // form("mdescapl").value  = valores[4];
+    // form("mmodulo").value   = valores[1];
+    // form("mdescmod").value  = valores[2];
+    // form("marqinit").value  = valores[7];
 }
 
 function ehLiberacaoDeAcesso(){
@@ -247,24 +217,24 @@ function ehCadastroDeApl(){
 }
 
 function adicionarAplicacao() {
-    const aplicacao = { id:            form("hcodapl").value,
-                        idmodulo:      form("mmodulo").value,
-                        role:          form("mrestrole").value,
-                        descricao:     form('mdescapl').value,
-                        arquivo_inic:  form('marqinit').value,
-                        ideusu:        form('ideusu').value};
+    // const aplicacao = { id:            form("hcodapl").value,
+    //                     idmodulo:      form("mmodulo").value,
+    //                     role:          form("mrestrole").value,
+    //                     descricao:     form('mdescapl').value,
+    //                     arquivo_inic:  form('marqinit').value,
+    //                     ideusu:        form('ideusu').value};
 
-    CONSUL.consultar(`/mrb001/cadastrarAplicacao`,"POST","",aplicacao)
-    .then(data =>{
-        if(data != "OK") return alert(data);
+    // CONSUL.consultar(`/mrb001/cadastrarAplicacao`,"POST","",aplicacao)
+    // .then(data =>{
+    //     if(data != "OK") return alert(data);
 
-        alert("Aplicação cadastrada com sucesso!");
+    //     alert("Aplicacão cadastrada com sucesso!");
 
-        form("bnovabusca").click();
-        form("bbuscar").click();
+    //     form("bnovabusca").click();
+    //     form("bbuscar").click();
 
-        DMFDiv.closeModal();
-    });
+    //     DMFDiv.closeModal();
+    // });
 }
 
 function buscarRoleAcess(valorinicial){
@@ -289,5 +259,5 @@ function getDescricaoModulo(){
 }
 
 function carregaGridAplicacoes(){
-    CADAPL_GRID.carregaGrid(`/mrb001/buscarAplicacoesGrid?codapl=${form("codapl").value}&codmodu=${form("codmodel").value}&ideusu=${form("ideusu").value}`,"","");
+    USUARIO_GRID.carregaGrid(`/mrb001/buscarAplicacoesGrid?codapl=${form("codapl").value}&codmodu=${form("codmodel").value}&ideusu=${form("ideusu").value}`,"","");
 }

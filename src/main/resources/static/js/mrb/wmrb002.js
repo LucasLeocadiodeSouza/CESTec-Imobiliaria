@@ -1,7 +1,7 @@
 /* 
     Dev: Lucas Leocadio de Souza
-    Data: 15/06/25
-    IM: 00021
+    Data: 21/06/25
+    IM: 00022
 */
 window.addEventListener("load", function () {
     wmrb002_init();

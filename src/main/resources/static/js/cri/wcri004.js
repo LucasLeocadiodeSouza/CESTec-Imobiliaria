@@ -32,7 +32,7 @@ function iniciarEventos() {
 
     ABA      = new abaForm_init();
     ABA.id   = "abas";
-    ABA.name = "Consulta,Manutencão";
+    ABA.name = "Consulta,Manutenção";
     ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
     ABA.createAba();
 
@@ -363,79 +363,3 @@ function fillSelect(selectId, data) {
         }
     });
 }
-/*
-function createGrid(id,column,columnName,columnWidth,dados){
-    form(id).innerText = '';
-    const table     = document.getElementById(id);
-    const thead     = document.createElement("thead");
-    const headerRow = document.createElement("tr");      
-    const colunas   = column.split(",");
-
-    var pi = 0;
-    colunas.forEach((coluna,index) => {
-        const th = document.createElement("th");
-        th.id = "th" + pi;
-        th.textContent =  coluna.trim();
-        headerRow.appendChild(th);
-        pi += 1;
-    });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
-
-    const tbody = document.createElement("tbody");
-    tbody.setAttribute("id", `${id}-tbody`);
-    table.appendChild(tbody);
-    
-    pi = 0;
-    dados.forEach((dado,index) => {
-        const row = document.createElement("tr");        
-        
-        colunas.forEach(coluna => {
-            const td  = document.createElement("td");
-            td.id = coluna + dado.codcontrato;
-            var valor = dado[coluna.trim()];
-            if(coluna == "tipo"){
-                if(valor==1){valor = "Apartamento"}
-                if(valor==2){valor = "Casa"}
-                if(valor==3){valor = "Terreno"};
-            }
-            if(coluna == "negociacao"){
-                valor = valor==1?"Aluguel":"Venda";
-            }
-
-            row.appendChild(td);
-
-            if(td.id == "codcontrato"+dado.codcontrato) {
-                td.innerHTML = "<a id='fichaContrato" + pi + "'>" + (valor? valor :"N/A") + "</a>"
-                
-                td.addEventListener("click", function (event) {
-                    event.stopPropagation();
-                    window.open(`http://localhost:8080/fichaContrato?codcontrato=${dado.codcontrato}`,"FichaDeContrato","_blank,width=760,height=600");
-                });
-            }
-            else{ td.textContent = valor? valor :"N/A" }            
-        });    
-
-        row.addEventListener("click", ()=>{
-            form(id).querySelectorAll("tr").forEach(row => {
-                row.style.border = "none";
-            });            
-            event_click_table(id,index);
-            row.style.border = " 2px solid black";
-        });
-
-        tbody.appendChild(row);
-
-        pi++;
-    });
-
-    pi = 0;
-    colunas.forEach((coluna, index)=>{
-        form("th"+pi).innerText   = columnName.split(",")[pi];
-        form("th"+pi).style.width = columnWidth.split(",")[pi] +"%"; 
-        pi += 1;
-    });
-
-
-    return table;
-}*/

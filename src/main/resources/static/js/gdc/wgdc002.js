@@ -23,7 +23,7 @@ function iniciarEventos() {
     CORRETOR_GRID               = new GridForm_init();
     CORRETOR_GRID.id            = "tabela_corretores";
     CORRETOR_GRID.columnName    = "codcliente,nome,documento,endereco,numtel,email,endereco_logradouro,endereco_cidade,endereco_numero,endereco_bairro,endereco_uf,endereco_cep";
-    CORRETOR_GRID.columnLabel   = "Cod. Cliente,Nome,Documento,Endereco,Telefone";
+    CORRETOR_GRID.columnLabel   = "Cod. Cliente,Nome,Documento,Endereço,Telefone";
     CORRETOR_GRID.columnWidth   = "10,40,10,30,10";
     CORRETOR_GRID.columnAlign   = "c,e,c,e,c";
     CORRETOR_GRID.mousehouve    = true;
@@ -32,7 +32,7 @@ function iniciarEventos() {
 
     ABA      = new abaForm_init();
     ABA.id   = "abas";
-    ABA.name = "Consulta,Manutencão";
+    ABA.name = "Consulta,Manutenção";
     ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
     ABA.createAba();
 

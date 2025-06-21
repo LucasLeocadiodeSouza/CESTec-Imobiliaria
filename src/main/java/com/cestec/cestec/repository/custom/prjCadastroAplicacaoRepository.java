@@ -87,7 +87,7 @@ public class prjCadastroAplicacaoRepository {
         return q.getResultList();
     }
 
-    //Para tabelas que usem mais de uma coluna na PK ele mostra so a ultima coluna. Achei muito complexo entao vou evitar usar multiplas PK
+    //Para tabelas que usam mais de uma coluna na PK ele mostra só a ultima coluna. Achei muito complexo entao vou evitar usar multiplas PK
     public Map<String, Object[]> buscarIndexs(String nomeTabela) throws SQLException {
         Map<String, Object[]> metadados = new LinkedHashMap<>();
         
