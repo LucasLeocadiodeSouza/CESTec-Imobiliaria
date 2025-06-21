@@ -164,8 +164,14 @@ function criarBotaoEsterno(divpai,botoes){
             console.log(botaoint);
 
             divbuttonint.addEventListener("click", ()=>{
-                window.open("/buscarPath/" + botaoint.codapl, "_blank", "noopener");
-                //window.location.href = "/buscarPath/" + botaoint.codapl;
+                if(botaoint.codapl == "2"){
+                    window.open("/buscarPath/" + botaoint.codapl, "Consulta de Tabelas", "_blank,width=2000,height=650");
+                    console.log("aa");
+                }else{
+                    window.open("/buscarPath/" + botaoint.codapl, "_blank", "noopener");
+                    //window.location.href = "/buscarPath/" + botaoint.codapl;
+                }
+
             });
 
 

@@ -11,6 +11,7 @@ com\cestec\cestec\model\contratoDTO.class
 com\cestec\cestec\service\pcp_clienteService.class
 com\cestec\cestec\model\contasAPagar\SituacaoFat.class
 com\cestec\cestec\infra\security\SecurityFilter.class
+com\cestec\cestec\service\mrb\mrb001s.class
 com\cestec\cestec\controller\pcp_clienteController.class
 com\cestec\cestec\service\genService.class
 com\cestec\cestec\model\contasAPagar\Convenio.class

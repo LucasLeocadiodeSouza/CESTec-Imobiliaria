@@ -4,7 +4,7 @@
     IM: 00021
 */
 window.addEventListener("load", function () {
-    wcr001_init();
+    wmrb001_init();
 });
 
 import { GridForm_init }   from "../modules/gridForm.js";
@@ -17,7 +17,7 @@ import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init,fillSelec
 var LIBACESS_GRID,CADAPL_GRID;
 var DMFDiv, ABA, CONSUL;
 
-function wcr001_init(){
+function wmrb001_init(){
     elementsForm_init();
 
     LIBACESS_GRID               = new GridForm_init();
