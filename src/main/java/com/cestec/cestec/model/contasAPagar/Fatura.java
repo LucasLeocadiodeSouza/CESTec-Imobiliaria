@@ -35,7 +35,7 @@ public class Fatura {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private TipoFatura    tipo;
+    private TipoFatura tipo;
 
     @Enumerated(EnumType.STRING)
     private TipoPagamento tipoPagamento;
@@ -65,5 +65,5 @@ public class Fatura {
 
     @ManyToOne
     @JoinColumn(name="pessoa_id")
-    private pcp_cliente pessoa;
+    private pcp_cliente pcp_cliente;
 }

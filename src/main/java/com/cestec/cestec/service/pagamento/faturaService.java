@@ -25,7 +25,7 @@ import com.cestec.cestec.util.Normalizador;
 public class faturaService {
     
     @Autowired
-	private faturaRepository repository;
+	private faturaRepository faturaRepository;
 
     @Autowired
 	private AcessTokenController acessTokenController;
@@ -40,10 +40,8 @@ public class faturaService {
     private geradorBoleto geradorboleto;
 
     public byte[] gerar(Long faturaId){
-
-        var fatura = repository.getOne(faturaId);
+        var fatura = faturaRepository.findFaturaById(faturaId);
         var cobranca = transformarFaturaEmCobranca(faturaId);
-
         return geradorboleto.gerar(fatura, cobranca);
     }
 
@@ -55,14 +53,14 @@ public class faturaService {
 
         var token  = acessTokenController.requisitarToken(clientClient,clientSecret);
         
-        var fatura = repository.getOne(faturaId);
+        var fatura = faturaRepository.findFaturaById(faturaId);
 
         var boletoRegistrado = cobrancacontroller.register(transformarFaturaEmCobranca(faturaId),token,appkey);        
 
-        System.out.println(Long.valueOf(boletoRegistrado.getNumero()).toString());
+        //System.out.println(Long.valueOf(boletoRegistrado.getNumero()).toString());
 
         fatura.setNossoNumero(Long.valueOf(boletoRegistrado.getNumero()).toString());
-        repository.save(fatura);
+        faturaRepository.save(fatura);
 
         var faturaReg = new FaturaRegistrada().criar(fatura, boletoRegistrado.getLinhaDigitavel(), boletoRegistrado.getQrCode().getUrl(),boletoRegistrado.getQrCode().getEmv());
 
@@ -72,7 +70,7 @@ public class faturaService {
     }
     
 	public CobrancaInput transformarFaturaEmCobranca(Long faturaId) {
-		var fatura = repository.getOne(faturaId);
+		var fatura = faturaRepository.findFaturaById(faturaId);
 		
 		return criarFatura(fatura);
 	}
@@ -99,7 +97,7 @@ public class faturaService {
                               .valor(BigDecimal.ZERO)
                               .build();
 
-        var pessoa = fatura.getPessoa();
+        var pessoa = fatura.getPcp_cliente();
 
         var pagamento = PagadorInput.builder()
                                     .tipoInscricao(pessoa.isPf()?1:2)

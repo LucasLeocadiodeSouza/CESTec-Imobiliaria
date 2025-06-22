@@ -150,7 +150,7 @@ function adicionarCliente() {
                      endereco_uf:         form('muf').value,
                      id_usuario:          form('ideusu').value};
 
-    CONSUL.consultar(`/cliente/salvarCliente`,"POST","",cliente)
+    CONSUL.consultar(`/cliente/salvarCliente`,"POST","",{body: cliente})
     .then(data =>{
         if(data != "OK") return alert(data);
         alert("Dados Salvos Com Sucesso!");
@@ -183,7 +183,7 @@ function enviarEmail(){
             + "</body>"
             + "</html>"}
 
-    CONSUL.consultar(`/email`,"POST","",email)
+    CONSUL.consultar(`/email`,"POST","",{body: email})
 }
 
 function buscarUserName(){
