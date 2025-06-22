@@ -109,6 +109,24 @@ export function GridForm_init(){
         if(!method) method = "GET";
         if(!headers) headers = { "Content-Type": "application/json" };
 
+        const loader = document.createElement('div');
+        loader.id = 'global-loader';
+        loader.style = `position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgb(255 255 255 / 55%) url('/icons/loader_icon.png') no-repeat center;
+                        z-index: 9999;
+                        display: none;`;
+
+        document.body.appendChild(loader);
+
+        loader.style.display = 'block';
+        let loaderTimeout = setTimeout(() => {
+            loader.innerHTML += '<p>Carregando...</p>';
+        }, 3000);
+
         fetch(path, {
             method: method,
             headers: headers
@@ -146,7 +164,7 @@ export function GridForm_init(){
             var si = 0;
             colunas.forEach((coluna,index) =>{
                 const th             = document.createElement("th");
-                const colunaorignode = document.getElementById(this.id).childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[si];
+                //const colunaorignode = document.getElementById(this.id).childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[si];
 
                 th.id = coluna.trim() + "_res_" + si;
                 th.textContent = this.columnLabel.split(",")[si];
@@ -206,8 +224,13 @@ export function GridForm_init(){
             if(this.clickgrid){
                 clickRowBorder(table.id);
             }
-            })
-        .catch(error => alert(error.message));
+        })
+        .catch(error => alert(error.message))
+        .finally(() => {
+            clearTimeout(loaderTimeout);
+            loader.style.display = 'none';
+            document.body.removeChild(loader);
+        })
     }
 
     //
