@@ -1,15 +1,11 @@
 package com.cestec.cestec.controller.pagamento;
 
 import java.net.URI;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import com.cestec.cestec.infra.pagamento.AccessTokenBB;
 import com.cestec.cestec.infra.pagamento.CobrancaInput;
 import com.cestec.cestec.model.contasAPagar.BoletoRegistrado;
 

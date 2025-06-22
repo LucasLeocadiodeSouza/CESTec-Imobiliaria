@@ -32,9 +32,9 @@
     #benviaboleto {background-size: 17px 17px !important; width: 125px;}
 
     .fieldset {margin: 10px;
+               flex-direction: column;
                display: flex;
-               justify-content: flex-start;
-               margin-top: 0px;}
+               justify-content: flex-start;}
 
     .labelfiltro {font-weight: 600;
                   width: 160px;
@@ -46,46 +46,27 @@
 
     .container {height: auto;}
 
-    .grid {display: block !important;
-           height: 400px;
-           margin-top: 25px;
-           margin-inline: 7px;}
+    #fielddesc {display: grid; grid-template-columns: 1fr 1fr;}
 
-    /* ::-webkit-scrollbar {
-        width: 1px;
-    }    
+    #dfatura {grid-column: 2; text-align: left;}
 
-    ::-webkit-scrollbar-track {
-        background: transparent;
-    } */
-
-    .inv {display: none !important;}
+    .dado {display: flex; flex-direction: row;}
+    .dado p{margin-block: 5px;}
 
     .dmf {width: auto;
           margin-inline: 15px;}
 
-    .botaoconfirm {padding-left: 0px !important;
-                   width: 80px;
-                   height: 35px;}
+    #tabela_boletos {overflow-x: auto;}
 
-    #dmodalf_visuboleto {width: 730px;
-                         height: 400px;
-                         display: flex;
-                         flex-direction: column;
-                         background-color: aliceblue;
-                         box-shadow: 0 0 .4vw rgba(0,0,0,0.5);
-                         margin-inline: 150px;  /* Margem de 150px nas laterais */
-                         margin-block: 50px;}
-
-    #dmodalf_geracaoboleto {width: 730px; /* Subtrai 150px de cada lado */
-                            height: 400px; /* Subtrai 50px de cada lado, considerando a margem superior e inferior */
+    #dmodalf_geracaoboleto {width:   750px; /* Subtrai 150px de cada lado */
                             opacity: 1;
                             display: flex;
                             flex-direction: column;
                             background-color: aliceblue;
                             box-shadow: 0 0 .4vw rgba(0,0,0,0.5);
-                            margin-inline: 150px;  /* Margem de 150px nas laterais */
-                            margin-block: 50px;}
+                            margin-inline:  150px;  /* Margem de 150px nas laterais */
+                            margin-block:   50px;
+                            padding-bottom: 20px;}
 
     body {background-color: #1d3561;}
 </style>
@@ -95,12 +76,10 @@
         <input type="hidden" id="ideusu" name="ideusu">
 
         <div class="titulo">
-            <h2>Geracão de Crédito</h2>
+            <h2>Geração de Crédito</h2>
         </div>
 
-        <div id='abas'></div>
-
-        <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
+        <fieldset class="fieldset gen">
             <div class='if'>
                 <label class="labelfiltro">Número Boleto</label>
                 <input type="text" id="codboleto" name="codboleto" class="p">
@@ -126,78 +105,71 @@
         
         <div class='if' style="display: flex; margin-left: 5px;">                            
             <div id="bimprimir" name="bimprimir" class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
-            <div id="binserir"  name="binserir"  class="button" value="Nova Busca"  data-icon="/icons/incluir.png"></div>
         </div>
 
         <div id='tabela_boletos'></div>
 
         <!--  MODAL -->
         <div id="dmodalf_geracaoboleto">
+            <input type="hidden" id="hfatura" name="hfatura">
+
             <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
                 <h2><span id="stitulo" name="stitulo"></span></h2>
                 <span     id="sacao"   name="sacao" style="display: none"></span>
             </div>
 
-            <div class='dmf container'>
-                <div id="dfatura" class='dmf'>
-                    <label class="labelmodal">Fatura: </label>
-                    <input type="text" id="mfatura" name="mfatura" class="ppp">
+            <fieldset id="fielddesc">
+                <legend id="mdescpagamento"></legend>
+
+                <div class="dado">
+                    <p id="mfatura" class="labelmodal">Fatura: </p>&nbsp;
+                    <p id="mdescfatura"></p>
                 </div>
 
+                <div class="dado">
+                    <p id="msituacao" class="labelmodal">Situação:</p>&nbsp;
+                    <p id="mdescsituacao"></p>
+                </div>
+
+                <div id="dfatura" class="dado">
+                    <label class="labelmodal"></label>
+                    <label><a id="boletolink">Consultar Boleto</a></label>
+                </div>
+            </fieldset>
+
+            <div class='dmf container'>
                 <div class='dmf'>
                     <label class="labelmodal">Beneficiario: </label>
-                    <input type="text" id="mcodcliente"  name="mcodcliente"  class="ppp">
-                    <input type="text" id="mbenef"       name="mbenef"       class="large">
+                    <input type="text" id="mcodcliente"  name="mcodcliente"  class="ppp" disabled>
+                    <input type="text" id="mbenef"       name="mbenef"       class="large" disabled>
                 </div>
 
                 <div class='dmf'>
                     <label class="labelmodal">Documento: </label>
-                    <input type="text" id="mdocumento"  name="mdocumento"  class="medium">
+                    <input type="text" id="mdocumento"  name="mdocumento"  class="medium" disabled>
                 </div>
 
                 <div class='dmf'>
                     <label class="labelmodal">Código do Contrato: </label>
-                    <input type="text" id="mcodcontrato"  name="mcodcontrato"  class="medium">
+                    <input type="text" id="mcodcontrato"  name="mcodcontrato"  class="p" disabled>
                 </div>
 
                 <div id="dnmrboleto" class='dmf'>
                     <label class="labelmodal">Número do Boleto: </label>
-                    <input type="text" id="mnmrboleto"  name="mnmrboleto"  class="large"></input>
+                    <input type="text" id="mnmrboleto"  name="mnmrboleto"  class="medium" disabled>
                 </div>
 
                 <div class='dmf'>
                     <label class="labelmodal">Valor (R$): </label>
-                    <input type="text" id="mvlr"  name="mvlr"  class="medium">&nbsp;&nbsp;&nbsp;&nbsp;
-
-                    <div id="dsituacao">
-                        <label class="labelmodal" style=" width: auto !important;">Situacão: </label>
-                        <p id="msituacao" name="msituacao"></p>
-                    </div>                        
+                    <input type="text" id="mvlr"  name="mvlr"  class="medium" disabled>&nbsp;&nbsp;&nbsp;&nbsp;                        
                 </div>
 
                 <div class='dmf'>
                     <label class="labelmodal">Data do Vencimento: </label>
-                    <input type="date" id="mdatavenc"  name="mdatavenc"></input>
+                    <input type="date" id="mdatavenc"  name="mdatavenc" disabled>
                 </div>
-            </div>
-
-            <div class='dmf' style="display: flex; justify-content: center; align-items: center; margin: 25px;">
-                <div id="benviaboleto" name="benviaboleto" class="button" value="Enviar Boleto" data-icon="/icons/seta_direita.png"></div>
-            </div>
-
-            <div id="dmodalf_visuboleto" class="inv">
-                <div style="display: flex; flex-direction: row; padding-inline: 30px;">
-                    <img src="/icons/alert_icon.png" style="width: 50px !important; height: 50px !important">
-                    <p>Deseja visualizar o Boleto enviado para o Beneficiario?</p>
-                </div>
-                
-                <div class='dmf' style="display: flex; justify-content: center; align-items: center; margin: 15px;">
-                    <div id="bfechar"     name="bfechar"     class="button botaoconfirm" value="Fechar"></div>
-                    <div id="bvisualizar" name="bvisualizar" class="button botaoconfirm" value="Visualizar"></div>
-                </div>                    
             </div>
         </div>
-
     </div>
 </body>
 </html>

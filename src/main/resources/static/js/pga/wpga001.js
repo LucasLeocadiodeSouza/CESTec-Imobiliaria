@@ -3,45 +3,58 @@
     Data: 22/03/25
     IM: 00008
 */
-window.addEventListener("load", function () {
-    // createGrid("tabela_boletos",
-    //            "id,nmrBoleto,codconvenio,certificado,nome,situacao,vlrboleto",
-    //            "Código,Número do Boleto,Número do Convênio,CNPJ/CPF,Nome,Situacão,Valor (R$)",
-    //            "10,10,10,20,20,10,10",
-    //            "auto");
-    
+window.addEventListener("load", function () {    
     iniciarEventos();
-    buscarUserName();
 });
 
-import { GridForm_init }     from "../modules/gridForm.js";
-import { DMFForm_init }      from "../modules/dmfForm.js";
-import { abaForm_init }      from "../modules/abaForm.js";
-import { consulForm_init }   from "../modules/consulForm.js";
+import { GridForm_init }   from "../modules/gridForm.js";
+import { DMFForm_init }    from "../modules/dmfForm.js";
+import { consulForm_init } from "../modules/consulForm.js";
 import { elementsForm_init } from "../modules/elementsForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay } from "../modules/utils.js";
+import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init,fillSelect } from "../modules/utils.js";
 
-var ABA,DMFDiv,CONSUL,PGA_GRID;
+var DMFDiv,CONSUL,PGA_GRID;
 
 function iniciarEventos() {
-    controlaTela("inicia");
+    elementsForm_init();
+
+    PGA_GRID               = new GridForm_init();
+    PGA_GRID.id            = "tabela_boletos";
+    PGA_GRID.columnName    = "idcliente,nomecliente,doc,idcontrato,idFatura,valor,datenc,tipopga,situacao,numdoc,codconta";
+    PGA_GRID.columnLabel   = "Cód. Cliente,Cliente,Documento,Cod. Contrato,Cód. Fatura,Valor,Vencimento,Tipo";
+    PGA_GRID.columnWidth   = "10,20,14,10,10,12,12,12";
+    PGA_GRID.columnAlign   = "c,e,c,c,c,d,c,c";
+    PGA_GRID.mousehouve    = false;
+    PGA_GRID.destacarclick = false;
+    PGA_GRID.createGrid();
+
+    DMFDiv              = new DMFForm_init();
+    DMFDiv.divs         = "dmodalf_geracaoboleto";
+    DMFDiv.tema         = 1;
+    DMFDiv.cortinaclose = true;
+    DMFDiv.formModal();
+
+    CONSUL = new consulForm_init();
+
+    buscarUserName();
 
     event_click("bnovabusca");
     event_click("bbuscar");
     event_click("bclose");
     event_click("blimpar");
     event_click("binserir");
-    event_click("benviaboleto");
+    event_click("boletolink");
 
-    event_change("mcodcliente");
-    imgFormat();
+    event_click_table();
+
+    controlaTela("inicia");
 }
 
 
-function event_click(obj,dado) {
+function event_click(obj) {
     if(obj == "bnovabusca"){
         form(obj).addEventListener("click", function () {
-            controlaTela("buscar");
+            controlaTela("novabusca");
         });
     }
     if(obj == 'blimpar'){
@@ -51,265 +64,197 @@ function event_click(obj,dado) {
     }
     if(obj == "bbuscar"){
         form(obj).addEventListener("click", function () {
-            controlaTela("novabusca");
-
+            controlaTela("buscar");
+            carregaGrid();
         });        
     }
-    if(obj == 'bclose'){
-        form(obj).addEventListener("click", function () {
-            form("DMF_external").style.display = "none";
-        });
-    }
-    if(obj == 'binserir'){
-        form(obj).addEventListener("click", function () {
-            form("sacao").innerText   = "Gerando";
-            form("stitulo").innerText = form("sacao").innerText + " o Metodo de Pagamento";
-            controlaTela("modal");
-
-
-            form("DMF_external").style.display = "flex";
-        });
-    }
-    if(obj == "benviaboleto"){
+    if(obj == "boletolink"){
         form(obj).addEventListener("click", ()=>{
-            registrarBoleto();
+            verBoleto(form("hfatura").value);
         })
     }
 }
 
-function event_change(obj){
-    if(obj == "mcodcliente"){
-        form(obj).addEventListener("change", function(){
-            form("mbenef").value = getDescCliente(obj);
-        });
-    }
-}
-
-function event_click_table(id,index){
-    if(id == "tabela_boletos"){
-        form("sacao").innerText   = ehConsulta()?"Consultando":"Analisando";
-        form("stitulo").innerText = form("sacao").innerText + " o Contrato - " + form("sacao").innerText;
-        
-        //puxarFichaContrato(3);
+function event_click_table(){
+    PGA_GRID.click_table = ()=>{
+        const valoresLinha = PGA_GRID.getRowNode(event.target.closest('tr'));
 
         controlaTela("modal");
-        form("DMF_external").style.display = "flex"; 
-    }
+        
+        preencherDadosModal(valoresLinha)
+        DMFDiv.openModal("dmodalf_geracaoboleto");
+    };
 }
 
 function controlaTela(opc){
     limparTela(opc);
-    if(opc == "inicia" || opc == 'buscar'){
+    if(opc == "inicia" || opc == 'novabusca'){
         desabilitaCampo("codboleto",        false);
         desabilitaCampo("codconvenio",      false);
         desabilitaCampo("codcliente",       false);
         desabilitaCampo('bnovabusca',       true);
         desabilitaCampo('bbuscar',          false);
     }
-    if(opc == "novabusca"){
+    if(opc == "buscar"){
         desabilitaCampo("codboleto",        true);
         desabilitaCampo("codconvenio",      true);
         desabilitaCampo("codcliente",       true);
         desabilitaCampo('bnovabusca',       false);
         desabilitaCampo('bbuscar',          true);
     }
-    if(opc == "modal"){
-        desabilitaCampo("mbenef",           true);
-        desabilitaCampo("mdocumento",       true);
-        desabilitaCampo("mcodcontrato",     true);
-        form("dsituacao").style.display  = form("sacao").innerText == "Gerando"?"none":"block";
-        form("dnmrboleto").style.display = form("sacao").innerText == "Gerando"?"none":"block";
-        form("dfatura").style.display    = form("sacao").innerText == "Gerando"?"none":"block";
-    }
 }
 
-
 function limparTela(opc){
-    if(opc == "inicia" || opc == 'buscar'){
+    if(opc == "inicia" || opc == 'novabusca'){
         form('codboleto').value    = "";
         form('codconvenio').value  = "";
         form('codcliente').value   = "";
-
-        form("binserir").style.display     = form("aba1").style.pointerEvents == 'visible'?"flex":"none";
-        form("DMF_external").style.display = "none";
     }
     if(opc == "modal"){
-        form("mfatura").value = "0";
+        form("mdescfatura").innerText    = "";
+        form("mcodcliente").value        = "";
+        form("mdescpagamento").innerText = "";
+        form("mbenef").value             = "";
+        form("mdocumento").value         = "";
+        form("mcodcontrato").value       = "";
+        form("mnmrboleto").value         = "";
+        form("mvlr").value               = "";
+        form("mdescsituacao").innerText  = "";
+        form("mdatavenc").value          = "";
     }
 } 
 
-function ehConsulta(){
-    return form("aba1").classList.contains('ativa');
-}
+function preencherDadosModal(valoresLinha){
+    form("sacao").innerText   = "Consultando";
+    form("stitulo").innerText = form("sacao").innerText + " o Contrato " + valoresLinha[3] + " - " + valoresLinha[7] + " " + valoresLinha[9];
 
-function ehManutencao(){
-    return form("aba2").classList.contains('ativa');
-}
-
-function puxarFichaContrato(codcontrato){
-    fetch(`http://localhost:8080/fichaContrato?codcontrato=${codcontrato}`)
-    .then(response => response.text())
-    .then(data => {form('fichacontrato').innerHTML = data})
-    .catch(error => console.error('Não foi possivel carregar a ficha. \n', error));
-}
-
-function preencherModal(index){
-    fetch(`/contrato/${index}/buscarContratoGrid`, {
-        method: "GET",
-        headers: {"Content-Type":"application/json"}
-    })
-    .then(response => {return response.json()})
-    .then(data => {})
-    .catch(error => alert(error.message))
+    form("hfatura").value            = valoresLinha[4];
+    form("mdescpagamento").innerText = valoresLinha[10] + " - " + valoresLinha[9] + " - " + valoresLinha[7]
+    form("mdescfatura").innerText    = valoresLinha[4];
+    form("mcodcliente").value        = valoresLinha[0];
+    form("mbenef").value             = valoresLinha[1];
+    form("mdocumento").value         = valoresLinha[2];
+    form("mcodcontrato").value       = valoresLinha[3];
+    form("mnmrboleto").value         = valoresLinha[9];
+    form("mvlr").value               = valoresLinha[5];
+    form("mdescsituacao").innerText  = valoresLinha[8].replace("_"," ");
+    form("mdatavenc").value          = valoresLinha[6];
 }
 
 function getDescCliente(codigo, retorno){
-    fetch(`/cliente/${form(codigo).value}/findNomeClienteById`,{
-        method: "GET",
-        headers: {"Content-Type":"application/json"}
-    })
-    .then(response => {return response.text()})
-    .then(data => { return data })
-    .catch(error => alert(error.message))
+    // fetch(`/cliente/${form(codigo).value}/findNomeClienteById`,{
+    //     method: "GET",
+    //     headers: {"Content-Type":"application/json"}
+    // })
+    // .then(response => {return response.text()})
+    // .then(data => { return data })
+    // .catch(error => alert(error.message))
 }
 
 function getDescCorretor(obj, retorno){
-    fetch(`/contrato/${form(obj).value}/getNomeByIdeusu`,{
-        method: "GET",
-        headers: {"Content-type":"application/json"}
-    })
-    .then(response => { return response.text()})
-    .then(data => {return data })
-    .catch(error => alert(error.message))
+    // fetch(`/contrato/${form(obj).value}/getNomeByIdeusu`,{
+    //     method: "GET",
+    //     headers: {"Content-type":"application/json"}
+    // })
+    // .then(response => { return response.text()})
+    // .then(data => {return data })
+    // .catch(error => alert(error.message))
 }
 
-function registrarFatura(){
-    const json = {  "id"              : form("mfatura").value,
-                    "tipo"            : "RECEITA",
-                    "situacao"        : "NAO_PAGA",
-                    "valor"           : form("mvlr").value,
-                    "data_vencimento" : form("mdatavenc").value
-                 }
+// function registrarFatura(){
+//     const corpo = {  "id"              : form("mfatura").value,
+//                      "tipo"            : "RECEITA",
+//                      "situacao"        : "NAO_PAGA",
+//                      "valor"           : form("mvlr").value,
+//                      "data_vencimento" : form("mdatavenc").value
+//                   }
 
-    fetch(`/faturas/registrarFatura/${form("mcodcliente").value}`, {
-        method:  "POST",
-        headers: {"Content-Type":"application/json"},
-        body:   JSON.stringify(json)
-    })
-    .then(response => {return response.json()})
-    .then(data => {})
-    .catch(error => alert(error.message))
-}
+//     CONSUL.consultar(`/faturas/registrarFatura/${form("mcodcliente").value}`,"POST","", {body: corpo});
+
+//     // fetch(`/faturas/registrarFatura/${form("mcodcliente").value}`, {
+//     //     method:  "POST",
+//     //     headers: {"Content-Type":"application/json"},
+//     //     body:   JSON.stringify(json)
+//     // })
+//     // .then(response => {return response.json()})
+//     // .then(data => {})
+//     // .catch(error => alert(error.message))
+// }
 
 function registrarBoleto(){
-    fetch(`/faturas/registrarBoleto/${form("mfatura").value}`, {
-        method:  "POST",
-        headers: {"Content-Type":"application/json"}
+    // CONSUL.consultar(`/faturas/registrarBoleto/${form("mfatura").value}`,"POST","",{body: aplicacao})
+    // .then(data =>{
+    //     //form("ideusu").value = data
+    // });
+}
+
+function verBoleto(codfatura){
+    CONSUL.consultar(`/faturas/${codfatura}/boleto/pdf`, "GET", { "Accept": "application/pdf" }, { responseType: 'arraybuffer' })
+    .then(response => {
+        // Verificação do conteúdo
+        if (!response || response.byteLength === 0) {
+            throw new Error('O PDF retornado está vazio');
+        }
+
+        // Verificação da assinatura do PDF (%PDF)
+        const signature = new Uint8Array(response.slice(0, 4));
+        if (String.fromCharCode(...signature) !== '%PDF') {
+            throw new Error('O arquivo não é um PDF válido');
+        }
+
+        // Cria o Blob corretamente
+        const blob = new Blob([response], { type: 'application/pdf' });
+        
+        // Cria URL temporária
+        const blobUrl = URL.createObjectURL(blob);
+        
+        const link    = document.createElement('a');
+        link.href     = blobUrl;
+        link.download = `boleto_${codfatura}.pdf`;
+        link.click();
+
+        // Abre em nova janela
+        // const janela = window.open(blobUrl, '_blank');
+
+        // Fallback se o navegador bloquear window.open()
+        // if (!janela || janela.closed || typeof janela.closed === 'undefined') {
+        //     const link = document.createElement('a');
+        //     link.href = blobUrl;
+        //     link.download = `boleto_${codfatura}.pdf`;
+        //     document.body.appendChild(link);
+        //     link.click();
+        //     document.body.removeChild(link);
+        // }
     })
-    .then(response => {return response.json()})
-    .then(data => { /* mostrarBoletoEmIframe(form("mfatura").value) */ })
-    .catch(error => alert(error.message))
 }
 
 function buscarUserName(){
-    fetch("/home/userlogin", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response =>{return response.text()})
-    .then(data => { form("ideusu").value = data })
-    .catch(error => alert(error.message));
+    CONSUL.consultar(`/home/userlogin`)
+    .then(data =>{
+        form("ideusu").value = data
+    });
 }
 
-
-function downloadPDF(base64, filename) {
-    const link = document.createElement('a');
-    link.href = `data:application/pdf;base64,${base64}`;
-    link.download = filename;
-    link.click();
+function  carregaGrid(){
+    PGA_GRID.carregaGrid(`/pag001/buscarFaturaCliente`);
 }
 
-function mostrarBoletoEmIframe(faturaId) {
-    const iframe = document.createElement('iframe');
-    iframe.src = `/faturas/${faturaId}/boleto/pdf`;
-    iframe.style.width = '100%';
-    iframe.style.height = '100vh';
-    iframe.style.border = 'none';
+// function downloadPDF(base64, filename) {
+//     const link = document.createElement('a');
+//     link.href = `data:application/pdf;base64,${base64}`;
+//     link.download = filename;
+//     link.click();
+// }
+
+// function mostrarBoletoEmIframe(faturaId) {
+//     const iframe = document.createElement('iframe');
+//     iframe.src = `/faturas/${faturaId}/boleto/pdf`;
+//     iframe.style.width = '100%';
+//     iframe.style.height = '100vh';
+//     iframe.style.border = 'none';
     
-    // Abre nova janela e adiciona o iframe
-    const novaJanela = window.open('', '_blank');
-    novaJanela.document.body.appendChild(iframe);
-    novaJanela.document.title = 'Boleto - ' + faturaId;
-  }
-
-function createGrid(id,column,columnName,columnWidth,width){    
-    const table     = document.getElementById(id);
-    const thead     = document.createElement("thead");
-    const headerRow = document.createElement("tr");
-    const colunas   = column.split(",");
-
-    var pi = 0;
-    colunas.forEach((coluna,index) => {
-        const th = document.createElement("th");
-        th.id = coluna.trim() + "__" + pi;        
-        th.textContent =  coluna.trim();
-        headerRow.appendChild(th);
-        pi += 1;
-    });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
-
-    const tbody = document.createElement("tbody");
-    tbody.setAttribute("id", `${id}-tbody`);
-    table.appendChild(tbody);
-
-    var pi = 0;
-    colunas.forEach((coluna, index)=>{
-        form(coluna.trim() + "__" + pi).innerText   = columnName.split(",")[pi];
-        form(coluna.trim() + "__" + pi).style.width = columnWidth.split(",")[pi] +"%"; 
-        pi += 1;
-    });
-
-    table.style.width = width + "px";
-    return table;
-}
-
-function carregaGrid(id,dados){
-    clearGrid(id);
-    let colunas = form(id).children[0].children[0].children;
-
-    for(var i = 0; i < dados.length; i++){
-        const row = document.createElement("tr");
-
-        for(var j = 0; j < colunas.length; j++){
-            const td  = document.createElement("td");
-            var valor = dados[i][colunas[j].id.replace("__" + j ,"").trim()];
-            if(colunas[j].id.replace("__"+j,"") == "situacao"){
-                if(valor == "0") valor = "Não Concluida"
-                if(valor == "1") valor = "Em progresso"
-                if(valor == "2") valor = "Concluida"
-            }
-            td.textContent = valor? valor :"N/A";
-            row.appendChild(td);
-            
-            row.addEventListener("click", ()=>{
-                form(id).querySelectorAll("tr").forEach(row => {
-                    row.style.border = "none";
-                });            
-                event_click_table(id,i);
-                row.style.border = " 2px solid black";
-            });
-        }
-
-        form(id).appendChild(row);
-    }
-}
-
-function clearGrid(id){
-    const tbody = document.getElementById(id).querySelector('tbody');
-    while (tbody.rows.length > 0) {
-        tbody.deleteRow(0);
-    }
-}
+//     // Abre nova janela e adiciona o iframe
+//     const novaJanela = window.open('', '_blank');
+//     novaJanela.document.body.appendChild(iframe);
+//     novaJanela.document.title = 'Boleto - ' + faturaId;
+//   }

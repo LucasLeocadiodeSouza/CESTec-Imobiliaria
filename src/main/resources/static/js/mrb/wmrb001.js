@@ -254,7 +254,7 @@ function adicionarAplicacao() {
                         arquivo_inic:  form('marqinit').value,
                         ideusu:        form('ideusu').value};
 
-    CONSUL.consultar(`/mrb001/cadastrarAplicacao`,"POST","",aplicacao)
+    CONSUL.consultar(`/mrb001/cadastrarAplicacao`,"POST","",{body: aplicacao})
     .then(data =>{
         if(data != "OK") return alert(data);
 

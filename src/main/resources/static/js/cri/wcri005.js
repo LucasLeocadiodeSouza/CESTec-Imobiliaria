@@ -239,7 +239,7 @@ function enviarEmailAprovacaoReprovacao(acao){
             + "</body>"
             + "</html>"}
 
-    CONSUL.consultar(`/email`,"POST",{ "Content-Type": "application/json" },email)
+    CONSUL.consultar(`/email`,"POST",{ "Content-Type": "application/json" },{body: email})
 }
 
 function aprovarReprovarContrato(acao) {
@@ -249,7 +249,7 @@ function aprovarReprovarContrato(acao) {
                       situacao:            acao,
                       ideusu:              form('ideusu').value};
 
-    CONSUL.consultar(`/wcr006c/aprovarReprovarContrato`,"POST",{ "Content-Type": "application/json" },contrato)
+    CONSUL.consultar(`/wcr006c/aprovarReprovarContrato`,"POST",{ "Content-Type": "application/json" },{body: contrato})
     .then(data =>{
         if(data != "OK") return alert(data);
         alert("Contrato " + (acao == 2?"Aprovado":"Reprovado") + " com Sucesso!");

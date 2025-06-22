@@ -242,7 +242,7 @@ function adicionarContratoImovel() {
                      datiregistro:      new Date().toISOString().split('T')[0],
                      datinicontrato:    form("mperiodoini").value};
 
-    CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form("mcodproprietario").value}/salvarImovel`,"POST","",JSON.stringify(imovel))
+    CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form("mcodproprietario").value}/salvarImovel`,"POST","",{body: imovel})
     .then(data =>{
         alert("Imóvel adicionado com sucesso!");
 

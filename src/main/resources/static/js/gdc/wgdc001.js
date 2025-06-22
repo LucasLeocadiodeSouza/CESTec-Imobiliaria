@@ -218,7 +218,7 @@ function salvarMetaCorretor(){
                    datfinalmeta:  form("mperiodofin").value,
                    nome:          form("ideusu").value};
 
-    CONSUL.consultar(`/wcr005/salvarMetaCorretor`,"POST","",meta)
+    CONSUL.consultar(`/wcr005/salvarMetaCorretor`,"POST","",{body: meta})
     .then(data =>{
         if(data != "OK") return alert(data);
         

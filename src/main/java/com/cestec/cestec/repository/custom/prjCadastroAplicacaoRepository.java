@@ -1,18 +1,13 @@
 package com.cestec.cestec.repository.custom;
 
-
-import org.hibernate.jdbc.Work;
 import org.springframework.stereotype.Repository;
 import com.cestec.cestec.model.sp_aplicacoes;
-
 import org.hibernate.Session;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;

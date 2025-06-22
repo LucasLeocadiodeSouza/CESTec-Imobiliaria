@@ -280,7 +280,7 @@ function inserirAlterarContrato(){
                          ideusuCorretor:  form("mvendedor").value,
                          ideusu:          form("ideusu").value};
 
-    CONSUL.consultar(`/contrato/inserirAlterarContrato`,"POST","",contratoDTO)
+    CONSUL.consultar(`/contrato/inserirAlterarContrato`,"POST","",{body: contratoDTO})
     .then(data =>{
         alert("Contrato adicionado com sucesso!");
 
