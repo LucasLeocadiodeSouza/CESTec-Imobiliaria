@@ -1,4 +1,36 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "sqltools.connections": [
+        {
+            "name": "DB_CESEC",
+            "driver": "MySQL",
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "database": "projetofarmacia",
+            "username": "root",
+            "password": "696968",
+            "connectionTimeout": 30,
+            "driverPath": "C:/jdbc-lbs/mysql-connector-j-9.0.0.jar"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "tramway.proxy.rlwy.net",
+            "port": 45382,
+            "driver": "MySQL",
+            "username": "root",
+            "password": "LOGIgnNrNuGRzXYoSzABcgPxwpvcgNzN",
+            "database": "railway",
+            "name": "DB_CESTEC_server"
+        }
+    ]
 }

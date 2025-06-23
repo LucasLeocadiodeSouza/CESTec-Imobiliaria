@@ -110,7 +110,7 @@ export function GridForm_init(){
         if(!headers) headers = { "Content-Type": "application/json" };
 
         const loader = document.createElement('div');
-        loader.id = 'global-loader';
+        loader.id    = 'global-loader';
         loader.style = `position: fixed;
                         top: 0;
                         left: 0;
