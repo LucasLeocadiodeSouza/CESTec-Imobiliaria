@@ -116,16 +116,35 @@ export function GridForm_init(){
                         left: 0;
                         width: 100%;
                         height: 100%;
-                        background: rgb(255 255 255 / 55%) url('/icons/loader_icon.png') no-repeat center;
+                        background: rgb(255 255 255 / 55%);
                         z-index: 9999;
                         display: none;`;
+
+        const spinner = document.createElement('img');
+        spinner.src = '/icons/loader_icon.png';
+        spinner.style = `position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        animation: girar 1s linear infinite;`;
+
+        loader.appendChild(spinner);
+
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes girar {
+                from { transform: translate(-50%, -50%) rotate(0deg); }
+                to { transform: translate(-50%, -50%) rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
 
         document.body.appendChild(loader);
 
         loader.style.display = 'block';
-        let loaderTimeout = setTimeout(() => {
+        let loaderTimeout    = setTimeout(() => {
             loader.innerHTML += '<p>Carregando...</p>';
-        }, 3000);
+        }, 1000);
 
         fetch(path, {
             method: method,
