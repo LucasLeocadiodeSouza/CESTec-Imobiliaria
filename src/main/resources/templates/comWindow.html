@@ -134,7 +134,7 @@
 
     #dacessosint {display: flex; justify-content: center; height: 67%;}
 
-    #ddesctri {width: 100%;}
+    #ddesctri {width: 100%; display: flex; flex-direction: column;}
 
     div#dagenda {float:            right;
                  background-color: #dedede;      
@@ -187,6 +187,19 @@
                          border-color:  #eaeaea;
                          text-shadow:   -1px 1px 2px rgb(255, 255, 255);
                          font-weight:   500;}
+
+    .container-trimestre {background-color: #3e5680; height: 100%; position: relative; display: flex; justify-content: center;}
+    .painel-graficext    {height: calc(100% - 40px); width: 90%; margin-top: 5px;}
+    .painel-grafic       {height: 100%; display: inline-grid; grid-template-columns: 1fr 1fr 1fr; width: 100%;}
+    .painel-desc         {position: absolute; display: flex; flex-direction: row; bottom: 0; height: 20px; width: 100%;}
+
+    .porcent-total-trim {background-color: #eaeaea; width: 45%; height: 80%;border-top-left-radius: 7px; border-top-right-radius: 7px; position: relative;}
+    .porcent-trim       {background-color: #003490; height: 10%; width: 100%; position: absolute; bottom: 0;}
+
+    .valor-trim         {border-top: 3px solid rgba(0, 0, 0, 0.397); height: 20%; width: 100%; display: flex; align-items: center; justify-content: center;}
+    .valor-trim label   {font-size: 16px; color: #FFF; font-family: Helvetica, sans-serif;}
+
+    .painel-graficint {display: flex; flex-direction: column;align-items: center;}
 
     #huser      {float:        left;
                  color:        azure;
@@ -422,8 +435,8 @@
                             </div>
 
                             <div style="width: 100%; margin: 5px; padding: 10px;">
-                                    <label class="labelpainel" style="font-size: 13px; margin-left: -8px;">Prazo Final da Meta: </label>
-                                    <label class="labelpainel" style="font-size: 14px;" id="datperiodometa" name="datperidometa"></label> 
+                                <label class="labelpainel" style="font-size: 13px; margin-left: -8px;">Prazo Final da Meta: </label>
+                                <label class="labelpainel" style="font-size: 14px;" id="datperiodometa" name="datperidometa"></label> 
                             </div>
                         </div>
                     </div>
@@ -431,7 +444,46 @@
 
                 <div id="dvendatri" class="gen">
                     <div id="ddesctri" class="ddescdiv">
-                        <div class="dhdiv"><label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Trimestre</label></div>
+                        <div class="dhdiv">
+                            <label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal; display: flex;">Trimestre</label>
+                        </div>
+
+                        <div class="container-trimestre">
+                            <div class="painel-graficext">
+                                <div class="painel-grafic">
+                                    <div class="painel-graficint">
+                                        <div class="porcent-total-trim">
+                                            <div id="porcent-trim-1" class="porcent-trim"></div>
+                                        </div>
+                                        <div id="valor-trim-1" class="valor-trim">
+                                            <label>Junho</label>
+                                        </div>
+                                    </div>
+                                    <div class="painel-graficint">
+                                        <div class="porcent-total-trim">
+                                            <div id="porcent-trim-2" class="porcent-trim"></div>
+                                        </div>
+                                        <div id="valor-trim-2" class="valor-trim">
+                                            <label>Julho</label>
+                                        </div>
+                                    </div>
+                                    <div class="painel-graficint">
+                                        <div class="porcent-total-trim">
+                                            <div id="porcent-trim-3" class="porcent-trim"></div>
+                                        </div>
+                                        <div id="valor-trim-3" class="valor-trim">
+                                            <label>Agosto</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="painel-desc">
+                                <label class="labelpainel" style="font-size: 14px;">Valor Total Trimestral (R$):</label>
+                                <label class="labelpainel" style="font-size: 14px;" id="datperiodometa" name="datperidometa"></label> 
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 

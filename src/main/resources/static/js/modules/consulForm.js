@@ -6,15 +6,34 @@
 
 export function consulForm_init(){
     const loader = document.createElement('div');
-    loader.id = 'global-loader';
+    loader.id    = 'global-loader';
     loader.style = `position: fixed;
                     top: 0;
                     left: 0;
                     width: 100%;
                     height: 100%;
-                    background: rgba(0,0,0,0.7) url('/icons/loader_icon.png') no-repeat center;
+                    background: rgb(255 255 255 / 55%);
                     z-index: 9999;
                     display: none;`;
+
+    const spinner = document.createElement('img');
+    spinner.src   = '/icons/loader_icon.png';
+    spinner.style = `position: absolute;
+                     top: 50%;
+                     left: 50%;
+                     transform: translate(-50%, -50%);
+                     animation: girar 1s linear infinite;`;
+
+    loader.appendChild(spinner);
+
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes girar {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
 
     document.body.appendChild(loader);
 
@@ -27,7 +46,7 @@ export function consulForm_init(){
         loader.style.display = 'block';
         let loaderTimeout = setTimeout(() => {
             loader.innerHTML += '<p>Carregando...</p>';
-        }, 3000); // Mensagem após 3 segundos
+        }, 1000); // Mensagem após 1 segundos
 
         try {
            const response = await fetch(path, {
