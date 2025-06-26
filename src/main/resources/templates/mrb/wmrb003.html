@@ -1,7 +1,7 @@
 <!-- 
     Dev: Lucas Leocadio de Souza
-    Data: 21/06/25
-    IM: 00021
+    Data: 25/06/25
+    IM: 00023
 -->
 
 <!DOCTYPE html>
@@ -33,6 +33,10 @@
                  width: 185px;
                  text-align: right;}
 
+    .labelfilter {font-weight: 600; 
+                  width:       100px;
+                  text-align: right;}
+
     /* ::-webkit-scrollbar {
         width: 1px;
     }
@@ -41,11 +45,11 @@
         background: transparent;
     } */
 
-    #dmodalf_libacess{width: 700px;
-                      opacity: 1;
-                      padding-bottom: 20px;
-                      background-color: aliceblue;
-                      box-shadow: 0 0 .4vw rgba(0,0,0,0.5);}
+    #dmodalf_usuario{width: 700px;
+                     opacity: 1;
+                     padding-bottom: 20px;
+                     background-color: aliceblue;
+                     box-shadow: 0 0 .4vw rgba(0,0,0,0.5);}
 
     body {background-color: #1d3561;}
 </style>
@@ -62,17 +66,13 @@
 
         <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
             <div class='if'>
-                <label class="labelmodal">Código da Aplicacão: </label>
-                <input type="text" id="codapl" name="codapl" class="ppp">
-            </div>
-
-            <div class='if'>
-                <label class="labelmodal">Modulo da Aplicacão: </label>
-                <input type="text" id="codmodel"  name="codmodel"  class="ppp">
+                <label class="labelfilter">Usuário: </label>
+                <input type="text" id="codfunc"  name="codfunc" class="ppp">
+                <input type="text" id="nomefunc" name="nomefunc" class="extralarge" disabled>
             </div>
 
             <div  class='if' style="display: flex; height: auto;">
-                <label class="labelmodal"></label>                
+                <label class="labelfilter"></label>                
                 <div id="bbuscar"    name="bbuscar"    class="button" value="Buscar"      data-icon="/icons/buscar.png"></div>
                 <div id="bnovabusca" name="bnovabusca" class="button" value="Nova Busca"  data-icon="/icons/novaPesquisa.png"></div>
                 <div id="blimpar"    name="blimpar"    class="button" value="Limpar"      data-icon="/icons/limparIcon.png"></div>
@@ -81,74 +81,44 @@
         
         <div class='if' style="display: flex; margin-left: 5px;">
             <div id="bcadastrar" name="bcadastrar" class="button" value="Cadastrar"  data-icon="/icons/plus_icon.png"></div>
-            <div id="bimprimir"  name="bimprimir"  class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
+            <div id="bimprimir"  name="bimprimir"  class="button" value="Imprimir"   data-icon="/icons/printer.png"></div>
         </div>
 
         <div id="tabela_user"></div>
 
         <!--  MODAL -->
-        <div id="dmodalf_libacess">
+        <div id="dmodalf_usuario">
             <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
-                <h2><span id="stitulolibacess" name="stitulolibacess"></span></h2>
-                <span     id="sacaolibacess"   name="sacaolibacess" style="display: none"></span>
+                <h2><span id="stitulo" name="stitulo"></span></h2>
+                <span     id="sacao"   name="sacao" style="display: none"></span>
             </div>
 
             <div class='dmf'>
                 <label class="labelmodal">Usuário: </label>
-                <input type="text" id="mideusu"     name="mideusu"     class="medium">
-                <input type="text" id="mdescideusu" name="mdescideusu" class="large" disabled>
+                <input type="text" id="musuario" name="musuario" class="extralarge" disabled>
             </div>
 
             <div class='dmf'>
-                <label class="labelmodal">Código da aplicacão: </label>
-                <input type="text" id="mcodapl"     name="mcodapl"     class="ppp">
-                <input type="text" id="mdescapllib" name="mdescapllib" class="large" disabled>
+                <label class="labelmodal">Setor: </label>
+                <input type="text" id="mcodsetor"  name="mcodsetor"  class="ppp">
+                <input type="text" id="mdescsetor" name="mdescsetor" class="large" disabled>
             </div>
 
             <div class='dmf'>
-                <label class="labelmodal">Data vencimento: </label>
-                <input type="date" id="mdatvenc"  name="mdatvenc"  class="medium">
+                <label class="labelmodal">Cargo: </label>
+                <input type="text" id="mcodcargo"  name="mcodcargo"  class="ppp">
+                <input type="text" id="mdesccargo" name="mdesccargo" class="large" disabled>
+            </div>
+
+            <div id="dcriadoem" class='dmf'>
+                <label class="labelmodal">Criado Em: </label>
+                <input type="date" id="mdatcriado"  name="mdatcriado"  class="medium" disabled>
             </div>
 
             <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
-                <div id="bcadastrolib" name="bcadastrolib" class="button" value="Liberar" data-icon="/icons/cadastro.png">
+                <div id="bsalvar" name="bsalvar" class="button" value="Salvar" data-icon="/icons/cadastro.png">
             </div>
         </div>
-
-        <div id="dmodalf_cadapl">
-            <input type="hidden" id="hcodapl" name="hcodapl">
-
-            <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
-                <h2><span id="stitulocadcpl" name="stitulocadcpl"></span></h2>
-                <span     id="sacaocadcpl"   name="sacaocadcpl" style="display: none"></span>
-            </div>
-
-            <div class='dmf'>
-                <label class="labelmodal">Descricão: </label>
-                <input type="text" id="mdescapl" name="mdescapl" class="large">
-            </div>
-
-            <div class='dmf'>
-                <label class="labelmodal">Modulo Referente: </label>
-                <input type="text" id="mmodulo"  name="mmodulo"  class="ppp">
-                <input type="text" id="mdescmod" name="mdescmod" class="large" disabled>
-            </div>
-
-            <div class='dmf'>
-                <label class="labelmodal">Restringir para role: </label>
-                <select id="mrestrole" name="mrestrole" class="Intermedium"></select>
-            </div>
-
-            <div class='dmf'>
-                <label class="labelmodal">Arquivo inicializador: </label>
-                <input type="text" id="marqinit"  name="marqinit"  class="medium">
-            </div>
-
-            <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
-                <div id="bcadastroapl" name="bcadastroapl" class="button" value="Cadastrar" data-icon="/icons/cadastro.png">
-            </div>
-        </div>
-
     </div>
 </body>
 </html>
