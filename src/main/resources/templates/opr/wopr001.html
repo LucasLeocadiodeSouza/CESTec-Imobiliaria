@@ -1,7 +1,7 @@
 <!-- 
     Dev: Lucas Leocadio de Souza
-    Data: 15/06/25
-    IM: 00021
+    Data: 25/06/25
+    IM: 00024
 -->
 
 <!DOCTYPE html>
@@ -13,8 +13,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
-    <title>Cadastro de Aplicacão</title>
-    <script type="module" src="/js/mrb/wopr001.js" defer></script>
+    <title>Operar Agendamentos</title>
+    <script type="module" src="/js/opr/wopr001.js" defer></script>
     
 <style>
     .ppp         {width: 32px  !important;}
@@ -29,23 +29,31 @@
                justify-content: flex-start;
                margin-top: 0px;}
 
-    .labelmodal {font-weight: 600; 
-                 width: 185px;
+    .labelfilter {font-weight: 600;
+                  width: 165px;
+                  text-align: right;}
+
+    .labelmodal {font-weight: 600;
+                 width: 135px;
                  text-align: right;}
 
-    /* ::-webkit-scrollbar {
-        width: 1px;
-    }
+    .labelmodal2 {font-weight: 600;
+                  width: 100px;
+                  text-align: right;}
 
-    ::-webkit-scrollbar-track {
-        background: transparent;
-    } */
+    #mdescagen {height: 80px;}
 
-    #dmodalf_libacess, #dmodalf_cadapl {width: 700px;
-                                        opacity: 1;
-                                        padding-bottom: 20px;
-                                        background-color: aliceblue;
-                                        box-shadow: 0 0 .4vw rgba(0,0,0,0.5);}
+    .container-principal {gap: 10px ;display: flex; height: calc(100% - 155px); width: 98%; margin: 8px; margin-top: 0;}
+    .esquerda {display: flex; flex-direction: column; height: 100%; width: 50%;}
+    .esquerda fieldset {height: 100%;}
+
+    .direita  {display: flex; flex-direction: column; height: 100%; width: 50%;}
+
+    #funcionarios_grid {display: flex; justify-content: center;}
+
+    #dmodalf_agenda {opacity: 1;
+                     background-color: aliceblue;
+                     box-shadow: 0 0 .4vw rgba(0,0,0,0.5);}
 
     body {background-color: #1d3561;}
 </style>
@@ -55,24 +63,32 @@
         <input type="hidden" id="ideusu" name="ideusu">
 
         <div class="titulo">
-            <h2>Cadastro de Aplicacão</h2>
+            <h2>Operar Agendamentos</h2>
         </div>
 
         <div id='abas'></div>
 
         <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
             <div class='if'>
-                <label class="labelmodal">Código da Aplicacão: </label>
-                <input type="text" id="codapl" name="codapl" class="ppp">
+                <label class="labelfilter">Cód. do Funcionário: </label>
+                <input type="text" id="codfunc"  name="codfunc"  class="ppp">
+                <input type="text" id="descfunc" name="descfunc" class="large" disabled>
             </div>
 
             <div class='if'>
-                <label class="labelmodal">Modulo da Aplicacão: </label>
-                <input type="text" id="codmodel"  name="codmodel"  class="ppp">
+                <label class="labelfilter">Cargo: </label>
+                <input type="text" id="codcargo"  name="codcargo"  class="ppp">
+                <input type="text" id="desccargo" name="desccargo" class="large" disabled>
             </div>
 
-            <div  class='if' style="display: flex; height: auto;">
-                <label class="labelmodal"></label>                
+            <div class='if'>
+                <label class="labelfilter">Setor: </label>
+                <input type="text" id="codsetor"  name="codsetor"  class="ppp">
+                <input type="text" id="descsetor" name="descsetor" class="large" disabled>
+            </div>
+
+            <div style="display: flex;">
+                <label class="labelfilter"></label>                
                 <div id="bbuscar"    name="bbuscar"    class="button" value="Buscar"      data-icon="/icons/buscar.png"></div>
                 <div id="bnovabusca" name="bnovabusca" class="button" value="Nova Busca"  data-icon="/icons/novaPesquisa.png"></div>
                 <div id="blimpar"    name="blimpar"    class="button" value="Limpar"      data-icon="/icons/limparIcon.png"></div>
@@ -80,74 +96,73 @@
         </fieldset>
         
         <div class='if' style="display: flex; margin-left: 5px;">                            
-            <div id="bliberar"   name="bliberar"   class="button" value="Liberar"  data-icon="/icons/plus_icon.png"></div>
-            <div id="bcadastrar" name="bcadastrar" class="button" value="Cadastrar"  data-icon="/icons/plus_icon.png"></div>
-            <div id="bimprimir"  name="bimprimir"  class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
+            <div id="bimprimir" name="bimprimir" class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
+            <div id="binserir"  name="binserir"  class="button" value="Inserir"  data-icon="/icons/incluir.png"></div>
         </div>
 
-        <div id="tabela_libacess"></div>
-        <div id="tabela_APL"></div>
+        <div id="tabela_agend"></div>
 
         <!--  MODAL -->
-        <div id="dmodalf_libacess">
+        <div id="dmodalf_agenda">
             <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
-                <h2><span id="stitulolibacess" name="stitulolibacess"></span></h2>
-                <span     id="sacaolibacess"   name="sacaolibacess" style="display: none"></span>
+                <h2><span id="stitulo" name="stitulo"></span></h2>
+                <span     id="sacao"   name="sacao" style="display: none"></span>
             </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Usuário: </label>
-                <input type="text" id="mideusu"     name="mideusu"     class="medium">
-                <input type="text" id="mdescideusu" name="mdescideusu" class="large" disabled>
-            </div>
+            <div id='abasfiltroagen'></div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Código da aplicacão: </label>
-                <input type="text" id="mcodapl"     name="mcodapl"     class="ppp">
-                <input type="text" id="mdescapllib" name="mdescapllib" class="large" disabled>
-            </div>
+            <div class="container-principal">
+                <div class="esquerda">
+                    <fieldset>
+                        <div class='dmf'>
+                            <label class="labelmodal">Título: </label>
+                            <input type="text" id="mtituloagen"  name="mtituloagen"  class="extralarge">
+                        </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Data vencimento: </label>
-                <input type="date" id="mdatvenc"  name="mdatvenc"  class="medium">
-            </div>
+                        <div class='dmf'>
+                            <label class="labelmodal">Data: </label>
+                            <input type="date" id="mdataagen"  name="mdataagen"  class="medium">
+                            <label class="labelmodal2">Horário: </label>
+                            <input type="time" id="mhoraagen"  name="mhoraagen"  class="p">
+                        </div>
 
-            <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
-                <div id="bcadastrolib" name="bcadastrolib" class="button" value="Liberar" data-icon="/icons/cadastro.png">
-            </div>
-        </div>
+                        <div class='dmf'>
+                            <label class="labelmodal">Motivo: </label>
+                            <select id="mmotivo"  name="mmotivo"  class="large"></select>
+                        </div>
 
-        <div id="dmodalf_cadapl">
-            <input type="hidden" id="hcodapl" name="hcodapl">
+                        <div class='dmf'>
+                            <label class="labelmodal textup">Descrição: </label>
+                            <textarea type="text" id="mdescagen"  name="mdescagen"  class="extralarge"></textarea>
+                        </div>
+                    </fieldset>
+                </div>
 
-            <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
-                <h2><span id="stitulocadcpl" name="stitulocadcpl"></span></h2>
-                <span     id="sacaocadcpl"   name="sacaocadcpl" style="display: none"></span>
-            </div>
+                <div class="direita">
+                    <fieldset>
+                        <div class='dmf'>
+                            <label class="labelmodal">Funcionario: </label>
+                            <input type="text" id="mfuncionario"  name="mfuncionario"  class="extralarge">
+                        </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Descricão: </label>
-                <input type="text" id="mdescapl" name="mdescapl" class="large">
-            </div>
+                        <div id="dsetor" class='dmf'>
+                            <label class="labelmodal">Setor: </label>
+                            <select id="msetor"  name="msetor"  class="medium"></select>
+                        </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Modulo Referente: </label>
-                <input type="text" id="mmodulo"  name="mmodulo"  class="ppp">
-                <input type="text" id="mdescmod" name="mdescmod" class="large" disabled>
-            </div>
+                        <div id="dcargo" class='dmf'>
+                            <label class="labelmodal">Cargo: </label>
+                            <select id="mcargo"  name="mcargo"  class="medium"></select>
+                        </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Restringir para role: </label>
-                <select id="mrestrole" name="mrestrole" class="Intermedium"></select>
-            </div>
+                        <div id="funcionarios_grid" name="funcionarios_grid"></div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Arquivo inicializador: </label>
-                <input type="text" id="marqinit"  name="marqinit"  class="medium">
-            </div>
+                    </fieldset>
 
-            <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
-                <div id="bcadastroapl" name="bcadastroapl" class="button" value="Cadastrar" data-icon="/icons/cadastro.png">
+                    <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
+                        <div id="bagendar" name="bagendar" class="button" value="Agendar">
+                    </div>
+                </div>
             </div>
         </div>
 
