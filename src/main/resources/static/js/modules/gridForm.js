@@ -56,8 +56,8 @@ export function GridForm_init(){
             const th           = document.createElement("th");
             const colunasLabel = this.columnLabel.split(",");
 
-            th.id          = coluna.trim() + "__" + pi;
-            th.textContent = colunasLabel[pi];
+            th.id        = coluna.trim() + "__" + pi;
+            th.innerHTML = colunasLabel[pi];
 
             if(!colunasLabel[index]) th.style.display = "none";
 

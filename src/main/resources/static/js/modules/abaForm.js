@@ -4,13 +4,13 @@
    IM: 00019
 */
 
-let abasArray = [];
-
 export function abaForm_init(){
     this.id          = "";
     this.name        = "";
     this.icon        = "";
     
+    let abasArray = [];
+
     this.createAba = ()=>{
         
         if(!document.getElementById(this.id)) throw new Error("Div " + this.id + " não encontrada");;
@@ -27,7 +27,7 @@ export function abaForm_init(){
             const linhaDecor = document.createElement("div");
             const divAbaInt  = document.createElement("div");
 
-            divAba.id        = "divabares_" + pi;
+            divAba.id        = "divabares_" + abafe + "_" + pi;
             divAba.className = "aba";
 
             linhaDecor.className = "indentaba";

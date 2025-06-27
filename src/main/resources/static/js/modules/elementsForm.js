@@ -18,20 +18,23 @@ export function elementsForm_init(){
         const divpai = document.createElement("div");
         divpai.className = "buttonfe";
 
-        const divimg = document.createElement("div");
-        const img    = document.createElement("img");
-        img.src      = iconUrl;
-        img.style.width             = "20px";
-        img.style.height            = "60%";
-        img.style.margin            = "3px";
-        img.style.marginLeft        = "6px";
-        divimg.style.width          = "20px";
-        divimg.style.height         = "100%";
-        divimg.style.display        = "flex";
-        divimg.style.justifyContent = "center";
-        divimg.style.alignItems     = "center";
+        if(iconUrl){
+            const divimg = document.createElement("div");
+            const img    = document.createElement("img");
+            img.src      = iconUrl;
+            img.style.width             = "20px";
+            img.style.height            = "60%";
+            img.style.margin            = "3px";
+            img.style.marginLeft        = "6px";
+            divimg.style.width          = "20px";
+            divimg.style.height         = "100%";
+            divimg.style.display        = "flex";
+            divimg.style.justifyContent = "center";
+            divimg.style.alignItems     = "center";
 
-        divimg.appendChild(img);
+            divimg.appendChild(img);
+            divpai.appendChild(divimg);
+        }
 
         const divlabel = document.createElement("div");
         divlabel.style.width          = "calc(100% - 20px)";
@@ -43,11 +46,10 @@ export function elementsForm_init(){
         inputlabel.type      = "button";
         inputlabel.className = "buttonfe";
         inputlabel.value     = blabel;
+        if(!iconUrl) inputlabel.style.justifyContent = "center";
 
         divlabel.appendChild(inputlabel);
-
-        // Monta a hierarquia corretamente
-        divpai.appendChild(divimg);
+        
         divpai.appendChild(divlabel);
         botao.appendChild(divpai);
     });

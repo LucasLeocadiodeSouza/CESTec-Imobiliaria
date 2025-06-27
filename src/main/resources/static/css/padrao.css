@@ -2,7 +2,7 @@ body .gen {padding: 10px}
 
 .dnone {display: none;}
 
-.gen img {width: 20px;
+.gen img {width: auto;
           padding: 0px;
           height: 25px;
           margin-inline: 6px;
@@ -96,7 +96,7 @@ body .gen {padding: 10px}
          flex-direction: column;
          border: 1px solid rgb(104, 104, 104);
          border-bottom: none; 
-         background-color: rgb(210, 210, 210);}
+         background-color: rgb(210 210 210 / 31%);}
 
 .dabaexterna {height: 40px; 
              width: 90%; 
