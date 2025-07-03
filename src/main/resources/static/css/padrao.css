@@ -77,7 +77,7 @@ body .gen {padding: 10px}
 .logoEmpresa {display: flex; width: 100%; justify-content: center; align-items: center;}
 
 .titulo {border: 2px solid rgb(104, 104, 104);
-         border-bottom: none; 
+         border-bottom: 1px solid; 
          border-radius: 6px;
          background-color: #cfdaec;
          height: 33px; 

@@ -3,25 +3,20 @@ package com.cestec.cestec.service;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.cestec.cestec.model.aplicacaoDTO;
 import com.cestec.cestec.model.corretorDTO;
 import com.cestec.cestec.model.pcp_meta;
 import com.cestec.cestec.model.sp_aplicacoes;
-import com.cestec.cestec.model.sp_modulos;
+import com.cestec.cestec.model.opr.opr_agendamentos_func;
 import com.cestec.cestec.repository.contratoRepository;
 import com.cestec.cestec.repository.metaRepository;
-import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
 import com.cestec.cestec.repository.generico.aplicacoesRepository;
 import com.cestec.cestec.repository.generico.funcionarioRepository;
-import com.cestec.cestec.repository.generico.modulosRepository;
+import com.cestec.cestec.repository.opr.agendamentosFuncRepo;
 
 @Service
 public class comWindowService {
@@ -36,10 +31,7 @@ public class comWindowService {
     private aplicacoesRepository aplicacoesRepository;
 
     @Autowired
-    private modulosRepository modulosRepository;
-
-    @Autowired
-    private prjContratosCustomRepository prjContratosCustomRepository;
+    private agendamentosFuncRepo agendFuncRepo;
 
     @Autowired
     private funcionarioRepository funcionarioRepository;
@@ -61,6 +53,10 @@ public class comWindowService {
         else{
             return 0.0;
         }
+    }
+
+    public List<opr_agendamentos_func> buscarAgendamentosFunc(String ideusu){
+        return agendFuncRepo.findAllByCodFunc(ideusu);
     }
 
     public String getCargoFuncionario(String ideusu){

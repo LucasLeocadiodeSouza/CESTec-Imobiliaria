@@ -1,9 +1,6 @@
 package com.cestec.cestec.service.pagamento;
 
-import static org.mockito.Answers.valueOf;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

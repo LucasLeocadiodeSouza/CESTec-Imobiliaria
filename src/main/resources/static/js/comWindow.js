@@ -16,13 +16,13 @@ const nomeMes = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","
 let date = new Date();
 let mes  = date.getMonth();
 let ano  = date.getFullYear();
-var CONSUL;
+var CONSUL,AGENDSJSON;
 
 function iniciarEventos() {
     CONSUL = new consulForm_init();
 
     buscarUserId("wcodfunc");
-    buscarUserName("ideusu");
+    buscarUserName();
 
     valorMetaMensal();
     setGraficoMeta();
@@ -65,7 +65,7 @@ function event_click(obj) {
 
             date = new Date(ano,mes, new Date().getDate());
             ano  = date.getFullYear();
-            mes = date.getMonth();
+            mes  = date.getMonth();
 
             carregaMes();
         });
@@ -222,13 +222,30 @@ function getBotoesAplMenu(){
     });
 }
 
+function buscarAgendamentos(){
+    CONSUL.consultar(`/home/buscarAgendamentosFunc?ideusu=${form("ideusu").value}`)
+    .then(data =>{
+        AGENDSJSON = data;
+    });
+}
+
+function criarIconAgendamentos(day, mes, year){
+    const dataanalise = year + "-" + "-" + mes + "-" + day;
+
+    // AGENDSJSON.forEach(agenda => {
+    //     if(agenda.codagenda.datagen == dataanalise) return "<div style=height: 5px;width: 5px;background: #ff8300;border-radius: 5px;position: absolute;top: 0;></div>";
+    // });
+
+    return "";
+}
+
 function buscarUserName(){
     CONSUL.consultar(`/home/userlogin`)
     .then(data => {
         form("ideusu").value      = data;
         form("huser").textContent = data;
 
-        //getBotoesAplMenu();
+        //buscarAgendamentos();
     });
 }
 
@@ -322,8 +339,8 @@ function carregaMes(){ //IM: 00004
 
     for(let i = 1; i<= dataFinal; i++){
         let classHoje = (i === date.getDate() && mes === new Date().getMonth() && ano === new Date().getFullYear() ? "class='hoje'":"");
-        
-        diasDoMes += `<li ${classHoje}>${i}</li>`;
+
+        diasDoMes += `<li ${classHoje}> ${criarIconAgendamentos(i,mes,ano)} ${i}</li>`;
     }
 
     for(let i = final; i < 6; i++){

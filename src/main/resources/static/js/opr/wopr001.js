@@ -22,10 +22,10 @@ function wopr001_init(){
 
     AGEN_GRID               = new GridForm_init();
     AGEN_GRID.id            = "tabela_agend";
-    AGEN_GRID.columnName    = "usuario,mcodmod,mdescmod,codapl,descapl,data,_role,_arqu_inic";
-    AGEN_GRID.columnLabel   = "Usuário,Código Mod.,Módulo Referente,Código Aplicação,Aplicação,Data";
-    AGEN_GRID.columnWidth   = "12,12,17,17,30,12";
-    AGEN_GRID.columnAlign   = "e,c,c,c,e,c";
+    AGEN_GRID.columnName    = "codagen,titulo,descricao,motivo,datagen,horagen,ideusu,_motivos";
+    AGEN_GRID.columnLabel   = "Código,Título,Descrição,Motivo,Data,Hora,Usuário";
+    AGEN_GRID.columnWidth   = "8,15,30,15,12,9,11";
+    AGEN_GRID.columnAlign   = "c,e,e,e,c,c,e";
     AGEN_GRID.mousehouve    = false;
     AGEN_GRID.destacarclick = false;
     AGEN_GRID.createGrid();
@@ -34,7 +34,7 @@ function wopr001_init(){
     FUNC_GRID.id            = "funcionarios_grid";
     FUNC_GRID.columnName    = "cb,codfunc,nomefunc,codcargo,cargo,codsetor,setor";
     FUNC_GRID.columnLabel   = "<input type='checkbox' id='marcatodos' name='marcatodos'>,Cód. Func,Funcionario,Cód. Carg,Cargo,Cód. Set,Setor";
-    FUNC_GRID.columnWidth   = "6,13,24,13,17,12,15";
+    FUNC_GRID.columnWidth   = "7,13,24,13,16,12,15";
     FUNC_GRID.columnAlign   = "c,c,e,c,e,c,e";
     FUNC_GRID.gridHeight    = "250px";
     FUNC_GRID.mousehouve    = false;
@@ -84,18 +84,22 @@ function iniciarEventos() {
 }
 
 function event_click_table(){
-    // AGEN_GRID.click_table = ()=>{
-    //     const clickedCell = event.target.closest('td');
-    //     if (clickedCell && clickedCell.cellIndex === 0) return;
+    AGEN_GRID.click_table = ()=>{
+        const clickedCell = event.target.closest('td');
+        if (clickedCell && clickedCell.cellIndex === 0) return;
 
-    //     const valoresLinha = LIBACESS_GRID.getRowNode(event.target.closest('tr'));
+        const valoresLinha = AGEN_GRID.getRowNode(event.target.closest('tr'));
 
-    //     controlaTela("modal");
+        controlaTela("modal");
 
-    //     preencherDadosModal(valoresLinha);
+        preencherDadosModal(valoresLinha);
+        
+        carregaGridFuncionarios();
 
-    //     DMFDiv.openModal("dmodalf_libacess");
-    // };
+        DMFDiv.fullScream = true;
+        DMFDiv.openModal("dmodalf_agenda");
+        DMFDiv.fullScream = false;
+    };
 }
 
 function event_click(obj) {
@@ -107,7 +111,7 @@ function event_click(obj) {
     if(obj == "bbuscar"){
         form(obj).addEventListener("click", function () {
             controlaTela("buscar");
-            //
+            carregarGridAgendamentos();
         });        
     }
     if(obj == 'blimpar'){
@@ -122,6 +126,9 @@ function event_click(obj) {
             
             controlaTela("modal");
 
+            getOptionsMotivo("1");
+            carregaGridFuncionarios();
+
             DMFDiv.fullScream = true;
             DMFDiv.openModal("dmodalf_agenda");
             DMFDiv.fullScream = false;
@@ -131,10 +138,10 @@ function event_click(obj) {
         form(obj).addEventListener("click", function () {
             if(!confirm("Deseja mesmo adicionar esse agendamento?")) return;
 
-            //adicionarAplicacao();
+            criarListaFunc();
             DMFDiv.closeModal();
         });
-    }
+    } 
 }
 
 function event_change(obj){
@@ -153,10 +160,13 @@ function event_click_aba(){
                 break;
         }
     });
+
     ABAFILTRO.setAba_init(()=>{
         switch (ABAFILTRO.getIndex()) {
         case 0: 
-        case 1: controlaTela("modal");
+        case 1:
+        case 2: controlaTela("modal");
+                carregaGridFuncionarios();
                 break;
         }
     });
@@ -181,10 +191,14 @@ function controlaTela(opc){
         desabilitaCampo('bbuscar',         true);
     }
     if(opc == "modal"){
-        // desabilitaCampo('mdescapl',     !ehCadastroDeApl());
-        // desabilitaCampo('mmodulo',      !ehCadastroDeApl());
-        // desabilitaCampo('mrestrole',    !ehCadastroDeApl());
-        // desabilitaCampo('bagendar', !ehCadastroDeApl());
+        desabilitaCampo('mtituloagen',  !ehManutencao());
+        desabilitaCampo('mdataagen',    !ehManutencao());
+        desabilitaCampo('mhoraagen',    !ehManutencao());
+        desabilitaCampo('mdescagen',    !ehManutencao());
+        desabilitaCampo('mmotivo',      !ehManutencao());
+        
+        setDisplay("dmfiltrofunc", ehManutencao()?"block":"none");
+        setDisplay("bagendar",     ehManutencao()?"block":"none");
     }
 }
 
@@ -205,25 +219,25 @@ function limparTela(opc){
         form('mdataagen').value    = "";
         form('mhoraagen').value    = "";
         form('mdescagen').value    = "";
+        form('mmotivo').value      = "0";
         form('mfuncionario').value = "";
 
-        fillSelect("msetor",  [{id: 0, descricao: "Todos os Setores"}],0);
-        fillSelect("mcargo",  [{id: 0, descricao: "Todos os Cargos"}],0);
-        fillSelect("mmotivo", [{id: 0, descricao: "Aviso"}],0);
+        FUNC_GRID.clearGrid();
     }
 }
 
-function preencherDadosModalCadasApl(valores){
-    // form("sacao").innerText   = "Alterando";
-    // form("stitulo").innerText = "Cadastro de Aplicação - " + form("sacao").innerText;
+function preencherDadosModal(valores){
+    form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
+    form("stitulo").innerText = "Cadastrar Agendamento - " + form("sacao").innerText;
 
-    // buscarRoleAcess(valores[6]);
+    //buscarRoleAcess(valores[6]);
     
-    // form("hcodapl").value   = valores[3];
-    // form("mdescapl").value  = valores[4];
-    // form("mmodulo").value   = valores[1];
-    // form("mdescmod").value  = valores[2];
-    // form("marqinit").value  = valores[7];
+    form("hcodagen").value    = valores[0];
+    form("mtituloagen").value = valores[1];
+    form("mdescagen").value   = valores[2];
+    form("mdataagen").value   = valores[4];
+    form("mhoraagen").value   = valores[5];
+    getOptionsMotivo(valores[7]);
 }
 
 function ehConsulta(){
@@ -233,25 +247,62 @@ function ehConsulta(){
 function ehManutencao(){
     return ABA.getIndex() === 1;
 }
-function adicionarAplicacao() {
-    // const aplicacao = { id:            form("hcodapl").value,
-    //                     idmodulo:      form("mmodulo").value,
-    //                     role:          form("mrestrole").value,
-    //                     descricao:     form('mdescapl').value,
-    //                     arquivo_inic:  form('marqinit').value,
-    //                     ideusu:        form('ideusu').value};
 
-    // CONSUL.consultar(`/mrb001/cadastrarAplicacao`,"POST","",{body: aplicacao})
-    // .then(data =>{
-    //     if(data != "OK") return alert(data);
+function criarListaFunc(){
+    let listafunc = [];
 
-    //     alert("Aplicação cadastrada com sucesso!");
+    for(var i = 0; i < FUNC_GRID.getTableNode().length; i++){
+        const checkbox = FUNC_GRID.getTableNode()[i].childNodes[0].childNodes[0];
 
-    //     form("bnovabusca").click();
-    //     form("bbuscar").click();
+        if(!checkbox.checked) continue
 
-    //     DMFDiv.closeModal();
-    // });
+        const idfunc = FUNC_GRID.getTableNode()[i].childNodes[1].innerText;
+
+        listafunc.push({id: idfunc});
+    }
+
+    cadastrarAgendamento(listafunc);
+}
+
+function cadastrarAgendamento(listafunc) {
+    const agendamento = { codagenda:  form("hcodagen").value,
+                          titulo:     form("mtituloagen").value,
+                          descricao:  form("mdescagen").value,
+                          motivo:     form('mmotivo').value,
+                          datagen:    form('mdataagen').value,
+                          horagen:    form('mhoraagen').value,
+                          ideusu:     form('ideusu').value};
+
+    CONSUL.consultar(`/opr001/cadastrarAgendamento`,"POST","",{body: agendamento})
+    .then(data =>{
+        //if(data != "OK") return alert(data);
+
+        form("hcodagen").value = data;
+        vincularAgendamentoFunc(listafunc);
+    });
+}
+
+function vincularAgendamentoFunc(listafunc) {
+    var error = false;
+    listafunc.forEach(element => {
+        const agendfunc = { codfunc:   element.id,
+                            codagenda: form("hcodagen").value,
+                            ideusu:    form('ideusu').value};
+
+        CONSUL.consultar(`/opr001/vincularAgendamentoFunc`,"POST","",{body: agendfunc})
+        .then(data =>{
+            error = data != "OK";
+            if(data != "OK") return alert(data);
+        });
+    });
+
+    if(!error){
+        alert("Agendamento cadastrado com sucesso!");
+        form("bnovabusca").click();
+        form("bbuscar").click();
+
+        DMFDiv.closeModal();
+    }
 }
 
 function buscarUserName(){
@@ -261,12 +312,19 @@ function buscarUserName(){
     });
 }
 
-function getDescricaoModulo(){
-    CONSUL.consultar(`/mrb001/getDescricaoModulo?codmodulo=${form("mmodulo").value}`)
-    .then(data =>{ form("mdescmod").value = data })
-    .catch(error => form("mdescmod").value = "");
+function getOptionsMotivo(valorinicial){
+    CONSUL.consultar(`/opr001/getOptionsMotivo`)
+    .then(data =>{
+        form("mmotivo").innerHTML = "";
+        fillSelect("mmotivo",data,true);
+        form("mmotivo").value = valorinicial;
+    });
 }
 
-function carregaGridAgendamentos(){
-    AGEN_GRID.carregaGrid(`/mrb001/buscarAplicacoesGrid`,"","");
+function carregaGridFuncionarios(){
+    FUNC_GRID.carregaGrid(`/opr001/carregarGridFucnionarios?codagend=${form("hcodagen").value}&nomefunc=${form("mfuncionario").value}&acao=${form("sacao").innerText}`,"","");
+}
+
+function carregarGridAgendamentos(){
+    AGEN_GRID.carregaGrid(`/opr001/carregarGridAgendamentos?codfunc=${form("codfunc").value}&codcargo=${form("codcargo").value}&codsetor=${form("codsetor").value}`,"","");
 }
