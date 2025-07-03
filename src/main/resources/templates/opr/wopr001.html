@@ -18,7 +18,7 @@
     
 <style>
     .ppp         {width: 32px  !important;}
-    .p           {width: 60px  !important;}
+    .p           {width: 75px  !important;}
     .medium      {width: 120px !important;}
     .Intermedium {width: 180px !important;}
     .large       {width: 240px !important;}
@@ -42,6 +42,8 @@
                   text-align: right;}
 
     #mdescagen {height: 80px;}
+
+    #bagendar {margin-top: 15px;}
 
     .container-principal {gap: 10px ;display: flex; height: calc(100% - 155px); width: 98%; margin: 8px; margin-top: 0;}
     .esquerda {display: flex; flex-direction: column; height: 100%; width: 50%;}
@@ -104,6 +106,8 @@
 
         <!--  MODAL -->
         <div id="dmodalf_agenda">
+            <input type="hidden" name="hcodagen" id="hcodagen">
+
             <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
                 <h2><span id="stitulo" name="stitulo"></span></h2>
                 <span     id="sacao"   name="sacao" style="display: none"></span>
@@ -140,19 +144,9 @@
 
                 <div class="direita">
                     <fieldset>
-                        <div class='dmf'>
+                        <div id="dmfiltrofunc" class='dmf'>
                             <label class="labelmodal">Funcionario: </label>
                             <input type="text" id="mfuncionario"  name="mfuncionario"  class="extralarge">
-                        </div>
-
-                        <div id="dsetor" class='dmf'>
-                            <label class="labelmodal">Setor: </label>
-                            <select id="msetor"  name="msetor"  class="medium"></select>
-                        </div>
-
-                        <div id="dcargo" class='dmf'>
-                            <label class="labelmodal">Cargo: </label>
-                            <select id="mcargo"  name="mcargo"  class="medium"></select>
                         </div>
 
                         <div id="funcionarios_grid" name="funcionarios_grid"></div>
@@ -160,7 +154,7 @@
                     </fieldset>
 
                     <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
-                        <div id="bagendar" name="bagendar" class="button" value="Agendar">
+                        <input type="button" id="bagendar" name="bagendar" value="Agendar">
                     </div>
                 </div>
             </div>

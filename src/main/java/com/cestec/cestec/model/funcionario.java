@@ -36,6 +36,10 @@ public class funcionario {
     @JoinColumn(name = "cargo_id", nullable = false)
     private cargo cargo;
 
+    @ManyToOne
+    @JoinColumn(name = "setor_id", nullable = false)
+    private pcp_setor setor;
+
     //private Integer codsetor;
     private double  salario;
     private String  nome;

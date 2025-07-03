@@ -103,7 +103,7 @@ export function GridForm_init(){
 
     //carregar dados para a grid
     //o conteudo puxado precisa ser um json
-    this.carregaGrid = (path,method,headers)=>{
+    this.carregaGrid = async (path,method,headers)=>{
          if(!path) throw new Error("Caminho não especificado");
     
         if(!method) method = "GET";
@@ -146,7 +146,7 @@ export function GridForm_init(){
             loader.innerHTML += '<p>Carregando...</p>';
         }, 1000);
 
-        fetch(path, {
+        await fetch(path, {
             method: method,
             headers: headers
         })
@@ -255,7 +255,7 @@ export function GridForm_init(){
     //
     //retornos grid
     this.getTableNode = ()=>{
-        return document.getElementById(this.id).childNodes[0].childNodes[1].childNodes[1].childNodes;
+        return document.getElementById(this.id).childNodes[0].childNodes[1].childNodes[0].childNodes[1].childNodes;
     }
 
    this.getRowNode = (row)=>{
