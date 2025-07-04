@@ -8,7 +8,6 @@ import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init,getDispla
 
 window.addEventListener("load", function () {    
     iniciarEventos();
-    carregaMes();
 });
 
 const dates   = document.querySelector(".diadomes");
@@ -208,11 +207,16 @@ function filaFetchInit(){
         switch (CONSUL.obj) {
         case  "buscarUserName": form("ideusu").value      = retorno;
                                 form("huser").textContent = retorno;
+                                buscarAgendamentos();
                                 break;
 
         case      "buscarUserId": form("wcodfunc").value  = retorno;
                                   form("lid").textContent = retorno;
                                   break;
+
+        case "buscarAgendamentos": AGENDSJSON = retorno;
+                                   carregaMes();
+                                   break;
 
         case  "getBotoesAplMenu": let botoes = [];
                                   for(const idModulo in retorno) {
@@ -238,25 +242,25 @@ function getBotoesAplMenu(){
 }
 
 function buscarAgendamentos(){
-    CONSUL.consultar("buscarAgendamentos",`/home/buscarAgendamentosFunc?ideusu=${form("ideusu").value}`)
-    .then(data =>{
-        AGENDSJSON = data;
-    });
+    CONSUL.consultar("buscarAgendamentos",`/home/buscarAgendamentosFunc?ideusu=${form("ideusu").value}`);
 }
 
 function criarIconAgendamentos(day, mes, year){
-    const dataanalise = year + "-" + "-" + mes + "-" + day;
-
-    // AGENDSJSON.forEach(agenda => {
-    //     if(agenda.codagenda.datagen == dataanalise) return "<div style=height: 5px;width: 5px;background: #ff8300;border-radius: 5px;position: absolute;top: 0;></div>";
-    // });
-
-    return "";
+    const mesFormatado = String(mes).padStart(2, '0');
+    const dayFormatado = String(day).padStart(2, '0');
+    
+    const dataAnalise = `${year}-${mesFormatado}-${dayFormatado}`;
+    
+    const temAgendamento = AGENDSJSON.some(agenda => {
+        const dataAgenda = agenda.codagenda.datagen.split('T')[0];
+        return dataAgenda === dataAnalise;
+    });
+    
+    return temAgendamento?"<div style='height:5px;width:5px;background:#ff8300;border-radius:5px;position:absolute;top:0;'></div>": "";
 }
 
 function buscarUserName(){
     CONSUL.consultar("buscarUserName",`/home/userlogin`)
-    //buscarAgendamentos();
 }
 
 function buscarUserId(){
@@ -331,7 +335,7 @@ function getPeriodoMeta(){
     .catch(error => alert("Erro ao buscar Período da meta: " + error.message))
 }
 
-function carregaMes(){ //IM: 00004 
+function carregaMes(){ //IM: 00004 - montar calendario/agenda
     const comeco        = new Date(ano, mes, 1).getDay();
     const dataFinal     = new Date(ano, mes + 1, 0).getDate();
     const final         = new Date(ano, mes, dataFinal).getDay();
@@ -346,7 +350,7 @@ function carregaMes(){ //IM: 00004
     for(let i = 1; i<= dataFinal; i++){
         let classHoje = (i === date.getDate() && mes === new Date().getMonth() && ano === new Date().getFullYear() ? "class='hoje'":"");
 
-        diasDoMes += `<li ${classHoje}> ${criarIconAgendamentos(i,mes,ano)} ${i}</li>`;
+        diasDoMes += `<li ${classHoje} id='lidia_${i}_mes_${mes + 1}_ano_${ano}'> ${criarIconAgendamentos(i,mes + 1,ano)} ${i}</li>`;
     }
 
     for(let i = final; i < 6; i++){
