@@ -43,6 +43,7 @@ function wcri001_init(){
     DMFDiv.formModal();
 
     CONSUL = new consulForm_init();
+    filaFetchInit()
 
     iniciarEventos();
 }
@@ -135,6 +136,22 @@ function event_click_aba(){
                 break;
         }
     });
+}
+
+function filaFetchInit(){
+    CONSUL.filaFetch = (retorno)=>{
+        switch (CONSUL.obj) {
+        case            "buscarUserName": form("ideusu").value = retorno;
+                                          break;
+
+        case   "adicionarContratoImovel": alert("Imóvel adicionado com sucesso!");
+                                          DMFDiv.closeModal();
+                                          break;
+
+        case          "descProprietario": form("mdescproprietario").value = retorno;
+                                          break;
+        }
+    }
 }
 
 function controlaTela(opc){
@@ -242,19 +259,11 @@ function adicionarContratoImovel() {
                      datiregistro:      new Date().toISOString().split('T')[0],
                      datinicontrato:    form("mperiodoini").value};
 
-    CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form("mcodproprietario").value}/salvarImovel`,"POST","",{body: imovel})
-    .then(data =>{
-        alert("Imóvel adicionado com sucesso!");
-
-        DMFDiv.closeModal();
-    });
+    CONSUL.consultar("adicionarContratoImovel",`/contratosCadastroClientes/proprietario/${form("mcodproprietario").value}/salvarImovel`,"POST","",{body: imovel});
 }
 
 function descProprietario(codigo) {
-    CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form(codigo).value}/nomepropri`)
-    .then(data =>{
-        form("mdescproprietario").value = data;
-    });
+    CONSUL.consultar("descProprietario",`/contratosCadastroClientes/proprietario/${form(codigo).value}/nomepropri`);
 }
 
 function carregaGridImoveis(){

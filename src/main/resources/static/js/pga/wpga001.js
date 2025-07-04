@@ -35,6 +35,7 @@ function iniciarEventos() {
     DMFDiv.formModal();
 
     CONSUL = new consulForm_init();
+    filaFetchInit();
 
     buscarUserName();
 
@@ -49,6 +50,7 @@ function iniciarEventos() {
 
     controlaTela("inicia");
 }
+
 
 
 function event_click(obj) {
@@ -84,6 +86,52 @@ function event_click_table(){
         preencherDadosModal(valoresLinha)
         DMFDiv.openModal("dmodalf_geracaoboleto");
     };
+}
+
+function filaFetchInit(){
+    CONSUL.filaFetch = (retorno)=>{
+        switch (CONSUL.obj) {
+        case  "verBoleto": // Verificação do conteúdo
+                                if (!retorno || retorno.byteLength === 0) {
+                                    throw new Error('O PDF retornado está vazio');
+                                }
+
+                                // Verificação da assinatura do PDF (%PDF)
+                                const signature = new Uint8Array(retorno.slice(0, 4));
+                                if (String.fromCharCode(...signature) !== '%PDF') {
+                                    throw new Error('O arquivo não é um PDF válido');
+                                }
+
+                                // Cria o Blob corretamente
+                                const blob = new Blob([retorno], { type: 'application/pdf' });
+                                
+                                // Cria URL temporária
+                                const blobUrl = URL.createObjectURL(blob);
+                                
+                                const link    = document.createElement('a');
+                                link.href     = blobUrl;
+                                link.download = `boleto_${codfatura}.pdf`;
+                                link.click();
+
+                                // Abre em nova janela
+                                // const janela = window.open(blobUrl, '_blank');
+
+                                // Fallback se o navegador bloquear window.open()
+                                // if (!janela || janela.closed || typeof janela.closed === 'undefined') {
+                                //     const link = document.createElement('a');
+                                //     link.href = blobUrl;
+                                //     link.download = `boleto_${codfatura}.pdf`;
+                                //     document.body.appendChild(link);
+                                //     link.click();
+                                //     document.body.removeChild(link);
+                                // }
+                                break;
+
+        case    "buscarUserName": form("ideusu").value = retorno;
+                                  break;
+        
+        }
+    }
 }
 
 function controlaTela(opc){
@@ -169,7 +217,7 @@ function getDescCorretor(obj, retorno){
 //                      "data_vencimento" : form("mdatavenc").value
 //                   }
 
-//     CONSUL.consultar(`/faturas/registrarFatura/${form("mcodcliente").value}`,"POST","", {body: corpo});
+//     CONSUL.consultar("registrarFatura", `/faturas/registrarFatura/${form("mcodcliente").value}`,"POST","", {body: corpo});
 
 //     // fetch(`/faturas/registrarFatura/${form("mcodcliente").value}`, {
 //     //     method:  "POST",
@@ -182,60 +230,21 @@ function getDescCorretor(obj, retorno){
 // }
 
 function registrarBoleto(){
-    // CONSUL.consultar(`/faturas/registrarBoleto/${form("mfatura").value}`,"POST","",{body: aplicacao})
+    // CONSUL.consultar("registrarBoleto",`/faturas/registrarBoleto/${form("mfatura").value}`,"POST","",{body: aplicacao})
     // .then(data =>{
     //     //form("ideusu").value = data
     // });
 }
 
 function verBoleto(codfatura){
-    CONSUL.consultar(`/faturas/${codfatura}/boleto/pdf`, "GET", { "Accept": "application/pdf" }, { responseType: 'arraybuffer' })
-    .then(response => {
-        // Verificação do conteúdo
-        if (!response || response.byteLength === 0) {
-            throw new Error('O PDF retornado está vazio');
-        }
-
-        // Verificação da assinatura do PDF (%PDF)
-        const signature = new Uint8Array(response.slice(0, 4));
-        if (String.fromCharCode(...signature) !== '%PDF') {
-            throw new Error('O arquivo não é um PDF válido');
-        }
-
-        // Cria o Blob corretamente
-        const blob = new Blob([response], { type: 'application/pdf' });
-        
-        // Cria URL temporária
-        const blobUrl = URL.createObjectURL(blob);
-        
-        const link    = document.createElement('a');
-        link.href     = blobUrl;
-        link.download = `boleto_${codfatura}.pdf`;
-        link.click();
-
-        // Abre em nova janela
-        // const janela = window.open(blobUrl, '_blank');
-
-        // Fallback se o navegador bloquear window.open()
-        // if (!janela || janela.closed || typeof janela.closed === 'undefined') {
-        //     const link = document.createElement('a');
-        //     link.href = blobUrl;
-        //     link.download = `boleto_${codfatura}.pdf`;
-        //     document.body.appendChild(link);
-        //     link.click();
-        //     document.body.removeChild(link);
-        // }
-    })
+    CONSUL.consultar("verBoleto",`/faturas/${codfatura}/boleto/pdf`, "GET", { "Accept": "application/pdf" }, { responseType: 'arraybuffer' })
 }
 
 function buscarUserName(){
-    CONSUL.consultar(`/home/userlogin`)
-    .then(data =>{
-        form("ideusu").value = data
-    });
+    CONSUL.consultar("buscarUserName",`/home/userlogin`)
 }
 
-function  carregaGrid(){
+function carregaGrid(){
     PGA_GRID.carregaGrid(`/pag001/buscarFaturaCliente`);
 }
 

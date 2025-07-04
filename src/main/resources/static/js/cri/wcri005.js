@@ -45,6 +45,7 @@ function iniciarEventos() {
     DMFDiv.formModal();
 
     CONSUL = new consulForm_init();
+    filaFetchInit()
 
     event_click("bnovabusca");
     event_click("bbuscar");
@@ -104,7 +105,7 @@ function event_click(obj) {
 function event_change(obj){
     if(obj == "codproprietario"){
         form(obj).addEventListener("change", function(){
-            form("descproprietario").value = form(obj).value!=""?descProprietario(obj) : "Todos";
+            descProprietario();
         });
     }
     if(obj == "codcliente"){
@@ -114,7 +115,7 @@ function event_change(obj){
     }
     if(obj == "codcorretor"){
         form(obj).addEventListener("change", function(){
-            form("desccorretor").value = form(obj).value != ""? getDescCorretor(obj):"Todos os Corretores";           
+            getDescCorretor();
         });
     }
 }
@@ -145,6 +146,34 @@ function event_click_aba(){
                 break;
         }
     });
+}
+
+function filaFetchInit(){
+    CONSUL.filaFetch = (retorno)=>{
+        switch (CONSUL.obj) {
+        case             "buscarUserName": form("ideusu").value = retorno;
+                                           break;
+
+        case    "aprovarReprovarContrato": if(retorno != "OK") return alert(retorno);
+                                           alert("Contrato " + (retorno == 2?"Aprovado":"Reprovado") + " com Sucesso!");
+                                           enviarEmailAprovacaoReprovacao(retorno);
+
+                                           DMFDiv.closeModal();
+
+                                           form("bnovabusca").click();
+                                           form("bbuscar").click();
+                                           break;
+
+        case         "getDescCorretor": form("desccorretor").value = form("codcorretor").value != ""? retorno:"Todos os Corretores";
+                                        break;
+
+        case          "getDescCliente": form("desccorretor").value = form("codcorretor").value != ""? retorno:"Todos os Corretores";
+                                        break;
+
+        case        "descProprietario": form("descproprietario").value = form("codproprietario").value!=""?retorno : "Todos";
+                                        break;
+        }
+    }
 }
 
 function controlaTela(opc){
@@ -239,7 +268,7 @@ function enviarEmailAprovacaoReprovacao(acao){
             + "</body>"
             + "</html>"}
 
-    CONSUL.consultar(`/email`,"POST",{ "Content-Type": "application/json" },{body: email})
+    CONSUL.consultar("enviarEmailAprovacaoReprovacao",`/email`,"POST",{ "Content-Type": "application/json" },{body: email})
 }
 
 function aprovarReprovarContrato(acao) {
@@ -249,37 +278,21 @@ function aprovarReprovarContrato(acao) {
                       situacao:            acao,
                       ideusu:              form('ideusu').value};
 
-    CONSUL.consultar(`/wcr006c/aprovarReprovarContrato`,"POST",{ "Content-Type": "application/json" },{body: contrato})
-    .then(data =>{
-        if(data != "OK") return alert(data);
-        alert("Contrato " + (acao == 2?"Aprovado":"Reprovado") + " com Sucesso!");
-        enviarEmailAprovacaoReprovacao(acao);
-
-        DMFDiv.closeModal();
-
-        form("bnovabusca").click();
-        form("bbuscar").click();
-    });
+    CONSUL.consultar("aprovarReprovarContrato",`/wcr006c/aprovarReprovarContrato`,"POST",{ "Content-Type": "application/json" },{body: contrato});
 }
 
-function getDescCliente(codigo){
-    CONSUL.consultar(`/cliente/${form(codigo).value}/findNomeClienteById`)
-    .then(data =>{return data});
+function getDescCliente(){
+    CONSUL.consultar("getDescCliente",`/cliente/${form("codcliente").value}/findNomeClienteById`);
 }
 
-function descProprietario(codigo) {
-    CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form(codigo).value}/nomepropri`)
-    .then(data =>{return data});
+function descProprietario() {
+    CONSUL.consultar("descProprietario",`/contratosCadastroClientes/proprietario/${form("codproprietario").value}/nomepropri`)
 }
 
-function getDescCorretor(obj){
-    CONSUL.consultar(`/contrato/${form(obj).value}/getNomeByIdeusu`)
-    .then(data =>{return data});
+function getDescCorretor(){
+    CONSUL.consultar("getDescCorretor",`/contrato/${form("codcorretor").value}/getNomeByIdeusu`)
 }
 
 function buscarUserName(){
-    CONSUL.consultar(`/home/userlogin`)
-    .then(data =>{
-        form("ideusu").value = data
-    });
+    CONSUL.consultar("buscarUserName",`/home/userlogin`)
 }

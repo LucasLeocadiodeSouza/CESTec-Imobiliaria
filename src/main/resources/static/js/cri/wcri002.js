@@ -46,6 +46,7 @@ function iniciarEventos() {
     DMFDiv.formModal();
 
     CONSUL = new consulForm_init();
+    filaFetchInit()
 
     event_click("bnovabusca");
     event_click("bbuscar");
@@ -119,6 +120,23 @@ function event_click_aba(){
     });
 }
 
+function filaFetchInit(){
+    CONSUL.filaFetch = (retorno)=>{
+        switch (CONSUL.obj) {
+        case            "buscarUserName": form("ideusu").value = retorno;
+                                          break;
+
+        case     "adicionarProprietario": if(retorno != "OK") return alert(retorno);
+                                          alert("Dados Salvos Com Sucesso!");
+                                          if(form("sacao").innerText == "Inserindo")if(confirm("Deseja enviar um Email de Boas Vindas para o Proprietario?")) enviarEmail();
+
+                                          form("bnovabusca").click();
+                                          form("bbuscar").click();
+                                          break;
+        }
+    }
+}
+
 function buscarPropriGrid(valoresLinha){
     form("mcodproprietario").value  = valoresLinha[0];
     form("mnome").value         	= valoresLinha[1];
@@ -153,15 +171,7 @@ function adicionarProprietario() {
                            endereco_uf:         form('muf').value,
                            id_usuario:          form('ideusu').value};
 
-    CONSUL.consultar(`/contratosCadastroClientes/proprietario`,"POST","",{body: proprietario})
-    .then(data => {
-        if(data != "OK") return alert(data);
-        alert("Dados Salvos Com Sucesso!");
-        if(form("sacao").innerText == "Inserindo")if(confirm("Deseja enviar um Email de Boas Vindas para o Proprietario?")) enviarEmail();
-
-        form("bnovabusca").click();
-        form("bbuscar").click();
-    });
+    CONSUL.consultar("adicionarProprietario",`/contratosCadastroClientes/proprietario`,"POST","",{body: proprietario});
 }
 
 function enviarEmail(){
@@ -184,14 +194,11 @@ function enviarEmail(){
             + "</body>"
             + "</html>"}
 
-    CONSUL.consultar(`/email`,"POST","",{body: email})
+    CONSUL.consultar("enviarEmail",`/email`,"POST","",{body: email})
 }
 
 function buscarUserName(){
-    CONSUL.consultar(`/home/userlogin`)
-    .then(data =>{
-        form("ideusu").value = data
-    });
+    CONSUL.consultar("buscarUserName",`/home/userlogin`);
 }
 
 function controlaTela(opc){

@@ -16,6 +16,7 @@ import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init,fillSelec
 
 var LIBACESS_GRID,CADAPL_GRID;
 var DMFDiv, ABA, CONSUL;
+var ACAOBUSCA = {};
 
 function wmrb001_init(){
     elementsForm_init();
@@ -53,6 +54,7 @@ function wmrb001_init(){
     DMFDiv.formModal();
 
     CONSUL = new consulForm_init();
+    filaFetchInit();
 
     iniciarEventos();
     buscarUserName();
@@ -165,6 +167,33 @@ function event_click_aba(){
     });
 }
 
+function filaFetchInit(){
+    CONSUL.filaFetch = (retorno)=>{
+
+        switch (CONSUL.obj) {
+        case    "getDescricaoModulo": form("mdescmod").value = retorno;
+                                      break;
+
+        case        "buscarUserName": form("ideusu").value = retorno;
+                                      break;
+
+        case       "buscarRoleAcess": form("mrestrole").innerHTML = "";
+                                      fillSelect("mrestrole",retorno,true);
+                                      form("mrestrole").value = ACAOBUSCA.buscarRoleAcess.valorinicial;
+                                      break;
+
+        case    "adicionarAplicacao": if(data != "OK") return alert(retorno);
+                                      alert("Aplicação cadastrada com sucesso!");
+
+                                      form("bnovabusca").click();
+                                      form("bbuscar").click();
+
+                                      DMFDiv.closeModal();
+                                      break;
+        }
+    }
+}
+
 function controlaTela(opc){
     limparTela(opc);
     if(opc == "inicia" || opc == 'novabusca'){
@@ -254,39 +283,23 @@ function adicionarAplicacao() {
                         arquivo_inic:  form('marqinit').value,
                         ideusu:        form('ideusu').value};
 
-    CONSUL.consultar(`/mrb001/cadastrarAplicacao`,"POST","",{body: aplicacao})
-    .then(data =>{
-        if(data != "OK") return alert(data);
-
-        alert("Aplicação cadastrada com sucesso!");
-
-        form("bnovabusca").click();
-        form("bbuscar").click();
-
-        DMFDiv.closeModal();
-    });
+    CONSUL.consultar("adicionarAplicacao",`/mrb001/cadastrarAplicacao`,"POST","",{body: aplicacao})
 }
 
 function buscarRoleAcess(valorinicial){
-    CONSUL.consultar(`/mrb001/buscarRoleAcess`)
-    .then(data =>{
-        form("mrestrole").innerHTML = "";
-        fillSelect("mrestrole",data,true);
-        form("mrestrole").value = valorinicial;
-    });
+    ACAOBUSCA.buscarRoleAcess = {
+        valorinicial: valorinicial
+    }
+
+    CONSUL.consultar("buscarRoleAcess",`/mrb001/buscarRoleAcess`)
 }
 
 function buscarUserName(){
-    CONSUL.consultar(`/home/userlogin`)
-    .then(data =>{
-        form("ideusu").value = data
-    });
+    CONSUL.consultar("buscarUserName",`/home/userlogin`)
 }
 
 function getDescricaoModulo(){
-    CONSUL.consultar(`/mrb001/getDescricaoModulo?codmodulo=${form("mmodulo").value}`)
-    .then(data =>{ form("mdescmod").value = data })
-    .catch(error => form("mdescmod").value = "");
+    CONSUL.consultar("getDescricaoModulo",`/mrb001/getDescricaoModulo?codmodulo=${form("mmodulo").value}`)
 }
 
 function carregaGridAplicacoes(){

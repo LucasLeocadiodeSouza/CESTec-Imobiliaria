@@ -43,7 +43,8 @@ function wmrb001_init(){
     DMFDiv.formModal();
 
     CONSUL = new consulForm_init();
-
+    filaFetchInit();
+    
     iniciarEventos();
     buscarUserName();
 }
@@ -133,6 +134,18 @@ function event_click_aba(){
     });
 }
 
+
+function filaFetchInit(){
+    CONSUL.filaFetch = (retorno)=>{
+        switch (CONSUL.obj) {
+        case    "buscarUserName": form("ideusu").value = retorno;
+                                  break;
+        
+        }
+    }
+}
+
+
 function controlaTela(opc){
     limparTela(opc);
     if(opc == "inicia" || opc == 'novabusca'){
@@ -202,7 +215,7 @@ function adicionarAplicacao() {
     //                     arquivo_inic:  form('marqinit').value,
     //                     ideusu:        form('ideusu').value};
 
-    // CONSUL.consultar(`/mrb001/cadastrarAplicacao`,"POST","",{body: aplicacao})
+    // CONSUL.consultar("adicionarAplicacao",`/mrb001/cadastrarAplicacao`,"POST","",{body: aplicacao})
     // .then(data =>{
     //     if(data != "OK") return alert(data);
 
@@ -216,10 +229,7 @@ function adicionarAplicacao() {
 }
 
 function buscarUserName(){
-    CONSUL.consultar(`/home/userlogin`)
-    .then(data =>{
-        form("ideusu").value = data
-    });
+    CONSUL.consultar("buscarUserName",`/home/userlogin`)
 }
 
 function carregaGridAplicacoes(){

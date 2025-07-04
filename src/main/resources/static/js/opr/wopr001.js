@@ -16,6 +16,7 @@ import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init,fillSelec
 
 var AGEN_GRID, FUNC_GRID;
 var DMFDiv, ABA, ABAFILTRO, CONSUL;
+var ACAOBUSCA = {};
 
 function wopr001_init(){
     elementsForm_init();
@@ -60,6 +61,7 @@ function wopr001_init(){
     DMFDiv.formModal();
 
     CONSUL = new consulForm_init();
+    filaFetchInit();
 
     iniciarEventos();
     buscarUserName();
@@ -172,6 +174,28 @@ function event_click_aba(){
     });
 }
 
+function filaFetchInit(){
+    CONSUL.filaFetch = (retorno)=>{
+        switch (CONSUL.obj) {
+        case           "buscarUserName": form("ideusu").value = retorno;
+                                         break;
+
+        case     "cadastrarAgendamento": //if(data != "OK") return alert(data);
+                                         form("hcodagen").value = retorno;
+                                         vincularAgendamentoFunc(ACAOBUSCA.cadastrarAgendamento.listafunc);
+                                         break;
+
+        case  "vincularAgendamentoFunc": if(retorno != "OK") return alert(retorno);
+                                         break;
+        
+        case         "getOptionsMotivo": form("mmotivo").innerHTML = "";
+                                         fillSelect("mmotivo",retorno,true);
+                                         form("mmotivo").value = ACAOBUSCA.getOptionsMotivo.valorinicial;
+                                         break;
+        }
+    }
+}
+
 function controlaTela(opc){
     limparTela(opc);
     if(opc == "inicia" || opc == 'novabusca'){
@@ -215,6 +239,7 @@ function limparTela(opc){
         AGEN_GRID.clearGrid();
     }
     if(opc === "modal"){
+        form('hcodagen').value     = '';
         form('mtituloagen').value  = "";
         form('mdataagen').value    = "";
         form('mhoraagen').value    = "";
@@ -265,6 +290,10 @@ function criarListaFunc(){
 }
 
 function cadastrarAgendamento(listafunc) {
+    ACAOBUSCA.cadastrarAgendamento = {
+        listafunc: listafunc
+    };
+
     const agendamento = { codagenda:  form("hcodagen").value,
                           titulo:     form("mtituloagen").value,
                           descricao:  form("mdescagen").value,
@@ -273,13 +302,7 @@ function cadastrarAgendamento(listafunc) {
                           horagen:    form('mhoraagen').value,
                           ideusu:     form('ideusu').value};
 
-    CONSUL.consultar(`/opr001/cadastrarAgendamento`,"POST","",{body: agendamento})
-    .then(data =>{
-        //if(data != "OK") return alert(data);
-
-        form("hcodagen").value = data;
-        vincularAgendamentoFunc(listafunc);
-    });
+    CONSUL.consultar("cadastrarAgendamento",`/opr001/cadastrarAgendamento`,"POST","",{body: agendamento});
 }
 
 function vincularAgendamentoFunc(listafunc) {
@@ -289,10 +312,9 @@ function vincularAgendamentoFunc(listafunc) {
                             codagenda: form("hcodagen").value,
                             ideusu:    form('ideusu').value};
 
-        CONSUL.consultar(`/opr001/vincularAgendamentoFunc`,"POST","",{body: agendfunc})
+        CONSUL.consultar("vincularAgendamentoFunc",`/opr001/vincularAgendamentoFunc`,"POST","",{body: agendfunc})
         .then(data =>{
             error = data != "OK";
-            if(data != "OK") return alert(data);
         });
     });
 
@@ -306,19 +328,15 @@ function vincularAgendamentoFunc(listafunc) {
 }
 
 function buscarUserName(){
-    CONSUL.consultar(`/home/userlogin`)
-    .then(data =>{
-        form("ideusu").value = data
-    });
+    CONSUL.consultar("buscarUserName",`/home/userlogin`);
 }
 
 function getOptionsMotivo(valorinicial){
-    CONSUL.consultar(`/opr001/getOptionsMotivo`)
-    .then(data =>{
-        form("mmotivo").innerHTML = "";
-        fillSelect("mmotivo",data,true);
-        form("mmotivo").value = valorinicial;
-    });
+    ACAOBUSCA.getOptionsMotivo = {
+        valorinicial: valorinicial
+    };
+
+    CONSUL.consultar("getOptionsMotivo", `/opr001/getOptionsMotivo`);
 }
 
 function carregaGridFuncionarios(){
