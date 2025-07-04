@@ -20,9 +20,7 @@ var CONSUL,AGENDSJSON;
 
 function iniciarEventos() {
     CONSUL = new consulForm_init();
-
-    buscarUserId("wcodfunc");
-    buscarUserName();
+    filaFetchInit();
 
     valorMetaMensal();
     setGraficoMeta();
@@ -33,6 +31,9 @@ function iniciarEventos() {
     event_click("dnextagenda");
     event_click("dbackagenda");
 
+    buscarUserId("wcodfunc");
+    buscarUserName();
+    
     getBotoesAplMenu();
     controlaTela("inicio");
 }
@@ -202,28 +203,42 @@ function containerBotaoAtivo(obj){
     return condicao;
 }
 
-function getBotoesAplMenu(){
-    CONSUL.consultar(`/home/getBotoesAplMenu`)
-    .then(data => {
-        let botoes = [];
+function filaFetchInit(){
+    CONSUL.filaFetch = (retorno)=>{
+        switch (CONSUL.obj) {
+        case  "buscarUserName": form("ideusu").value      = retorno;
+                                form("huser").textContent = retorno;
+                                break;
 
-        for (const idModulo in data) {
-            const dados = data[idModulo];
+        case      "buscarUserId": form("wcodfunc").value  = retorno;
+                                  form("lid").textContent = retorno;
+                                  break;
 
-            let botoesint    = [];
-            dados.forEach(dado =>{
-                botoesint.push({descricao:dado.descricao, codapl:dado.id});
-            });
+        case  "getBotoesAplMenu": let botoes = [];
+                                  for(const idModulo in retorno) {
+                                     const dados = retorno[idModulo];
+                                     let botoesint = [];
 
-            botoes.push({menu:dados[0].modulo.descricao, botoesinternos:botoesint});
+                                     dados.forEach(dado =>{
+                                         botoesint.push({descricao:dado.descricao, codapl:dado.id});
+                                     });
+
+                                     botoes.push({menu:dados[0].modulo.descricao, botoesinternos:botoesint});
+                                   };
+
+                                   criarBotaoEsterno("dintensint",botoes);
+                                   break;
+        
         }
+    }
+}
 
-        criarBotaoEsterno("dintensint",botoes);
-    });
+function getBotoesAplMenu(){
+    CONSUL.consultar("getBotoesAplMenu", `/home/getBotoesAplMenu`)
 }
 
 function buscarAgendamentos(){
-    CONSUL.consultar(`/home/buscarAgendamentosFunc?ideusu=${form("ideusu").value}`)
+    CONSUL.consultar("buscarAgendamentos",`/home/buscarAgendamentosFunc?ideusu=${form("ideusu").value}`)
     .then(data =>{
         AGENDSJSON = data;
     });
@@ -240,21 +255,12 @@ function criarIconAgendamentos(day, mes, year){
 }
 
 function buscarUserName(){
-    CONSUL.consultar(`/home/userlogin`)
-    .then(data => {
-        form("ideusu").value      = data;
-        form("huser").textContent = data;
-
-        //buscarAgendamentos();
-    });
+    CONSUL.consultar("buscarUserName",`/home/userlogin`)
+    //buscarAgendamentos();
 }
 
 function buscarUserId(){
-    CONSUL.consultar(`/home/userid`)
-    .then(data => {
-        form("wcodfunc").value  = data;
-        form("lid").textContent = data;
-    });
+    CONSUL.consultar("buscarUserId",`/home/userid`)
 }
 
 function valorMetaMensal(){

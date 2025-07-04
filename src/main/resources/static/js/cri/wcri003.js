@@ -43,6 +43,7 @@ function iniciarEventos() {
     DMFDiv.formModal();
 
     CONSUL = new consulForm_init();
+    filaFetchInit();
 
     buscarUserName();
 
@@ -100,7 +101,6 @@ function event_click_table(){
         form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
         form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
         buscarClienteGrid(valoresLinha);
-
         
         DMFDiv.openModal("dmodalf_cliente");
     }
@@ -115,6 +115,27 @@ function event_click_aba(){
         }
     });
 }
+
+
+function filaFetchInit(){
+    CONSUL.filaFetch = (retorno)=>{
+        switch (CONSUL.obj) {
+        case            "buscarUserName": form("ideusu").value = retorno;
+                                          break;
+
+        case          "adicionarCliente": if(data != "OK") return alert(retorno);
+                                          alert("Dados Salvos Com Sucesso!");
+                                          if(form("sacao").innerText == "Inserindo")if(confirm("Deseja enviar um Email de Boas Vindas para o cliente?")) enviarEmail();
+
+                                          DMFDiv.closeModal();
+
+                                          form("bnovabusca").click();
+                                          form("bbuscar").click();
+                                          break;
+        }
+    }
+}
+
 
 function buscarClienteGrid(valoresLinha){
     form("mcodcliente").value = valoresLinha[0];
@@ -150,17 +171,7 @@ function adicionarCliente() {
                      endereco_uf:         form('muf').value,
                      id_usuario:          form('ideusu').value};
 
-    CONSUL.consultar(`/cliente/salvarCliente`,"POST","",{body: cliente})
-    .then(data =>{
-        if(data != "OK") return alert(data);
-        alert("Dados Salvos Com Sucesso!");
-        if(form("sacao").innerText == "Inserindo")if(confirm("Deseja enviar um Email de Boas Vindas para o cliente?")) enviarEmail();
-
-        DMFDiv.closeModal();
-
-        form("bnovabusca").click();
-        form("bbuscar").click();
-    });
+    CONSUL.consultar("adicionarCliente",`/cliente/salvarCliente`,"POST","",{body: cliente})
 }
 
 function enviarEmail(){
@@ -183,14 +194,11 @@ function enviarEmail(){
             + "</body>"
             + "</html>"}
 
-    CONSUL.consultar(`/email`,"POST","",{body: email})
+    CONSUL.consultar("enviarEmail",`/email`,"POST","",{body: email})
 }
 
 function buscarUserName(){
-    CONSUL.consultar(`/home/userlogin`)
-    .then(data =>{
-        form("ideusu").value = data
-    });
+    CONSUL.consultar("buscarUserName",`/home/userlogin`);
 }
 
 function controlaTela(opc){

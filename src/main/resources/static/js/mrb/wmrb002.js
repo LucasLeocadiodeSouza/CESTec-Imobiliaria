@@ -100,7 +100,7 @@ function buscarTabelas(){
     TABELASBANCO_GRID.carregaGrid(`/mrb002/buscarTabelas?nomeTabela=${form("codtable").value}`);
 }
 
-//CONSUL.consultar(`/mrb001/buscarRoleAcess`)
+//CONSUL.consultar("buscarRoleAcess",`/mrb001/buscarRoleAcess`)
 //.then(data =>{
 //    fillSelect("mrestrole",data,true);
 //    form("mrestrole").value = valorinicial;

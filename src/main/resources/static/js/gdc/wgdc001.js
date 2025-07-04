@@ -43,6 +43,7 @@ function iniciarEventos() {
     DMFDiv.formModal();
 
     CONSUL = new consulForm_init();
+    filaFetchInit();
 
     event_click("bnovabusca");
     event_click("bbuscar");
@@ -130,6 +131,22 @@ function event_change(obj){
     }
 }
 
+function filaFetchInit(){
+    CONSUL.filaFetch = (retorno)=>{
+
+        switch (CONSUL.obj) {
+        case        "buscarUserName": form("ideusu").value = retorno;
+                                      break;
+
+        case    "salvarMetaCorretor": if(retorno != "OK") return alert(retorno);
+                                      alert("Meta adicionada com sucesso!");
+
+                                      DMFDiv.closeModal();
+                                      break;
+        }
+    }
+}
+
 function controlaTela(opc){
     limparTela(opc);
     if(opc == "inicia" || opc == 'novabusca'){
@@ -207,7 +224,7 @@ function buscarMetasCorretoresGrid(){
 }
 
 function getDescCorretor(idCorretor, retorno){
-    CONSUL.consultar(`/contrato/${idCorretor}/getNomeByIdeusu`)
+    CONSUL.consultar("getDescCorretor", `/contrato/${idCorretor}/getNomeByIdeusu`)
     .then(data =>{ form(retorno).value = data});
 }
 
@@ -218,19 +235,9 @@ function salvarMetaCorretor(){
                    datfinalmeta:  form("mperiodofin").value,
                    nome:          form("ideusu").value};
 
-    CONSUL.consultar(`/wcr005/salvarMetaCorretor`,"POST","",{body: meta})
-    .then(data =>{
-        if(data != "OK") return alert(data);
-        
-        alert("Meta adicionada com sucesso!");
-
-        DMFDiv.closeModal();
-    });
+    CONSUL.consultar("salvarMetaCorretor",`/wcr005/salvarMetaCorretor`,"POST","",{body: meta});
 }
 
 function buscarUserName(){
-    CONSUL.consultar(`/home/userlogin`)
-    .then(data =>{
-        form("ideusu").value = data
-    });
+    CONSUL.consultar("buscarUserName",`/home/userlogin`);
 }

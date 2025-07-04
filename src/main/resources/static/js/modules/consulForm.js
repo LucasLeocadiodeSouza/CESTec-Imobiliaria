@@ -5,6 +5,8 @@
 */
 
 export function consulForm_init(){
+    this.obj = "";
+
     const loader = document.createElement('div');
     loader.id    = 'global-loader';
     loader.style = `position: fixed;
@@ -37,7 +39,7 @@ export function consulForm_init(){
 
     document.body.appendChild(loader);
 
-    this.consultar = async (path,method,headers,options = {})=>{
+    this.consultar = async (nomefuncao,path,method,headers,options = {})=>{
          if(!path) throw new Error("Caminho não especificado");
     
         if(!method) method = "GET";
@@ -60,15 +62,22 @@ export function consulForm_init(){
             }
 
             const contentType = response.headers.get('Content-Type');
+            var resulta;
 
             if (contentType?.includes('application/pdf') || options.responseType === 'arraybuffer') {
-                return await response.arrayBuffer();
+                resulta = await response.arrayBuffer();
             }
             else if (contentType?.includes('application/json')) {
-                return await response.json();
+                resulta = await response.json();
             } else {
-                return await response.text();
+                resulta = await response.text();
             }
+
+            this.obj = nomefuncao;
+
+            this.filaFetch(resulta);
+
+            return resulta;
         } catch (error) {
             throw new Error('Erro na consulta:', error);
         } finally {

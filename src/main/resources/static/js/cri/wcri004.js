@@ -43,6 +43,7 @@ function iniciarEventos() {
     DMFDiv.formModal();
 
     CONSUL = new consulForm_init();
+    filaFetchInit();
 
     event_click_table();
     event_click_aba();
@@ -162,6 +163,45 @@ function event_click_aba(){
     });
 }
 
+function filaFetchInit(){
+    CONSUL.filaFetch = (retorno)=>{
+        switch (CONSUL.obj) {
+        case            "buscarUserName": form("ideusu").value = retorno;
+                                          break;
+
+        case    "inserirAlterarContrato": alert("Contrato adicionado com sucesso!");
+                                          DMFDiv.closeModal();
+                                          break;
+
+        case           "getOptionImovel": fillSelect("msimovel", retorno);
+                                          form("msimovel").options[0].disabled = true; 
+                                          break;
+
+        case             "getTipoImovel": form("mtpimovel").value = retorno;
+                                          break;
+
+        case         "getEnderecoImovel": form("mloc").value = retorno; 
+                                          break;
+
+        case     "getTipoContratoImovel": form("mtpcontrato").value = retorno;
+                                          form("mperiodofin").style.display = retorno === "Aluguel"?"inline":"none";
+                                          break;
+
+        case            "getValorImovel": form("mvlrimovel").value = retorno;
+                                          break;
+
+        case            "getDescCliente": form("mdesccliente").value = retorno;
+                                          break;
+                                        
+        case           "getDescCorretor": form("mnome").value = retorno;
+                                          break;
+
+        case           "getDescCorretor": form("mnome").value = retorno;
+                                          break;
+        }
+    }
+}
+
 function controlaTela(opc){
     limparTela(opc);
     if(opc == "inicia" || opc == 'novabusca'){
@@ -241,7 +281,7 @@ function ehManutencao(){
 }
 
 function descProprietario(codigo) {
-    CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form(codigo).value}/nomepropri`)
+    CONSUL.consultar("descProprietario",`/contratosCadastroClientes/proprietario/${form(codigo).value}/nomepropri`)
     .then(data =>{
         form("mdescprop").value = data;
     });
@@ -280,70 +320,39 @@ function inserirAlterarContrato(){
                          ideusuCorretor:  form("mvendedor").value,
                          ideusu:          form("ideusu").value};
 
-    CONSUL.consultar(`/contrato/inserirAlterarContrato`,"POST","",{body: contratoDTO})
-    .then(data =>{
-        alert("Contrato adicionado com sucesso!");
-
-        DMFDiv.closeModal();
-    });
+    CONSUL.consultar("inserirAlterarContrato",`/contrato/inserirAlterarContrato`,"POST","",{body: contratoDTO});
 }
 
 function getOptionImovel(){
-    CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form("mcodprop").value}/getOptionImovel`)
-    .then(data =>{
-        fillSelect("msimovel", data);
-        form("msimovel").options[0].disabled = true; 
-    });
+    CONSUL.consultar("getOptionImovel",`/contratosCadastroClientes/proprietario/${form("mcodprop").value}/getOptionImovel`);
 }
 
 function getTipoImovel(){
-    CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getTipoImovel`)
-    .then(data =>{
-        form("mtpimovel").value = data;
-    });
+    CONSUL.consultar("getTipoImovel",`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getTipoImovel`);
 } 
 
 function getEnderecoImovel(){
-    CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getEnderecoImovel`)
-    .then(data =>{
-        form("mloc").value = data; 
-    });
+    CONSUL.consultar("getEnderecoImovel",`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getEnderecoImovel`);
 }
 
 function getTipoContratoImovel(){
-    CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getTipoContratoImovel`)
-    .then(data =>{
-        form("mtpcontrato").value = data;
-        form("mperiodofin").style.display = data === "Aluguel"?"inline":"none";
-    });
+    CONSUL.consultar("getTipoContratoImovel",`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getTipoContratoImovel`);
 } 
 
 function getValorImovel(){
-    CONSUL.consultar(`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getValorImovel`)
-    .then(data =>{
-        form("mvlrimovel").value = data;
-    });
+    CONSUL.consultar("getValorImovel",`/contratosCadastroClientes/proprietario/${form("msimovel").value}/getValorImovel`);
 }
 
 function getDescCliente(codigo){
-    CONSUL.consultar(`/cliente/${form(codigo).value}/findNomeClienteById`)
-    .then(data =>{
-        form("mdesccliente").value = data;
-    });
+    CONSUL.consultar("getDescCliente",`/cliente/${form(codigo).value}/findNomeClienteById`);
 }
 
 function getDescCorretor(){
-    CONSUL.consultar(`/contrato/${form("mvendedor").value}/getNomeByIdeusu`)
-    .then(data =>{
-        form("mnome").value = data;
-    });
+    CONSUL.consultar("getDescCorretor",`/contrato/${form("mvendedor").value}/getNomeByIdeusu`);
 }
 
 function buscarUserName(){
-    CONSUL.consultar(`/home/userlogin`)
-    .then(data =>{
-        form("ideusu").value = data
-    });
+    CONSUL.consultar("buscarUserName",`/home/userlogin`);
 }
 
 
