@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.cestec.cestec.model.corretorDTO;
 import com.cestec.cestec.model.pcp_meta;
 import com.cestec.cestec.model.sp_aplicacoes;
+import com.cestec.cestec.model.opr.agendamentoDTO;
 import com.cestec.cestec.model.opr.opr_agendamentos_func;
 import com.cestec.cestec.repository.contratoRepository;
 import com.cestec.cestec.repository.metaRepository;
@@ -36,6 +37,15 @@ public class comWindowService {
     @Autowired
     private funcionarioRepository funcionarioRepository;
 
+    public String getCorMotivo(Integer codmotivo){
+        switch (codmotivo) {
+        case 1: return "#96DF9C";
+        case 2: return "#F28BF7";
+        case 3: return "#ED8975";
+        }
+        return "#FFF";
+    }
+
     public Double getMetaCorretorMensal(String ideusu){
         List<corretorDTO> corretores = metaRepository.findMetaMensalByIdeusu(ideusu);
         corretorDTO corretor = null;
@@ -55,8 +65,15 @@ public class comWindowService {
         }
     }
 
-    public List<opr_agendamentos_func> buscarAgendamentosFunc(String ideusu){
-        return agendFuncRepo.findAllByCodFunc(ideusu);
+    public List<agendamentoDTO> buscarAgendamentosFunc(String ideusu){
+        List<opr_agendamentos_func> agendfunc = agendFuncRepo.findAllByCodFunc(ideusu);
+        List<agendamentoDTO> listaagendDTO    = new java.util.ArrayList<>();
+
+        for(int i = 0; i < agendfunc.size(); i++){
+            listaagendDTO.add(new agendamentoDTO(agendfunc.get(i).getCodfunc().getCodfuncionario(), agendfunc.get(i).getCodagenda().getMotivo(), agendfunc.get(i).getCodagenda().getId(), getCorMotivo(agendfunc.get(i).getCodagenda().getMotivo()), agendfunc.get(i).getCodagenda().getDatagen(), agendfunc.get(i).getCodagenda().getHoragen()));
+        }
+
+         return listaagendDTO;
     }
 
     public String getCargoFuncionario(String ideusu){

@@ -210,9 +210,9 @@ function filaFetchInit(){
                                 buscarAgendamentos();
                                 break;
 
-        case      "buscarUserId": form("wcodfunc").value  = retorno;
-                                  form("lid").textContent = retorno;
-                                  break;
+        case       "buscarUserId": form("wcodfunc").value  = retorno;
+                                   form("lid").textContent = retorno;
+                                   break;
 
         case "buscarAgendamentos": AGENDSJSON = retorno;
                                    carregaMes();
@@ -248,15 +248,17 @@ function buscarAgendamentos(){
 function criarIconAgendamentos(day, mes, year){
     const mesFormatado = String(mes).padStart(2, '0');
     const dayFormatado = String(day).padStart(2, '0');
-    
+    var corIcon        = "";
+
     const dataAnalise = `${year}-${mesFormatado}-${dayFormatado}`;
-    
+
     const temAgendamento = AGENDSJSON.some(agenda => {
-        const dataAgenda = agenda.codagenda.datagen.split('T')[0];
+        const dataAgenda = agenda.datagen.split('T')[0];
+        corIcon          = agenda.corAgend;
         return dataAgenda === dataAnalise;
     });
     
-    return temAgendamento?"<div style='height:5px;width:5px;background:#ff8300;border-radius:5px;position:absolute;top:0;'></div>": "";
+    return temAgendamento?`<div style='height:5px;width:5px;background:${corIcon};border-radius:5px;position:absolute;top:0;'></div>`: "";
 }
 
 function buscarUserName(){

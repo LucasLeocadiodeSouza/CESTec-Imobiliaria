@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.cestec.cestec.infra.security.tokenService;
 import com.cestec.cestec.model.sp_aplicacoes;
+import com.cestec.cestec.model.opr.agendamentoDTO;
 import com.cestec.cestec.model.opr.opr_agendamentos_func;
 import com.cestec.cestec.service.comWindowService;
 import com.cestec.cestec.service.sp_userService;
@@ -66,7 +67,7 @@ public class comWindowController {
     }
 
     @GetMapping("/buscarAgendamentosFunc")
-    public List<opr_agendamentos_func> buscarAgendamentosFunc(String ideusu){
+    public List<agendamentoDTO> buscarAgendamentosFunc(String ideusu){
         return comWindowService.buscarAgendamentosFunc(ideusu);
     }
     
