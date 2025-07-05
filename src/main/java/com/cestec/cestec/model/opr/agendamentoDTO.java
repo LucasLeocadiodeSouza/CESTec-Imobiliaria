@@ -50,10 +50,12 @@ public class agendamentoDTO {
         this.datiregistro = datiregistro;
     }
 
-    public agendamentoDTO(Integer codagendfunc, Integer motivo, Integer codagenda, String corAgend, LocalDate datagen, LocalTime horagen2) {
+    public agendamentoDTO(Integer codagendfunc, Integer motivo, Integer codagenda, String titulo, String descricao, String corAgend, LocalDate datagen, LocalTime horagen2) {
         this.codagendfunc = codagendfunc;
         this.motivo       = motivo;
         this.codagenda    = codagenda;
+        this.titulo       = titulo;
+        this.descricao    = descricao;
         this.corAgend     = corAgend;
         this.datagen      = datagen;
         this.horagen2     = horagen2;

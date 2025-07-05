@@ -51,7 +51,7 @@ function event_click(obj) {
             ano  = date.getFullYear();
             mes = date.getMonth();
 
-            carregaMes();
+            buscarAgendamentos();
         });
     }
     if(obj == "dnextagenda"){
@@ -67,7 +67,7 @@ function event_click(obj) {
             ano  = date.getFullYear();
             mes  = date.getMonth();
 
-            carregaMes();
+            buscarAgendamentos();
         });
     }
 }
@@ -245,6 +245,58 @@ function buscarAgendamentos(){
     CONSUL.consultar("buscarAgendamentos",`/home/buscarAgendamentosFunc?ideusu=${form("ideusu").value}`);
 }
 
+function criarDescricaoData(mesanalise){
+    const divdescagen = form("ddescagendamentos");
+
+    divdescagen.innerHTML = "";
+
+    AGENDSJSON.forEach((agend, index) =>{
+        const [ano, mes, dia]   = agend.datagen.split('-');
+        if(mesanalise != mes) return;
+
+        const divagend = document.createElement("div");
+        divagend.classList.add("div-descagen");
+        if(index == 0) divagend.style.marginTop = "10px";
+
+        const div                 = document.createElement("div");
+        div.style.height          = "5px";
+        div.style.width           = "5px";
+        div.style.borderRadius    = "5px";
+        div.style.position        = "absolute";
+        div.style.transform       = "translate(50%, 50%)";
+        div.style.top             = "0";
+        div.style.backgroundColor = agend.corAgend;
+
+        const div2                = document.createElement("div");
+        div2.style.marginLeft     = "15px";
+        div2.style.gap            = "5px";
+        div2.style.display        = "flex";
+        div2.style.overflow       = "hidden";
+        div2.style.textColor      = "#FFF";
+
+        const datagend          = document.createElement("label");
+        const dataFormatada     = `${dia}/${mes}/${ano}`;
+        datagend.innerText      = dataFormatada;
+
+        const separador         = document.createElement("label");
+        separador.innerText     = " - ";
+
+        const titulo              = document.createElement("label");
+        titulo.innerText          = agend.titulo;
+        titulo.style.whiteSpace   = "nowrap";
+        titulo.style.overflow     = "hidden";
+        titulo.style.textOverflow = "ellipsis";
+
+        div2.appendChild(datagend);
+        div2.appendChild(separador);
+        div2.appendChild(titulo);
+
+        divagend.appendChild(div);
+        divagend.appendChild(div2);
+        divdescagen.appendChild(divagend);
+    });
+}
+
 function criarIconAgendamentos(day, mes, year){
     const mesFormatado = String(mes).padStart(2, '0');
     const dayFormatado = String(day).padStart(2, '0');
@@ -361,4 +413,6 @@ function carregaMes(){ //IM: 00004 - montar calendario/agenda
 
     dates.innerHTML = diasDoMes;
     form("lnomeMes").innerText = `${nomeMes[mes]}`;
+
+    criarDescricaoData(mes + 1);
 }

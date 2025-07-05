@@ -70,7 +70,7 @@ public class comWindowService {
         List<agendamentoDTO> listaagendDTO    = new java.util.ArrayList<>();
 
         for(int i = 0; i < agendfunc.size(); i++){
-            listaagendDTO.add(new agendamentoDTO(agendfunc.get(i).getCodfunc().getCodfuncionario(), agendfunc.get(i).getCodagenda().getMotivo(), agendfunc.get(i).getCodagenda().getId(), getCorMotivo(agendfunc.get(i).getCodagenda().getMotivo()), agendfunc.get(i).getCodagenda().getDatagen(), agendfunc.get(i).getCodagenda().getHoragen()));
+            listaagendDTO.add(new agendamentoDTO(agendfunc.get(i).getCodfunc().getCodfuncionario(), agendfunc.get(i).getCodagenda().getMotivo(), agendfunc.get(i).getCodagenda().getId(), agendfunc.get(i).getCodagenda().getTitulo(), agendfunc.get(i).getCodagenda().getDescricao(), getCorMotivo(agendfunc.get(i).getCodagenda().getMotivo()), agendfunc.get(i).getCodagenda().getDatagen(), agendfunc.get(i).getCodagenda().getHoragen()));
         }
 
          return listaagendDTO;
