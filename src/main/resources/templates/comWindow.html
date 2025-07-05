@@ -116,11 +116,13 @@
 
     #calendariodiario {height: 85%;}
 
-    .container-descagendamento {overflow-y: auto; height: 97%; width: 97%;}
+    .container-descagendamento {overflow-y: auto; height: 95%; width: 90%;}
 
     .div-descagen {height: 28px; width: 100%; position: relative; overflow-x: hidden;}
 
-    .div-descagen label {color: #FFF; font-size: 14px;}
+    .div-descagen label {color: #FFF; font-size: 13px;}
+
+    .titulo-descagendamento {background-color: #23334e; width: 100%; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; height: 50px;}
 
     .inativa {padding: 0; color: #b0b0b0 !important;}
 
@@ -302,10 +304,16 @@
     .dagendadias { background-color: #334970 ;
                    height:           78%;
                    width:            99%;
-                   border-radius:    8px;                   
+                   border-radius:    8px;
                    box-shadow:       0 0 4px rgb(18 22 85);
                    padding:          5px;
                    display: flex;}
+
+    .titulo-descagendamento {display: flex; flex-direction: column; align-items: center; justify-content: center;}
+
+    .titulo-descagendamento label {color: #FFF;}
+
+    .container-esquerda {width: 100%; height: calc(100% - 50px); display: flex; justify-content: flex-end;}
 
     .ddescagenda { float: right; 
                    background-color: #26334975 ;
@@ -314,7 +322,8 @@
                    border-radius:    8px;
                    box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);
                    display:          flex;
-                   justify-content:  center}
+                   flex-direction:   column;
+                   justify-content:  center;}
 
     .ddescdiv   { background-color:  #334970 ;
                    height:           230px;
@@ -542,7 +551,12 @@
                         </div>
 
                         <div id="ddescagenda" class="ddescagenda direita">
-                            <div id="ddescagendamentos" class="container-descagendamento"></div>
+                            <div class="titulo-descagendamento">
+                                <label>Agendamentos</label>
+                            </div>
+                            <div class="container-esquerda">
+                                <div id="ddescagendamentos" class="container-descagendamento"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
