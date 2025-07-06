@@ -450,7 +450,7 @@ function carregaMes(){ //IM: 00004 - montar calendario/agenda
     const final         = new Date(ano, mes, dataFinal).getDay();
     const dataFinalPrev = new Date(ano, mes, 0).getDate();
 
-    let diasDoMes = "";
+    dates.innerHTML = "";
 
     for(let i = comeco; i > 0; i--){
         const li1 = document.createElement('li');
