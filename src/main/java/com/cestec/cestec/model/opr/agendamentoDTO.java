@@ -25,6 +25,7 @@ public class agendamentoDTO {
     private String     ideusu;
     private LocalDate  datiregistro;
     private String     corAgend;
+    private String     descMotivo;
 
     public agendamentoDTO(Integer codagenda, String titulo, String descricao, Integer motivo, LocalDate datagen, LocalTime horagen2, String ideusu) {
         this.titulo    = titulo;
@@ -50,7 +51,7 @@ public class agendamentoDTO {
         this.datiregistro = datiregistro;
     }
 
-    public agendamentoDTO(Integer codagendfunc, Integer motivo, Integer codagenda, String titulo, String descricao, String corAgend, LocalDate datagen, LocalTime horagen2) {
+    public agendamentoDTO(Integer codagendfunc, Integer motivo, Integer codagenda, String titulo, String descricao, String corAgend, LocalDate datagen, LocalTime horagen2, String ideusu, String descMotivo) {
         this.codagendfunc = codagendfunc;
         this.motivo       = motivo;
         this.codagenda    = codagenda;
@@ -59,5 +60,7 @@ public class agendamentoDTO {
         this.corAgend     = corAgend;
         this.datagen      = datagen;
         this.horagen2     = horagen2;
+        this.ideusu       = ideusu;
+        this.descMotivo   = descMotivo;
     }
 }

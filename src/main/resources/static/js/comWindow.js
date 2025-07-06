@@ -310,8 +310,63 @@ function criarIconAgendamentos(day, mes, year){
         return dataAgenda === dataAnalise;
     });
     
-    return temAgendamento?`<div style='height:5px;width:5px;background:${corIcon};border-radius:5px;position:absolute;top:0;'></div>`: "";
+    if(!temAgendamento) return;
+
+    const div = document.createElement("div");
+    div.style.height       = "5px";
+    div.style.width        = "5px";
+    div.style.background   = corIcon;
+    div.style.borderRadius = "5px";
+    div.style.position     = "absolute";
+    div.style.top          = "0";
+
+    return div;
 }
+
+function criarModalHoverAgendamento(div, day, mes, year){
+    var dataagen,horagen,motivo,titulo,descricao,ideusu;
+    
+    const modal = document.getElementById("dmodal-agendamento");
+    const mesFormatado = String(mes).padStart(2, '0');
+    const dayFormatado = String(day).padStart(2, '0');
+    const dataAnalise  = `${year}-${mesFormatado}-${dayFormatado}`;
+
+    const temAgendamento   =  AGENDSJSON.some(agenda => {
+        const [ano, mes, dia]   = agenda.datagen.split('-');
+
+        const dataAgenda   =  agenda.datagen.split('T')[0];
+        dataagen  = `${dia}/${mes}/${ano}`;
+        horagen   = agenda.horagen2;
+        motivo    = agenda.descMotivo;
+        titulo    = agenda.titulo;
+        descricao = agenda.titulo;
+        ideusu    = agenda.ideusu;
+
+        return dataAgenda === dataAnalise;
+    });
+
+    if(!temAgendamento) return;
+
+    div.addEventListener("mouseover", ()=>{
+        const rect  = div.getBoundingClientRect();
+        
+        form("datagendamento").innerText    = dataagen + " - ";
+        form("horaagendamento").innerText   = horagen  + " - ";
+        form("motivoagendamento").innerText = motivo;
+        form("tituloagendamento").innerText = titulo;
+        form("descagendamento").innerText   = descricao;
+        form("descideusuagend").innerText   = "Aberto por: " + ideusu;
+
+        modal.style.top  = (rect.bottom + modal.offsetHeight) + "px";
+        modal.style.left = (rect.left   + modal.offsetLeft)   + "px";
+
+        setDisplay(modal.id, "flex");
+    });
+
+    div.addEventListener("mouseout",  (e)=>{
+       setDisplay(modal.id, "none");
+    });
+} 
 
 function buscarUserName(){
     CONSUL.consultar("buscarUserName",`/home/userlogin`)
@@ -398,21 +453,41 @@ function carregaMes(){ //IM: 00004 - montar calendario/agenda
     let diasDoMes = "";
 
     for(let i = comeco; i > 0; i--){
-        diasDoMes += `<li class="inativa">${dataFinalPrev - i + 1}</li>`;
+        const li1 = document.createElement('li');
+        li1.className   = "inativa";
+        li1.textContent = dataFinalPrev - i + 1;
+
+        dates.appendChild(li1);
     }
 
     for(let i = 1; i<= dataFinal; i++){
-        let classHoje = (i === date.getDate() && mes === new Date().getMonth() && ano === new Date().getFullYear() ? "class='hoje'":"");
+        let classHoje = (i === date.getDate() && mes === new Date().getMonth() && ano === new Date().getFullYear() ? "hoje":"");
 
-        diasDoMes += `<li ${classHoje} id='lidia_${i}_mes_${mes + 1}_ano_${ano}'> ${criarIconAgendamentos(i,mes + 1,ano)} ${i}</li>`;
+        const li2 = document.createElement('li');
+        li2.className   = classHoje
+        li2.id          = `lidia_${i}_mes_${mes + 1}_ano_${ano}`;
+
+        li2.textContent = i;
+
+        if(criarIconAgendamentos(i,mes + 1,ano)) {
+            li2.appendChild(criarIconAgendamentos(i,mes + 1,ano));
+        }
+
+        dates.appendChild(li2);
+        
+        criarModalHoverAgendamento(li2, i, mes + 1, ano);
     }
 
     for(let i = final; i < 6; i++){
-        diasDoMes += `<li class="inativa">${i - final + 1}</li>`;
+        const li3 = document.createElement('li');
+        li3.className   = "inativa";
+        li3.textContent = i - final + 1;
+
+        dates.appendChild(li3);
     }
 
-    dates.innerHTML = diasDoMes;
     form("lnomeMes").innerText = `${nomeMes[mes]}`;
+
 
     criarDescricaoData(mes + 1);
 }

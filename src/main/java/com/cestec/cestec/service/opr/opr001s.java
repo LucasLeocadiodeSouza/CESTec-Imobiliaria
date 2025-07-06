@@ -52,7 +52,7 @@ public class opr001s {
     @Autowired
     private agendamentosFuncRepo agendFuncRepo;
 
-    public String getMotivo(Integer codmotivo){
+    public static String getMotivo(Integer codmotivo){
         switch (codmotivo) {
         case 1: return "Recado";
         case 2: return "Palestra";

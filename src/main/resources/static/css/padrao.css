@@ -61,7 +61,7 @@ body .gen {padding: 10px}
 
 .buttonfe input {background: transparent;
                  border: transparent;
-                 font-family: sans-serif;
+                 font-family: Arial, Helvetica;;
                  font-size: 13px;
                  font-weight: 700;}
 
@@ -245,12 +245,13 @@ table {
          border: 1px solid black;
        }
        td {
-         border: solid 1px #bbbbbb;
-         border-left: 0;
-         border-right: 0;
-         white-space: nowrap;
-         overflow: hidden;
+         border:        solid 1px #bbbbbb;
+         border-left:   0;
+         border-right:  0;
+         white-space:   nowrap;
+         overflow:      hidden;
          text-overflow: ellipsis;
+         font-family:   Arial, Helvetica, sans-serif;
        }
 }
 
