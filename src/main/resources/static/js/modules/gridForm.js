@@ -221,7 +221,7 @@ export function GridForm_init(){
 
                     row.appendChild(td);
                 });
-
+ 
                 
                 row.onclick = this.click_table;
                 
