@@ -26,7 +26,7 @@ public class utilForm {
         row = new ArrayList<>();
         grid.add(row);
     }
-
+ 
     public static void criarColuna(String dado){
         if (column == null) {
             column = new ArrayList<>();

@@ -165,10 +165,10 @@ function criarBotaoEsterno(divpai,botoes){
                 if(botaoint.codapl == "2"){
                     window.open("/buscarPath/" + botaoint.codapl, "Consulta de Tabelas", "_blank,width=1300,height=680");
                 }else{
+                    salvarHistoricoApl(botao.codmodulo, botaoint.codapl);
                     window.open("/buscarPath/" + botaoint.codapl, "_blank", "noopener");
                     //window.location.href = "/buscarPath/" + botaoint.codapl;
                 }
-
             });
 
 
@@ -216,22 +216,26 @@ function filaFetchInit(){
 
         case "buscarAgendamentos": AGENDSJSON = retorno;
                                    carregaMes();
+                                   buscarHistoricoAcessoApl();
                                    break;
 
-        case  "getBotoesAplMenu": let botoes = [];
-                                  for(const idModulo in retorno) {
-                                     const dados = retorno[idModulo];
-                                     let botoesint = [];
+        case 'buscarHistoricoAcessoApl': retornoBuscarHistoricoAcesso(retorno);
+                                         break;
 
-                                     dados.forEach(dado =>{
-                                         botoesint.push({descricao:dado.descricao, codapl:dado.id});
-                                     });
+        case         "getBotoesAplMenu": let botoes = [];
+                                         for(const idModulo in retorno) {
+                                            const dados = retorno[idModulo];
+                                            let botoesint = [];
 
-                                     botoes.push({menu:dados[0].modulo.descricao, botoesinternos:botoesint});
-                                   };
+                                            dados.forEach(dado =>{
+                                                botoesint.push({descricao:dado.descricao, codapl:dado.id});
+                                            });
 
-                                   criarBotaoEsterno("dintensint",botoes);
-                                   break;
+                                            botoes.push({menu:dados[0].modulo.descricao, codmodulo:dados[0].modulo.id, botoesinternos:botoesint});
+                                          };
+
+                                          criarBotaoEsterno("dintensint",botoes);
+                                          break;
         
         }
     }
@@ -367,6 +371,56 @@ function criarModalHoverAgendamento(div, day, mes, year){
        setDisplay(modal.id, "none");
     });
 } 
+
+function salvarHistoricoApl(modulo, aplicacao){
+    CONSUL.consultar("salvarHistoricoApl",`/home/salvarHistoricoApl?codmod=${modulo}&codapl=${aplicacao}`,"POST");
+}
+
+function adicionarListaHistoricoAcesso(li, codapl, codmodulo, nomemodulo, nomeapl, numacesso){
+
+    const divprinc = document.createElement("div");
+    divprinc.style.width = "100%";
+
+    const labelcodapl = document.createElement("label");
+    labelcodapl.className = "";
+    
+    const linkcodapl = document.createElement("a");
+    linkcodapl.innerText = codmodulo + " [" + nomemodulo + "] " + " - " + codapl + " - " + nomeapl + " | Aplicacão acessada " + numacesso + (numacesso > 1?" vezes":" vez");
+    linkcodapl.href = "/buscarPath/" + codapl;
+    labelcodapl.appendChild(linkcodapl);
+
+    divprinc.appendChild(labelcodapl);
+    li.appendChild(divprinc);
+}
+
+function retornoBuscarHistoricoAcesso(historico){
+    const divpai = form("dacessosint");
+    divpai.innerHTML = "";
+
+    if(historico.length == 0){
+        divpai.style.alignItems     = "center";
+        divpai.style.justifyContent = "center";
+
+        const emptyLabel          = document.createElement("label");
+        emptyLabel.style.color    = "#FFF";
+        emptyLabel.style.fontSize = "larger";
+        emptyLabel.innerText      = "Vazio";
+
+        divpai.appendChild(emptyLabel);
+    }
+
+    historico.forEach(hist => {
+        const liinterna = document.createElement("li");
+        liinterna.classList.add("liacessos");
+        adicionarListaHistoricoAcesso(liinterna, hist.idaplicacao, hist.idmodulos, hist.descmodulo, hist.descapl, hist.numacess)
+        
+        divpai.appendChild(liinterna);
+    });
+}
+
+function buscarHistoricoAcessoApl(){
+    CONSUL.consultar("buscarHistoricoAcessoApl",`/home/buscarHistoricoAcessoApl`)
+}
 
 function buscarUserName(){
     CONSUL.consultar("buscarUserName",`/home/userlogin`)
