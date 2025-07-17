@@ -4,11 +4,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.cestec.cestec.infra.security.tokenService;
+import com.cestec.cestec.model.historicoAcessoAplDTO;
 import com.cestec.cestec.model.sp_aplicacoes;
 import com.cestec.cestec.model.opr.agendamentoDTO;
 import com.cestec.cestec.model.opr.opr_agendamentos_func;
@@ -84,5 +88,16 @@ public class comWindowController {
     @GetMapping("/getCargoIdeusu")
     public String getCargoIdeusu(HttpServletRequest request) {
         return comWindowService.getCargoFuncionario(getUserName(request));
+    }
+
+    @GetMapping("/buscarHistoricoAcessoApl")
+    public List<historicoAcessoAplDTO> buscarHistoricoAcessoApl(HttpServletRequest request) {
+        return comWindowService.buscarHistoricoAcessoApl(getUserName(request));
+    }
+
+    @PostMapping("/salvarHistoricoApl")
+    public ResponseEntity<?> salvarHistoricoApl(HttpServletRequest request, @RequestParam(value = "codmod", required = false) Integer codmod, @RequestParam(value = "codapl", required = false) Integer codapl) {
+        System.out.println(getUserName(request));
+        return comWindowService.salvarHistoricoApl(getUserName(request), codmod, codapl);
     }
 }

@@ -7,21 +7,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.pulsar.PulsarProperties.Transaction;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.cestec.cestec.model.corretorDTO;
+import com.cestec.cestec.model.funcionario;
+import com.cestec.cestec.model.historicoAcessoAplDTO;
 import com.cestec.cestec.model.pcp_meta;
 import com.cestec.cestec.model.sp_aplicacoes;
+import com.cestec.cestec.model.sp_histacessapl;
+import com.cestec.cestec.model.sp_modulos;
 import com.cestec.cestec.model.opr.agendamentoDTO;
 import com.cestec.cestec.model.opr.opr_agendamentos_func;
 import com.cestec.cestec.repository.contratoRepository;
+import com.cestec.cestec.repository.histAcessAplRepo;
 import com.cestec.cestec.repository.metaRepository;
 import com.cestec.cestec.repository.generico.aplicacoesRepository;
 import com.cestec.cestec.repository.generico.funcionarioRepository;
+import com.cestec.cestec.repository.generico.modulosRepository;
 import com.cestec.cestec.repository.opr.agendamentosFuncRepo;
 import com.cestec.cestec.service.opr.opr001s;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class comWindowService {
+    @Autowired
+    private sp_userService sp_user;
 
     @Autowired
     private metaRepository metaRepository;
@@ -36,7 +48,13 @@ public class comWindowService {
     private agendamentosFuncRepo agendFuncRepo;
 
     @Autowired
+    private modulosRepository modulosRepository;
+
+    @Autowired
     private funcionarioRepository funcionarioRepository;
+
+    @Autowired
+    private histAcessAplRepo historicoAcessoAplRepo;
 
     public String getCorMotivo(Integer codmotivo){
         switch (codmotivo) {
@@ -75,6 +93,44 @@ public class comWindowService {
         }
 
          return listaagendDTO;
+    }
+
+    public List<historicoAcessoAplDTO> buscarHistoricoAcessoApl(String ideusu){
+        return historicoAcessoAplRepo.findAllHistAcessAplByIdeusu(ideusu);
+    }
+
+    @Transactional
+    public ResponseEntity<?> salvarHistoricoApl(String ideusu, Integer codmod, Integer codapl){
+        try {
+            if(sp_user.loadUserByUsername(ideusu) == null) return ResponseEntity.badRequest().body("Usuário não encontrado no sistema!");
+
+            sp_histacessapl histAnalise = historicoAcessoAplRepo.findByAplicacao(ideusu, codmod, codapl);
+            if (histAnalise == null) histAnalise = new sp_histacessapl();
+
+            if(histAnalise.getId() == null || histAnalise.getId() == 0){
+                sp_modulos modulo = modulosRepository.findByIdModulos(codmod);
+                sp_aplicacoes apl = aplicacoesRepository.findByIdApl(codapl);
+
+                Integer codfunc = funcionarioRepository.findCodFuncByIdeusu(ideusu);
+                funcionario funcionario = funcionarioRepository.findFuncBycodfunc(codfunc);
+
+                histAnalise.setIdmodulos(modulo);
+                histAnalise.setIdaplicacao(apl);
+                histAnalise.setIdfunc(funcionario);
+                histAnalise.getDatregistro();
+                histAnalise.setDatregistro(LocalDate.now());
+                histAnalise.setIdeusu(ideusu);
+            }
+
+            Integer numacess = histAnalise.getNumacess() == null?0:histAnalise.getNumacess();
+            histAnalise.setNumacess(numacess + 1);
+            histAnalise.setAtualizado_em(LocalDate.now());
+
+            historicoAcessoAplRepo.save(histAnalise);
+            return ResponseEntity.ok("OK");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage()); 
+        }
     }
 
     public String getCargoFuncionario(String ideusu){
