@@ -13,23 +13,23 @@ public class prjControleDeUsuarioRepository {
         this.em = em;
     }
 
-    public List<funcionarioDTO> buscarFuncionarios(String nome){
+    public List<funcionarioDTO> buscarFuncionarios(String ideusu){
         String query   = "SELECT new com.cestec.cestec.model.funcionarioDTO(" + 
-                         "func.codfuncionario, func.nome, func.cpf, func.numtel, set.codsetor, set.nome, car.id, car.nome)" + 
-                         " FROM funcionario func " + 
-                         " JOIN func.setor set "  + 
-                         " JOIN func.cargo car ";
+                         "func.codfuncionario, func.nome, func.cpf, func.numtel, set.codsetor, set.nome, car.id, car.nome) " + 
+                         "FROM funcionario func " + 
+                         "JOIN func.setor set "  + 
+                         "JOIN func.cargo car ";
         boolean temand = false;
         
-        if(nome != null){
-            query += (temand?" AND ":" WHERE ") + " func.nome LIKE :nome ";
+        if(ideusu != null && !ideusu.isEmpty()){
+            query += (temand?" AND ":" WHERE ") + " func.nome LIKE :ideusu ";
             temand = true;
         } 
 
         var q = em.createQuery(query, funcionarioDTO.class);
 
-        if(nome != null){
-            q.setParameter("nome", nome);
+        if(ideusu != null && !ideusu.isEmpty()){
+            q.setParameter("ideusu", ideusu);
         }
 
         return q.getResultList();
