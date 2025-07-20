@@ -89,6 +89,7 @@ function event_click(obj) {
     if(obj == "bbuscar"){
         form(obj).addEventListener("click", function () {
             controlaTela("buscar");
+            carregarGridFucnionarios();
         });        
     }
     if(obj == 'blimpar'){
@@ -170,7 +171,7 @@ function controlaTela(opc){
 
 function limparTela(opc){
     if(opc === "inicia" || opc === 'novabusca'){        
-        form('codfunc').value   = "0";
+        form('codfunc').value   = "";
         form('nomefunc').value  = "Todos os Usuários";
     }
     if(opc === "inicia" || opc === "novabusca"){
@@ -232,6 +233,6 @@ function buscarUserName(){
     CONSUL.consultar("buscarUserName",`/home/userlogin`)
 }
 
-function carregaGridAplicacoes(){
-    USUARIO_GRID.carregaGrid(`/mrb001/buscarAplicacoesGrid?codapl=${form("codapl").value}&codmodu=${form("codmodel").value}&ideusu=${form("ideusu").value}`,"","");
+function carregarGridFucnionarios(){
+    USUARIO_GRID.carregaGrid(`/mrb003/carregarGridFucnionarios?&ideusu=${form("codfunc").value}`,"","");
 }
