@@ -27,7 +27,7 @@ function iniciarEventos() {
     CONTRATOS_GRID.columnWidth   = "7,6,9,6,11,6,11,6,11,11,8,8";
     CONTRATOS_GRID.columnAlign   = "c,c,e,c,e,c,e,c,e,c,d,d";
     CONTRATOS_GRID.mousehouve    = true;
-    CONTRATOS_GRID.destacarclick = false;
+    CONTRATOS_GRID.destacarclick = true;
     CONTRATOS_GRID.gridWidth     = "2200px";
     CONTRATOS_GRID.gridHeight    = "auto";
     CONTRATOS_GRID.createGrid();

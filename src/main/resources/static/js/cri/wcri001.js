@@ -27,7 +27,7 @@ function wcri001_init(){
     IMOVEIS_GRID.columnWidth   = "7,8,33,17,16,8,10";
     IMOVEIS_GRID.columnAlign   = "c,c,e,c,c,d,c";
     IMOVEIS_GRID.mousehouve    = false;
-    IMOVEIS_GRID.destacarclick = false;
+    IMOVEIS_GRID.destacarclick = true;
     IMOVEIS_GRID.createGrid();
 
     ABA      = new abaForm_init();

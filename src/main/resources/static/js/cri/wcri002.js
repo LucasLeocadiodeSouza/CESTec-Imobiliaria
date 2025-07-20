@@ -2,9 +2,7 @@
     Dev: Lucas Leocadio de Souza
     Data: 15/02/25
     IM: 00011
-*/
-
-//import { createGrid } from './gridForm.js';
+*/ 
 
 window.addEventListener("load", function () {
     iniciarEventos();
@@ -30,7 +28,7 @@ function iniciarEventos() {
     PROPRI_GRID.columnWidth   = "10,40,10,30,10";
     PROPRI_GRID.columnAlign   = "c,e,c,e,c";
     PROPRI_GRID.mousehouve    = true;
-    PROPRI_GRID.destacarclick = false;
+    PROPRI_GRID.destacarclick = true;
     PROPRI_GRID.createGrid();
     
     ABA      = new abaForm_init();

@@ -18,6 +18,4 @@ public class funcionarioDTO {
     private String  nomesetor;
     private Integer codcargo;
     private String  nomecargo;
-
-
 }

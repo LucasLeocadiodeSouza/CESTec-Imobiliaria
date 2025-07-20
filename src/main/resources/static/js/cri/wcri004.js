@@ -27,7 +27,7 @@ function iniciarEventos() {
     CONTRATOS_GRID.columnWidth   = "10,10,15,10,15,10,10,10,10";
     CONTRATOS_GRID.columnAlign   = "c,c,eoe,c,eoe,c,c,c,d";
     CONTRATOS_GRID.mousehouve    = true;
-    CONTRATOS_GRID.destacarclick = false;
+    CONTRATOS_GRID.destacarclick = true;
     CONTRATOS_GRID.createGrid();
 
     ABA      = new abaForm_init();

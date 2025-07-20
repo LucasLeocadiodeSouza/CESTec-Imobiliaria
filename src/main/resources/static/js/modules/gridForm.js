@@ -2,9 +2,76 @@
    Dev: Lucas Leocadio de Souza
    Data: 22/02/25
    IM: 00009
-*/
 
-var init_click;
+    GridForm_init -> funcao para importar a criacao do objeto grid, necessario importar import { GridForm_init }   from (caminho, ex: "../modules/gridForm.js");
+
+    Objeto Grid->
+        GRID               = new GridForm_init(); //obrigatório
+
+        GRID.id            = "exemplo"; 
+                              Parametro obrigatório, id da div onde sera criado a grid: <div id="exemplo"></div>
+
+        GRID.columnName    = "codigoprop,nome,documento,endereco,_email,_endereco_logradouro,_endereco_cep";
+                              columnName -> recebe uma String e separa por "," o nome das colunas. Parametro não obrigatório, só para ficar mais
+                                            facil de entender oq esta sendo criado pro coluna, auxilia na legibilidade.
+                                            Caso seja uma columna invesivel (colunas adiantes do limite mostrados, deve ser colocado um "_" 
+                                            antes da coluna como boa pratica);
+
+        GRID.columnLabel   = "Cod. Prop.,Nome,Documento,Endereço,Telefone";
+                              columnLabel -> recebe uma String separada por "," o nome das colunas. Parametro obrigatório, sera mostrado no thead,
+                                             ele definira o limite de colunas na grid;
+
+        GRID.columnWidth   = "10,40,10,30,10";
+                              columnWith -> recebe uma String separada por ",". Parametro não obrigatório, mas caso seja criado é necessario informar uma divisao exata entre o numero de colunas informada no columnLabe.
+                                            A soma deve ser exatamente 100;
+
+        GRID.columnAlign   = "c,e,c,e,c";
+                              columnAlign -> recebe uma String separada por ",". Parametro não obrigatório, mas caso seja informado é necessario informar uma divisao exata entre o numero de colunas informada no columnLabe.
+                                            recebe 3 valores possiveis: c   -> conteudo sera alinhado no centro da coluna;
+                                                                        d   -> conteudo sera alinhado na direita da coluna; 
+                                                                        e   -> conteudo sera alinhado na esquerda da coluna;
+                                                                        eoe -> conteudo sera alinhado na esquerda da coluna, porem caso o conteudo
+                                                                               ultrapasse o limite da coluna ele quebra a linha ate que o conteudo 
+                                                                               esteja totalmente exposto;
+
+        GRID.gridWidth     = "1600px";
+                             gridWidth -> recebe uma String. Parametro não obrigatorio. Altera o width da grid para uma largura fixa, deve ser informado a unidade de medida; 
+        
+        GRID.gridHeight    = "500px";
+                             gridHeight -> recebe uma String. Parametro não obrigatorio. Altera o height da grid para uma altura fixa, deve ser informado a unidade de medida; 
+
+        GRID.mousehouve    = true;
+                            mousehouver -> parametro não obrigatório, boolean inicialmente false. Caso seja informado true ele vai adicionar uma
+                                           cor destaque ao passar o mouse por cima de alguma row da grid (cor fixa em rgb(176, 193, 223));
+
+        GRID.click_table   = ()=>{};
+                            click_table -> recebe uma funcao. Parametro não obrigatório. Ele adicionaa o click table, onde executa todo
+                                           o conteudo dentro da funcao;
+
+                         *** Exemplo: function event_click_table(){ //recomendado colocar o metodo click_table dentro de uma funcao para organizar a execucao dos eventos de click de todas as grids da aplicacao
+                                          GRID.click_table = ()=>{
+                                            console.log("vc clicou em uma linha da grid " + GRID.id);  
+                                          }
+                                      }
+
+        GRID.createGrid();
+                            createGrid(); -> funcao obrigatória para a criacao da grid;
+
+        / * * * * * * * * * * /
+        
+        GRID.getRowNode -> metodo que retorna um array com as posicoes de cada coluna na linha especificada. Pode ser usada junto com o click_table 
+                           para passar o event target no tr ou td;
+
+                         ** Exemplo:  GRID.click_table = ()=>{
+                                        const valoresLinha = GRID.getRowNode(event.target.closest('tr'));
+                                      }
+
+        GRID.carregaGrid -> metodo usado para carregar a grid. Recebe um parametro path obrigatorio de onde vai trazer os conteudos da grid.
+                                                               Recebe mais dois parametros, method e headers, os dois nao sao obrigatorios, por padrao eles sao atribuidos como GET e { "Content-Type": "application/json" };
+
+                                                               O retorno do GET deve ser um json (Para isso ja existe o meio da criacao da grd no backend (ver documentacao cestec/util/utilForm.java ));
+
+*/
 
 export function GridForm_init(){
     this.id            = "";
@@ -15,10 +82,8 @@ export function GridForm_init(){
     this.gridWidth     = "";
     this.gridHeight    = "";
     this.scroll        = false;
-    this.clickgrid     = true;
     this.mousehouve    = false;
-    this.destacarclick = false;
-
+    this.destacarclick = true;
     this.click_table = '';
 
     this.createGrid = ()=>{
@@ -240,7 +305,7 @@ export function GridForm_init(){
             divres.appendChild(table);
             document.getElementById(this.id).childNodes[0].appendChild(divres);
             
-            if(this.clickgrid){
+            if(this.destacarclick){
                 clickRowBorder(table.id);
             }
         })

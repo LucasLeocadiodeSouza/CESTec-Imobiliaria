@@ -1,3 +1,45 @@
+/* 
+   Dev: Lucas Leocadio de Souza
+   Data: 22/02/25
+
+    GridForm_init -> funcao para importar a criacao do objeto grid, necessario importar import { GridForm_init }   from (caminho, ex: "../modules/gridForm.js");
+
+    Objeto Grid->
+        DMFDiv             = new GridForm_init(); //obrigatório
+
+        DMFDiv.divs        = "exemplo"; 
+                              Parametro obrigatório, id da div onde sera criado a modal: <div id="exemplo"></div>
+                              É possivel informar mais de uma modal, separando por ",";
+
+        DMFDiv.tema        = 1; 
+                              Parametro nao obrigatório, por padrao é atribuido como 0. parametro para selecao de temas da modal
+                              0 -> padrao modal quadrado sem muito estilo
+                              1 -> modal com bordas arredondadas mais customizadas;
+
+        DMFDiv.cortinaclose = true;
+                              Parametro nao obrigatorio, inicialmente atribuido como false. Caso seja true ele permite o fechamento
+                                                         da modal em destaque com um click fora dela;
+
+
+        / * * * * * * * * * * * * * * * /
+
+        DMFDiv.openModal("dmodalf_libacess");
+                            Abre a modal. Parametro obrigatória sendo o id da modal que vai ser mostrada na tela. Deve ser referenciada
+                                          no objeto id do dmfForm;
+
+        DMFDiv.closeModal();
+                            Fecha a modal que esta mais sobreposta sobre outras (caso estiver com mais de uma modal aberta);
+
+
+        DMFDiv.fullScream  = true;
+                              Parametro nao obrigatorio, inicialmente atribuido como false. Caso seja true ele abre a modal em modo tela cheia;
+                              
+                              Exemplo:
+                              DMFDiv.fullScream = true;
+                              DMFDiv.openModal("dmodalf_libacess");
+                              DMFDiv.fullScream = false;
+*/
+
 var modalStack = []; //controle de index
 
 export function DMFForm_init(){

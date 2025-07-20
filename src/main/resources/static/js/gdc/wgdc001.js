@@ -27,7 +27,7 @@ function iniciarEventos() {
     METAS_GRID.columnWidth   = "10,10,35,10,20,15";
     METAS_GRID.columnAlign   = "c,c,e,d,c,c";
     METAS_GRID.mousehouve    = true;
-    METAS_GRID.destacarclick = false;
+    METAS_GRID.destacarclick = true;
     METAS_GRID.createGrid();
 
     ABA      = new abaForm_init();

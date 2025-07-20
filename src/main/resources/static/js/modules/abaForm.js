@@ -2,6 +2,25 @@
    Dev: Lucas Leocadio de Souza
    Data: 31/05/25
    IM: 00019
+
+   abaForm_init -> funcao para importar a criacao do objeto consulta, necessario importar: import { abaForm_init }    from "../modules/abaForm.js";
+
+    Objeto abaForm_init -> 
+
+        ABA      = new abaForm_init(); 
+                    Necessario para criacao do objeto abaForm;
+
+        ABA.id   = "exemplo"; 
+                    Parametro obrigatório, id da div onde sera criado a aba: <div id="exemplo"></div>
+
+        ABA.name = "Liberação de Acesso,Cadastro de Aplicação";
+                    Parametro obrigatório, recebe uma String separa por ",", cada nome sera uma aba;\
+
+        ABA.icon = "/icons/acess_icon.png,/icons/clips_icon.png";
+                    Parametro nao obrigatório, recebe uma String separada por ",", cada um sendo o caminho da imagem que sera posicionada a esquerda do label na aba;
+
+        ABA.createAba();
+                    metodo final para criacao  da ABA;
 */
 
 export function abaForm_init(){
