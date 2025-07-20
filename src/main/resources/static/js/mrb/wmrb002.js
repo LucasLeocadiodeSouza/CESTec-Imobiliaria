@@ -23,7 +23,7 @@ function wmrb002_init(){
     TABELASBANCO_GRID.columnWidth   = "100";
     TABELASBANCO_GRID.columnAlign   = "e";
     TABELASBANCO_GRID.mousehouve    = false;
-    TABELASBANCO_GRID.destacarclick = false;
+    TABELASBANCO_GRID.destacarclick = true;
     TABELASBANCO_GRID.createGrid();
 
     COLUNAS_GRID               = new GridForm_init();
@@ -33,7 +33,7 @@ function wmrb002_init(){
     COLUNAS_GRID.columnWidth   = "32,12,10,15,10";
     COLUNAS_GRID.columnAlign   = "e,e,c,c,c";
     COLUNAS_GRID.mousehouve    = false;
-    COLUNAS_GRID.clickgrid     = false;
+    COLUNAS_GRID.clickgrid     = true;
     COLUNAS_GRID.createGrid();
 
     INDEX_GRID               = new GridForm_init();
@@ -43,7 +43,7 @@ function wmrb002_init(){
     INDEX_GRID.columnWidth   = "40,40,10,10";
     INDEX_GRID.columnAlign   = "e,e,c,c";
     INDEX_GRID.mousehouve    = false;
-    INDEX_GRID.clickgrid     = false;
+    INDEX_GRID.clickgrid     = true;
     INDEX_GRID.createGrid();
 
     CONSUL = new consulForm_init();

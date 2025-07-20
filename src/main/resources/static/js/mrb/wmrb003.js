@@ -27,7 +27,7 @@ function wmrb001_init(){
     USUARIO_GRID.columnWidth   = "10,22,11,17,11,17,12";
     USUARIO_GRID.columnAlign   = "c,e,c,e,c,e,c";
     USUARIO_GRID.mousehouve    = false;
-    USUARIO_GRID.destacarclick = false;
+    USUARIO_GRID.destacarclick = true;
     USUARIO_GRID.createGrid();
 
     ABA      = new abaForm_init();

@@ -27,7 +27,7 @@ function iniciarEventos() {
     CORRETOR_GRID.columnWidth   = "10,40,10,30,10";
     CORRETOR_GRID.columnAlign   = "c,e,c,e,c";
     CORRETOR_GRID.mousehouve    = true;
-    CORRETOR_GRID.destacarclick = false;
+    CORRETOR_GRID.destacarclick = true;
     CORRETOR_GRID.createGrid();
 
     ABA      = new abaForm_init();

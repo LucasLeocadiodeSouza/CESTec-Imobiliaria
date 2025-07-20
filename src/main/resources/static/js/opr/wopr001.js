@@ -28,7 +28,7 @@ function wopr001_init(){
     AGEN_GRID.columnWidth   = "8,15,30,15,12,9,11";
     AGEN_GRID.columnAlign   = "c,e,e,e,c,c,e";
     AGEN_GRID.mousehouve    = false;
-    AGEN_GRID.destacarclick = false;
+    AGEN_GRID.destacarclick = true;
     AGEN_GRID.createGrid();
 
     FUNC_GRID               = new GridForm_init();
@@ -39,7 +39,7 @@ function wopr001_init(){
     FUNC_GRID.columnAlign   = "c,c,e,c,e,c,e";
     FUNC_GRID.gridHeight    = "250px";
     FUNC_GRID.mousehouve    = false;
-    FUNC_GRID.destacarclick = false;
+    FUNC_GRID.destacarclick = true;
     FUNC_GRID.createGrid();
 
     ABA      = new abaForm_init();

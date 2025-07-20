@@ -12,7 +12,7 @@ import { DMFForm_init }    from "../modules/dmfForm.js";
 import { abaForm_init }    from "../modules/abaForm.js";
 import { consulForm_init } from "../modules/consulForm.js";
 import { elementsForm_init } from "../modules/elementsForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init,fillSelect } from "../modules/utils.js";
+import { form,desabilitaCampo,setDisplay,event_selected_init,fillSelect } from "../modules/utils.js";
 
 var LIBACESS_GRID,CADAPL_GRID;
 var DMFDiv, ABA, CONSUL;
@@ -28,7 +28,7 @@ function wmrb001_init(){
     LIBACESS_GRID.columnWidth   = "15,10,35,20,20";
     LIBACESS_GRID.columnAlign   = "c,c,e,e,c";
     LIBACESS_GRID.mousehouve    = false;
-    LIBACESS_GRID.destacarclick = false;
+    LIBACESS_GRID.destacarclick = true;
     LIBACESS_GRID.createGrid();
 
     CADAPL_GRID               = new GridForm_init();
@@ -38,7 +38,8 @@ function wmrb001_init(){
     CADAPL_GRID.columnWidth   = "12,12,17,17,30,12";
     CADAPL_GRID.columnAlign   = "e,c,c,c,e,c";
     CADAPL_GRID.mousehouve    = false;
-    CADAPL_GRID.destacarclick = false;
+    CADAPL_GRID.clickgrid     = false;
+    CADAPL_GRID.destacarclick = true;
     CADAPL_GRID.createGrid();
 
     ABA      = new abaForm_init();
