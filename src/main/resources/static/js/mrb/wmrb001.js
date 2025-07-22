@@ -11,7 +11,7 @@ import { GridForm_init }   from "../modules/gridForm.js";
 import { DMFForm_init }    from "../modules/dmfForm.js";
 import { abaForm_init }    from "../modules/abaForm.js";
 import { consulForm_init } from "../modules/consulForm.js";
-import { elementsForm_init } from "../modules/elementsForm.js";
+import { elementsForm_init, alert } from "../modules/elementsForm.js";
 import { form,desabilitaCampo,setDisplay,event_selected_init,fillSelect } from "../modules/utils.js";
 
 var LIBACESS_GRID,CADAPL_GRID;
@@ -183,7 +183,7 @@ function filaFetchInit(){
                                       form("mrestrole").value = ACAOBUSCA.buscarRoleAcess.valorinicial;
                                       break;
 
-        case    "adicionarAplicacao": if(data != "OK") return alert(retorno);
+        case    "adicionarAplicacao": if(retorno != "OK") return alert(retorno, '', 4);
                                       alert("Aplicação cadastrada com sucesso!");
 
                                       form("bnovabusca").click();
