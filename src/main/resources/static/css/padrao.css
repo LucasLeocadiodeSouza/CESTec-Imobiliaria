@@ -283,3 +283,23 @@ table {
 .itensint li, ul {list-style-type: none}
 .itensint ol{padding: 0;}
 .itensint {max-height: 100%; overflow-x: hidden; flex-grow: 1; overscroll-behavior-y: none;}
+
+.container-alert {width:            97%;
+                  height:           96%;
+                  opacity:          1;
+                  background-color: aliceblue;
+                  box-shadow:       0 0 .4vw rgba(0, 0, 0, 0.5);
+                  display:          flex;
+                  justify-content:  flex-end;
+                  align-items:      flex-start;}
+
+.alert-message {width:            300px;
+                min-height:       150px;
+                opacity:          1;
+                background-color: #39527c;
+                box-shadow:       0 0 .4vw #1d3561;
+                border-radius:    10px;}
+
+.olalert    {margin: 0; padding: 0;}
+
+.olalert li {list-style-type: none; margin-bottom: 10px;}

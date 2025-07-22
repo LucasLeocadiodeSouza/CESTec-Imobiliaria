@@ -13,7 +13,7 @@ import { GridForm_init }   from "../modules/gridForm.js";
 import { DMFForm_init }    from "../modules/dmfForm.js";
 import { abaForm_init }    from "../modules/abaForm.js";
 import { consulForm_init } from "../modules/consulForm.js";
-import { elementsForm_init } from "../modules/elementsForm.js";
+import { elementsForm_init,alert } from "../modules/elementsForm.js";
 import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init } from "../modules/utils.js";
 
 var ABA,DMFDiv,CONSUL,PROPRI_GRID;
@@ -124,8 +124,11 @@ function filaFetchInit(){
         case            "buscarUserName": form("ideusu").value = retorno;
                                           break;
 
-        case     "adicionarProprietario": if(retorno != "OK") return alert(retorno);
-                                          alert("Dados Salvos Com Sucesso!");
+        case     "adicionarProprietario": if(retorno != "OK") {
+                                             alert(retorno,'',4);
+                                             return;
+                                          }
+                                          alert("Dados Salvos Com Sucesso!",'',5);
                                           if(form("sacao").innerText == "Inserindo")if(confirm("Deseja enviar um Email de Boas Vindas para o Proprietario?")) enviarEmail();
 
                                           form("bnovabusca").click();

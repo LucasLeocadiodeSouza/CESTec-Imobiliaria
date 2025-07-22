@@ -83,3 +83,54 @@ export function elementsForm_init(){
         });
     });
 }
+
+export function alert(titulo, message, timeout){
+    const divcontainer     = document.createElement("div");
+    divcontainer.id        = "container-alert-form";
+    divcontainer.className = "container-alert";
+
+    const alertAtivo = document.body.contains("container-alert-formres"); 
+
+    const divcortainer = alertAtivo?document.getElementById("container-alert-form") : divcortainer;
+
+    const ol         = document.createElement("ol");
+    ol.className     = "olalert";
+
+    const li = document.createElement("li");
+
+    const divalertmess     = document.createElement("div");
+    divalertmess.className = "alert-message";
+
+    const divcontinertitulo        = document.createElement("div");
+    divcontinertitulo.style.width  = "100%";
+    divcontinertitulo.style.height = "36px";
+    divcontinertitulo.style.color  = "#FFF";
+
+    const divcontinermessage        = document.createElement("div");
+    divcontinermessage.style.width  = "100%";
+    divcontinermessage.style.height = "36px";
+    divcontinermessage.style.color  = "#FFF";
+
+    divalertmess.appendChild(divcontinertitulo);
+    divalertmess.appendChild(divcontinermessage);
+    li.appendChild(divalertmess);
+
+    ol.appendChild(li);
+ 
+    console.log(titulo);
+
+    if(!alertAtivo) {
+        divcontainer.appendChild(ol);
+        document.body.appendChild(divcortainer);
+    }
+
+    setTimeout(()=>{
+        li.remove();
+
+        if(ol.children.length === 0){
+            divcontainer.remove();
+        }
+
+    }, timeout * 1000);
+    
+}
