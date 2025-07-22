@@ -83,7 +83,7 @@ function ocultarbotoesinternos(){
         
     containerBotoesint.forEach(div=>{
         div.querySelectorAll("div").forEach(divint=>{
-            divint.style.display = "none";
+            divint.classList.add("ocultardisplaybotoes");
         })
     });
 }
@@ -91,6 +91,7 @@ function ocultarbotoesinternos(){
 function criarBotaoEsterno(divpai,botoes){
     const divprincipal = document.getElementById(divpai);    
     const olprincipal  = document.createElement("ol");
+    olprincipal.style.transition = "1s ease-in";
 
     botoes.forEach(botao => {
         const li = document.createElement("ls");
@@ -105,12 +106,28 @@ function criarBotaoEsterno(divpai,botoes){
 
         divprimint.addEventListener("click", ()=>{
             const resultcontainerbotaoativo = containerBotaoAtivo(divexterna);
-            form(divexterna.id).style.backgroundColor = resultcontainerbotaoativo?"#dedede":"#192B4A";
+
+            form(divexterna.id).classList.remove(resultcontainerbotaoativo?"mostrarcontainerbotao":"ocultarcontainerbotao");
+            form(divexterna.id).classList.add(resultcontainerbotaoativo?"ocultarcontainerbotao":"mostrarcontainerbotao");
+
 
             const botoesinterno = divexterna.querySelectorAll(".botaointerno");
 
             botoesinterno.forEach(botaoint => {
-                setDisplay(botaoint.id, resultcontainerbotaoativo?"none":"flex");
+                const allbuttons = document.querySelectorAll(".botaointerno");
+                allbuttons.forEach(button =>{
+                    const containerBotao = button.parentNode.parentNode.parentNode.parentNode;
+                    if(containerBotao.id != divexterna.id){
+                        button.classList.remove("Abrirdisplaybotoes");
+                        button.classList.remove("ocultardisplaybotoes");
+                        button.classList.add("ocultardisplaybotoes");
+
+                        containerBotao.classList.remove("mostrarcontainerbotao");
+                    }
+                });
+
+                botaoint.classList.remove(resultcontainerbotaoativo?"Abrirdisplaybotoes":"ocultardisplaybotoes");
+                botaoint.classList.add(resultcontainerbotaoativo?"ocultardisplaybotoes":"Abrirdisplaybotoes");
             });
         });
 
@@ -196,7 +213,7 @@ function containerBotaoAtivo(obj){
     var condicao = false;
 
     botoesinterno.forEach(botaoint => {
-        if(getDisplay(botaoint.id) != "none") condicao = true;
+        if(botaoint.classList.contains("Abrirdisplaybotoes")) condicao = true;
     });
 
     return condicao;
