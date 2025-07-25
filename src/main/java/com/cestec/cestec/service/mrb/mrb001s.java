@@ -65,23 +65,23 @@ public class mrb001s {
     @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<?> cadastrarAplicacao(aplicacaoDTO aplicacao){
         try{
-            if(sp_user.loadUserByUsername(aplicacao.getIdeusu()) == null) return ResponseEntity.badRequest().body("Usuário não encontrado no sistema!");
+            if(sp_user.loadUserByUsername(aplicacao.getIdeusu()) == null) return ResponseEntity.ok("Usuário não encontrado no sistema!");
 
             sp_aplicacoes aplicacaoAnalise = aplicacoesRepository.findByIdApl(aplicacao.getId());
             if (aplicacaoAnalise == null) aplicacaoAnalise = new sp_aplicacoes();
 
-            if(aplicacao.getDescricao() == null && aplicacao.getDescricao() == "") return ResponseEntity.badRequest().body("Aplicacão deve conter uma descricão!");
+            if(aplicacao.getDescricao() == null && aplicacao.getDescricao() == "") return ResponseEntity.ok("Aplicacão deve conter uma descricão!");
 
-            if(aplicacao.getArquivo_inic() == null && aplicacao.getArquivo_inic() == "") return ResponseEntity.badRequest().body("Deve ser informado um arquivo de inicializacão para a aplicacão!");
+            if(aplicacao.getArquivo_inic() == null && aplicacao.getArquivo_inic() == "") return ResponseEntity.ok("Deve ser informado um arquivo de inicializacão para a aplicacão!");
 
-            if(!modulosRepository.existsById(aplicacao.getIdmodulo())) return ResponseEntity.badRequest().body("Modulo da aplicacão não encontrado!");
+            if(!modulosRepository.existsById(aplicacao.getIdmodulo())) return ResponseEntity.ok("Modulo da aplicacão não encontrado!");
             sp_modulos modulo = modulosRepository.findByIdModulos(aplicacao.getIdmodulo());
             aplicacaoAnalise.setModulo(modulo);
 
             aplicacaoAnalise.setDescricao(aplicacao.getDescricao());
             aplicacaoAnalise.setArquivo_inic(aplicacao.getArquivo_inic());
 
-            if(!roleacess.existsById(aplicacao.getRole())) return ResponseEntity.badRequest().body("Role da aplicacão não encontrado!");
+            if(!roleacess.existsById(aplicacao.getRole())) return ResponseEntity.ok("Role da aplicacão não encontrado!");
             sp_roleacess role = roleacess.findByCodRole(aplicacao.getRole());
             aplicacaoAnalise.setRole(role);
 

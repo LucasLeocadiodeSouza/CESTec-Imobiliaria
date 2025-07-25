@@ -85,13 +85,17 @@ export function elementsForm_init(){
 }
 
 export function alert(titulo, message, timeout){
-    const divcontainer     = document.createElement("div");
+    let timeoutId;
+
+    var divcontainer     = document.createElement("div");
     divcontainer.id        = "container-alert-form";
     divcontainer.className = "container-alert";
 
-    const alertAtivo = document.body.contains("container-alert-formres"); 
+    const alertAtivo = document.body.contains(document.getElementById(divcontainer.id)); 
 
-    const divcortainer = alertAtivo?document.getElementById("container-alert-form") : divcortainer;
+    if(alertAtivo){
+        divcontainer = document.getElementById("container-alert-form");
+    }
 
     const ol         = document.createElement("ol");
     ol.className     = "olalert";
@@ -101,36 +105,63 @@ export function alert(titulo, message, timeout){
     const divalertmess     = document.createElement("div");
     divalertmess.className = "alert-message";
 
-    const divcontinertitulo        = document.createElement("div");
-    divcontinertitulo.style.width  = "100%";
-    divcontinertitulo.style.height = "36px";
-    divcontinertitulo.style.color  = "#FFF";
+    const divcontinertitulo     = document.createElement("div");
+    divcontinertitulo.className = "title_info";
 
-    const divcontinermessage        = document.createElement("div");
-    divcontinermessage.style.width  = "100%";
-    divcontinermessage.style.height = "36px";
-    divcontinermessage.style.color  = "#FFF";
+    const divcontinermessage     = document.createElement("div");
+    divcontinermessage.className = "message_info";
 
+    const labeltitle     = document.createElement("label");
+    labeltitle.innerText = titulo;
+
+    const labelmessage     = document.createElement("label");
+    labelmessage.innerText = message;
+
+    divcontinertitulo.appendChild(labeltitle);
+    divcontinermessage.appendChild(labelmessage);
     divalertmess.appendChild(divcontinertitulo);
     divalertmess.appendChild(divcontinermessage);
+
+    setTimeout(() => {
+        divalertmess.classList.remove("entrada");
+        divalertmess.classList.add("visible");
+    }, 10);
+
     li.appendChild(divalertmess);
 
-    ol.appendChild(li);
- 
-    console.log(titulo);
-
     if(!alertAtivo) {
+        ol.appendChild(li);
+
         divcontainer.appendChild(ol);
-        document.body.appendChild(divcortainer);
+        document.body.appendChild(divcontainer);
+    }else{
+        document.getElementById("container-alert-form").querySelector("ol").appendChild(li);
     }
 
-    setTimeout(()=>{
-        li.remove();
+    const removeAlert = ()=>{ 
+        divalertmess.classList.add("saida");
+        
+        setTimeout(() => {
+            li.remove();
+        
+            if(ol.children.length === 0){
+                divcontainer.remove();
+            }
+        }, 1000);
+    }
 
-        if(ol.children.length === 0){
-            divcontainer.remove();
-        }
+    timeoutId = setTimeout(removeAlert, timeout * 1000);
 
-    }, timeout * 1000);
-    
+    divalertmess.addEventListener('mouseover', () => {
+        divalertmess.classList.remove("sombradestaque");
+        divalertmess.classList.add("sombradestaque");
+        
+        clearTimeout(timeoutId);
+    });
+
+    divalertmess.addEventListener('mouseout', () => {
+        divalertmess.classList.remove("sombradestaque");
+        timeoutId = setTimeout(removeAlert, timeout * 1000);
+    });
+
 }

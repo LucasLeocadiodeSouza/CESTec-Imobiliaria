@@ -183,8 +183,8 @@ function filaFetchInit(){
                                       form("mrestrole").value = ACAOBUSCA.buscarRoleAcess.valorinicial;
                                       break;
 
-        case    "adicionarAplicacao": if(retorno != "OK") return alert(retorno, '', 4);
-                                      alert("Aplicação cadastrada com sucesso!");
+        case    "adicionarAplicacao": if(retorno != "OK") return alert("Erro ao salvar Aplicação!", retorno, 4);
+                                      alert("Sucesso!", "A aplicação foi salva com sucesso e já está disponivel para ser acessada!", 4);
 
                                       form("bnovabusca").click();
                                       form("bbuscar").click();
