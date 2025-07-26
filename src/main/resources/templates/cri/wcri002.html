@@ -10,12 +10,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/padrao.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
     <title>Cadastro de Proprietario</title>
-    <script type="module" src="/js/cri/wcri002.js" defer></script>
-    
+    <script src="/js/modules/adicionaScripts.js"></script>
+    <script>
+        adicionarHeadLinks();
+        addScriptsHead("/js/cri/wcri002.js");
+    </script>
 <style>
     .ppp         {width: 32px;}
     .p           {width: 60px;}
@@ -60,7 +60,7 @@
 </style>
 </head>
 <body>
-    <div class="gen" style="background-color: #dedede; height: 100vh; display: flex; justify-content: center; padding: 15px;flex-direction: column;justify-content: flex-start;">
+    <div class="gen princbody">
         <input type="hidden" id="ideusu" name="ideusu">
         
         <div class="titulo">

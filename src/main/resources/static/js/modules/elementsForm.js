@@ -3,7 +3,7 @@
    Data: 03/06/25
 */
 
-export function elementsForm_init(){
+function elementsForm_init(){
 
     //
     //Padronizacao dos botoes
@@ -37,7 +37,7 @@ export function elementsForm_init(){
         }
 
         const divlabel = document.createElement("div");
-        divlabel.style.width          = "calc(100% - 20px)";
+        divlabel.style.width          = "calc(100% - 25px)";
         divlabel.style.display        = "flex";
         divlabel.style.justifyContent = "flex-start";
         divlabel.style.alignItems     = "center";
@@ -84,7 +84,7 @@ export function elementsForm_init(){
     });
 }
 
-export function alert(titulo, message, timeout){
+function alert(titulo, message, timeout){
     let timeoutId;
 
     var divcontainer     = document.createElement("div");

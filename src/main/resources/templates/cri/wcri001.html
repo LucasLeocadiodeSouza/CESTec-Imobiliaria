@@ -10,12 +10,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/padrao.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
     <title>Cadastro de Imovel</title>
-    <script type="module" src="/js/cri/wcri001.js" defer></script>
-    
+    <script src="/js/modules/adicionaScripts.js"></script>
+    <script>
+        adicionarHeadLinks();
+        addScriptsHead("/js/cri/wcri001.js");
+    </script>
 <style>
     .ppp         {width: 32px  !important;}
     .p           {width: 60px  !important;}
@@ -30,7 +30,7 @@
                margin-top: 0px;}
 
     .labelmodal {font-weight: 600;
-                 width: 165px;
+                 width: 180px;
                  text-align: right;}
 
     ::-webkit-scrollbar {
@@ -51,7 +51,7 @@
 </style>
 </head>
 <body>
-    <div class="gen" style="background-color: #dedede; height: 100vh; display: flex; justify-content: center; padding: 15px;flex-direction: column;justify-content: flex-start;">
+    <div class="gen princbody">
         <div class="titulo">
             <h2>Cadastro de Imóvel</h2>
         </div>

@@ -7,11 +7,6 @@ window.addEventListener("load", function () {
     wmrb002_init();
 });
 
-import { GridForm_init }   from "../modules/gridForm.js";
-import { consulForm_init } from "../modules/consulForm.js";
-import { elementsForm_init } from "../modules/elementsForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init,fillSelect } from "../modules/utils.js";
-
 var TABELASBANCO_GRID,COLUNAS_GRID,INDEX_GRID;
 var CONSUL;
 
