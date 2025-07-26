@@ -12,8 +12,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/padrao.css">
     <title>Comercial Home</title>
-    <script type="module" src="/js/comWindow.js" defer></script>
-    
+    <script src="/js/modules/adicionaScripts.js"></script>
+    <script>
+        adicionarHeadLinks();
+        addScriptsHead("/js/comWindow.js");
+    </script>
 <style>
     .ppp         {width: 32px; }
     .p           {width: 60px; }
@@ -214,7 +217,7 @@
     #dlacessosint label {font-size:     22px;
                          color:         white;
                          border-color:  #eaeaea;
-                         text-shadow:   -1px 1px 2px rgb(255, 255, 255);
+                         text-shadow:   0 0 2px rgb(255, 255, 255);
                          font-weight:   500;}
 
     .container-trimestre {background-color: #3e5680; height: 100%; position: relative; display: flex; justify-content: center;}
@@ -234,11 +237,11 @@
                  color:        azure;
                  margin-top:    0px;
                  padding-right: 10px;
-                 font-size: x-large;}
+                 font-size:     24px;}
 
     #container-label-infotop label {color:  #090909;}
 
-    .container-infotop {width: 140px; height: 17px; padding-left: 5px; padding-bottom: 3px;}
+    .container-infotop {width: 140px; height: 17px; padding-left: 5px; padding-bottom: 3px; font-family: 'Inter';}
 
     .botoesmenuesq { float:             left;
                      background-color:  #2e4266;
@@ -261,7 +264,7 @@
                         height: 30px;
                         border-radius: 25px;
                         display: flex;
-                        padding-block: 10px;
+                        padding: 10px 5px;
                         align-items: center;
                         justify-content: center;
                         box-shadow: 0 0 4px rgb(0, 0, 0);
@@ -332,7 +335,7 @@
 
     .titulo-descagendamento {display: flex; flex-direction: column; align-items: center; justify-content: center;}
 
-    .titulo-descagendamento label {color: #FFF;}
+    .titulo-descagendamento label {color: #FFF; font-size: 15px;}
 
     .container-esquerda {width: 100%; height: calc(100% - 50px); display: flex; justify-content: flex-end;}
 
@@ -366,7 +369,7 @@
                 margin-right:      150px;
                 margin-bottom:     10px;}
 
-    .labelbotaoapl {font-size:  20px; color: white !important; font-weight: normal; display: flex !important;}
+    .labelbotaoapl {font-size:  20px; color: white !important; font-weight: 500; display: flex !important; font-family: 'Lato', sans-serif !important;}
 
     .ocultardisplaybotoes {display: none;}
     .Abrirdisplaybotoes   {display: flex;}
@@ -396,7 +399,8 @@
                     </div>
 
                     <div class="ident-usuario">
-                        <div class="container-infotop" style="height: 35px;">
+                        <div class="container-infotop container-row" style="height: 35px;">
+                            <img src="/icons/work_icon.png" alt="Carregando" style="height: 30px; margin-right: 10px;">
                             <h1 id="huser"></h1>                
                         </div>
 
@@ -425,7 +429,7 @@
                 <div id="ditenssobre" class="obssobre">
                     <div class="childrenflex">
                         <div>
-                            <label style="color: white; font-weight: normal; display: flex; ">Versão: 0.1</label>
+                            <label style="color: white; font-weight: normal; display: flex; ">Versão: 0.3</label>
                         </div>
                         <div style="padding-bottom: 1px; padding-top: 7px;">
                             <label style="color: rgb(210, 209, 209); font-weight: normal; display: flex; ">Sistema Reponsavel: CESTec</label>

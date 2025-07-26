@@ -23,7 +23,7 @@
                     metodo final para criacao  da ABA;
 */
 
-export function abaForm_init(){
+function abaForm_init(){
     this.id          = "";
     this.name        = "";
     this.icon        = "";

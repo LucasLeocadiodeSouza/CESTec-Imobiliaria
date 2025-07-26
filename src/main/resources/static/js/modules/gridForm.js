@@ -73,7 +73,7 @@
 
 */
 
-export function GridForm_init(){
+function GridForm_init(){
     this.id            = "";
     this.columnName    = "";
     this.columnLabel   = "";

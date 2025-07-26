@@ -7,13 +7,6 @@ window.addEventListener("load", function () {
     wopr001_init();
 });
 
-import { GridForm_init }   from "../modules/gridForm.js";
-import { DMFForm_init }    from "../modules/dmfForm.js";
-import { abaForm_init }    from "../modules/abaForm.js";
-import { consulForm_init } from "../modules/consulForm.js";
-import { elementsForm_init } from "../modules/elementsForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init,fillSelect } from "../modules/utils.js";
-
 var AGEN_GRID, FUNC_GRID;
 var DMFDiv, ABA, ABAFILTRO, CONSUL;
 var ACAOBUSCA = {};
@@ -51,7 +44,7 @@ function wopr001_init(){
     ABAFILTRO      = new abaForm_init();
     ABAFILTRO.id   = "abasfiltroagen";
     ABAFILTRO.name = "Funcionario,Setor,Cargo";
-    ABAFILTRO.icon = "/icons/work_icon.png,/icons/group_icon.png,/icons/clips_icon.png";
+    ABAFILTRO.icon = "/icons/work_icon2.png,/icons/group_icon.png,/icons/clips_icon.png";
     ABAFILTRO.createAba();
 
     DMFDiv              = new DMFForm_init();

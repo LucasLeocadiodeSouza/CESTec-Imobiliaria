@@ -7,13 +7,6 @@ window.addEventListener("load", function () {
     wmrb001_init();
 });
 
-import { GridForm_init }   from "../modules/gridForm.js";
-import { DMFForm_init }    from "../modules/dmfForm.js";
-import { abaForm_init }    from "../modules/abaForm.js";
-import { consulForm_init } from "../modules/consulForm.js";
-import { elementsForm_init, alert } from "../modules/elementsForm.js";
-import { form,desabilitaCampo,setDisplay,event_selected_init,fillSelect } from "../modules/utils.js";
-
 var LIBACESS_GRID,CADAPL_GRID;
 var DMFDiv, ABA, CONSUL;
 var ACAOBUSCA = {};
@@ -145,7 +138,6 @@ function event_click(obj) {
             if(!confirm("Deseja mesmo adicionar essa aplicação?")) return;
 
             adicionarAplicacao();
-            DMFDiv.closeModal();
         });
     }
 }
@@ -169,7 +161,14 @@ function event_click_aba(){
 }
 
 function filaFetchInit(){
-    CONSUL.filaFetch = (retorno)=>{
+    CONSUL.filaFetch = (retorno, error)=>{
+        if(error){
+            switch (CONSUL.obj) {
+            case   "adicionarAplicacao": alert("Erro ao salvar Aplicação!", retorno, 4);
+                                         break;
+            }
+            return;
+        }
 
         switch (CONSUL.obj) {
         case    "getDescricaoModulo": form("mdescmod").value = retorno;
@@ -183,8 +182,7 @@ function filaFetchInit(){
                                       form("mrestrole").value = ACAOBUSCA.buscarRoleAcess.valorinicial;
                                       break;
 
-        case    "adicionarAplicacao": if(retorno != "OK") return alert("Erro ao salvar Aplicação!", retorno, 4);
-                                      alert("Sucesso!", "A aplicação foi salva com sucesso e já está disponivel para ser acessada!", 4);
+        case    "adicionarAplicacao": alert("Sucesso!", "A aplicação foi salva com sucesso e já está disponivel para ser acessada!", 4);
 
                                       form("bnovabusca").click();
                                       form("bbuscar").click();
@@ -284,7 +282,7 @@ function adicionarAplicacao() {
                         arquivo_inic:  form('marqinit').value,
                         ideusu:        form('ideusu').value};
 
-    CONSUL.consultar("adicionarAplicacao",`/mrb001/cadastrarAplicacao`,"POST","",{body: aplicacao})
+    CONSUL.consultar("adicionarAplicacao",`/mrb001/cadastrarAplicacao`,"POST","",{body: aplicacao});
 }
 
 function buscarRoleAcess(valorinicial){
