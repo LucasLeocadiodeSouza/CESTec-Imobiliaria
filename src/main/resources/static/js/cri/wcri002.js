@@ -9,13 +9,6 @@ window.addEventListener("load", function () {
     buscarUserName();
 });
 
-import { GridForm_init }   from "../modules/gridForm.js";
-import { DMFForm_init }    from "../modules/dmfForm.js";
-import { abaForm_init }    from "../modules/abaForm.js";
-import { consulForm_init } from "../modules/consulForm.js";
-import { elementsForm_init,alert } from "../modules/elementsForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init } from "../modules/utils.js";
-
 var ABA,DMFDiv,CONSUL,PROPRI_GRID;
 
 function iniciarEventos() {

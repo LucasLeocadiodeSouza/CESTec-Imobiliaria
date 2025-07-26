@@ -19,7 +19,7 @@
                          options    -> Tipo JSON. Atribui o body para a chamada que é necessario usar o body ou um responseType diferente como 'arraybuffer' (options.responseType === 'arraybuffer'), Parametro nao obrigatorio. Ex: options.responseType === 'arraybuffer' ou options.body = {...};
 */
 
-export function consulForm_init(){
+function consulForm_init(){
     this.obj = "";
 
     const loader = document.createElement('div');
@@ -65,19 +65,27 @@ export function consulForm_init(){
             loader.innerHTML += '<p>Carregando...</p>';
         }, 1000); // Mensagem após 1 segundos
 
-        try {
            const response = await fetch(path, {
                 method: method,
                 headers: headers,
                 body: method !== 'GET' ? JSON.stringify(options.body) : null
             });
+            
+            var resulta;
+
+            this.obj = nomefuncao;
 
             if (!response.ok) {
+                clearTimeout(loaderTimeout);
+                loader.style.display = 'none';
+
+                this.filaFetch(`Erro na requisição: ${response.status} - ${response.statusText}`, response.status);
+
                 throw new Error(`Erro na requisição: ${response.status} - ${response.statusText}`);
             }
 
             const contentType = response.headers.get('Content-Type');
-            var resulta;
+            
 
             if (contentType?.includes('application/pdf') || options.responseType === 'arraybuffer') {
                 resulta = await response.arrayBuffer();
@@ -88,16 +96,11 @@ export function consulForm_init(){
                 resulta = await response.text();
             }
 
-            this.obj = nomefuncao;
-
             this.filaFetch(resulta);
 
-            return resulta;
-        } catch (error) {
-            throw new Error('Erro na consulta:', error);
-        } finally {
             clearTimeout(loaderTimeout);
             loader.style.display = 'none';
-        }
+            
+            return resulta;
     };
 }

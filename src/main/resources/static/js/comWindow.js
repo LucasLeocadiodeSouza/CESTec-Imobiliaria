@@ -3,9 +3,6 @@
     IM: 00002
 */
 
-import { consulForm_init } from "./modules/consulForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init,getDisplay } from "./modules/utils.js";
-
 window.addEventListener("load", function () {    
     iniciarEventos();
 });

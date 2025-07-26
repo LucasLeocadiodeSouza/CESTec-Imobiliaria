@@ -3,7 +3,7 @@
    Data: 03/06/25
 */
 
-export function elementsForm_init(){
+function elementsForm_init(){
 
     //
     //Padronizacao dos botoes
@@ -84,7 +84,7 @@ export function elementsForm_init(){
     });
 }
 
-export function alert(titulo, message, timeout){
+function alert(titulo, message, timeout){
     let timeoutId;
 
     var divcontainer     = document.createElement("div");

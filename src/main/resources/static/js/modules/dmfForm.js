@@ -42,7 +42,7 @@
 
 var modalStack = []; //controle de index
 
-export function DMFForm_init(){
+function DMFForm_init(){
     this.divs         = "";
     this.tema         = 0;
     this.cortinaclose = false;
