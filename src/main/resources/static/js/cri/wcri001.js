@@ -7,13 +7,6 @@ window.addEventListener("load", function () {
     wcri001_init();
 });
 
-import { GridForm_init }   from "../modules/gridForm.js";
-import { DMFForm_init }    from "../modules/dmfForm.js";
-import { abaForm_init }    from "../modules/abaForm.js";
-import { consulForm_init } from "../modules/consulForm.js";
-import { elementsForm_init } from "../modules/elementsForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init } from "../modules/utils.js";
-
 var IMOVEIS_GRID;
 var DMFDiv, ABA, CONSUL;
 
@@ -110,7 +103,6 @@ function event_click(obj) {
     if(obj == 'bcadastro'){
         form(obj).addEventListener("click", function () {
             adicionarContratoImovel();
-            DMFDiv.closeModal();
         });
     }
 }
@@ -139,12 +131,20 @@ function event_click_aba(){
 }
 
 function filaFetchInit(){
-    CONSUL.filaFetch = (retorno)=>{
+    CONSUL.filaFetch = (retorno, error)=>{
+        if(error){
+            switch (CONSUL.obj) {
+            case   "adicionarContratoImovel": alert("Ocorreu um erro ao cadastrar o Contrato", retorno, 4);
+                                              break;
+            }
+            return;
+        }
+
         switch (CONSUL.obj) {
         case            "buscarUserName": form("ideusu").value = retorno;
                                           break;
 
-        case   "adicionarContratoImovel": alert("Imóvel adicionado com sucesso!");
+        case   "adicionarContratoImovel": alert("Sucesso!", "Imóvel adicionado com sucesso!", 4);
                                           DMFDiv.closeModal();
                                           break;
 

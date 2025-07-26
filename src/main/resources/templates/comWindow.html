@@ -12,8 +12,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/padrao.css">
     <title>Comercial Home</title>
-    <script type="module" src="/js/comWindow.js" defer></script>
-    
+    <script src="/js/modules/adicionaScripts.js"></script>
+    <script>
+        adicionarHeadLinks();
+        addScriptsHead("/js/comWindow.js");
+    </script>
 <style>
     .ppp         {width: 32px; }
     .p           {width: 60px; }
@@ -261,7 +264,7 @@
                         height: 30px;
                         border-radius: 25px;
                         display: flex;
-                        padding-block: 10px;
+                        padding: 10px 5px;
                         align-items: center;
                         justify-content: center;
                         box-shadow: 0 0 4px rgb(0, 0, 0);
@@ -366,7 +369,7 @@
                 margin-right:      150px;
                 margin-bottom:     10px;}
 
-    .labelbotaoapl {font-size:  20px; color: white !important; font-weight: normal; display: flex !important;}
+    .labelbotaoapl {font-size:  20px; color: white !important; font-weight: 500; display: flex !important; font-family: 'Lato', sans-serif !important;}
 
     .ocultardisplaybotoes {display: none;}
     .Abrirdisplaybotoes   {display: flex;}

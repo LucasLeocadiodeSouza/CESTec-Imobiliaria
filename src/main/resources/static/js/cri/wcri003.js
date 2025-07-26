@@ -8,13 +8,6 @@ window.addEventListener("load", function () {
     iniciarEventos();
 });
 
-import { GridForm_init }   from "../modules/gridForm.js";
-import { DMFForm_init }    from "../modules/dmfForm.js";
-import { abaForm_init }    from "../modules/abaForm.js";
-import { consulForm_init } from "../modules/consulForm.js";
-import { elementsForm_init } from "../modules/elementsForm.js";
-import { imgFormat,form,desabilitaCampo,setDisplay,event_selected_init } from "../modules/utils.js";
-
 var ABA,DMFDiv,CONSUL,CLIENTES_GRID;
 
 function iniciarEventos() {
