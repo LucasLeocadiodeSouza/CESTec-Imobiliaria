@@ -37,7 +37,7 @@ function elementsForm_init(){
         }
 
         const divlabel = document.createElement("div");
-        divlabel.style.width          = "calc(100% - 20px)";
+        divlabel.style.width          = "calc(100% - 25px)";
         divlabel.style.display        = "flex";
         divlabel.style.justifyContent = "flex-start";
         divlabel.style.alignItems     = "center";
