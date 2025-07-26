@@ -44,7 +44,7 @@ function wopr001_init(){
     ABAFILTRO      = new abaForm_init();
     ABAFILTRO.id   = "abasfiltroagen";
     ABAFILTRO.name = "Funcionario,Setor,Cargo";
-    ABAFILTRO.icon = "/icons/work_icon.png,/icons/group_icon.png,/icons/clips_icon.png";
+    ABAFILTRO.icon = "/icons/work_icon2.png,/icons/group_icon.png,/icons/clips_icon.png";
     ABAFILTRO.createAba();
 
     DMFDiv              = new DMFForm_init();
