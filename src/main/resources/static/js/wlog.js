@@ -8,7 +8,12 @@ window.addEventListener("load", function () {
     iniciarEventos();
 });
 
+var CONSUL;
+
 function iniciarEventos() {
+    CONSUL = new consulForm_init();
+    filaFetchInit();
+
     //controlaTela("inicia");
     event_click("blogin");
 }
@@ -21,19 +26,30 @@ function event_click(obj) {
     }
 }
 
+function filaFetchInit(){
+    CONSUL.filaFetch = (retorno, error)=>{
+        if(error){
+            switch (CONSUL.obj) {
+            case   "buscarLogin": alert("Erro ao acessar o Portal!", "Usuário ou Senha Erradas! Por favor tente novamente.", 4);
+                                  break;
+            }
+            return;
+        }
+
+        switch (CONSUL.obj) {
+        case    "buscarLogin": window.location.href = "/home";
+                               break;
+        }
+    }
+}
+
 function buscarLogin(){
     const login = {
         login: form("login").value,
         passkey: form("passkey").value,
     }
 
-    fetch('/auth/login',{
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(login)
-    })
-    .then(response =>{response.ok?window.location.href = "/home":alert("Usuário ou Senha Erradas! Por favor tente novamente.")})
-    .catch(error => console.log(error.message));
+    CONSUL.consultar("buscarLogin",`/auth/login`,"POST","",{body: login})
 }
 
 /*
@@ -70,8 +86,4 @@ function controlaTela(opc){
 }
 
 function limparTela(opc){
-}
-
-function form(obj){
-    return document.getElementById(obj);
 }

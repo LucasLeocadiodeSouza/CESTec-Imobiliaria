@@ -282,7 +282,7 @@ function adicionarAplicacao() {
                         arquivo_inic:  form('marqinit').value,
                         ideusu:        form('ideusu').value};
 
-    CONSUL.consultar("adicionarAplicacao",`/mrb001/cadastrarAplicacao`,"POST","",{body: aplicacao})
+    CONSUL.consultar("adicionarAplicacao",`/mrb001/cadastrarAplicacao`,"POST","",{body: aplicacao});
 }
 
 function buscarRoleAcess(valorinicial){
