@@ -52,9 +52,9 @@ function consulForm_init(){
     `;
     document.head.appendChild(style);
 
-    document.body.appendChild(loader);
-
     this.consultar = async (nomefuncao,path,method,headers,options = {})=>{
+        document.body.appendChild(loader);
+
          if(!path) throw new Error("Caminho não especificado");
     
         if(!method) method = "GET";
@@ -77,7 +77,7 @@ function consulForm_init(){
 
             if (!response.ok) {
                 clearTimeout(loaderTimeout);
-                loader.style.display = 'none';
+                loader.remove();
 
                 this.filaFetch(`Erro na requisição: ${response.status} - ${response.statusText}`, response.status);
 
@@ -99,7 +99,7 @@ function consulForm_init(){
             this.filaFetch(resulta);
 
             clearTimeout(loaderTimeout);
-            loader.style.display = 'none';
+            loader.remove();
             
             return resulta;
     };
