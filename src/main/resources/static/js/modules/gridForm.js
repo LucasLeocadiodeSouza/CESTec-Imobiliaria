@@ -312,8 +312,7 @@ function GridForm_init(){
         .catch(error => alert(error.message))
         .finally(() => {
             clearTimeout(loaderTimeout);
-            loader.style.display = 'none';
-            document.body.removeChild(loader);
+            loader.remove();
         })
     }
 
