@@ -51,9 +51,10 @@ body .gen {padding: 10px}
                  position: absolute;
                  left: 10px;}
            
-.button:hover {background-color: #d5d5d6;
+.button:hover {background-color: #1a2e6f;
                box-shadow: 0 0 0 1px #5151525f;
-               color: #fff;}
+               .buttonfe {color: #FFF !important}
+               .buttonfe img{filter: invert(100%)}}
 
 .buttonfe {width: 100%;
            height: 100%; 
