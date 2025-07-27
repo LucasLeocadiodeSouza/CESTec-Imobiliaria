@@ -85,7 +85,7 @@ function ocultarbotoesinternos(){
     });
 }
 
-function criarBotaoEsterno(divpai,botoes){
+function criarBotaoExterno(divpai,botoes){
     const divprincipal = document.getElementById(divpai);    
     const olprincipal  = document.createElement("ol");
     olprincipal.style.transition = "1s ease-in";
@@ -248,9 +248,8 @@ function filaFetchInit(){
                                             botoes.push({menu:dados[0].modulo.descricao, codmodulo:dados[0].modulo.id, botoesinternos:botoesint});
                                           };
 
-                                          criarBotaoEsterno("dintensint",botoes);
+                                          criarBotaoExterno("dintensint",botoes);
                                           break;
-        
         }
     }
 }
@@ -350,11 +349,12 @@ function criarModalHoverAgendamento(div, day, mes, year){
     const dataAnalise  = `${year}-${mesFormatado}-${dayFormatado}`;
 
     const temAgendamento   =  AGENDSJSON.some(agenda => {
-        const [ano, mes, dia]   = agenda.datagen.split('-');
+        const [ano, mes, dia] = agenda.datagen.split('-');
+        const horaAnalise     = agenda.horagen2.split(":");
 
         const dataAgenda   =  agenda.datagen.split('T')[0];
         dataagen  = `${dia}/${mes}/${ano}`;
-        horagen   = agenda.horagen2;
+        horagen   = horaAnalise[0] + ":" + horaAnalise[1];
         motivo    = agenda.descMotivo;
         titulo    = agenda.titulo;
         descricao = agenda.titulo;
