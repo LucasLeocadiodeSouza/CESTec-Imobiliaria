@@ -95,18 +95,20 @@ function criarBotaoExterno(divpai,botoes){
 
         const divexterna = document.createElement("div");
         divexterna.id = "ditens" + botao.menu.replace(/\s+/g, '').toLowerCase() + "ext";
-        divexterna.className = "container-botao";
+        divexterna.className = "container-botao ocultarcontainerbotao";
 
         const divprimint = document.createElement("div");
         divprimint.id = "dim" + botao.menu.replace(/\s+/g, '').toLowerCase() + "primint";
         divprimint.className = "botoesmenuesq bimmenu botaopri";
+
+        const divlabel     = document.createElement("div");
+        divlabel.className = "container-label-bim";
 
         divprimint.addEventListener("click", ()=>{
             const resultcontainerbotaoativo = containerBotaoAtivo(divexterna);
 
             form(divexterna.id).classList.remove(resultcontainerbotaoativo?"mostrarcontainerbotao":"ocultarcontainerbotao");
             form(divexterna.id).classList.add(resultcontainerbotaoativo?"ocultarcontainerbotao":"mostrarcontainerbotao");
-
 
             const botoesinterno = divexterna.querySelectorAll(".botaointerno");
 
@@ -126,13 +128,32 @@ function criarBotaoExterno(divpai,botoes){
                 botaoint.classList.remove(resultcontainerbotaoativo?"Abrirdisplaybotoes":"ocultardisplaybotoes");
                 botaoint.classList.add(resultcontainerbotaoativo?"ocultardisplaybotoes":"Abrirdisplaybotoes");
             });
+
+            const allbotoesprinc = document.querySelectorAll(".botaopri");
+            allbotoesprinc.forEach(botao => {
+                const arrowiconrel = botao.querySelector("img");
+                arrowiconrel.classList.remove("arrowInativo");
+                arrowiconrel.classList.remove("arrayAtivo");
+                arrowiconrel.classList.add("arrayAtivo");
+            });
+
+            const arrowicon = divprimint.querySelector("img");
+            arrowicon.classList.remove(resultcontainerbotaoativo?"arrowInativo":"arrayAtivo");
+            arrowicon.classList.add(resultcontainerbotaoativo?"arrayAtivo":"arrowInativo");
         });
 
         const labelprimi = document.createElement("label");
         labelprimi.className = "labelbotaoapl";
         labelprimi.innerText = botao.menu;
 
-        divprimint.appendChild(labelprimi);
+        divlabel.appendChild(labelprimi);
+
+        const imgarrow     = document.createElement("img");
+        imgarrow.src       = "/icons/arrow_icon.png";
+        imgarrow.className = "arrayAtivo arrowIcon";
+
+        divprimint.appendChild(divlabel);
+        divprimint.appendChild(imgarrow);
         divexterna.appendChild(divprimint);
 
         const botoesinternos = botao.botoesinternos;
@@ -184,7 +205,6 @@ function criarBotaoExterno(divpai,botoes){
                     //window.location.href = "/buscarPath/" + botaoint.codapl;
                 }
             });
-
 
             const labelint = document.createElement("label");
             labelint.className = "labelbotaoapl";

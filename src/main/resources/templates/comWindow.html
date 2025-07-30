@@ -255,6 +255,7 @@
                      justify-content:   center;
                      margin-bottom:     10px;
                      transition:        0.2s;
+                     position:          relative;
                      user-select:       none;}
 
     .botoesmenuesq:hover {background-color: #384e73 ;}
@@ -370,10 +371,16 @@
 
     .labelbotaoapl {font-size:  20px; color: white !important; font-weight: 500; display: flex !important; font-family: 'Lato', sans-serif !important;}
 
+    .container-label-bim {width: calc(100% - 80px); display: flex; justify-content: center;}
+
     .ocultardisplaybotoes {display: none;}
     .Abrirdisplaybotoes   {display: flex;}
-    .ocultarcontainerbotao {background-color: #dedede}
-    .mostrarcontainerbotao {background-color: #192B4A}
+    .ocultarcontainerbotao {background-color: #dedede;}
+    .mostrarcontainerbotao {background-color: #192B4A;}
+
+    .arrowIcon    {height: 13px !important; margin-right:  7px; position: absolute; right: 10px; transition: 0.2s;}
+    .arrowAtivo   {transform: rotate(0deg);}
+    .arrowInativo {transform: rotate(90deg);}
 
     ::-webkit-scrollbar {
         width: 1px;
