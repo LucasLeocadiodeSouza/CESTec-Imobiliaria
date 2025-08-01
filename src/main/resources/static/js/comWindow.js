@@ -627,11 +627,12 @@ function carregarNotificacoes(){
 function temNotificacaoPendente(){
     const rows = NOTIFY_GRID.getTableNode();
 
+    form("icon_notif").style.display = "none";
+
     rows.forEach(row =>{
         const colunas = row.childNodes;
 
         if(colunas[2].innerText == "true") form("icon_notif").style.display = "block";
-        else{form("icon_notif").style.display = "none";}
     });
 }
 
