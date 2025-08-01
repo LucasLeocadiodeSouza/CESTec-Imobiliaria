@@ -22,7 +22,9 @@
 function consulForm_init(){
     this.obj = "";
 
-    const loader = document.createElement('div');
+    let loaderTimeout;
+
+    let loader = document.createElement('div');
     loader.id    = 'global-loader';
     loader.style = `position: fixed;
                     top: 0;
@@ -36,10 +38,10 @@ function consulForm_init(){
     const spinner = document.createElement('img');
     spinner.src   = '/icons/loader_icon.png';
     spinner.style = `position: absolute;
-                     top: 50%;
-                     left: 50%;
-                     transform: translate(-50%, -50%);
-                     animation: girar 1s linear infinite;`;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    animation: girar 1s linear infinite;`;
 
     loader.appendChild(spinner);
 
@@ -50,20 +52,23 @@ function consulForm_init(){
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
     `;
-    document.head.appendChild(style);
 
-    this.consultar = async (nomefuncao,path,method,headers,options = {})=>{
-        document.body.appendChild(loader);
-
-         if(!path) throw new Error("Caminho não especificado");
+    this.consultar = async (nomefuncao,path,method,headers,options = {},ocultarloader)=>{
+        if(!path) throw new Error("Caminho não especificado");
     
         if(!method) method = "GET";
         if(!headers) headers = { "Content-Type": "application/json" };
 
-        loader.style.display = 'block';
-        let loaderTimeout = setTimeout(() => {
-            loader.innerHTML += '<p>Carregando...</p>';
-        }, 1000); // Mensagem após 1 segundos
+        if(!ocultarloader){
+            document.head.appendChild(style);
+
+            if(!document.body.contains(loader)) document.body.appendChild(loader);
+
+            loader.style.display = 'block';
+            loaderTimeout = setTimeout(() => {
+                loader.innerHTML += '<p>Carregando...</p>';
+            }, 1000); // Mensagem após 1 segundos
+        }
 
            const response = await fetch(path, {
                 method: method,
@@ -74,10 +79,12 @@ function consulForm_init(){
             var resulta;
 
             this.obj = nomefuncao;
-
+            
             if (!response.ok) {
-                clearTimeout(loaderTimeout);
-                loader.remove();
+                if(!ocultarloader){
+                    clearTimeout(loaderTimeout);
+                    loader.remove();
+                }
 
                 this.filaFetch(`Erro na requisição: ${response.status} - ${response.statusText}`, response.status);
 
@@ -98,8 +105,10 @@ function consulForm_init(){
 
             this.filaFetch(resulta);
 
-            clearTimeout(loaderTimeout);
-            loader.remove();
+            if(!ocultarloader){
+                clearTimeout(loaderTimeout);
+                loader.remove();
+            }
             
             return resulta;
     };

@@ -4,6 +4,9 @@ body .gen {padding: 10px}
 
 .dnone {display: none;}
 
+.prelative {position: relative;}
+.pabsolute {position: absolute;}
+
 .gen img {width: auto;
           padding: 0px;
           height: 25px;
@@ -226,16 +229,9 @@ td {border-bottom: 0;}
 th, td {padding: 10px;
         box-sizing: border-box;}
 
-td {border: solid 1px #bbbbbb;  
-    border-left: solid 1px #bbbbbb; 
-    border-right: solid 1px #bbbbbb; 
+td {
     white-space: nowrap;
 }
-
-tr:first-child td {border-top: solid 1px #bbbbbb;}
-
-tr:last-child td {
-    border-bottom: solid 1px #bbbbbb;}
 
 table {
      font-size: 16px;
