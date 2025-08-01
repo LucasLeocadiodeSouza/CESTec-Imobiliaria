@@ -44,6 +44,15 @@
                             mousehouver -> parametro não obrigatório, boolean inicialmente false. Caso seja informado true ele vai adicionar uma
                                            cor destaque ao passar o mouse por cima de alguma row da grid (cor fixa em rgb(176, 193, 223));
 
+        GRID.ocultarhead   = true;
+                            ocultarhead -> parametro não obrigatório, oculta o cabecalho da grid, ficando so com as linhas;
+
+        GRID.fullParent    = true;
+                            fullParent -> parametro não obrigatório, remove o margin-block e aatribui o tamanho total da table para o tamanho completo da div sobreposta;
+
+        GRID.tema          = '0';
+                            borderTema -> parametro não obrigatório, recebe uma String, é o tema da table. '0' sem borda, '1' tema padrao, borda cinza e quadrada, '2' sem borda e com cor branca;
+
         GRID.click_table   = ()=>{};
                             click_table -> recebe uma funcao. Parametro não obrigatório. Ele adicionaa o click table, onde executa todo
                                            o conteudo dentro da funcao;
@@ -74,17 +83,21 @@
 */
 
 function GridForm_init(){
-    this.id            = "";
-    this.columnName    = "";
-    this.columnLabel   = "";
-    this.columnWidth   = "";
-    this.columnAlign   = "";
-    this.gridWidth     = "";
-    this.gridHeight    = "";
-    this.scroll        = false;
-    this.mousehouve    = false;
-    this.destacarclick = true;
-    this.click_table = '';
+    this.id              = "";
+    this.columnName      = "";
+    this.columnLabel     = "";
+    this.columnWidth     = "";
+    this.columnAlign     = "";
+    this.gridWidth       = "";
+    this.gridHeight      = "";
+    this.scroll          = false;
+    this.mousehouve      = false;
+    this.destacarclick   = true;
+    this.ocultarhead     = false;
+    this.fullParent      = false;
+    this.borderTema      = '1';
+    this.click_table     = '';
+    this.mouseover_table = '';
 
     this.createGrid = ()=>{
         //
@@ -110,6 +123,9 @@ function GridForm_init(){
         if(this.scroll) divtable.style.overflowX = "scroll";
         if(this.gridWidth !== "")  divtable.style.width  = this.gridWidth;
         if(this.gridHeight !== "") divtable.style.height = this.gridHeight;
+        if(this.fullParent)  divtableinit.style.marginBlock = '0';
+        if(this.tema === '0' || this.tema === '2')     divtableinit.style.border = 'none';
+        
         divtable.className = "h100";
 
         table.classList.add("tablecolun");
@@ -130,6 +146,8 @@ function GridForm_init(){
 
             pi++;
         });
+
+        if(this.ocultarhead) headerRow.classList.add("dnone");
 
         thead.appendChild(headerRow);
         table.appendChild(thead);
@@ -168,48 +186,51 @@ function GridForm_init(){
 
     //carregar dados para a grid
     //o conteudo puxado precisa ser um json
-    this.carregaGrid = async (path,method,headers)=>{
+    this.carregaGrid = async (path,method,headers,ocultarloader)=>{
          if(!path) throw new Error("Caminho não especificado");
     
         if(!method) method = "GET";
         if(!headers) headers = { "Content-Type": "application/json" };
 
-        const loader = document.createElement('div');
-        loader.id    = 'global-loader';
-        loader.style = `position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background: rgb(255 255 255 / 55%);
-                        z-index: 9999;
-                        display: none;`;
+        var loaderTimeout,loader;
+        if(!ocultarloader){
+            loader = document.createElement('div');
+            loader.id    = 'global-loader';
+            loader.style = `position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: rgb(255 255 255 / 55%);
+                            z-index: 9999;
+                            display: none;`;
 
-        const spinner = document.createElement('img');
-        spinner.src = '/icons/loader_icon.png';
-        spinner.style = `position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        animation: girar 1s linear infinite;`;
+            const spinner = document.createElement('img');
+            spinner.src = '/icons/loader_icon.png';
+            spinner.style = `position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            animation: girar 1s linear infinite;`;
 
-        loader.appendChild(spinner);
+            loader.appendChild(spinner);
 
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes girar {
-                from { transform: translate(-50%, -50%) rotate(0deg); }
-                to { transform: translate(-50%, -50%) rotate(360deg); }
-            }
-        `;
-        document.head.appendChild(style);
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes girar {
+                    from { transform: translate(-50%, -50%) rotate(0deg); }
+                    to { transform: translate(-50%, -50%) rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
 
-        document.body.appendChild(loader);
+            document.body.appendChild(loader);
 
-        loader.style.display = 'block';
-        let loaderTimeout    = setTimeout(() => {
-            loader.innerHTML += '<p>Carregando...</p>';
-        }, 1000);
+            loader.style.display = 'block';
+            loaderTimeout    = setTimeout(() => {
+                loader.innerHTML += '<p>Carregando...</p>';
+            }, 1000);
+        }
 
         await fetch(path, {
             method: method,
@@ -238,12 +259,18 @@ function GridForm_init(){
 
             if(!Array.isArray(dados)) throw new Error("Ocorreu um erro ao tentar consultar os dados, o retorno não esta na forma de um array. Retorno atual: " + dados);
 
+            if(this.tema === '0' || this.tema === '2') {
+                table.style.border = 'none';
+            }
+
             const originalHeaderCells = document.querySelectorAll(`#${this.id} .tablecolun th`);
 
             const headerbody = document.createElement("thead");
             const trbody     = document.createElement("tr");
 
             headerbody.style.visibility = "collapse";
+
+            if(this.ocultarhead) headerbody.style.display = "none";
 
             var si = 0;
             colunas.forEach((coluna,index) =>{
@@ -276,6 +303,10 @@ function GridForm_init(){
                     const tdtext = opc[index];
                     td.innerHTML = tdtext;
 
+                    if(this.tema === '2') {
+                        td.style.color = '#FFF';
+                    }
+
                     if(aligns[index] === "e") td.classList.add("tdalign-esq");
                     if(aligns[index] === "c") td.classList.add("tdalign-cen");
                     if(aligns[index] === "d") td.classList.add("tdalign-dir");
@@ -289,6 +320,7 @@ function GridForm_init(){
  
                 
                 row.onclick = this.click_table;
+                row.addEventListener("mouseover", ()=>{this.mouseover_table()});
                 
                 //
                 //cor mouse hover
@@ -311,8 +343,12 @@ function GridForm_init(){
         })
         .catch(error => alert(error.message))
         .finally(() => {
-            clearTimeout(loaderTimeout);
-            loader.remove();
+            if(!ocultarloader){
+                clearTimeout(loaderTimeout);
+                loader.remove();
+            };
+
+            this.filaFetchGrid();
         })
     }
 

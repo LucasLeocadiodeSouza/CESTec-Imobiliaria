@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import com.cestec.cestec.model.contratoDTO;
 import com.cestec.cestec.model.corretorDTO;
 import com.cestec.cestec.model.funcionario;
 import com.cestec.cestec.model.historicoAcessoAplDTO;
@@ -18,6 +20,7 @@ import com.cestec.cestec.model.sp_histacessapl;
 import com.cestec.cestec.model.sp_modulos;
 import com.cestec.cestec.model.opr.agendamentoDTO;
 import com.cestec.cestec.model.opr.opr_agendamentos_func;
+import com.cestec.cestec.model.spf.sp_notificacao_usu;
 import com.cestec.cestec.repository.contratoRepository;
 import com.cestec.cestec.repository.histAcessAplRepo;
 import com.cestec.cestec.repository.metaRepository;
@@ -25,7 +28,9 @@ import com.cestec.cestec.repository.generico.aplicacoesRepository;
 import com.cestec.cestec.repository.generico.funcionarioRepository;
 import com.cestec.cestec.repository.generico.modulosRepository;
 import com.cestec.cestec.repository.opr.agendamentosFuncRepo;
+import com.cestec.cestec.repository.spf.notificacaoUsuRepository;
 import com.cestec.cestec.service.opr.opr001s;
+import com.cestec.cestec.util.utilForm;
 
 import jakarta.transaction.Transactional;
 
@@ -36,6 +41,9 @@ public class comWindowService {
 
     @Autowired
     private metaRepository metaRepository;
+
+    @Autowired
+    private notificacaoUsuRepository notificRepository;
 
     @Autowired
     private contratoRepository contratoRepository;
@@ -172,5 +180,44 @@ public class comWindowService {
             .collect(Collectors.groupingBy(
                 aplicacao -> aplicacao.getModulo().getId()
             ));
+    }
+
+    public List<?> buscarNotificacoesGrid(String ideusu){
+        List<sp_notificacao_usu> notificacoes = notificRepository.findAllByIdeusu(ideusu);
+
+        utilForm.initGrid();
+        for (int i = 0; i < notificacoes.size(); i++) {
+            String complemento = notificacoes.get(i).isAtivo()?"<span style='position: absolute; top: 4px; right:0; width: 10px; height: 10px; background-color: #cf0303; display: block; border-radius: 10px;'></span>":"";
+            String dataReg = notificacoes.get(i).getDatregistro().toString();
+
+            utilForm.criarRow();
+            utilForm.criarColuna(notificacoes.get(i).getDescricao());
+            utilForm.criarColuna("<div style='position: relative;'>" + dataReg + complemento + "</div>");
+            utilForm.criarColuna(String.valueOf(notificacoes.get(i).isAtivo()));
+            utilForm.criarColuna(notificacoes.get(i).getId().toString());
+        }
+
+        return utilForm.criarGrid();
+    }
+
+    @Transactional
+    public ResponseEntity<?> inativarNotificacao(String ideusu, Integer idnotifi){
+        try {
+            if(sp_user.loadUserByUsername(ideusu) == null) return ResponseEntity.badRequest().body("Usuário não encontrado no sistema!");
+
+            sp_notificacao_usu notificacao = notificRepository.findById(idnotifi).orElseThrow(() -> new RuntimeException("Notificação não encontrada 1"));
+            if(notificacao.getId() == null || notificacao.getId() == 0){
+                return ResponseEntity.badRequest().body("Notificação não encontrada 2");
+            }
+
+            if(!notificacao.isAtivo()) return ResponseEntity.ok("OK");
+
+            notificacao.setAtivo(false);
+
+            notificRepository.save(notificacao);
+            return ResponseEntity.ok("OK");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao desmarcar a notificação: " + e.getMessage()); 
+        }
     }
 }
