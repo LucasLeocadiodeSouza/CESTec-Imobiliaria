@@ -79,7 +79,7 @@ body .gen {padding: 10px}
              width:            100px;
              border-color:   #000000a1;
              border-radius:    6px;
-             background-color: #cadfc82b;
+             background-color: #a3ada22b;
              box-shadow:       0 0 0 .1vw rgba(160, 177, 184, 0.186)}             
 
 .logoEmpresa {display: flex; width: 100%; justify-content: center; align-items: center;}
@@ -167,7 +167,7 @@ input {font-family:      "Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetic
       font-weight:      180;
       font-size:        14px;
       color:            #000000;
-      background-color: #cadfc82b;
+      background-color: #a3ada22b;
       border-radius:    0.3vw;
       box-shadow:       0 0 0 .1vw rgba(160, 177, 184, 0.186);
       padding:          2.5px;
@@ -185,7 +185,7 @@ textarea {font-family:      "Ubuntu","Cantarell","Fira Sans","Droid Sans","Helve
           font-weight:      180;
           font-size:        14px;
           color:            #000000;
-          background-color: #94ad912b;
+          background-color: #a3ada22b;
           box-shadow:       black;
           border-radius:    0.3vw;
           box-shadow:       0 0 0 .15vw rgba(135, 207, 235, 0.186);

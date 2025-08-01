@@ -127,6 +127,10 @@
 
     .titulo-descagendamento {background-color: #23334e; width: 100%; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; height: 35px;}
 
+    .titulo-container {font-size:  18px !important; color: #e1e1e1 !important; font-weight: normal !important;}
+
+    #ddescagendabutton {padding-left: 0px; padding-right: 0px; width: 315px; height: 15px; background-color: #334970;}
+
     .modal-agendamento     {min-width: 240px; max-width: 280px; min-height: 140px; height: auto; background-color: #26334b; position: absolute; border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom-right-radius: 19px;     box-shadow: 0 0 4px 1px rgb(0 0 0 / 50%); display: none;}
     .container-agendamento {width: 99%; padding-inline: 10px; height: 100%; z-index: 1; flex-grow: 1;}
     .container-agendamento label {color: #eaeaea;}
@@ -238,11 +242,20 @@
 
     .painel-graficint {display: flex; flex-direction: column;align-items: center;}
 
-    #huser      {float:        left;
+    #huser      {float:         left;
                  color:        azure;
                  margin-top:    0px;
                  padding-right: 10px;
-                 font-size:     24px;}
+                 font-size:     24px;
+                 white-space:   nowrap;
+                 text-overflow: ellipsis;
+                 overflow:      hidden;
+                 height:        100%;}
+
+    #lcargo, #lid {white-space:   nowrap;
+                   text-overflow: ellipsis;
+                   overflow:      hidden;
+                   height:        100%;}
 
     #container-label-infotop label {color:  #090909;}
 
@@ -313,6 +326,8 @@
                   width:                     25px;
                   user-select:               none;}
 
+    #dbackagenda label {font-size:  19px; color: white; font-weight: bolder; display: flex; padding-left: 8px;}
+
     #dbackagenda:hover {background-color: #3e5680 ;}
 
     #dmesagenda  {background-color: #334970 ;
@@ -328,6 +343,8 @@
                   border-top-right-radius:    25px;
                   width:                      25px;
                   user-select:                none;}
+
+    #dnextagenda label {font-size:  19px; color: white; font-weight: bolder; display: flex; padding-right: 8px;}
 
     #dnextagenda:hover {background-color: #3e5680;}
 
@@ -460,7 +477,7 @@
                 <div id="dmetas" class="gen">
                     <div id="ddescmetas" class="ddescdiv" style="width: 95%">
                         <div class="dhdiv">
-                            <label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal;">Metas</label>
+                            <label class="titulo-container">Metas</label>
                         </div>
                     
                         <div class="container-div">
@@ -505,7 +522,7 @@
                 <div id="dvendatri" class="gen">
                     <div id="ddesctri" class="ddescdiv">
                         <div class="dhdiv">
-                            <label style="font-size:  18px; color: rgb(210, 209, 209); font-weight: normal;">Trimestre</label>
+                            <label class="titulo-container">Trimestre</label>
                         </div>
                     </div>
                 </div>
@@ -513,7 +530,7 @@
                 <div id="doutros" class="gen">
                     <div id="ddescoutros" class="ddescdiv" style="width: 480px;">
                         <div class="dhdiv prelative">
-                            <label style="font-size: 18px; color: rgb(210, 209, 209); font-weight: normal;">Notificação</label>
+                            <label class="titulo-container">Notificação</label>
 
                             <div id="icon_notif">
                                 <img src="/icons/notify_icon.png" alt="Carregando" style="width: 15px; height: 15px;">
@@ -531,7 +548,7 @@
                 <div id="dcontratos" class="gen">
                     <div id="ddesccontrato" class="ddescdiv" style="height: 90%; width: 97%;">
                         <div class="dhdiv">
-                            <label style="font-size: 18px; color: rgb(210, 209, 209); font-weight: normal;">Contratos</label>
+                            <label class="titulo-container">Contratos</label>
                         </div>
 
                         <div id="ddesccontratoslegenda" class="ddescagenda"></div>
@@ -539,10 +556,10 @@
                 </div>
                 
                 <div id="dagenda" class="gen" style="justify-content: center; align-items: center;">
-                    <div id="ddescagendabutton" class="botoesmenuesq" style="padding-left: 0px; padding-right: 0px; width: 315px; height: 15px; background-color: #334970;">
-                        <div id="dbackagenda"><label style="font-size:  19px; color: white; font-weight: bolder; display: flex; padding-left: 8px;"> < </label></div>
+                    <div id="ddescagendabutton" class="botoesmenuesq">
+                        <div id="dbackagenda"><label> < </label></div>
                         <div id="dmesagenda"><label id="lnomeMes" style="font-size:  19px; color: white; font-weight: normal; display: flex; justify-content: center;"></label></div>
-                        <div id="dnextagenda"><label style="font-size:  19px; color: white; font-weight: bolder; display: flex; padding-right: 8px;"> > </label></div>
+                        <div id="dnextagenda"><label> > </label></div>
                     </div>
 
 

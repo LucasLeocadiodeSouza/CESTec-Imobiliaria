@@ -21,7 +21,7 @@ function iniciarEventos() {
     NOTIFY_GRID.id            = "table_notif";
     NOTIFY_GRID.columnName    = "descricao,data,_idnotifi,_ehativo";
     NOTIFY_GRID.columnLabel   = "Descricao,Data";
-    NOTIFY_GRID.columnWidth   = "80,20";
+    NOTIFY_GRID.columnWidth   = "65,35";
     NOTIFY_GRID.columnAlign   = "e,c";
     NOTIFY_GRID.mousehouve    = true;
     NOTIFY_GRID.ocultarhead   = true;
@@ -296,9 +296,7 @@ function filaFetchInit(){
                                           criarBotaoExterno("dintensint",botoes);
                                           break;
 
-                                         //melhorar busca !!!!!!
-        case      'inativarNotificacao': NOTIFY_GRID.clearGrid();
-                                         carregarNotificacoes();
+        case      'inativarNotificacao': carregarNotificacoes();
                                          break;
         }
     }
@@ -367,25 +365,33 @@ function criarDescricaoData(mesanalise){
 function criarIconAgendamentos(day, mes, year){
     const mesFormatado = String(mes).padStart(2, '0');
     const dayFormatado = String(day).padStart(2, '0');
-    var corIcon        = "";
 
     const dataAnalise = `${year}-${mesFormatado}-${dayFormatado}`;
 
     const temAgendamento = AGENDSJSON.some(agenda => {
         const dataAgenda = agenda.datagen.split('T')[0];
-        corIcon          = agenda.corAgend;
         return dataAgenda === dataAnalise;
     });
     
     if(!temAgendamento) return;
 
     const div = document.createElement("div");
-    div.style.height       = "5px";
-    div.style.width        = "5px";
-    div.style.background   = corIcon;
-    div.style.borderRadius = "5px";
     div.style.position     = "absolute";
     div.style.top          = "0";
+    div.style.gap          = "3px";
+    div.style.display      = "flex";
+    div.style.maxWidth     = "25px";
+    div.style.overflow     = "hidden";
+
+    AGENDSJSON.forEach(agendamento =>{
+        const divicon = document.createElement("div");
+        divicon.style.height       = "5px";
+        divicon.style.width        = "5px";
+        divicon.style.background   = agendamento.corAgend;
+        divicon.style.borderRadius = "5px";
+
+        div.appendChild(divicon);
+    });
 
     return div;
 }
@@ -614,7 +620,6 @@ function carregaMes(){ //IM: 00004 - montar calendario/agenda
     criarDescricaoData(mes + 1);
 }
 
-//melhorar busca !!!!!!
 function carregarNotificacoes(){
     NOTIFY_GRID.carregaGrid("/home/buscarNotificacoesGrid","","",true);
 }
@@ -624,7 +629,7 @@ function temNotificacaoPendente(){
 
     rows.forEach(row =>{
         const colunas = row.childNodes;
-        console.log(colunas[2]);
+
         if(colunas[2].innerText == "true") form("icon_notif").style.display = "block";
         else{form("icon_notif").style.display = "none";}
     });
