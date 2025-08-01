@@ -15,7 +15,7 @@ import com.cestec.cestec.infra.security.tokenService;
 import com.cestec.cestec.model.historicoAcessoAplDTO;
 import com.cestec.cestec.model.sp_aplicacoes;
 import com.cestec.cestec.model.opr.agendamentoDTO;
-import com.cestec.cestec.model.opr.opr_agendamentos_func;
+import com.cestec.cestec.model.spf.sp_notificacao_usu;
 import com.cestec.cestec.service.comWindowService;
 import com.cestec.cestec.service.sp_userService;
 import jakarta.servlet.http.Cookie;
@@ -97,7 +97,16 @@ public class comWindowController {
 
     @PostMapping("/salvarHistoricoApl")
     public ResponseEntity<?> salvarHistoricoApl(HttpServletRequest request, @RequestParam(value = "codmod", required = false) Integer codmod, @RequestParam(value = "codapl", required = false) Integer codapl) {
-        System.out.println(getUserName(request));
         return comWindowService.salvarHistoricoApl(getUserName(request), codmod, codapl);
+    } 
+
+    @GetMapping("/buscarNotificacoesGrid")
+    public List<?> buscarNotificacoesGrid(HttpServletRequest request) {
+        return comWindowService.buscarNotificacoesGrid(getUserName(request));
+    }
+
+    @PostMapping("/inativarNotificacao")
+    public ResponseEntity<?> inativarNotificacao(HttpServletRequest request, @RequestParam(value = "idnotific", required = false) Integer idnotific) {
+        return comWindowService.inativarNotificacao(getUserName(request), idnotific);
     }
 }
