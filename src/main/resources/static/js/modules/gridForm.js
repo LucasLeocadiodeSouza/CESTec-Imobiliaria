@@ -247,7 +247,7 @@ function GridForm_init(){
             const aligns       = this.columnAlign.split(",");
             const dados        = data;
 
-            if(document.getElementById(this.id + "res")) this.clearGrid;
+            if(document.getElementById(this.id + "res")) this.clearGrid();
 
             const divres = document.createElement("div");
             divres.id    = "d" + this.id + "res";
@@ -270,7 +270,7 @@ function GridForm_init(){
 
             headerbody.style.visibility = "collapse";
 
-            if(this.ocultarhead) headerbody.style.display = "none";
+            //if(this.ocultarhead) headerbody.style.display = "none"; //isso vai perder o this.columnWidth;
 
             var si = 0;
             colunas.forEach((coluna,index) =>{
