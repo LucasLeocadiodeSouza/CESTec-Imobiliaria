@@ -12,20 +12,37 @@ const nomeMes = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","
 let date = new Date();
 let mes  = date.getMonth();
 let ano  = date.getFullYear();
-var CONSUL,AGENDSJSON;
+var CONSUL,NOTIFY_GRID,AGENDSJSON;
 
 function iniciarEventos() {
     CONSUL = new consulForm_init();
-    filaFetchInit();
+
+    NOTIFY_GRID               = new GridForm_init();
+    NOTIFY_GRID.id            = "table_notif";
+    NOTIFY_GRID.columnName    = "descricao,data,_idnotifi,_ehativo";
+    NOTIFY_GRID.columnLabel   = "Descricao,Data";
+    NOTIFY_GRID.columnWidth   = "80,20";
+    NOTIFY_GRID.columnAlign   = "e,c";
+    NOTIFY_GRID.mousehouve    = true;
+    NOTIFY_GRID.ocultarhead   = true;
+    NOTIFY_GRID.fullParent    = true;
+    NOTIFY_GRID.destacarclick = false;
+    NOTIFY_GRID.tema          = '2';
+    NOTIFY_GRID.createGrid();
 
     valorMetaMensal();
     setGraficoMeta();
     getVlrEfetivadoCorretor();
     getCargoIdeusu();
     //getPeriodoMeta();
+    carregarNotificacoes();
 
-    event_click("dnextagenda");
     event_click("dbackagenda");
+    event_click("dnextagenda");
+    event_mouseover_table();
+
+    filaFetchInit();
+    filaFetchGridInit();
 
     buscarUserId("wcodfunc");
     buscarUserName();
@@ -46,7 +63,7 @@ function event_click(obj) {
 
             date = new Date(ano,mes, new Date().getDate());
             ano  = date.getFullYear();
-            mes = date.getMonth();
+            mes  = date.getMonth();
 
             buscarAgendamentos();
         });
@@ -67,6 +84,14 @@ function event_click(obj) {
             buscarAgendamentos();
         });
     }
+}
+
+function event_mouseover_table(){
+    NOTIFY_GRID.mouseover_table = ()=>{
+        const valoresLinha = NOTIFY_GRID.getRowNode(event.target.closest('tr'));
+
+        inativarNotificacao(valoresLinha[3]);
+    };
 }
 
 function controlaTela(opc){
@@ -241,7 +266,7 @@ function filaFetchInit(){
         switch (CONSUL.obj) {
         case  "buscarUserName": form("ideusu").value      = retorno;
                                 form("huser").textContent = retorno;
-                                buscarAgendamentos();
+                                buscarHistoricoAcessoApl();
                                 break;
 
         case       "buscarUserId": form("wcodfunc").value  = retorno;
@@ -250,10 +275,10 @@ function filaFetchInit(){
 
         case "buscarAgendamentos": AGENDSJSON = retorno;
                                    carregaMes();
-                                   buscarHistoricoAcessoApl();
                                    break;
 
         case 'buscarHistoricoAcessoApl': retornoBuscarHistoricoAcesso(retorno);
+                                         buscarAgendamentos();
                                          break;
 
         case         "getBotoesAplMenu": let botoes = [];
@@ -270,6 +295,11 @@ function filaFetchInit(){
 
                                           criarBotaoExterno("dintensint",botoes);
                                           break;
+
+                                         //melhorar busca !!!!!!
+        case      'inativarNotificacao': NOTIFY_GRID.clearGrid();
+                                         carregarNotificacoes();
+                                         break;
         }
     }
 }
@@ -279,7 +309,7 @@ function getBotoesAplMenu(){
 }
 
 function buscarAgendamentos(){
-    CONSUL.consultar("buscarAgendamentos",`/home/buscarAgendamentosFunc?ideusu=${form("ideusu").value}`);
+    CONSUL.consultar("buscarAgendamentos",`/home/buscarAgendamentosFunc?ideusu=${form("ideusu").value}`,'','',{},true);
 }
 
 function criarDescricaoData(mesanalise){
@@ -408,6 +438,10 @@ function criarModalHoverAgendamento(div, day, mes, year){
 
 function salvarHistoricoApl(modulo, aplicacao){
     CONSUL.consultar("salvarHistoricoApl",`/home/salvarHistoricoApl?codmod=${modulo}&codapl=${aplicacao}`,"POST");
+} 
+ 
+function inativarNotificacao(idnotific){
+    CONSUL.consultar("inativarNotificacao",`/home/inativarNotificacao?idnotific=${idnotific}`,"POST",'',{},true);
 }
 
 function adicionarListaHistoricoAcesso(li, codapl, codmodulo, nomemodulo, nomeapl, numacesso){
@@ -457,11 +491,11 @@ function buscarHistoricoAcessoApl(){
 }
 
 function buscarUserName(){
-    CONSUL.consultar("buscarUserName",`/home/userlogin`)
+    CONSUL.consultar("buscarUserName",`/home/userlogin`,'','',{},true)
 }
 
 function buscarUserId(){
-    CONSUL.consultar("buscarUserId",`/home/userid`)
+    CONSUL.consultar("buscarUserId",`/home/userid`,'','',{},true)
 }
 
 function valorMetaMensal(){
@@ -578,4 +612,26 @@ function carregaMes(){ //IM: 00004 - montar calendario/agenda
 
 
     criarDescricaoData(mes + 1);
+}
+
+//melhorar busca !!!!!!
+function carregarNotificacoes(){
+    NOTIFY_GRID.carregaGrid("/home/buscarNotificacoesGrid","","",true);
+}
+
+function temNotificacaoPendente(){
+    const rows = NOTIFY_GRID.getTableNode();
+
+    rows.forEach(row =>{
+        const colunas = row.childNodes;
+        console.log(colunas[2]);
+        if(colunas[2].innerText == "true") form("icon_notif").style.display = "block";
+        else{form("icon_notif").style.display = "none";}
+    });
+}
+
+function filaFetchGridInit(){
+    NOTIFY_GRID.filaFetchGrid = ()=>{
+        temNotificacaoPendente();
+    }
 }
