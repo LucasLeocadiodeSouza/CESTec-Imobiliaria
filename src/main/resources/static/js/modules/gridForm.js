@@ -394,6 +394,8 @@ function clickRowBorder(idtable){
         });
 
         document.addEventListener('click', function(event) {
+            if(!table.contains(event.target)) return;
+
             const clicouFora = !row.contains(event.target);
             
             const elementosBody = Array.from(document.body.children);

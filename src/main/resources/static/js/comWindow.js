@@ -410,7 +410,7 @@ function criarModalHoverAgendamento(div, day, mes, year){
         horagen   = horaAnalise[0] + ":" + horaAnalise[1];
         motivo    = agenda.descMotivo;
         titulo    = agenda.titulo;
-        descricao = agenda.titulo;
+        descricao = agenda.descricao;
         ideusu    = agenda.ideusu;
 
         return dataAgenda === dataAnalise;

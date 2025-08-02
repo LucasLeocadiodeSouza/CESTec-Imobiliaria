@@ -23,6 +23,7 @@ import com.cestec.cestec.repository.generico.roleacessRepository;
 import com.cestec.cestec.repository.opr.agendamentosFuncRepo;
 import com.cestec.cestec.repository.opr.agendamentosRepo;
 import com.cestec.cestec.repository.opr.opr001repo;
+import com.cestec.cestec.service.sp_notificacaoService;
 import com.cestec.cestec.service.sp_userService;
 import com.cestec.cestec.util.utilForm;
 
@@ -51,6 +52,13 @@ public class opr001s {
 
     @Autowired
     private agendamentosFuncRepo agendFuncRepo;
+
+    @Autowired
+    private sp_notificacaoService notificaService;
+
+
+    /* ********** Funcoes ********** */
+
 
     public static String getMotivo(Integer codmotivo){
         switch (codmotivo) {
@@ -194,8 +202,9 @@ public class opr001s {
                 agendfuncanalise.setDatiregistro(LocalDate.now());
 
                 agendfuncanalise.setIdeusu(agendamento.getIdeusu());
-            }
 
+                notificaService.criarNotificacao(func.getSp_user().getLogin(), "Novo agendamento disponível! " + agendamento.getTitulo(), agendamento.getIdeusu());
+            }
             agendFuncRepo.save(agendfuncanalise);
             return ResponseEntity.ok("OK");
         }catch (Exception e) {
