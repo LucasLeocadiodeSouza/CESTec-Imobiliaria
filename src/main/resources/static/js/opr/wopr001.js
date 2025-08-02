@@ -303,6 +303,7 @@ function vincularAgendamentoFunc(listafunc) {
     listafunc.forEach(element => {
         const agendfunc = { codfunc:   element.id,
                             codagenda: form("hcodagen").value,
+                            titulo:    form("mtituloagen").value,
                             ideusu:    form('ideusu').value};
 
         CONSUL.consultar("vincularAgendamentoFunc",`/opr001/vincularAgendamentoFunc`,"POST","",{body: agendfunc})
