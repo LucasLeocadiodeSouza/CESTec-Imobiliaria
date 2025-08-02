@@ -80,9 +80,6 @@ function iniciarEventos() {
 
 function event_click_table(){
     AGEN_GRID.click_table = ()=>{
-        const clickedCell = event.target.closest('td');
-        if (clickedCell && clickedCell.cellIndex === 0) return;
-
         const valoresLinha = AGEN_GRID.getRowNode(event.target.closest('tr'));
 
         controlaTela("modal");
@@ -94,6 +91,13 @@ function event_click_table(){
         DMFDiv.fullScream = true;
         DMFDiv.openModal("dmodalf_agenda");
         DMFDiv.fullScream = false;
+    };
+
+    FUNC_GRID.click_table = ()=>{
+        const checkbox = event.target.closest('tr').childNodes[0].childNodes[0];
+
+        if(checkbox.checked) checkbox.checked = false;
+        else checkbox.checked = true;
     };
 }
 
