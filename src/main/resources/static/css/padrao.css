@@ -181,6 +181,8 @@ input[type="button"],
 input[type="submit"], 
 input[type="reset"] {box-shadow: none;}
 
+input:disabled {border-color: rgba(118, 118, 118, 0.3); color: #8a8a8a; background-color: #7575752b;}
+
 textarea {font-family:      "Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
           font-weight:      180;
           font-size:        14px;
@@ -246,6 +248,7 @@ table {
          border:        1px solid black;
          font-family:   'Host Grotesk', sans-serif;
          font-size:     17px;
+         cursor: pointer;
        }
        td {
          border:        solid 1px #bbbbbb;
@@ -256,6 +259,7 @@ table {
          text-overflow: ellipsis;
          font-family:   Arial, Helvetica, sans-serif;
          font-size:     15px;
+         cursor:        pointer;
        }
 }
 
