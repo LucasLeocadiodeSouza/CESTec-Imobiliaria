@@ -78,7 +78,7 @@ public class opr001s {
             if(agendFuncRepo.findFuncInAgend(codagend, func.get(i).getCodfunc()) != null) marcar = true;
 
             utilForm.criarRow();
-            utilForm.criarColuna("<input type='checkbox' id='funcionario_" + i + "' name='funcionario_" + i + "'" + (marcar?"checked":"") + " "+ (acao.equals("Consultando")?"disabled":"a") + ">");
+            utilForm.criarColuna("<input type='checkbox' id='funcionario_" + i + "' name='funcionario_" + i + "'" + (marcar?"checked":"") + " "+ (acao.equals("Consultando")?"disabled":"") + ">");
             utilForm.criarColuna(func.get(i).getCodfunc().toString());
             utilForm.criarColuna(func.get(i).getNomefunc());
             utilForm.criarColuna(func.get(i).getCodcargo().toString());

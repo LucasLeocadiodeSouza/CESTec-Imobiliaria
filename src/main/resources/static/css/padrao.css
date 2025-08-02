@@ -188,20 +188,21 @@ textarea {font-family:      "Ubuntu","Cantarell","Fira Sans","Droid Sans","Helve
           font-size:        14px;
           color:            #000000;
           background-color: #a3ada22b;
-          box-shadow:       black;
           border-radius:    0.3vw;
-          box-shadow:       0 0 0 .15vw rgba(135, 207, 235, 0.186);
+          box-shadow:       0 0 0 .1vw rgba(135, 207, 235, 0.186);
           padding:          2.5px;
           transition:       .2s;
           resize: none;}
 
-textarea:hover {box-shadow: 0 0 .4vw rgba(0,0,0,0.5), 0 0 0 .15vw transparent;}
+textarea:hover {box-shadow: 0 0 .4vw rgba(30, 30, 30, 0.258), 0 0 0 .15vw transparent;}
 
 textarea:focus {box-shadow: 0 0 0 .05vw #39537f; }
 
 textarea[type="button"], 
 textarea[type="submit"], 
 textarea[type="reset"] {box-shadow: none;}
+
+textarea:disabled {border-color: rgba(118, 118, 118, 0.3); color: #8a8a8a; background-color: #7575752b;}
 
 .DMF_external {width:  100%;
                height: 100%;
