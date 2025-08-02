@@ -33,13 +33,11 @@ function desabilitaCampo(obj,desahabilita){
     
     if (isButton) {
         element.style.opacity       = desahabilita ? '0.4' : '1';
-        element.style.pointerEvents =  desahabilita?"none":"auto";
-    } else {
-        element.style.backgroundColor = desahabilita ? '#d2d4da' : '';
+        element.style.pointerEvents = desahabilita?"none":"auto";
+        element.style.cursor        = desahabilita?'not-allowed':'pointer';
     }
 
-    form(obj).disabled = desahabilita;
-    form(obj).style.cursor = desahabilita?'not-allowed':'pointer';
+    element.disabled = desahabilita;
 }
 
 function setDisplay(obj, display){
