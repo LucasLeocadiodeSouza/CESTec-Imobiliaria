@@ -14,6 +14,9 @@ public interface funcionarioRepository extends JpaRepository<funcionario, Intege
     @Query("SELECT f FROM funcionario f WHERE f.codfuncionario = :codfunc")
     funcionario findFuncBycodfunc(@Param("codfunc") Integer codfunc);
     
+    @Query("SELECT f FROM funcionario f WHERE f.sp_user.login = :ideusu")
+    funcionario findFuncByIdeusu(@Param("ideusu") String ideusu);
+
     @Query("SELECT i.codfuncionario FROM funcionario i WHERE i.sp_user.login = :ideusu")
     Integer findCodFuncByIdeusu(@Param("ideusu") String ideusu);
 
