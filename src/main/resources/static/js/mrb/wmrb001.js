@@ -30,7 +30,7 @@ function wmrb001_init(){
     CADAPL_GRID.columnLabel   = "Usuário,Código Mod.,Módulo Referente,Código Aplicação,Aplicação,Data";
     CADAPL_GRID.columnWidth   = "12,12,17,17,30,12";
     CADAPL_GRID.columnAlign   = "e,c,c,c,e,c";
-    CADAPL_GRID.mousehouve    = false;
+    CADAPL_GRID.mousehouve    = true;
     CADAPL_GRID.clickgrid     = false;
     CADAPL_GRID.destacarclick = true;
     CADAPL_GRID.createGrid();

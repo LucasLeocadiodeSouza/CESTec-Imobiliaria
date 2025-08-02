@@ -97,7 +97,6 @@ function GridForm_init(){
     this.fullParent      = false;
     this.borderTema      = '1';
     this.click_table     = '';
-    this.mouseover_table = '';
 
     this.createGrid = ()=>{
         //
@@ -320,7 +319,8 @@ function GridForm_init(){
  
                 
                 row.onclick = this.click_table;
-                row.addEventListener("mouseover", ()=>{this.mouseover_table()});
+
+                if(this.mouseover_table) row.addEventListener("mouseover", ()=>{this.mouseover_table()});
                 
                 //
                 //cor mouse hover
@@ -348,7 +348,7 @@ function GridForm_init(){
                 loader.remove();
             };
 
-            this.filaFetchGrid();
+            if(this.filaFetchGrid) this.filaFetchGrid();
         })
     }
 
