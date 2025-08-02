@@ -8,6 +8,7 @@ import com.cestec.cestec.model.spf.sp_notificacao_usu;
 
 public interface notificacaoUsuRepository extends JpaRepository<sp_notificacao_usu, Integer> {
     @Query("SELECT noti FROM sp_notificacao_usu noti WHERE " 
-         + " noti.func.sp_user.login = :ideusu")
+         + " noti.func.sp_user.login = :ideusu"
+         + " ORDER BY noti.datregistro DESC, noti.id DESC")
     List<sp_notificacao_usu> findAllByIdeusu(@Param("ideusu") String ideusu);
 }
