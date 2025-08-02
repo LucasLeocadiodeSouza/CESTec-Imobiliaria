@@ -368,13 +368,6 @@ function criarIconAgendamentos(day, mes, year){
 
     const dataAnalise = `${year}-${mesFormatado}-${dayFormatado}`;
 
-    const temAgendamento = AGENDSJSON.some(agenda => {
-        const dataAgenda = agenda.datagen.split('T')[0];
-        return dataAgenda === dataAnalise;
-    });
-    
-    if(!temAgendamento) return;
-
     const div = document.createElement("div");
     div.style.position     = "absolute";
     div.style.top          = "0";
@@ -384,13 +377,17 @@ function criarIconAgendamentos(day, mes, year){
     div.style.overflow     = "hidden";
 
     AGENDSJSON.forEach(agendamento =>{
-        const divicon = document.createElement("div");
-        divicon.style.height       = "5px";
-        divicon.style.width        = "5px";
-        divicon.style.background   = agendamento.corAgend;
-        divicon.style.borderRadius = "5px";
+        const dataAgenda = agendamento.datagen.split('T')[0];
 
-        div.appendChild(divicon);
+        if(dataAgenda === dataAnalise){
+            const divicon = document.createElement("div");
+            divicon.style.height       = "5px";
+            divicon.style.width        = "5px";
+            divicon.style.background   = agendamento.corAgend;
+            divicon.style.borderRadius = "5px";
+
+            div.appendChild(divicon);
+        };
     });
 
     return div;
