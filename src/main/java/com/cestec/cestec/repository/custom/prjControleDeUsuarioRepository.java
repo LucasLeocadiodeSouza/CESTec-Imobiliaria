@@ -15,7 +15,7 @@ public class prjControleDeUsuarioRepository {
 
     public List<funcionarioDTO> buscarFuncionarios(String ideusu){
         String query   = "SELECT new com.cestec.cestec.model.funcionarioDTO(" + 
-                         "func.codfuncionario, func.nome, func.cpf, func.numtel, set.codsetor, set.nome, car.id, car.nome) " + 
+                         "func.codfuncionario, func.nome, func.cpf, func.numtel, set.codsetor, set.nome, car.id, car.nome, func.endereco, func.salario, func.datinasc, func.criado_em) " + 
                          "FROM funcionario func " + 
                          "JOIN func.setor set "  + 
                          "JOIN func.cargo car ";

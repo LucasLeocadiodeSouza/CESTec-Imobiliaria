@@ -247,7 +247,10 @@ function controlaTela(opc){
         desabilitaCampo('mhoraagen',    !ehManutencao());
         desabilitaCampo('mdescagen',    !ehManutencao());
         desabilitaCampo('mmotivo',      !ehManutencao());
-        
+        desabilitaCampo('mfuncionario', !ehAbaFunc());
+        desabilitaCampo('msetor',       !ehAbaSetor());
+        desabilitaCampo('mcargo',       !ehAbaCargo());
+
         setDisplay("dmfiltrofunc",  ehAbaFunc()?"block":"none");
         setDisplay("dmfiltrosetor", ehAbaSetor()?"block":"none");
         setDisplay("dmfiltrocargo", ehAbaCargo()?"block":"none");
