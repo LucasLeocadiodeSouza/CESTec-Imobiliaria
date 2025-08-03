@@ -1,9 +1,11 @@
 package com.cestec.cestec.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import com.cestec.cestec.model.securityLogin.sp_user;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,13 +41,15 @@ public class funcionario {
     @ManyToOne
     @JoinColumn(name = "setor_id", nullable = false)
     private pcp_setor setor;
-
-    //private Integer codsetor;
-    private double  salario;
-    private String  nome;
-    private Date    datinasc;
-    private String  cpf;
-    private String  numtel;
-    private String  endereco;
     
+    @Column(length = 15)
+    private String ideusu;
+
+    private double    salario;
+    private String    nome;
+    private LocalDate datinasc;
+    private String    cpf;
+    private String    numtel;
+    private String    endereco;
+    private LocalDate criado_em;
 }
