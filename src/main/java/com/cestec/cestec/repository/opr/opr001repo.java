@@ -2,7 +2,10 @@ package com.cestec.cestec.repository.opr;
 
 import java.util.List;
 import org.springframework.stereotype.Repository;
+
+import com.cestec.cestec.model.cargo;
 import com.cestec.cestec.model.funcionarioDTO;
+import com.cestec.cestec.model.pcp_setor;
 import com.cestec.cestec.model.opr.agendamentoDTO;
 
 import jakarta.persistence.EntityManager;
@@ -36,6 +39,38 @@ public class opr001repo {
 
         if(nome != null){
             q.setParameter("nome", nome + "%");
+        }
+
+        return q.getResultList();
+    }
+
+    public List<pcp_setor> buscarSetores(String nomeSetor){
+        String query = "SELECT set FROM pcp_setor set ";
+
+        if(nomeSetor != null){
+            query += " WHERE set.nome LIKE :nomeSetor ";
+        } 
+
+        var q = em.createQuery(query, pcp_setor.class);
+
+        if(nomeSetor != null){
+            q.setParameter("nomeSetor", nomeSetor + "%");
+        }
+
+        return q.getResultList();
+    }
+
+    public List<cargo> buscarCargos(String nomeCargo){
+        String query = "SELECT carg FROM cargo carg ";
+
+        if(nomeCargo != null){
+            query += " WHERE carg.nome LIKE :nomeCargo ";
+        } 
+
+        var q = em.createQuery(query, cargo.class);
+
+        if(nomeCargo != null){
+            q.setParameter("nomeCargo", nomeCargo + "%");
         }
 
         return q.getResultList();

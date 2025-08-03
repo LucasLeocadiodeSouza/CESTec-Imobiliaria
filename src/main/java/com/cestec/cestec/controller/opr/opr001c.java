@@ -25,6 +25,16 @@ public class opr001c {
         return opr001s.carregarGridFucnionarios(codagend, nomefunc, acao);
     }
 
+    @GetMapping("/carregarGridSetores")
+    public List<?> carregarGridSetores(@RequestParam(value = "codagend", required = false) Integer codagend, @RequestParam(value = "nomeSetor", required = false) String nomeSetor, @RequestParam(value = "acao", required = false) String acao){
+        return opr001s.carregarGridSetores(codagend, nomeSetor, acao);
+    }
+
+    @GetMapping("/carregarGridCargos")
+    public List<?> carregarGridCargos(@RequestParam(value = "codagend", required = false) Integer codagend, @RequestParam(value = "nomeCargo", required = false) String nomeCargo, @RequestParam(value = "acao", required = false) String acao){
+        return opr001s.carregarGridCargos(codagend, nomeCargo, acao);
+    }
+
     @GetMapping("/carregarGridAgendamentos")
     public List<?> carregarGridAgendamentos(@RequestParam(value = "codfunc", required = false) Integer codfunc, @RequestParam(value = "codcargo", required = false) Integer codcargo, @RequestParam(value = "codsetor", required = false) Integer codsetor){
         return opr001s.carregarGridAgendamentos(codfunc, codcargo, codsetor);

@@ -56,6 +56,8 @@ function fillSelect(id,options,selectedFirst){
 
     if(!options) return;
     
+    select.innerHTML = "";
+
     options.forEach(option =>{
        const option_ele      = document.createElement("option");
        option_ele.textContent = option.descricao;

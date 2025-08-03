@@ -13,6 +13,7 @@ import com.cestec.cestec.model.cargo;
 import com.cestec.cestec.model.funcionario;
 import com.cestec.cestec.model.funcionarioDTO;
 import com.cestec.cestec.model.modelUtilForm;
+import com.cestec.cestec.model.pcp_setor;
 import com.cestec.cestec.model.opr.agendamentoDTO;
 import com.cestec.cestec.model.opr.opr_agendamentos;
 import com.cestec.cestec.model.opr.opr_agendamentos_func;
@@ -20,8 +21,10 @@ import com.cestec.cestec.repository.cargoRepository;
 import com.cestec.cestec.repository.setorRepository;
 import com.cestec.cestec.repository.generico.funcionarioRepository;
 import com.cestec.cestec.repository.generico.roleacessRepository;
+import com.cestec.cestec.repository.opr.agendamentosCargRepo;
 import com.cestec.cestec.repository.opr.agendamentosFuncRepo;
 import com.cestec.cestec.repository.opr.agendamentosRepo;
+import com.cestec.cestec.repository.opr.agendamentosSetorRepo;
 import com.cestec.cestec.repository.opr.opr001repo;
 import com.cestec.cestec.service.sp_notificacaoService;
 import com.cestec.cestec.service.sp_userService;
@@ -52,6 +55,12 @@ public class opr001s {
 
     @Autowired
     private agendamentosFuncRepo agendFuncRepo;
+
+    @Autowired
+    private agendamentosCargRepo agendCargoRepo;
+
+    @Autowired
+    private agendamentosSetorRepo agendSetRepo;
 
     @Autowired
     private sp_notificacaoService notificaService;
@@ -85,6 +94,41 @@ public class opr001s {
             utilForm.criarColuna(func.get(i).getNomecargo());
             utilForm.criarColuna(func.get(i).getCodsetor().toString());
             utilForm.criarColuna(func.get(i).getNomesetor());
+        }
+
+        return utilForm.criarGrid();
+    }
+
+    public List<?> carregarGridSetores(Integer codagend, String nomeSetor, String acao){
+        List<pcp_setor> setores = opr001repo.buscarSetores(nomeSetor);
+
+        utilForm.initGrid();
+        for (int i = 0; i < setores.size(); i++) {
+            boolean marcar = false;
+            if(agendSetRepo.findSetorInAgend(codagend, setores.get(i).getCodsetor()) != null) marcar = true;
+
+            utilForm.criarRow();
+            utilForm.criarColuna("<input type='checkbox' id='setor_" + i + "' name='setor_" + i + "'" + (marcar?"checked":"") + " "+ (acao.equals("Consultando")?"disabled":"") + ">");
+            utilForm.criarColuna(setores.get(i).getCodsetor().toString());
+            utilForm.criarColuna(setores.get(i).getNome());
+
+        }
+
+        return utilForm.criarGrid();
+    }
+
+    public List<?> carregarGridCargos(Integer codagend, String nomeCargo, String acao){
+        List<cargo> cargos = opr001repo.buscarCargos(nomeCargo);
+
+        utilForm.initGrid();
+        for (int i = 0; i < cargos.size(); i++) {
+            boolean marcar = false;
+            if(agendCargoRepo.findCargoInAgend(codagend, cargos.get(i).getId()) != null) marcar = true;
+
+            utilForm.criarRow();
+            utilForm.criarColuna("<input type='checkbox' id='cargo_" + i + "' name='cargo_" + i + "'" + (marcar?"checked":"") + " "+ (acao.equals("Consultando")?"disabled":"") + ">");
+            utilForm.criarColuna(cargos.get(i).getId().toString());
+            utilForm.criarColuna(cargos.get(i).getNome());
         }
 
         return utilForm.criarGrid();
