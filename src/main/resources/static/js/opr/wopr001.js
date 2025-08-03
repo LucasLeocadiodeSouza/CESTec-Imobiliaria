@@ -7,7 +7,7 @@ window.addEventListener("load", function () {
     wopr001_init();
 });
 
-var AGEN_GRID, FUNC_GRID;
+var AGEN_GRID, FUNC_GRID, CARGO_GRID, SETOR_GRID;
 var DMFDiv, ABA, ABAFILTRO, CONSUL;
 var ACAOBUSCA = {};
 
@@ -24,16 +24,9 @@ function wopr001_init(){
     AGEN_GRID.destacarclick = true;
     AGEN_GRID.createGrid();
 
-    FUNC_GRID               = new GridForm_init();
-    FUNC_GRID.id            = "funcionarios_grid";
-    FUNC_GRID.columnName    = "cb,codfunc,nomefunc,codcargo,cargo,codsetor,setor";
-    FUNC_GRID.columnLabel   = "<input type='checkbox' id='marcatodos' name='marcatodos'>,Cód. Func,Funcionario,Cód. Carg,Cargo,Cód. Set,Setor";
-    FUNC_GRID.columnWidth   = "7,13,24,13,16,12,15";
-    FUNC_GRID.columnAlign   = "c,c,e,c,e,c,e";
-    FUNC_GRID.gridHeight    = "250px";
-    FUNC_GRID.mousehouve    = false;
-    FUNC_GRID.destacarclick = true;
-    FUNC_GRID.createGrid();
+    criarGridSetor();
+    criarGridCargo();
+    criarGridFunc();
 
     ABA      = new abaForm_init();
     ABA.id   = "abas";
@@ -76,6 +69,10 @@ function iniciarEventos() {
     event_change("codfunc");
     event_change("codcargo");
     event_change("codsetor");
+
+    event_change("mfuncionario");
+    event_change("msetor");
+    event_change("mcargo");
 }
 
 function event_click_table(){
@@ -93,7 +90,22 @@ function event_click_table(){
         DMFDiv.fullScream = false;
     };
 
+    //PAra mmelhorar vou ter que alterar e fazer um switch pelo obj.id da table e alterar no form
     FUNC_GRID.click_table = ()=>{
+        const checkbox = event.target.closest('tr').childNodes[0].childNodes[0];
+
+        if(checkbox.checked) checkbox.checked = false;
+        else checkbox.checked = true;
+    };
+
+    SETOR_GRID.click_table = ()=>{
+        const checkbox = event.target.closest('tr').childNodes[0].childNodes[0];
+
+        if(checkbox.checked) checkbox.checked = false;
+        else checkbox.checked = true;
+    };
+
+    CARGO_GRID.click_table = ()=>{
         const checkbox = event.target.closest('tr').childNodes[0].childNodes[0];
 
         if(checkbox.checked) checkbox.checked = false;
@@ -144,9 +156,21 @@ function event_click(obj) {
 }
 
 function event_change(obj){
-    if(obj == "mmodulo"){
+    if(obj == "mfuncionario"){
         form(obj).addEventListener("change", function(){
-            //getDescricaoModulo();
+            carregaGridFuncionarios();
+        });
+    }
+
+    if(obj == "msetor"){
+        form(obj).addEventListener("change", function(){
+            carregaGridSetores();
+        });
+    }
+
+    if(obj == "mcargo"){
+        form(obj).addEventListener("change", function(){
+            carregaGridCargo();
         });
     }
 }
@@ -162,12 +186,20 @@ function event_click_aba(){
 
     ABAFILTRO.setAba_init(()=>{
         switch (ABAFILTRO.getIndex()) {
-        case 0: 
-        case 1:
-        case 2: controlaTela("modal");
+        case 0: criarGridFunc();
                 carregaGridFuncionarios();
                 break;
-        }
+
+        case 1: criarGridSetor();
+                carregaGridSetores();
+                break;
+
+        case 2: criarGridCargo();
+                carregaGridCargo();
+                break;
+        };
+
+        controlaTela("modal");
     });
 }
 
@@ -177,16 +209,14 @@ function filaFetchInit(){
         case           "buscarUserName": form("ideusu").value = retorno;
                                          break;
 
-        case     "cadastrarAgendamento": //if(data != "OK") return alert(data);
-                                         form("hcodagen").value = retorno;
+        case     "cadastrarAgendamento": form("hcodagen").value = retorno;
                                          vincularAgendamentoFunc(ACAOBUSCA.cadastrarAgendamento.listafunc);
                                          break;
 
         case  "vincularAgendamentoFunc": if(retorno != "OK") return alert(retorno);
                                          break;
         
-        case         "getOptionsMotivo": form("mmotivo").innerHTML = "";
-                                         fillSelect("mmotivo",retorno,true);
+        case         "getOptionsMotivo": fillSelect("mmotivo",retorno,true);
                                          form("mmotivo").value = ACAOBUSCA.getOptionsMotivo.valorinicial;
                                          break;
         }
@@ -218,8 +248,10 @@ function controlaTela(opc){
         desabilitaCampo('mdescagen',    !ehManutencao());
         desabilitaCampo('mmotivo',      !ehManutencao());
         
-        setDisplay("dmfiltrofunc", ehManutencao()?"block":"none");
-        setDisplay("bagendar",     ehManutencao()?"block":"none");
+        setDisplay("dmfiltrofunc",  ehAbaFunc()?"block":"none");
+        setDisplay("dmfiltrosetor", ehAbaSetor()?"block":"none");
+        setDisplay("dmfiltrocargo", ehAbaCargo()?"block":"none");
+        setDisplay("bagendar",      ehManutencao()?"block":"none");
     }
 }
 
@@ -241,8 +273,10 @@ function limparTela(opc){
         form('mdataagen').value    = "";
         form('mhoraagen').value    = "";
         form('mdescagen').value    = "";
-        form('mmotivo').value      = "0";
+        form('mmotivo').value      = '1';
         form('mfuncionario').value = "";
+        form('msetor').value       = "";
+        form('mcargo').value       = "";
 
         FUNC_GRID.clearGrid();
     }
@@ -262,12 +296,87 @@ function preencherDadosModal(valores){
     getOptionsMotivo(valores[7]);
 }
 
+function criarGridFunc(){
+    form('funcionarios_grid').innerHTML = "";
+    form('cargo_grid').innerHTML        = "";
+    form('setor_grid').innerHTML        = "";
+
+    setDisplay('cargo_grid',  'none');
+    setDisplay('setor_grid',  'none');
+
+    FUNC_GRID               = new GridForm_init();
+    FUNC_GRID.id            = "funcionarios_grid";
+    FUNC_GRID.columnName    = "cb,codfunc,nomefunc,codcargo,cargo,codsetor,setor";
+    FUNC_GRID.columnLabel   = "<input type='checkbox' id='marcatodos' name='marcatodos'>,Cód. Func,Funcionario,Cód. Carg,Cargo,Cód. Set,Setor";
+    FUNC_GRID.columnWidth   = "7,13,24,13,16,12,15";
+    FUNC_GRID.columnAlign   = "c,c,e,c,e,c,e";
+    FUNC_GRID.gridHeight    = "250px";
+    FUNC_GRID.mousehouve    = false;
+    FUNC_GRID.destacarclick = true;
+    FUNC_GRID.createGrid();
+    setDisplay('funcionarios_grid', 'flex');
+}
+
+function criarGridSetor(){
+    form('funcionarios_grid').innerHTML = "";
+    form('cargo_grid').innerHTML        = "";
+    form('setor_grid').innerHTML        = "";
+
+    setDisplay('funcionarios_grid', 'none');
+    setDisplay('cargo_grid',        'none');
+
+    SETOR_GRID               = new GridForm_init();
+    SETOR_GRID.id            = "setor_grid";
+    SETOR_GRID.columnName    = "cb,codsetor,setor";
+    SETOR_GRID.columnLabel   = "<input type='checkbox' id='marcatodos' name='marcatodos'>,Cód. Setor,Nome Setor";
+    SETOR_GRID.columnWidth   = "15,15,70";
+    SETOR_GRID.columnAlign   = "c,c,e";
+    SETOR_GRID.gridHeight    = "250px";
+    SETOR_GRID.mousehouve    = false;
+    SETOR_GRID.destacarclick = true;
+    SETOR_GRID.createGrid();
+    setDisplay('setor_grid', 'flex');
+}
+
+function criarGridCargo(){
+    form('funcionarios_grid').innerHTML = "";
+    form('cargo_grid').innerHTML        = "";
+    form('setor_grid').innerHTML        = "";
+
+    setDisplay('funcionarios_grid', 'none');
+    setDisplay('setor_grid',        'none');
+
+    CARGO_GRID               = new GridForm_init();
+    CARGO_GRID.id            = "cargo_grid";
+    CARGO_GRID.columnName    = "cb,codcargo,nomeCargo";
+    CARGO_GRID.columnLabel   = "<input type='checkbox' id='marcatodos' name='marcatodos'>,Cód. Cargo,Nome Cargo";
+    CARGO_GRID.columnWidth   = "15,15,70";
+    CARGO_GRID.columnAlign   = "c,c,e";
+    CARGO_GRID.gridHeight    = "250px";
+    CARGO_GRID.mousehouve    = false;
+    CARGO_GRID.destacarclick = true;
+    CARGO_GRID.createGrid();
+    setDisplay('cargo_grid', 'flex');
+}
+
 function ehConsulta(){
     return ABA.getIndex() === 0;
 }
 
 function ehManutencao(){
     return ABA.getIndex() === 1;
+}
+
+function ehAbaFunc(){
+    return ABAFILTRO.getIndex() === 0;
+}
+
+function ehAbaSetor(){
+    return ABAFILTRO.getIndex() === 1;
+}
+
+function ehAbaCargo(){
+    return ABAFILTRO.getIndex() === 2;
 }
 
 function criarListaFunc(){
@@ -331,7 +440,7 @@ function buscarUserName(){
 
 function getOptionsMotivo(valorinicial){
     ACAOBUSCA.getOptionsMotivo = {
-        valorinicial: valorinicial
+        valorinicial: parseInt(valorinicial)
     };
 
     CONSUL.consultar("getOptionsMotivo", `/opr001/getOptionsMotivo`);
@@ -339,6 +448,14 @@ function getOptionsMotivo(valorinicial){
 
 function carregaGridFuncionarios(){
     FUNC_GRID.carregaGrid(`/opr001/carregarGridFucnionarios?codagend=${form("hcodagen").value}&nomefunc=${form("mfuncionario").value}&acao=${form("sacao").innerText}`,"","");
+}
+
+function carregaGridSetores(){
+    SETOR_GRID.carregaGrid(`/opr001/carregarGridSetores?codagend=${form("hcodagen").value}&nomeSetores=${form("msetor").value}&acao=${form("sacao").innerText}`,"","");
+}
+
+function carregaGridCargo(){
+    CARGO_GRID.carregaGrid(`/opr001/carregarGridCargos?codagend=${form("hcodagen").value}&nomeCargo=${form("mcargo").value}&acao=${form("sacao").innerText}`,"","");
 }
 
 function carregarGridAgendamentos(){

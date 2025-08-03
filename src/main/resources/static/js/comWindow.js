@@ -261,6 +261,12 @@ function containerBotaoAtivo(obj){
     return condicao;
 }
 
+function filaFetchGridInit(){
+    NOTIFY_GRID.filaFetchGrid = ()=>{
+        temNotificacaoPendente();
+    }
+}
+
 function filaFetchInit(){
     CONSUL.filaFetch = (retorno)=>{
         switch (CONSUL.obj) {
@@ -631,10 +637,4 @@ function temNotificacaoPendente(){
 
         if(colunas[2].innerText == "true") form("icon_notif").style.display = "block";
     });
-}
-
-function filaFetchGridInit(){
-    NOTIFY_GRID.filaFetchGrid = ()=>{
-        temNotificacaoPendente();
-    }
 }

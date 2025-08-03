@@ -52,8 +52,9 @@ public class tokenService {
         }
     }
 
+    // lllll
     private Instant generatedExpirateDate(){
-        return LocalDateTime.now().plusHours(12).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusSeconds(5).toInstant(ZoneOffset.of("-03:00"));
     }
 }
 
