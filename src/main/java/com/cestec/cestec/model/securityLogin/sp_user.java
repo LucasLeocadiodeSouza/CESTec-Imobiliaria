@@ -14,7 +14,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "sp_user")
 public class sp_user implements UserDetails{
@@ -52,24 +56,5 @@ public class sp_user implements UserDetails{
     @Override
     public String getUsername() {
         return login;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public String getLogin() {
-        return login;
-    }
-    public void setLogin(String login) {
-        this.login = login;
-    }
-    public String getPasskey() {
-        return passkey;
-    }
-    public void setPasskey(String passkey) {
-        this.passkey = passkey;
     }
 }
