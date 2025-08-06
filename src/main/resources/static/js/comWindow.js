@@ -125,6 +125,7 @@ function criarBotaoExterno(divpai,botoes){
         const divprimint = document.createElement("div");
         divprimint.id = "dim" + botao.menu.replace(/\s+/g, '').toLowerCase() + "primint";
         divprimint.className = "botoesmenuesq bimmenu botaopri";
+        divprimint.style.marginBottom = "5px";
 
         const divlabel     = document.createElement("div");
         divlabel.className = "container-label-bim";
@@ -184,6 +185,7 @@ function criarBotaoExterno(divpai,botoes){
         const botoesinternos = botao.botoesinternos;
 
         const listainterna = document.createElement("ol");
+        listainterna.classList.add("limite-ol");
         divexterna.appendChild(listainterna);
 
         /*

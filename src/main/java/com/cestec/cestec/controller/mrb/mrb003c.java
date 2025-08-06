@@ -36,7 +36,7 @@ public class mrb003c {
 
     @PostMapping("/cadastrarUsuario")
     public ResponseEntity<?> cadastrarUsuario(@RequestBody funcionarioDTO funcionarioDTO, @RequestParam(value = "ideusu", required = false) String ideusu, @RequestParam(value = "acao", required = false) String acao) {
-        return mrb003s.cadastrarUsuario(funcionarioDTO, ideusu, acao);
+        return mrb003s.cadastrarUsuario(funcionarioDTO, ideusu, acao.trim());
     }
 
 }

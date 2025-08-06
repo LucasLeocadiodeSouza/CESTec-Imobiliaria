@@ -48,6 +48,8 @@ function iniciarEventos() {
     event_click_table();
     event_click_aba();
     event_selected_init("ideusufunc,musuario,mcodsetor,mcodcargo,msalario,mcpf,mendereco");
+    event_blur_init("msalario");
+    inputOnlyNumber('msalario,mcodcargo,mcodsetor');
 
     event_click("bnovabusca");
     event_click("bbuscar");
@@ -257,7 +259,7 @@ function cadastrarUsuario(){
                      salario   : form('msalario').value,
                      datinasc  : form('mdatnasc').value}
 
-    CONSUL.consultar("cadastrarUsuario",`/mrb003/cadastrarUsuario?ideusu=${form("ideusu").value}&acao=${form("sacao").innerText}`,'POST','',{body: usuario});
+    CONSUL.consultar("cadastrarUsuario",`/mrb003/cadastrarUsuario?ideusu=${form("ideusu").value}&acao=${form("sacao").innerText.trim()}`,'POST','',{body: usuario});
 }
 
 function buscarNomeCargo(codcargo){
