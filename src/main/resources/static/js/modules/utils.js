@@ -22,6 +22,18 @@ function event_blur_init(obj){
     });
 }
 
+function inputOnlyNumber(obj){
+    const campos = obj.split(",");
+
+    campos.forEach(opc => {
+        const element = form(opc);
+
+        element.addEventListener('input', function () {
+            if(isNaN(Number(element.value))) element.value = element.value.substring(0, element.value.length - 1);
+        });
+    });
+}
+
 function desabilitaCampo(obj,desahabilita){
     const element = form(obj);
 

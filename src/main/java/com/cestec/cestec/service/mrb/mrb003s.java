@@ -50,8 +50,8 @@ public class mrb003s {
         try{
             if(sp_user.loadUserByUsername(ideusu) == null) return ResponseEntity.ok("Usuário não encontrado no sistema!");
 
-            if(acao == "Inserindo" && 
-                acao == "Alterando") return ResponseEntity.badRequest().body("Ação informada invalida!");
+            if(!acao.equals("Inserindo") && 
+                !acao.equals("Alterando")) return ResponseEntity.badRequest().body("Ação informada invalida!");
 
             if(funcionario.getNomefunc() == null && funcionario.getNomefunc() == "") return ResponseEntity.badRequest().body("Deve ser informado o Nome do Usuario!");
 
@@ -74,14 +74,14 @@ public class mrb003s {
 
             funcionario funcAnalise = funcionarioRepo.findFuncBycodfunc(funcionario.getCodfunc());
 
-            if(acao == "Inserindo"){
+            if(acao.equals("Inserindo")){
                 if(funcAnalise != null) return ResponseEntity.badRequest().body("Usuário [" + funcionario.getNomefunc() + "] já está cadastrado no sistema!");
 
                 funcAnalise = new funcionario();
                 funcAnalise.setIdeusu(ideusu);
                 funcAnalise.setCriado_em(LocalDate.now());
             }
-            else if(acao == "Alterando"){
+            else if(acao.equals("Alterando")){
                 if(funcAnalise == null) return ResponseEntity.badRequest().body("Usuário [" + funcionario.getNomefunc() + "] não encontrado no sistema sistema!");
             }
 
