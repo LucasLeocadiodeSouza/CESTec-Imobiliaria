@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.cestec.cestec.model.securityLogin.sp_user;
 import com.cestec.cestec.repository.userRepository;
 
 @Service
@@ -30,5 +31,9 @@ public class sp_userService implements UserDetailsService {
 
     public Integer getIdByUserName(String username){
         return userRepository.findIdByLogin(username).getId();
+    }
+
+    public sp_user getUserByIdeusu(String username){
+        return userRepository.findIdByLogin(username);
     }
 }
