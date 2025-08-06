@@ -24,6 +24,4 @@ public class funcionarioDTO {
     private double    salario;
     private LocalDate datinasc;
     private LocalDate criado_em;
-
-    //func.codfuncionario, func.nome, func.cpf, func.numtel, set.codsetor, set.nome, car.id, car.nome, func.endereco, func.salario, func.datinasc, func.criado_em, func.datinasc
 }

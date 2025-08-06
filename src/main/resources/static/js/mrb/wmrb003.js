@@ -19,7 +19,7 @@ function wmrb001_init(){
     USUARIO_GRID.columnLabel   = "Código Func.,Funcionario,Código Setor,Setor,Código Cargo,Cargo,Data inclusão";
     USUARIO_GRID.columnWidth   = "10,22,11,17,11,17,12";
     USUARIO_GRID.columnAlign   = "c,e,c,e,c,e,c";
-    USUARIO_GRID.mousehouve    = false;
+    USUARIO_GRID.mousehouve    = true;
     USUARIO_GRID.destacarclick = true;
     USUARIO_GRID.createGrid();
 
@@ -47,7 +47,9 @@ function iniciarEventos() {
 
     event_click_table();
     event_click_aba();
-    event_selected_init("codfunc,musuario,mcodsetor,mcodcargo");
+    event_selected_init("ideusufunc,musuario,mcodsetor,mcodcargo,msalario,mcpf,mendereco");
+    event_blur_init("msalario");
+    inputOnlyNumber('msalario,mcodcargo,mcodsetor');
 
     event_click("bnovabusca");
     event_click("bbuscar");
@@ -55,7 +57,8 @@ function iniciarEventos() {
     event_click("blimpar");
     event_click("bsalvar");
     
-    // /event_change("mmodulo");
+    event_change("mcodcargo");
+    event_change("mcodsetor");
 }
 
 function event_click_table(){
@@ -78,7 +81,7 @@ function event_click(obj) {
     if(obj == "bbuscar"){
         form(obj).addEventListener("click", function () {
             controlaTela("buscar");
-            carregarGridFucnionarios();
+            carregarGridFuncionarios();
         });        
     }
     if(obj == 'blimpar'){
@@ -100,16 +103,22 @@ function event_click(obj) {
         form(obj).addEventListener("click", function () {
             if(!confirm("Deseja mesmo cadastrar o usuário?")) return;
 
-            //adicionarAplicacao();
+            cadastrarUsuario();
             DMFDiv.closeModal();
         });
     }
 }
 
 function event_change(obj){
-    if(obj == "mmodulo"){
+    if(obj == "mcodcargo"){
         form(obj).addEventListener("change", function(){
-            //getDescricaoModulo();
+            buscarNomeCargo(form("mcodcargo").value);
+        });
+    }
+
+    if(obj == "mcodsetor"){
+        form(obj).addEventListener("change", function(){
+            buscarNomeSetor(form("mcodsetor").value);
         });
     }
 }
@@ -126,11 +135,35 @@ function event_click_aba(){
 
 
 function filaFetchInit(){
-    CONSUL.filaFetch = (retorno)=>{
+    CONSUL.filaFetch = (retorno,error)=>{
+        if(error){
+            switch (CONSUL.obj) {
+            case    "buscarNomeCargo": alert("Erro ao buscar o registro do Cargo", "Não encontrado registro de Cargo com o codigo informado!", 4);
+                                       form("mcodcargo").value = "0";
+                                       break;
+
+            case    "buscarNomeSetor": alert("Erro ao buscar o registro do Setor", "Não encontrado registro de Setor com o codigo informado!", 4);
+                                       form("mcodsetor").value = "0";
+                                       break;
+
+            case   "cadastrarUsuario": alert("Erro ao cadastrar Usuário!", retorno, 4);
+                                       break;
+            }
+            return;
+        }
+
         switch (CONSUL.obj) {
-        case    "buscarUserName": form("ideusu").value = retorno;
-                                  break;
+        case     "buscarUserName": form("ideusu").value = retorno;
+                                   break;
         
+        case    "buscarNomeCargo": form("mdesccargo").value = retorno;
+                                   break;
+        
+        case    "buscarNomeSetor": form("mdescsetor").value = retorno;
+                                   break;
+
+        case   "cadastrarUsuario": alert("Sucesso!", "Usuário cadastrado com sucesso!", 4);
+                                   break;
         }
     }
 }
@@ -139,14 +172,14 @@ function filaFetchInit(){
 function controlaTela(opc){
     limparTela(opc);
     if(opc == "inicia" || opc == 'novabusca'){
-        desabilitaCampo('codfunc',         false);
+        desabilitaCampo('ideusufunc',      false);
         desabilitaCampo('bnovabusca',      true);
         desabilitaCampo('bbuscar',         false);
 
        setDisplay("bcadastrar", ehManutencao()?"block":"none");
     }
     if(opc == "buscar"){
-        desabilitaCampo('codfunc',         true);
+        desabilitaCampo('ideusufunc',      true);
         desabilitaCampo('bnovabusca',      false);
         desabilitaCampo('bbuscar',         true);
     }
@@ -168,13 +201,13 @@ function controlaTela(opc){
 
 function limparTela(opc){
     if(opc === "inicia" || opc === 'novabusca'){        
-        form('codfunc').value   = "";
-        form('nomefunc').value  = "Todos os Usuários";
+        form('ideusufunc').value = "";
+        form('nomefunc').value   = "Todos os Usuários";
     }
     if(opc === "inicia" || opc === "novabusca"){
         USUARIO_GRID.clearGrid();
     }
-    if(opc === "modallibacess"){
+    if(opc === "modal"){
         form('musuario').value   = "";
         form('mcpf').value       = "";
         form('mendereco').value  = "";
@@ -216,6 +249,27 @@ function buscarUserName(){
     CONSUL.consultar("buscarUserName",`/home/userlogin`)
 }
 
-function carregarGridFucnionarios(){
-    USUARIO_GRID.carregaGrid(`/mrb003/carregarGridFucnionarios?&ideusu=${form("codfunc").value}`,"","");
+function cadastrarUsuario(){
+    const usuario = {codfunc   : form('hmodal_codfunc').value,      
+                     nomefunc  : form('musuario').value,
+                     cpf       : form('mcpf').value,
+                     codsetor  : form('mcodsetor').value,
+                     codcargo  : form('mcodcargo').value,
+                     endereco  : form('mendereco').value,
+                     salario   : form('msalario').value,
+                     datinasc  : form('mdatnasc').value}
+
+    CONSUL.consultar("cadastrarUsuario",`/mrb003/cadastrarUsuario?ideusu=${form("ideusu").value}&acao=${form("sacao").innerText.trim()}`,'POST','',{body: usuario});
+}
+
+function buscarNomeCargo(codcargo){
+    CONSUL.consultar("buscarNomeCargo",`/mrb003/buscarNomeCargo?codcargo=${codcargo}`);
+}
+
+function buscarNomeSetor(codsetor){
+    CONSUL.consultar("buscarNomeSetor",`/mrb003/buscarNomeSetor?codsetor=${codsetor}`);
+}
+
+function carregarGridFuncionarios(){
+    USUARIO_GRID.carregaGrid(`/mrb003/carregarGridFuncionarios?ideusu=${form("ideusufunc").value}`,"","");
 }

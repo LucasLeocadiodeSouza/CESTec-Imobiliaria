@@ -86,9 +86,10 @@ function consulForm_init(){
                     loader.remove();
                 }
 
-                this.filaFetch(`Erro na requisição: ${response.status} - ${response.statusText}`, response.status);
+                const textError = await response.text();
+                this.filaFetch(`Erro na requisição: ${response.status} - ${textError}`, response.status);
 
-                throw new Error(`Erro na requisição: ${response.status} - ${response.statusText}`);
+                throw new Error(`Erro na requisição: ${response.status} - ${textError}`);
             }
 
             const contentType = response.headers.get('Content-Type');
