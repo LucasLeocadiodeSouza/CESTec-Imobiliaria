@@ -104,7 +104,6 @@ function event_click(obj) {
             if(!confirm("Deseja mesmo cadastrar o usuário?")) return;
 
             cadastrarUsuario();
-            DMFDiv.closeModal();
         });
     }
 }
@@ -163,6 +162,8 @@ function filaFetchInit(){
                                    break;
 
         case   "cadastrarUsuario": alert("Sucesso!", "Usuário cadastrado com sucesso!", 4);
+                                   carregarGridFuncionarios();
+                                   DMFDiv.closeModal();
                                    break;
         }
     }
@@ -208,16 +209,17 @@ function limparTela(opc){
         USUARIO_GRID.clearGrid();
     }
     if(opc === "modal"){
-        form('musuario').value   = "";
-        form('mcpf').value       = "";
-        form('mendereco').value  = "";
-        form('mdatnasc').value   = "";
-        form('mcodsetor').value  = "0";
-        form('mdescsetor').value = "";
-        form('mcodcargo').value  = "0";
-        form('mdesccargo').value = "";
-        form('msalario').value   = "0.00";
-        form('mdatcriado').value = "";
+        form('hmodal_codfunc').value = "";
+        form('musuario').value       = "";
+        form('mcpf').value           = "";
+        form('mendereco').value      = "";
+        form('mdatnasc').value       = "";
+        form('mcodsetor').value      = "0";
+        form('mdescsetor').value     = "";
+        form('mcodcargo').value      = "0";
+        form('mdesccargo').value     = "";
+        form('msalario').value       = "0.00";
+        form('mdatcriado').value     = "";
     }
 }
 
@@ -225,16 +227,17 @@ function preencherDadosModal(valores){
     form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
     form("stitulo").innerText = "Cadastrar Usuário - " + form("sacao").innerText;
 
-    form('musuario').value   = valores[1];
-    form('mcpf').value       = valores[8];
-    form('mendereco').value  = valores[9];
-    form('mdatnasc').value   = valores[7];
-    form('mcodsetor').value  = valores[2];
-    form('mdescsetor').value = valores[3];
-    form('mcodcargo').value  = valores[4];
-    form('mdesccargo').value = valores[5];
-    form('msalario').value   = valores[10];
-    form('mdatcriado').value = valores[11];
+    form('hmodal_codfunc').value = valores[0];
+    form('musuario').value       = valores[1];
+    form('mcpf').value           = valores[8];
+    form('mendereco').value      = valores[9];
+    form('mdatnasc').value       = valores[7];
+    form('mcodsetor').value      = valores[2];
+    form('mdescsetor').value     = valores[3];
+    form('mcodcargo').value      = valores[4];
+    form('mdesccargo').value     = valores[5];
+    form('msalario').value       = valores[10];
+    form('mdatcriado').value     = valores[11];
 }
 
 function ehConsulta(){

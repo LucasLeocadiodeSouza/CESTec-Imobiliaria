@@ -24,7 +24,7 @@ body .gen {padding: 10px}
             font-weight: normal;
             display: flex;}
 
-.button {background-color: #94adde;
+.button {background-color: #7192e1;
          color: #35425d;
          border: none;
          cursor: pointer;
@@ -84,12 +84,11 @@ body .gen {padding: 10px}
 
 .logoEmpresa {display: flex; width: 100%; justify-content: center; align-items: center;}
 
-.titulo {border: 2px solid rgb(104, 104, 104);
-         border-bottom: 1px solid; 
+.titulo {border: 2px solid #a6badca6;
          border-radius: 6px;
          background-color: #cfdaec;
          height: 33px; 
-         width: 98%;
+         width: calc(100% - 15px);
          justify-content: center; 
          display: flex;
          font-family: 'Inter', Arial, sans-serif;}
@@ -126,11 +125,12 @@ body .gen {padding: 10px}
 
 .aba label {font-family: "Host Grotesk", serif;
             font-optical-sizing: auto;
-            font-weight: 500;
-            font-style: normal;}
+            font-weight: 700;
+            font-style: normal;
+            color: #3d3d3d;}
 
 .indentaba {background-color: rgb(81, 81, 81);
-            height: 4px;
+            height: 2px;
             width: 100%;
             margin-top: 0px;}
 
