@@ -29,7 +29,7 @@ public class prjControleDeUsuarioRepository {
         var q = em.createQuery(query, funcionarioDTO.class);
 
         if(ideusu != null && !ideusu.isEmpty()){
-            q.setParameter("ideusu", ideusu);
+            q.setParameter("ideusu", ideusu + "%");
         }
 
         return q.getResultList();
