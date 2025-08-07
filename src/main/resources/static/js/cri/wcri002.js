@@ -45,7 +45,6 @@ function iniciarEventos() {
     event_click("blimpar");
     event_click("bcadastro");
 
-    event_click_table();
     event_selected_init("codproprietario");
     event_click_aba();
 
@@ -86,18 +85,17 @@ function event_click(obj) {
     }
 }
 
-function event_click_table(){
-    PROPRI_GRID.click_table = ()=>{
-        const valoresLinha = PROPRI_GRID.getRowNode(event.target.closest('tr'));
+function event_click_table(obj, row){
+    switch (obj) {
+    case PROPRI_GRID: const valoresLinha = PROPRI_GRID.getRowNode(row);
+                      controlaTela("modal");
 
-        controlaTela("modal");
+                      form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
+                      form("stitulo").innerText = "Cadastro de Proprietario - " + form("sacao").innerText;
 
-        form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
-        form("stitulo").innerText = "Cadastro de Proprietario - " + form("sacao").innerText;
-
-        buscarPropriGrid(valoresLinha);
-
-        DMFDiv.openModal("dmodalf_proprietario");
+                      buscarPropriGrid(valoresLinha);
+                      DMFDiv.openModal("dmodalf_proprietario");
+                      break;
     }
 }
 

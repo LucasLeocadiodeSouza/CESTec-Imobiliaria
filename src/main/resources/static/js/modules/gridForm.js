@@ -317,8 +317,7 @@ function GridForm_init(){
                     row.appendChild(td);
                 });
  
-                
-                row.onclick = this.click_table;
+                row.onclick = () => event_click_table(this, row, event);
 
                 if(this.mouseover_table) row.addEventListener("mouseover", ()=>{this.mouseover_table()});
                 

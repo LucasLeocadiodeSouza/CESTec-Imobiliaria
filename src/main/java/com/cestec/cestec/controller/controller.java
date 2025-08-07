@@ -36,4 +36,9 @@ public class controller {
     public String login() {
         return "wlog";
     }
+
+    @GetMapping("/zoom") 
+    public String zoom() {
+        return "wzoom";
+    }
 }

@@ -57,7 +57,6 @@ function wmrb001_init(){
 function iniciarEventos() {
     controlaTela("inicia");
 
-    event_click_table();
     event_click_aba();
     event_selected_init("codapl,codmodel,mideusu,mcodapl,mdatvenc,mdescapl,mmodulo");
 
@@ -71,7 +70,7 @@ function iniciarEventos() {
     event_change("mmodulo");
 }
 
-function event_click_table(){
+function event_click_table(obj, row){
     // LIBACESS_GRID.click_table = ()=>{
     //     const clickedCell = event.target.closest('td');
     //     if (clickedCell && clickedCell.cellIndex === 0) return;
@@ -85,14 +84,15 @@ function event_click_table(){
     //     DMFDiv.openModal("dmodalf_libacess");
     // };
 
-    CADAPL_GRID.click_table = ()=>{
-        const valoresLinha = CADAPL_GRID.getRowNode(event.target.closest('tr'));
-        controlaTela("modalcadasapl");
+    switch (obj) {
+    case CADAPL_GRID: const valoresLinha = CADAPL_GRID.getRowNode(row);
+                      controlaTela("modalcadasapl");
 
-        preencherDadosModalCadasApl(valoresLinha)
+                      preencherDadosModalCadasApl(valoresLinha);
 
-        DMFDiv.openModal("dmodalf_cadapl");
-    };
+                      DMFDiv.openModal("dmodalf_cadapl");
+                      break;
+    }
 }
 
 function event_click(obj) {

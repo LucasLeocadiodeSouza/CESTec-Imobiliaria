@@ -40,11 +40,8 @@ function iniciarEventos() {
     event_click("binserir");
     event_click("boletolink");
 
-    event_click_table();
-
     controlaTela("inicia");
 }
-
 
 
 function event_click(obj) {
@@ -71,14 +68,13 @@ function event_click(obj) {
     }
 }
 
-function event_click_table(){
-    PGA_GRID.click_table = ()=>{
-        const valoresLinha = PGA_GRID.getRowNode(event.target.closest('tr'));
-
-        controlaTela("modal");
+function event_click_table(obj,row){
+    switch (obj) {
+    case PGA_GRID: const valoresLinha = PGA_GRID.getRowNode(row);
+                   controlaTela("modal");
         
-        preencherDadosModal(valoresLinha)
-        DMFDiv.openModal("dmodalf_geracaoboleto");
+                   preencherDadosModal(valoresLinha)
+                   DMFDiv.openModal("dmodalf_geracaoboleto");
     };
 }
 
@@ -86,40 +82,39 @@ function filaFetchInit(){
     CONSUL.filaFetch = (retorno)=>{
         switch (CONSUL.obj) {
         case  "verBoleto": // Verificação do conteúdo
-                                if (!retorno || retorno.byteLength === 0) {
-                                    throw new Error('O PDF retornado está vazio');
-                                }
+                            if (!retorno || retorno.byteLength === 0) {
+                                throw new Error('O PDF retornado está vazio');
+                            }
 
-                                // Verificação da assinatura do PDF (%PDF)
-                                const signature = new Uint8Array(retorno.slice(0, 4));
-                                if (String.fromCharCode(...signature) !== '%PDF') {
-                                    throw new Error('O arquivo não é um PDF válido');
-                                }
+                            // Verificação da assinatura do PDF (%PDF)
+                            const signature = new Uint8Array(retorno.slice(0, 4));
+                            if (String.fromCharCode(...signature) !== '%PDF') {
+                                throw new Error('O arquivo não é um PDF válido');
+                            }
 
-                                // Cria o Blob corretamente
-                                const blob = new Blob([retorno], { type: 'application/pdf' });
-                                
-                                // Cria URL temporária
-                                const blobUrl = URL.createObjectURL(blob);
-                                
-                                const link    = document.createElement('a');
-                                link.href     = blobUrl;
-                                link.download = `boleto_${codfatura}.pdf`;
-                                link.click();
+                            const blob = new Blob([retorno], { type: 'application/pdf' });
+                            
+                            // Cria URL temporária
+                            const blobUrl = URL.createObjectURL(blob);
+                            
+                            const link    = document.createElement('a');
+                            link.href     = blobUrl;
+                            link.download = `boleto_${codfatura}.pdf`;
+                            link.click();
 
-                                // Abre em nova janela
-                                // const janela = window.open(blobUrl, '_blank');
+                            // Abre em nova janela
+                            // const janela = window.open(blobUrl, '_blank');
 
-                                // Fallback se o navegador bloquear window.open()
-                                // if (!janela || janela.closed || typeof janela.closed === 'undefined') {
-                                //     const link = document.createElement('a');
-                                //     link.href = blobUrl;
-                                //     link.download = `boleto_${codfatura}.pdf`;
-                                //     document.body.appendChild(link);
-                                //     link.click();
-                                //     document.body.removeChild(link);
-                                // }
-                                break;
+                            // Fallback se o navegador bloquear window.open()
+                            // if (!janela || janela.closed || typeof janela.closed === 'undefined') {
+                            //     const link = document.createElement('a');
+                            //     link.href = blobUrl;
+                            //     link.download = `boleto_${codfatura}.pdf`;
+                            //     document.body.appendChild(link);
+                            //     link.click();
+                            //     document.body.removeChild(link);
+                            // }
+                            break;
 
         case    "buscarUserName": form("ideusu").value = retorno;
                                   break;

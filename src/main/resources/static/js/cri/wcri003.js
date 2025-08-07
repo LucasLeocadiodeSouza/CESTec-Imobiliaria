@@ -46,7 +46,6 @@ function iniciarEventos() {
     event_click("blimpar");
     event_click("bcadastro");
 
-    event_click_table();
     event_click_aba();
     event_selected_init("codcliente");
 
@@ -86,16 +85,17 @@ function event_click(obj) {
     }
 }
 
-function event_click_table(){
-    CLIENTES_GRID.click_table = () => {
-        const valoresLinha = CLIENTES_GRID.getRowNode(event.target.closest('tr'));
-        controlaTela("modal");
+function event_click_table(obj,row){
+    switch (obj) {
+    case CLIENTES_GRID: const valoresLinha = CLIENTES_GRID.getRowNode(row);
+                        controlaTela("modal");
 
-        form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
-        form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
-        buscarClienteGrid(valoresLinha);
-        
-        DMFDiv.openModal("dmodalf_cliente");
+                        form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
+                        form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
+                        buscarClienteGrid(valoresLinha);
+
+                        DMFDiv.openModal("dmodalf_cliente");
+                        break;
     }
 }
 

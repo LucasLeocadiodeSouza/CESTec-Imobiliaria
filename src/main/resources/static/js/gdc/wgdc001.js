@@ -47,24 +47,23 @@ function iniciarEventos() {
     event_change("codcorretor");
     event_change("mcodcorretor");
 
-    event_click_table();
     event_selected_init("codcorretor");
     event_click_aba();
 
     controlaTela("inicia");
 }
 
-function event_click_table(){
-    METAS_GRID.click_table = ()=>{
-        const valoresLinha = METAS_GRID.getRowNode(event.target.closest('tr'));
-        controlaTela("modal");
+function event_click_table(obj,row){
+    switch (obj) {
+    case METAS_GRID: const valoresLinha = METAS_GRID.getRowNode(row);
 
-        form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
-        form("stitulo").innerText = "Cadastro de Metas - " + form("sacao").innerText;
-        
-        preencherModal(valoresLinha);
+                     form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
+                     form("stitulo").innerText = "Cadastro de Metas - " + form("sacao").innerText;
+                     controlaTela("modal");
 
-        DMFDiv.openModal("dmodalf_meta"); 
+                     preencherModal(valoresLinha);
+                     DMFDiv.openModal("dmodalf_meta");
+                     break;
     }
 }
 

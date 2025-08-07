@@ -43,8 +43,7 @@ function wcri001_init(){
 
 function iniciarEventos() {
     controlaTela("inicia");
-
-    event_click_table();
+    
     event_click_aba();
     event_selected_init("codcontrato,codproprietario");
 
@@ -58,18 +57,15 @@ function iniciarEventos() {
     event_change("mcodproprietario");
 }
 
-function event_click_table(){
-    IMOVEIS_GRID.click_table = ()=>{
-        const clickedCell = event.target.closest('td');
-        if (clickedCell && clickedCell.cellIndex === 0) return;
+function event_click_table(obj,row,e){
+    switch (obj) {
+    case IMOVEIS_GRID: if (e.target === row.cells[0]) return;
+                       const valoresLinha = IMOVEIS_GRID.getRowNode(row);
 
-        const valoresLinha = IMOVEIS_GRID.getRowNode(event.target.closest('tr'));
-
-        controlaTela("modal");
-
-        preencherDadosModal(valoresLinha);
-
-        DMFDiv.openModal("dmodalf_contrato");
+                       controlaTela("modal");
+                       preencherDadosModal(valoresLinha);
+                       DMFDiv.openModal("dmodalf_contrato");
+                       break;
     };
 }
 

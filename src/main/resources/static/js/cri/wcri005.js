@@ -48,7 +48,6 @@ function iniciarEventos() {
     event_click("breprovar");
 
     event_click_aba();
-    event_click_table();
     
     event_blur_init("mvlrlib");
     event_selected_init("mvlrlib,mobs,codproprietario,codcliente,codcorretor");
@@ -113,21 +112,21 @@ function event_change(obj){
     }
 }
 
-function event_click_table(){
-    CONTRATOS_GRID.click_table = ()=>{
-        const valoresLinha = CONTRATOS_GRID.getRowNode(event.target.closest('tr'));
-        controlaTela("modal");
+function event_click_table(obj,row){
+    switch (obj) {
+    case CONTRATOS_GRID: const valoresLinha = CONTRATOS_GRID.getRowNode(row);
+                         form("sacao").innerText   = ehConsulta()?"Consultando":"Analisando";
+                         form("stitulo").innerText = form("sacao").innerText + " o Contrato - " + form("sacao").innerText;
+                         controlaTela("modal");
 
-        form("sacao").innerText   = ehConsulta()?"Consultando":"Analisando";
-        form("stitulo").innerText = form("sacao").innerText + " o Contrato - " + form("sacao").innerText;
-
-        puxarFichaContrato(valoresLinha);
+                         puxarFichaContrato(valoresLinha);
         
-        form("hcodcorretor").value = valoresLinha[0];
-        form('mvlrlib').value      = valoresLinha[17];
-        form('mobs').value         = valoresLinha[18];
+                         form("hcodcorretor").value = valoresLinha[0];
+                         form('mvlrlib').value      = valoresLinha[17];
+                         form('mobs').value         = valoresLinha[18];
 
-        DMFDiv.openModal("dmodalf_aprovacao");
+                         DMFDiv.openModal("dmodalf_aprovacao");
+                         break;
     }
 }
 
