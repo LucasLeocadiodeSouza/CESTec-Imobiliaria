@@ -45,7 +45,6 @@ function wmrb001_init(){
 function iniciarEventos() {
     controlaTela("inicia");
 
-    event_click_table();
     event_click_aba();
     event_selected_init("ideusufunc,musuario,mcodsetor,mcodcargo,msalario,mcpf,mendereco");
     event_blur_init("msalario");
@@ -61,14 +60,14 @@ function iniciarEventos() {
     event_change("mcodsetor");
 }
 
-function event_click_table(){
-    USUARIO_GRID.click_table = ()=>{
-        const valoresLinha = USUARIO_GRID.getRowNode(event.target.closest('tr'));
-        controlaTela("modal");
+function event_click_table(obj,row){
+    switch (obj) {
+    case USUARIO_GRID: const valoresLinha = USUARIO_GRID.getRowNode(row);
+                       controlaTela("modal");
 
-        preencherDadosModal(valoresLinha);
-
-        DMFDiv.openModal("dmodalf_usuario");
+                       preencherDadosModal(valoresLinha);
+                       DMFDiv.openModal("dmodalf_usuario");
+                       break;
     };
 }
 

@@ -38,7 +38,6 @@ function iniciarEventos() {
     CONSUL = new consulForm_init();
     filaFetchInit();
 
-    event_click_table();
     event_click_aba();
     event_selected_init("codproprietario,codcliente");
 
@@ -58,18 +57,16 @@ function iniciarEventos() {
     event_change("mvendedor");
 }
 
-function event_click_table(){
-    CONTRATOS_GRID.click_table = ()=>{
-        const valoresLinha = CONTRATOS_GRID.getRowNode(event.target.closest('tr'));
+function event_click_table(obj,row){
+    switch (obj) {
+    case CONTRATOS_GRID: const valoresLinha = CONTRATOS_GRID.getRowNode(row);
+                         form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
+                         form("stitulo").innerText = "Cadastro de Contrato - " + form("sacao").innerText;
 
-        form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
-        form("stitulo").innerText = "Cadastro de Contrato - " + form("sacao").innerText;
-
-        controlaTela("modal");
-
-        preencherModal(valoresLinha);
-
-        DMFDiv.openModal("dmodalf_contrato"); 
+                         controlaTela("modal");
+                         preencherModal(valoresLinha);
+                         DMFDiv.openModal("dmodalf_contrato");
+                         break;
     }
 }
 
@@ -166,7 +163,7 @@ function filaFetchInit(){
                                           DMFDiv.closeModal();
                                           break;
 
-        case           "getOptionImovel": fillSelect("msimovel", retorno);
+        case           "getOptionImovel": fillSelect("msimovel", retorno, true);
                                           form("msimovel").options[0].disabled = true; 
                                           break;
 

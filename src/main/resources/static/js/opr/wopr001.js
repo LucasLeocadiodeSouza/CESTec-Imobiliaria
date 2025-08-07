@@ -56,7 +56,6 @@ function wopr001_init(){
 function iniciarEventos() {
     controlaTela("inicia");
 
-    event_click_table();
     event_click_aba();
     event_selected_init("codfunc,codcargo,codsetor");
 
@@ -75,19 +74,18 @@ function iniciarEventos() {
     event_change("mcargo");
 }
 
-function event_click_table(){
-    AGEN_GRID.click_table = ()=>{
-        const valoresLinha = AGEN_GRID.getRowNode(event.target.closest('tr'));
+function event_click_table(obj,row){
+    switch (obj) {
+    case AGEN_GRID: const valoresLinha = AGEN_GRID.getRowNode(row);
+                    controlaTela("modal");
 
-        controlaTela("modal");
+                    preencherDadosModal(valoresLinha);
 
-        preencherDadosModal(valoresLinha);
-        
-        carregaGridFuncionarios();
+                    carregaGridFuncionarios();
 
-        DMFDiv.fullScream = true;
-        DMFDiv.openModal("dmodalf_agenda");
-        DMFDiv.fullScream = false;
+                    DMFDiv.fullScream = true;
+                    DMFDiv.openModal("dmodalf_agenda");
+                    DMFDiv.fullScream = false;
     };
 
     //PAra mmelhorar vou ter que alterar e fazer um switch pelo obj.id da table e alterar no form

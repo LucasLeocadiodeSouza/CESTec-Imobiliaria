@@ -49,21 +49,20 @@ function wmrb002_init(){
 function iniciarEventos() {
     controlaTela("inicia");
 
-    event_click_table();
     event_selected_init("codtable");
 
     event_click("bbuscar");
 }
 
-function event_click_table(){
-    TABELASBANCO_GRID.click_table = ()=>{
-        const valoresLinha = TABELASBANCO_GRID.getRowNode(event.target.closest('tr'));
+function event_click_table(obj,row){
+    switch (obj) {
+    case TABELASBANCO_GRID: const valoresLinha = TABELASBANCO_GRID.getRowNode(row);
+                            COLUNAS_GRID.clearGrid();
+                            INDEX_GRID.clearGrid();
 
-        COLUNAS_GRID.clearGrid();
-        INDEX_GRID.clearGrid();
-
-        buscarColunas(valoresLinha[0]);
-        buscarIndexs(valoresLinha[0]);
+                            buscarColunas(valoresLinha[0]);
+                            buscarIndexs(valoresLinha[0]);
+                            break;
     };
 }
 
