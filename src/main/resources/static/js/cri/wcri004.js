@@ -38,7 +38,6 @@ function iniciarEventos() {
     CONSUL = new consulForm_init();
     filaFetchInit();
 
-    event_click_aba();
     event_selected_init("codproprietario,codcliente");
 
     controlaTela("inicia");
@@ -144,13 +143,11 @@ function event_change(obj){
 }
 
 function event_click_aba(){
-    ABA.setAba_init(()=>{
-        switch (ABA.getIndex()) {
-        case 0: 
-        case 1: controlaTela("inicia");
-                break;
-        }
-    });
+    switch (ABA.getIndex()) {
+    case 0: 
+    case 1: controlaTela("inicia");
+            break;
+    }
 }
 
 function filaFetchInit(){

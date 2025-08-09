@@ -45,7 +45,6 @@ function wmrb001_init(){
 function iniciarEventos() {
     controlaTela("inicia");
 
-    event_click_aba();
     event_selected_init("ideusufunc,musuario,mcodsetor,mcodcargo,msalario,mcpf,mendereco");
     event_blur_init("msalario");
     inputOnlyNumber('msalario,mcodcargo,mcodsetor');
@@ -122,13 +121,11 @@ function event_change(obj){
 }
 
 function event_click_aba(){
-    ABA.setAba_init(()=>{
-        switch (ABA.getIndex()) {
-        case 0: 
-        case 1: controlaTela("inicia");
-                break;
-        }
-    });
+    switch (ABA.getIndex()) {
+    case 0: 
+    case 1: controlaTela("inicia");
+            break;
+    }
 }
 
 

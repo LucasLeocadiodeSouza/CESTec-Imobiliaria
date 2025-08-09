@@ -46,7 +46,6 @@ function iniciarEventos() {
     event_click("bcadastro");
 
     event_selected_init("codproprietario");
-    event_click_aba();
 
     controlaTela("inicia");     
 }
@@ -100,13 +99,11 @@ function event_click_table(obj, row){
 }
 
 function event_click_aba(){
-    ABA.setAba_init(()=>{
-        switch (ABA.getIndex()) {
-        case 0: 
-        case 1: controlaTela("inicia");
-                break;
-        }
-    });
+    switch (ABA.getIndex()) {
+    case 0: 
+    case 1: controlaTela("inicia");
+            break;
+    }
 }
 
 function filaFetchInit(){

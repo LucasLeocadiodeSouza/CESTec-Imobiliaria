@@ -43,8 +43,7 @@ function wcri001_init(){
 
 function iniciarEventos() {
     controlaTela("inicia");
-    
-    event_click_aba();
+
     event_selected_init("codcontrato,codproprietario");
 
     event_click("bnovabusca");
@@ -117,13 +116,12 @@ function event_change(obj){
 }
 
 function event_click_aba(){
-    ABA.setAba_init(()=>{
-        switch (ABA.getIndex()) {
-        case 0: 
-        case 1: controlaTela("inicia");
-                break;
-        }
-    });
+    switch (ABA.getIndex()) {
+    case 0: 
+    case 1: controlaTela("inicia");
+            console.log("a");
+            break;
+    }
 }
 
 function filaFetchInit(){
