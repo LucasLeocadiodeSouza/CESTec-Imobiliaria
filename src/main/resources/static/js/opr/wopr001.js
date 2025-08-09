@@ -56,7 +56,6 @@ function wopr001_init(){
 function iniciarEventos() {
     controlaTela("inicia");
 
-    event_click_aba();
     event_selected_init("codfunc,codcargo,codsetor");
 
     event_click("bnovabusca");
@@ -173,32 +172,33 @@ function event_change(obj){
     }
 }
 
-function event_click_aba(){
-    ABA.setAba_init(()=>{
+function event_click_aba(obj){
+    if(obj.id === ABA.id){
         switch (ABA.getIndex()) {
         case 0: 
         case 1: controlaTela("inicia");
                 break;
         }
-    });
+    }    
 
-    ABAFILTRO.setAba_init(()=>{
+    if(obj.id === ABAFILTRO.id){
         switch (ABAFILTRO.getIndex()) {
         case 0: criarGridFunc();
                 carregaGridFuncionarios();
+                controlaTela("modal");
                 break;
 
         case 1: criarGridSetor();
                 carregaGridSetores();
+                controlaTela("modal");
                 break;
 
         case 2: criarGridCargo();
                 carregaGridCargo();
+                controlaTela("modal");
                 break;
         };
-
-        controlaTela("modal");
-    });
+    }
 }
 
 function filaFetchInit(){

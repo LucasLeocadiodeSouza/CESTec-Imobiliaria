@@ -99,15 +99,13 @@ function abaForm_init(){
                 obj.linhaDecor.style.backgroundColor   = "rgb(41, 76, 141)";
                 obj.divAbaInt.style.pointerEvents   = 'none';
                 obj.divAbaInt.style.backgroundColor = "rgb(193, 192, 192)";
+
+                event_click_aba(this.parentNode.parentNode);
             });
         });
     }
 
-    this.setAba_init = (onclick)=>{
-        abasArray.forEach(obj=>{
-            obj.divAba.addEventListener("click", onclick)
-        });
-    }
+
 
     //
     //Retorna qual o index da aba ativa

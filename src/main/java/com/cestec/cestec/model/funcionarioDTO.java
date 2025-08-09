@@ -24,4 +24,15 @@ public class funcionarioDTO {
     private double    salario;
     private LocalDate datinasc;
     private LocalDate criado_em;
+
+    public funcionarioDTO(Integer codfunc, String nomefunc, String cpf, String numtel, Integer codsetor, String nomesetor, Integer codcargo, String nomecargo) {
+        this.codfunc   = codfunc;
+        this.nomefunc  = nomefunc;
+        this.cpf       = cpf;
+        this.numtel    = numtel;
+        this.codsetor  = codsetor;
+        this.nomesetor = nomesetor;
+        this.codcargo  = codcargo;
+        this.nomecargo = nomecargo;
+    }
 }
