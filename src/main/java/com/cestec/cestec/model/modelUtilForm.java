@@ -11,5 +11,16 @@ import lombok.Setter;
 @AllArgsConstructor
 public class modelUtilForm {
     private Integer id;
-    private String descricao;
+    private String  descricao;
+    private String  paramName;
+
+    public modelUtilForm(Integer id, String descricao) {
+        this.id        = id;
+        this.descricao = descricao;
+    }
+
+    public modelUtilForm(String paramName, String descricao) {
+        this.paramName = paramName;
+        this.descricao = descricao;
+    }
 }
