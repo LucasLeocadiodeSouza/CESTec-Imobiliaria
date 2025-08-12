@@ -185,7 +185,7 @@ function GridForm_init(){
 
     //carregar dados para a grid
     //o conteudo puxado precisa ser um json
-    this.carregaGrid = async (path,method,headers,ocultarloader)=>{
+    this.carregaGrid = async (path,method,headers,ocultarloader,body)=>{
          if(!path) throw new Error("Caminho não especificado");
     
         if(!method) method = "GET";
@@ -233,7 +233,8 @@ function GridForm_init(){
 
         await fetch(path, {
             method: method,
-            headers: headers
+            headers: headers,
+            body: method !== 'GET' ? JSON.stringify(body) : null
         })
         .then(response =>{
             if(!response.ok) throw new Error("Ocorreu um erro ao tentar executar a consulta para o caminho " + path + ". Erro:" + response.status + " - " +  response.statusText);

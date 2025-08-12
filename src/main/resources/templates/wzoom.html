@@ -10,12 +10,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/padrao.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monomakh&family=Roboto+Slab:wght@100..900&display=swap" rel="stylesheet">
     <title>Ficha de Contratos</title>
-    <script src="/js/wcr00401.js" defer></script>
-    
+    <script src="/js/modules/adicionaScripts.js"></script>
+    <script>
+        adicionarHeadLinks();
+        addScriptsHead("/js/wmrb001.js");
+    </script>
 <style>
     .ppp         {width: 32px;}
     .p           {width: 60px;}
@@ -25,11 +25,32 @@
     .large       {width: 240px;}
     .extralarge  {width: 300px;}
 
+    .labelmodal {font-weight: 600; 
+                 width: 185px;
+                 text-align: right;}
+
+    .tamanhohtml {height: 93vh;}
+
+    body {background-color: #1d3561;}
 </style>
 </head>
 <body>
-    <div id="fichacompleta" style=" height: 100vh; display: flex; justify-content: center; padding: 15px;flex-direction: column;justify-content: flex-start;">
-        
+    <div class="gen princbody tamanhohtml">
+        <div id="fichacompleta" style=" height: 100%; display: flex; justify-content: center; padding: 15px;flex-direction: column;justify-content: flex-start;">
+            <div id="dfiltro">
+                <div  class='dmf'>
+                    <label class="labelmodal">Pesquisar Por: </label>
+                    <input type="text" id="mpesquisa" name="mpesquisa" class="extralarge">
+                </div>
+            </div>
+
+            <div class="dmf">
+                <label class="labelmodal"></label>
+                <input type="button" id="bbuscar" name="bbuscar" value="Buscar" style="width: 55px; cursor: pointer;">
+            </div>
+        </div>
+
+        <div id="table_zoom"></div>
     </div>
 </body>
 </html>

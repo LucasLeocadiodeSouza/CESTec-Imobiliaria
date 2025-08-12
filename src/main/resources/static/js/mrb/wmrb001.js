@@ -108,7 +108,8 @@ function event_click(obj) {
     }
     if(obj == 'blimpar'){
         form(obj).addEventListener("click", function () {
-            controlaTela("inicia");
+            zoom("codapl");
+            //controlaTela("inicia");
         });
     }
     if(obj == 'bliberar'){
