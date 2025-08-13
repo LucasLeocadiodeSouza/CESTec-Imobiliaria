@@ -62,7 +62,15 @@ function DMFForm_init(){
             const body    = document.querySelector("body").childNodes[1];
 
             const divfechar   = document.createElement("div");
+            const razaoDiv    = document.createElement("div");
             const botaofechar = document.createElement("div");
+
+            razaoDiv.classList.add("razao-modal")
+
+            const labelrazao     = document.createElement("label");
+            labelrazao.innerText = "Cestec Sistemas Imobiliarios";
+
+            razaoDiv.appendChild(labelrazao);
 
             divfechar.className   = "dmf closediv";
             botaofechar.className = "bpc closediv";
@@ -78,6 +86,7 @@ function DMFForm_init(){
             modal.style.display = "none";
 
             botaofechar.appendChild(imgclose);
+            divfechar.appendChild(razaoDiv);
             divfechar.appendChild(botaofechar);
 
             if (modal.firstChild) {modal.insertBefore(divfechar, modal.firstChild)}
