@@ -119,7 +119,6 @@ function event_click_aba(){
     switch (ABA.getIndex()) {
     case 0: 
     case 1: controlaTela("inicia");
-            console.log("a");
             break;
     }
 }

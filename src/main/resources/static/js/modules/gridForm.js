@@ -53,16 +53,6 @@
         GRID.tema          = '0';
                             borderTema -> parametro não obrigatório, recebe uma String, é o tema da table. '0' sem borda, '1' tema padrao, borda cinza e quadrada, '2' sem borda e com cor branca;
 
-        GRID.click_table   = ()=>{};
-                            click_table -> recebe uma funcao. Parametro não obrigatório. Ele adicionaa o click table, onde executa todo
-                                           o conteudo dentro da funcao;
-
-                         *** Exemplo: function event_click_table(){ //recomendado colocar o metodo click_table dentro de uma funcao para organizar a execucao dos eventos de click de todas as grids da aplicacao
-                                          GRID.click_table = ()=>{
-                                            console.log("vc clicou em uma linha da grid " + GRID.id);  
-                                          }
-                                      }
-
         GRID.createGrid();
                             createGrid(); -> funcao obrigatória para a criacao da grid;
 
@@ -79,6 +69,13 @@
                                                                Recebe mais dois parametros, method e headers, os dois nao sao obrigatorios, por padrao eles sao atribuidos como GET e { "Content-Type": "application/json" };
 
                                                                O retorno do GET deve ser um json (Para isso ja existe o meio da criacao da grd no backend (ver documentacao cestec/util/utilForm.java ));
+
+        function event_click_table(obj,row,e){     -> Funcao sobrescrita para gerenciar o click na table. Não deve ser chamada diretamente nas aplicacoes (Se necessario primeiro analisar bem a logica);
+            switch (obj) {
+            case GRID: console.log("vc clicou em uma linha da grid " + GRID.id);  
+                       break;
+            };
+        }
 
 */
 
@@ -137,12 +134,33 @@ function GridForm_init(){
             const colunasLabel = this.columnLabel.split(",");
 
             th.id        = coluna.trim() + "__" + pi;
-            th.innerHTML = colunasLabel[pi];
 
             if(!colunasLabel[index]) th.style.display = "none";
 
-            headerRow.appendChild(th);
+            th.onclick = () => clickFiltroHead(this.id + "res", index);
 
+            const container_row  = document.createElement("div");
+            container_row.classList.add("container-row100");
+
+            const container_text       = document.createElement("div");
+            container_text.classList.add("tdalign-cen");
+            container_text.style.width = "90%";
+            container_text.innerHTML   = colunasLabel[pi];
+
+            const container_img       = document.createElement("div");
+            container_img.classList.add("img-filtro-grid");
+            container_img.style.width = "10%";
+
+            const img_seta  = document.createElement("img");
+            img_seta.src    = "/icons/seta_filtro_grid_icon.png";
+            img_seta.style.height = "10px";
+            
+            container_img.appendChild(img_seta);
+            container_row.appendChild(container_text);
+            container_row.appendChild(container_img);
+            th.appendChild(container_row);
+
+            headerRow.appendChild(th);
             pi++;
         });
 
@@ -388,9 +406,11 @@ function clickRowBorder(idtable){
         row.addEventListener('click', () => {
             rows.forEach(otherRow => {
                 otherRow.classList.remove('clicktableborder');
+                otherRow.classList.remove('efeitorowclick');
             });
 
             row.classList.add('clicktableborder');
+            row.classList.add('efeitorowclick');
         });
 
         document.addEventListener('click', function(event) {
@@ -406,7 +426,33 @@ function clickRowBorder(idtable){
 
             if (clicouFora && mesmoIndice) {
                 row.classList.remove("clicktableborder");
+                row.classList.remove("efeitorowclick");
             }
         });
     });    
+}
+
+function clickFiltroHead(idtable, indexCol){
+    const table = document.getElementById(idtable);
+
+    if(!table) throw new Error("Ocorreu um erro ao tentar consultar a tabela com o id informado [" + idtable + "]. Div não encontrada.");
+
+    const cabecalho = table.querySelector('tr');
+    if (!cabecalho) return;
+
+    const tbody = table.querySelector('tbody');
+    if (!tbody) return;
+
+    const rows = tbody.querySelectorAll('tr');
+    
+    for (let i = 0; i < rows.length; i++){
+        for (let j = i + 1; j < rows.length; j++){
+            let auxiliar = "";
+            if(rows[i].childNodes[indexCol].innerText > rows[j].childNodes[indexCol].innerText){
+                auxiliar = rows[j].innerHTML;
+                rows[j].innerHTML = rows[i].innerHTML;
+                rows[i].innerHTML = auxiliar;
+            }
+        }
+    }   
 }
