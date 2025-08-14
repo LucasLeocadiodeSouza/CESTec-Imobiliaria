@@ -433,7 +433,8 @@ function clickRowBorder(idtable){
 }
 
 function clickFiltroHead(idtable, indexCol){
-    const table = document.getElementById(idtable);
+    const table  = document.getElementById(idtable);
+    let ehNumber = false;
 
     if(!table) throw new Error("Ocorreu um erro ao tentar consultar a tabela com o id informado [" + idtable + "]. Div não encontrada.");
 
@@ -446,13 +447,43 @@ function clickFiltroHead(idtable, indexCol){
     const rows = tbody.querySelectorAll('tr');
     
     for (let i = 0; i < rows.length; i++){
+        const index = Number(rows[i].childNodes[indexCol].innerText);
+
+        if(!isNaN(index)) ehNumber = true;
+    }
+
+    const taOrdenado = jaEstaOrdenado(rows,indexCol);
+    for (let i = 0; i < rows.length; i++){
         for (let j = i + 1; j < rows.length; j++){
-            let auxiliar = "";
-            if(rows[i].childNodes[indexCol].innerText > rows[j].childNodes[indexCol].innerText){
-                auxiliar = rows[j].innerHTML;
+            const campoA      = ehNumber?Number(rows[i].childNodes[indexCol].innerText) : rows[i].childNodes[indexCol].innerText;
+            const campoB      = ehNumber?Number(rows[j].childNodes[indexCol].innerText) : rows[j].childNodes[indexCol].innerText;
+            const validaOrdem = taOrdenado? campoA < campoB : campoA > campoB;
+
+            if(validaOrdem){
+                const auxiliar    = rows[j].innerHTML;
                 rows[j].innerHTML = rows[i].innerHTML;
                 rows[i].innerHTML = auxiliar;
             }
         }
     }   
+}
+
+function jaEstaOrdenado(rows,indexCol){
+    let ehNumber = false;
+
+    for (let i = 0; i < rows.length; i++){
+        const index = Number(rows[i].childNodes[indexCol].innerText);
+
+        if(!isNaN(index)) ehNumber = true;
+    }
+
+    for (let i = 0; i < rows.length; i++){
+        for (let j = i + 1; j < rows.length; j++){
+            const campoA = ehNumber?Number(rows[i].childNodes[indexCol].innerText) : rows[i].childNodes[indexCol].innerText;
+            const campoB = ehNumber?Number(rows[j].childNodes[indexCol].innerText) : rows[j].childNodes[indexCol].innerText;
+            if(campoA > campoB) return false;
+        }
+    }
+
+    return true;
 }
