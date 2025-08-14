@@ -236,6 +236,7 @@ function criarBotaoExterno(divpai,botoes){
             const labelint = document.createElement("label");
             labelint.className = "labelbotaoapl";
             labelint.innerText = botaoint.descricao;
+            labelint.title     = botaoint.prog_ini;
 
             divbuttonint.appendChild(labelint);
             divcontainerbutton.appendChild(divbuttonint);
@@ -295,7 +296,7 @@ function filaFetchInit(){
                                             let botoesint = [];
 
                                             dados.forEach(dado =>{
-                                                botoesint.push({descricao:dado.descricao, codapl:dado.id});
+                                                botoesint.push({descricao:dado.descricao, codapl:dado.id, prog_ini: dado.arquivo_inic});
                                             });
 
                                             botoes.push({menu:dados[0].modulo.descricao, codmodulo:dados[0].modulo.id, botoesinternos:botoesint});
