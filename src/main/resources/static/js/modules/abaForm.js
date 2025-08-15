@@ -96,6 +96,9 @@ function abaForm_init(){
         abasArray[0].divAbaInt.classList.add("abaintativa");
         abasArray[0].divAbaInt.classList.add("destacaaba");
 
+        abasArray.at(0).divAba.classList.add("aba-round-border-left");
+        abasArray.at(-1).divAba.classList.add("aba-round-border-right");
+
         abasArray.forEach(obj=>{
             obj.divAba.addEventListener("click", function () {
                 abasArray.forEach(obj2 => {
