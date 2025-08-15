@@ -92,6 +92,8 @@ function GridForm_init(){
     this.destacarclick   = true;
     this.ocultarhead     = false;
     this.fullParent      = false;
+    this.miniModalOver   = false;
+    this.colsModalOver   = "";
     this.borderTema      = '1';
     this.click_table     = '';
 
@@ -338,6 +340,19 @@ function GridForm_init(){
  
                 row.onclick = () => event_click_table(this, row, event);
 
+                if(this.miniModalOver){
+                    const modal = document.createElement("div");
+
+                    if(!document.getElementById("dcontainer-minimodalrow")){
+                        modal.id    = "dcontainer-minimodalrow"
+                        modal.classList.add("container-minimodalrow");
+                        document.body.appendChild(modal);
+                    }
+
+                    row.addEventListener("mouseover", (e)=>{ criarChildModalOverCol(row, this.id + "tabcolumn", this.colsModalOver, e)});
+                    row.addEventListener("mouseout",  ()=>{ if(document.getElementById("dcontainer-minimodalrow")) setDisplay("dcontainer-minimodalrow", "none") });
+                } 
+
                 if(this.mouseover_table) row.addEventListener("mouseover", ()=>{this.mouseover_table()});
                 
                 //
@@ -430,6 +445,49 @@ function clickRowBorder(idtable){
             }
         });
     });    
+}
+
+function criarChildModalOverCol(row, idTableHead, indexCols, event){
+    const modal = document.getElementById("dcontainer-minimodalrow");
+    
+    modal.innerHTML = "";
+
+    indexCols.split(",").forEach(index =>{
+        const container_div = document.createElement("div");
+        container_div.classList.add("dmf");
+
+        const titulo     = document.createElement("label");
+        titulo.id = "label_minimodalover";
+        titulo.innerText = getColTextHead(idTableHead, index) + ": ";
+
+        const paragrafo     = document.createElement("p");
+        paragrafo.id = "label_minimodalover";
+        paragrafo.innerText = row.childNodes[index].innerText;
+
+        container_div.appendChild(titulo);
+        container_div.appendChild(paragrafo);
+        modal.appendChild(container_div);
+    });
+
+    modal.style.top  = (event.screenY) + "px";
+    modal.style.left = (event.screenX + 5)   + "px";
+
+    setDisplay(modal.id, "flex");
+}
+
+function getColTextHead(idtableHead, posicao){
+    const table  = document.getElementById(idtableHead);
+
+    if(!table) return;
+
+    const thead = table.querySelector('thead');
+    if (!thead) return;
+
+    const row = thead.querySelector('tr');
+    
+    for(let i = 0; i < row.childNodes.length; i++){
+        if(i == posicao) return row.childNodes[i].innerText;
+    }
 }
 
 function clickFiltroHead(idtable, indexCol){
