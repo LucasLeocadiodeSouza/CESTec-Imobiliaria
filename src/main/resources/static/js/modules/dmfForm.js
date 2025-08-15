@@ -116,6 +116,7 @@ function DMFForm_init(){
         }
 
         modal.style.display = "block";
+        modal.style.zIndex  = "999999";
         document.getElementById("DMF_external").style.display = "flex";
     }
 
