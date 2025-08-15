@@ -316,7 +316,6 @@ function GridForm_init(){
 
             dados.forEach(opc => {
                 const row = document.createElement("tr");
-
                 
                 colunas.forEach((coluna,index) =>{
                     const td     = document.createElement("td");
@@ -340,19 +339,6 @@ function GridForm_init(){
  
                 row.onclick = () => event_click_table(this, row, event);
 
-                if(this.miniModalOver){
-                    const modal = document.createElement("div");
-
-                    if(!document.getElementById("dcontainer-minimodalrow")){
-                        modal.id    = "dcontainer-minimodalrow"
-                        modal.classList.add("container-minimodalrow");
-                        document.body.appendChild(modal);
-                    }
-
-                    row.addEventListener("mouseover", (e)=>{ criarChildModalOverCol(row, this.id + "tabcolumn", this.colsModalOver, e)});
-                    row.addEventListener("mouseout",  ()=>{ if(document.getElementById("dcontainer-minimodalrow")) setDisplay("dcontainer-minimodalrow", "none") });
-                } 
-
                 if(this.mouseover_table) row.addEventListener("mouseover", ()=>{this.mouseover_table()});
                 
                 //
@@ -363,6 +349,22 @@ function GridForm_init(){
                 }
 
                 tbody.appendChild(row);
+
+                if(this.miniModalOver){
+                    const modal = document.createElement("div");
+
+                    if(!document.getElementById("dcontainer-minimodalrow")){
+                        modal.id    = "dcontainer-minimodalrow"
+                        modal.classList.add("container-minimodalrow");
+                        document.body.appendChild(modal);
+                    }
+
+                    row.addEventListener("mouseover", (e)=>{ criarChildModalOverCol(row, this.id + "tabcolumn", this.colsModalOver, e)});
+                    row.addEventListener("mouseout",  (e)=>{ 
+                        const bodyTemModal = document.body.contains(document.getElementById("dcontainer-minimodalrow"));
+                        if(bodyTemModal) setDisplay("dcontainer-minimodalrow", "none") 
+                    });
+                } 
             });
         
             table.appendChild(headerbody);
@@ -469,8 +471,8 @@ function criarChildModalOverCol(row, idTableHead, indexCols, event){
         modal.appendChild(container_div);
     });
 
-    modal.style.top  = (event.screenY) + "px";
-    modal.style.left = (event.screenX + 5)   + "px";
+    modal.style.top  = (event.screenY - 15) + "px";
+    modal.style.left = (event.screenX)   + "px";
 
     setDisplay(modal.id, "flex");
 }
