@@ -27,6 +27,8 @@ function iniciarEventos() {
     NOTIFY_GRID.ocultarhead   = true;
     NOTIFY_GRID.fullParent    = true;
     NOTIFY_GRID.destacarclick = false;
+    NOTIFY_GRID.miniModalOver = true;
+    NOTIFY_GRID.colsModalOver = "0,1";
     NOTIFY_GRID.tema          = '2';
     NOTIFY_GRID.createGrid();
 
