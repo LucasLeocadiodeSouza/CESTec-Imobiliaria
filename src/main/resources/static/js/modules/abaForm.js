@@ -80,25 +80,41 @@ function abaForm_init(){
 
         //
         //Efeito click
-        abasArray[0].divAba.classList.add('ativa')
-        abasArray[0].linhaDecor.style.backgroundColor = "rgb(41, 76, 141)";
-        abasArray[0].divAbaInt.style.pointerEvents    = 'none';
-        abasArray[0].divAbaInt.style.backgroundColor  = "rgb(193, 192, 192)"
+        abasArray.forEach(obj2 => {
+            obj2.divAba.classList.remove('abaativa');
+            obj2.linhaDecor.classList.remove("indentabaativa");
+            obj2.divAbaInt.classList.remove("abaintativa");
+            obj2.divAbaInt.classList.remove("destacaaba");
+            obj2.linhaDecor.classList.add("indentabainativa");
+            obj2.divAbaInt.classList.add("abaintinativa");
+        });
+
+        abasArray[0].divAbaInt.classList.remove("abaintinativa");
+        abasArray[0].linhaDecor.classList.remove("indentabainativa");
+        abasArray[0].divAba.classList.add('abaativa');
+        abasArray[0].linhaDecor.classList.add("indentabaativa");
+        abasArray[0].divAbaInt.classList.add("abaintativa");
+        abasArray[0].divAbaInt.classList.add("destacaaba");
 
         abasArray.forEach(obj=>{
             obj.divAba.addEventListener("click", function () {
                 abasArray.forEach(obj2 => {
-                    obj2.divAba.classList.remove('ativa');
-                    obj2.linhaDecor.style.backgroundColor = 'rgb(81, 81, 81)';
-                    obj2.divAbaInt.style.pointerEvents = 'visible';
-                    obj2.divAbaInt.style.backgroundColor = ''; // Remove o background-color inline
+                    obj2.divAba.classList.remove('abaativa');
+                    obj2.linhaDecor.classList.remove("indentabaativa");
+                    obj2.divAbaInt.classList.remove("abaintativa");
+                    obj2.divAbaInt.classList.remove("destacaaba");
+                    obj2.linhaDecor.classList.add("indentabainativa");
+                    obj2.divAbaInt.classList.add("abaintinativa");
                 });
 
-                obj.divAba.classList.add('ativa');
+                obj.divAba.classList.add('abaativa');
 
-                obj.linhaDecor.style.backgroundColor   = "rgb(41, 76, 141)";
-                obj.divAbaInt.style.pointerEvents   = 'none';
-                obj.divAbaInt.style.backgroundColor = "rgb(193, 192, 192)";
+                obj.linhaDecor.classList.remove("indentabainativa");
+                obj.divAbaInt.classList.remove("abaintinativa");
+                obj.divAbaInt.classList.remove("destacaaba");
+                obj.linhaDecor.classList.add("indentabaativa");
+                obj.divAbaInt.classList.add("abaintativa");
+                obj.divAbaInt.classList.add("destacaaba");
 
                 event_click_aba(this.parentNode.parentNode);
             });
@@ -111,7 +127,7 @@ function abaForm_init(){
     //Retorna qual o index da aba ativa
     this.getIndex = ()=>{
         return abasArray.findIndex(obj => {
-            return obj.divAba.classList.contains("ativa");
+            return obj.divAba.classList.contains("abaativa");
         });
     }
 }

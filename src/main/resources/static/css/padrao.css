@@ -14,7 +14,7 @@ body .gen {padding: 10px}
           margin-block: 6px;}
 
 .gen label {font-family: "Inter";
-            font-size: 17px;
+            font-size: 15px;
             color: #444;
             display: inline-block;
             background: none;}
@@ -97,14 +97,14 @@ body .gen {padding: 10px}
             color: #274d8cd6;}
 
 .aba    {height: 40px;
-         min-width: 180px;
+         min-width: 145px;
          width: auto;
          display: flex;
          justify-content: flex-start;
          flex-direction: column;
          border: 1px solid rgb(104, 104, 104);
          border-bottom: none; 
-         background-color: rgb(210 210 210 / 31%);}
+         background-color: #fdfdfdde;}
 
 .dabaexterna {height: 40px; 
              width: 90%; 
@@ -118,23 +118,44 @@ body .gen {padding: 10px}
 .abaint      {display: flex;
               justify-content: center;
               align-items: center;
-              height: 100%;}
+              height: 100%;
+              padding-right: 4px;}
 
-.abaint:hover {background-color: rgb(205, 204, 204);}
+.abaint:hover {background-color: #fdfdfdde}
 
 
 .aba label {font-family: "Host Grotesk", serif;
             font-optical-sizing: auto;
-            font-weight: 700;
+            font-weight: 500;
             font-style: normal;
-            color: #3d3d3d;}
+            color: #3d3d3d;
+            font-size: 15px;}
+
+.aba img {height: 20px;}
 
 .indentaba {background-color: rgb(81, 81, 81);
-            height: 2px;
+            height: 0.1vw;
             width: 100%;
             margin-top: 0px;}
 
-.aba:hover .indentaba {background-color: #39537f}
+.indentabainativa {background-color: rgb(81, 81, 81)}
+.indentabaativa   {background-color: rgb(41, 76, 141); filter: brightness(1.5);}
+
+.aba:hover .indentaba     {background-color: #39537f; filter: brightness(1.5);}
+.aba:hover .abaintinativa label{font-weight: 800; color: #272727;} 
+.aba:hover .abaintinativa img {filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3))}
+
+.abaintinativa {pointer-events: none;
+                background-color: rgb(215 215 215)}
+
+.destacaaba img {filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3))}
+.destacaaba label {font-weight: 800; 
+                   color: #272727;}
+
+.abaativa {border-bottom: 1px solid #fdfdfd; z-index: 999;}
+
+.abaintativa {pointer-events:   visible;
+              background-color: none;}
 
 .if {width: 100%; 
      height: 30px;}
@@ -169,6 +190,14 @@ body .gen {padding: 10px}
                     font-size: 13px;
                     color: #7f7f7f;
                     font-family: "Inter";}
+
+.fieldset {margin: 10px;
+           display: flex;
+           justify-content: flex-start;
+           margin-top: 0px;
+           background: #fdfdfd;
+           border-bottom-right-radius: 8px;
+           border-bottom-left-radius: 8px;}
 
 input {font-family:      "Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
       font-weight:      180;
@@ -213,16 +242,18 @@ textarea:disabled {border-color: rgba(118, 118, 118, 0.3); color: #8a8a8a; backg
 
 .DMF_external {width:  100%;
                height: 100%;
-               background-color: #00000076;
+               background-color: #00000096;
                position:         absolute;
                top: 0;
                left: 0;
                display: flex;
                justify-content: center;
-               align-items: center;}
+               align-items: center;
+               z-index: 99999;}
 
 .DMF_tema1     {border-radius: 10px;
-                background-color: #fafafa;}
+                background-color: #FFF;
+                box-shadow: 0 0 1.0vw #1d3561;}
 
 div.grid {display: flex;
           justify-content: center;
