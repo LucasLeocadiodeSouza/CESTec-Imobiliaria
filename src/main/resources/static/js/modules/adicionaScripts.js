@@ -38,6 +38,25 @@ function adicionarHeadLinks(){
     document.head.appendChild(linkFontRubik);
 }
 
+function adicionaHeader(){
+    const script = document.createElement("script");
+    script.src   = "/js/comCabecalho.js";
+    script.defer;
+
+    document.head.appendChild(script);
+
+    const cabecalho = document.createElement("section");
+    cabecalho.id    = 'comcab_init';
+    cabecalho.classList.add('cabecalho');
+    
+    fetch("/cabecalho")
+    .then(res => res.text())
+    .then(html => { 
+        cabecalho.innerHTML = html; 
+        document.body.insertBefore(cabecalho, document.body.firstChild);
+    });
+}
+
 function addScript(prog){
     const script = document.createElement("script");
     script.src   = prog;

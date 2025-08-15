@@ -33,8 +33,6 @@ function wmrb001_init(){
     CADAPL_GRID.mousehouve    = true;
     CADAPL_GRID.clickgrid     = false;
     CADAPL_GRID.destacarclick = true;
-    CADAPL_GRID.miniModalOver = true;
-    CADAPL_GRID.colsModalOver = "0,1";
     CADAPL_GRID.createGrid();
 
     ABA      = new abaForm_init();
