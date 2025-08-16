@@ -1,0 +1,80 @@
+<!-- Divisao Para o Cabecalho (comCabecalho.html) -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/padrao.css">
+    <script src="/js/modules/adicionaScripts.js"></script>
+
+    <style>
+        .headRed {height: 35px; display: flex; flex-direction: row;}
+        #cabecalhoextendido {width: 100%; height: 100%; display: flex; flex-direction: row; background-color: rgb(0 69 119); padding: 5px 15px; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5))}
+        #cabecalhominim     {background-color: #a70000; height: 15px; width: 100%;padding: 3px 20px; display: none; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); cursor: pointer;}
+
+        .icon-cestec img {width: 35px; height: 35px;}
+        
+        .container-esquerda, .container-central, .container-direita {display: flex; flex-direction: row; gap: 10px; width: calc(100% / 3); overflow: hidden;}
+        .container-direita {flex-direction: row-reverse;}
+        .container-central {justify-content: center;}
+
+        .ambiente {border-radius: 10px; border: 2px solid #e1e1e1; background-color: #a70000;}
+
+        .caminhoambi {display: flex; flex-direction: row; align-items: center;}
+        .caminhoambi label {color: #FFF; font-size: 15px; font-family: sans-serif;}
+        #lrazaomini {color: #FFF; font-size: 15px; font-family: sans-serif;}
+
+        #dnomeempresa {display: flex; align-items: center; height: 100%;}
+        #dnomeempresa img {width: 185px; height: 30px;}
+
+        .container-buttons {display: flex; flex-direction: row; gap: 10px; }
+        .botao-cabecalho {width: 35px; height: 100%; background-color: #ffffff1a; border-radius: 5px; display: flex; justify-content: center; align-items: center; cursor: pointer;}
+        .botao-cabecalho img {width: 28px; height: 28px; opacity: 0.7; filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5))}
+
+        .botao-cabecalho:hover {opacity: 0.3;
+                                box-shadow: 0 0 0 1px #5151525f;}
+    </style>
+</head>
+
+<header class="headRed">
+    <div id="cabecalhoextendido">
+        <div class="container-esquerda">
+            <div class="icon-cestec"><img src="/icons/iconLogoEmpresa_cabecalho.png" alt="Carregando"></div>
+            <div id="dcaminhoapl" class="caminhoambi"></div>
+        </div>
+        <div class="container-central">
+            <div class="ambiente">
+                <div id="dnomeempresa"><img src="/icons/logoAbrvEmpresa(2).png" alt="Carregando"></div>
+            </div> 
+        </div>
+        <div class="container-direita">
+            <div class="container-buttons">
+                <div id="dopcoescab" class="botao-cabecalho">
+                    <img src="/icons/file_manutencao.png" alt="Carregando">
+                </div>
+                <div id="dperfilcab" class="botao-cabecalho">
+                    <img src="/icons/workIconCabecalho.png" alt="Carregando">
+                </div>
+                <div id="dfecharcab" class="botao-cabecalho">
+                    <img src="/icons/close-button-fine.png" alt="Carregando">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cabecalho minimizado  -->
+    <div id="cabecalhominim">
+        <div class="container-esquerda">
+            <div id="dcaminhoaplmini" class="caminhoambi"></div>
+        </div>
+        <div class="container-central">
+            <label id="lrazaomini"></label>
+        </div>
+        <div class="container-direita"></div>
+    </div>
+</header>
+
+<!-- Modais -->
+
+<!-- Fim modais -->
+
+<!-- Fim do cabecalho -->

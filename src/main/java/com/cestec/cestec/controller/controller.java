@@ -41,4 +41,9 @@ public class controller {
     public String zoom() {
         return "wzoom";
     }
+
+    @GetMapping("/cabecalho") 
+    public String cabecalho() {
+        return "comCabecalho";
+    }
 }

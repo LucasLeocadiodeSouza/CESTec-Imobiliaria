@@ -59,7 +59,7 @@ function DMFForm_init(){
 
         divs.forEach(div => {
             const modal   = document.getElementById(div.trim());
-            const body    = document.querySelector("body").childNodes[1];
+            const body    = document.querySelectorAll(".princbody")[0];
 
             const divfechar   = document.createElement("div");
             const razaoDiv    = document.createElement("div");
