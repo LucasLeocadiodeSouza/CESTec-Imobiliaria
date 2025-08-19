@@ -1,0 +1,203 @@
+<!-- 
+    Dev: Lucas Leocadio de Souza
+    Data: 15/08/25
+    Obs:
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/padrao.css">
+    <title>Operar Chamados</title>
+    <script src="/js/modules/adicionaScripts.js"></script>
+    <script>
+        adicionarHeadLinks();
+        adicionaHeader();
+        addScriptsHead("/js/opr/wopr002.js");
+    </script>
+<style>
+    .ppp         {width: 32px  !important;}
+    .p           {width: 60px  !important;}
+    .medium      {width: 120px !important;}
+    .Intermedium {width: 180px !important;}
+    .large       {width: 240px !important;}
+    .extralarge  {width: 300px !important;}
+
+    .labelmodal {font-weight: 600; 
+                 width: 185px;
+                 text-align: right;}
+
+    .container-grid {display: grid !important; grid-template-columns: 1fr 1fr; padding-top: 15px;}
+    .container-row  {display: flex; flex-direction: row; justify-content: space-between; width: 100%;}
+
+    #dmodalf_painel {overflow-y: auto;}
+    #dmodalf_programas {display: none;}
+
+    .whole-line {grid-column: span 2}
+
+    .flex-column {flex-direction: column;}
+
+    #dmbotoesacomp {display: flex; justify-content: center; align-items: center;}
+
+    body {background-color: #1d3561;}
+</style>
+</head>
+<body>
+    <div class="gen princbody">
+        <input type="hidden" id="ideusu" name="ideusu">
+
+        <div class="titulo">
+            <h2>Operar Chamados</h2>
+        </div>
+
+        <div id='abas'></div>
+
+        <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
+            <div class='if'>
+                <label class="labelmodal">Número da Solicitacao:</label>
+                <input type="text" id="nmrsolic"  name="nmrsolic"  class="p">
+            </div>
+
+            <div  class='if' style="display: flex; height: auto;">
+                <label class="labelmodal"></label>                
+                <div id="bbuscar"    name="bbuscar"    class="button" value="Buscar"      data-icon="/icons/buscar.png"></div>
+                <div id="blimpar"    name="blimpar"    class="button" value="Limpar"      data-icon="/icons/limparIcon.png"></div>
+            </div>
+        </fieldset>
+        
+        <div class='if' style="display: flex; margin-left: 5px;">
+            <div id="bimprimir"  name="bimprimir"  class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
+        </div>
+
+        <div id="tabela_chamados"></div>
+
+        <!--  MODAL -->
+        <div id="dmodalf_painel">
+            <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
+                <h2><span id="stitulopainel" name="stitulopainel"></span></h2>
+                <span     id="nmrservpainel" name="nmrservpainel" style="display: none"></span>
+            </div>
+
+            <div id='abaspainelsolic'></div>
+            <div id="mficha-solic" class="flex-column">
+                <fieldset class="container-grid fieldset">
+                    <div class='dmf'>
+                        <label class="labelmodal">Título: </label>
+                        <p id="mtitulosolic"></p>
+                    </div>
+                    
+                    <div class='dmf'>
+                        <label class="labelmodal">Número Solicitacao: </label>
+                        <p id="mnmrsolic"></p>
+                    </div>
+    
+                    <div class='dmf whole-line'>
+                        <label class="labelmodal">Descricão: </label>
+                        <p id="mdescsolic"></p>
+                    </div>
+    
+                    <div class='dmf'>
+                        <label class="labelmodal">Estado: </label>
+                        <p id="mestadosolic"></p>
+                    </div>
+    
+                    <div class='dmf'>
+                        <label class="labelmodal">Prioridade: </label>
+                        <p id="mpriorisolic"></p>
+                    </div>
+    
+                    <div class='dmf'>
+                        <label class="labelmodal">Solicitante: </label>
+                        <p id="mususolic"></p>
+                    </div>
+    
+                    <div class='dmf'>
+                        <label class="labelmodal">Setor Solicitante: </label>
+                        <p id="msetsolic"></p>
+                    </div>
+    
+                    <div class='dmf'>
+                        <label class="labelmodal">Complexidade: </label>
+                        <p id="mcomplexsolic"></p>
+                    </div>
+    
+                    <div class='dmf'>
+                        <label class="labelmodal">Previsão: </label>
+                        <p id="mprevisaosolic"></p>
+                    </div>
+                    
+                    <div class='dmf'> <!-- Quem resolvera o chamado -->
+                        <label class="labelmodal">Fila: </label>
+                        <p id="mfila"></p>
+                    </div>
+    
+                    <div class='dmf'>
+                        <label class="labelmodal">Setor da Fila: </label>
+                        <p id="msetfilasolic"></p>
+                    </div>
+    
+                    <div class='dmf whole-line'>
+                        <label class="labelmodal">Observacão: </label>
+                        <p id="mobssolic"></p>
+                    </div>
+    
+                    <div class='dmf'>
+                        <label class="labelmodal">Data conclusão: </label>
+                        <p id="mdatconclsolic"></p>
+                    </div>
+    
+                    <div class='dmf whole-line'>
+                        <label class="labelmodal">Feedback: </label>
+                        <p id="mobsfinalsolic"></p>
+                    </div>
+                </fieldset>
+
+                <div id="dmbotoesacomp" class='dmf'>
+                    <div id="bfinalizar" name="bfinalizar" class="button" value="Finalizar"></div>
+                    <div id="bprograma"  name="bprograma"  class="button" value="Programas"></div>
+                    <div id="bcancelar"  name="bcancelar"  class="button" value="Cancelar"></div>
+                </div>
+            </div>
+
+            <!-- Grid para hoarios -->
+             <div id="fhorarios">
+                 <fieldset class="fieldset flex-column">
+                    <div class='container-row'>
+                        <div class="dmf">
+                            <label class="labelmodal">Horário Total: </label>
+                            <p id="mhoratothora"></p>
+                        </div>
+    
+                        <div class='dmf'>
+                            <label class="labelmodal">Complexidade: </label>
+                            <p id="mcomplexhora"></p>
+                        </div>
+                    </div>
+    
+                    <div class='dmf'>
+                        <div id="tabela_horario"></div>
+                    </div>
+                 </fieldset>
+             </div>
+        </div>
+        
+        
+        <div id="dmodalf_programas">
+            <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
+                <h2><span id="stituloprog" name="stituloprog"></span></h2>
+                <span     id="nmrservprog" name="nmrservprog" style="display: none"></span>
+            </div>
+
+            <div class='dmf'>
+                <div id="bcadastrar" name="bcadastrar" class="button" value="Cadastrar" data-icon="/icons/plus_icon.png"></div>
+            </div>
+
+            <div class='dmf'>
+                <div id="tabela_programas"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

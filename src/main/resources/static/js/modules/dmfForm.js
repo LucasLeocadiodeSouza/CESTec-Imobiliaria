@@ -126,7 +126,7 @@ function DMFForm_init(){
         const currentModalId = modalStack.pop();
         const currentModal = document.getElementById(currentModalId);
         
-        currentModal.style.display = "none";
+        if(currentModal) currentModal.style.display = "none";
         document.getElementById("DMF_external").style.display = "none";
     }
 }
