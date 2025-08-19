@@ -31,8 +31,8 @@ function abaForm_init(){
     let abasArray = [];
 
     this.createAba = ()=>{
-        
-        if(!document.getElementById(this.id)) throw new Error("Div " + this.id + " não encontrada");;
+        const divaba = document.getElementById(this.id);
+        if(!divaba) throw new Error("Div " + this.id + " não encontrada");;
 
         const abas  = this.name.split(",");
         const icons = this.icon.split(",");
@@ -74,30 +74,13 @@ function abaForm_init(){
             divAba.appendChild(linhaDecor);
             divAba.appendChild(divAbaInt);
             divAbaExt.appendChild(divAba);
-            document.getElementById(this.id).appendChild(divAbaExt);
+            divaba.appendChild(divAbaExt);
             pi++;
         });
 
         //
         //Efeito click
-        abasArray.forEach(obj2 => {
-            obj2.divAba.classList.remove('abaativa');
-            obj2.linhaDecor.classList.remove("indentabaativa");
-            obj2.divAbaInt.classList.remove("abaintativa");
-            obj2.divAbaInt.classList.remove("destacaaba");
-            obj2.linhaDecor.classList.add("indentabainativa");
-            obj2.divAbaInt.classList.add("abaintinativa");
-        });
-
-        abasArray[0].divAbaInt.classList.remove("abaintinativa");
-        abasArray[0].linhaDecor.classList.remove("indentabainativa");
-        abasArray[0].divAba.classList.add('abaativa');
-        abasArray[0].linhaDecor.classList.add("indentabaativa");
-        abasArray[0].divAbaInt.classList.add("abaintativa");
-        abasArray[0].divAbaInt.classList.add("destacaaba");
-
-        abasArray.at(0).divAba.classList.add("aba-round-border-left");
-        abasArray.at(-1).divAba.classList.add("aba-round-border-right");
+        this.setIndex(0);
 
         abasArray.forEach(obj=>{
             obj.divAba.addEventListener("click", function () {
@@ -122,6 +105,9 @@ function abaForm_init(){
                 event_click_aba(this.parentNode.parentNode);
             });
         });
+
+        //Da o evento quando inicia a ABA
+        event_click_aba(divaba);
     }
 
 
@@ -132,5 +118,26 @@ function abaForm_init(){
         return abasArray.findIndex(obj => {
             return obj.divAba.classList.contains("abaativa");
         });
+    }
+
+    this.setIndex = (index)=>{
+        abasArray.forEach(obj2 => {
+            obj2.divAba.classList.remove('abaativa');
+            obj2.linhaDecor.classList.remove("indentabaativa");
+            obj2.divAbaInt.classList.remove("abaintativa");
+            obj2.divAbaInt.classList.remove("destacaaba");
+            obj2.linhaDecor.classList.add("indentabainativa");
+            obj2.divAbaInt.classList.add("abaintinativa");
+        });
+
+        abasArray[index].divAbaInt.classList.remove("abaintinativa");
+        abasArray[index].linhaDecor.classList.remove("indentabainativa");
+        abasArray[index].divAba.classList.add('abaativa');
+        abasArray[index].linhaDecor.classList.add("indentabaativa");
+        abasArray[index].divAbaInt.classList.add("abaintativa");
+        abasArray[index].divAbaInt.classList.add("destacaaba");
+
+        abasArray.at(0).divAba.classList.add("aba-round-border-left");
+        abasArray.at(-1).divAba.classList.add("aba-round-border-right");
     }
 }

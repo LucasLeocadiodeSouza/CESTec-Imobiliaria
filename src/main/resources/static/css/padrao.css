@@ -357,7 +357,7 @@ table {
                   position:      fixed;
                   top:           15px;
                   right:         20px;
-                  z-index:       1999;}
+                  z-index:       99999;}
 
 .alert-message {width:            300px;
                 min-height:       150px;
