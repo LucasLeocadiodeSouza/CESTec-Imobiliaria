@@ -115,8 +115,8 @@ function DMFForm_init(){
             modal.style.height = "95%";
         }
 
-        modal.style.display = "block";
-        modal.style.zIndex  = "999999";
+        modal.classList.remove("DMF_ativa");
+        modal.classList.add("DMF_ativa");
         document.getElementById("DMF_external").style.display = "flex";
     }
 
@@ -126,8 +126,23 @@ function DMFForm_init(){
         const currentModalId = modalStack.pop();
         const currentModal = document.getElementById(currentModalId);
         
-        if(currentModal) currentModal.style.display = "none";
-        document.getElementById("DMF_external").style.display = "none";
+        if(currentModal) {
+            currentModal.classList.remove("DMF_ativa");
+            currentModal.style.display = "none";
+        }
+
+        if(!temModalAtiva()) document.getElementById("DMF_external").style.display = "none";
+    }
+
+    function temModalAtiva(){
+        if(!document.getElementById("DMF_external")) throw new Error("Modal Index não encontrada");
+        const cortina = document.getElementById("DMF_external").childNodes;
+
+        for(var i = 0; i < cortina.length; i++){
+            if(cortina[i].classList.contains("DMF_ativa")) return true;
+        };
+
+        return false;
     }
 }
 

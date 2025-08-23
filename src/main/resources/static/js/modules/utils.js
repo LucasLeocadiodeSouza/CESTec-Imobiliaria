@@ -80,3 +80,15 @@ function fillSelect(id,options,selectedFirst){
 
     if(selectedFirst) select.value = options[0].id;
 }
+
+function getRadioValue(opc){
+    const radioSelecionado = document.querySelector('input[name="' + opc + '"]:checked');
+    return radioSelecionado.value
+}
+
+function setRadioValue(opc,valor) {
+    const radio = document.querySelector(`input[name="${opc}"][value="${valor}"]`);
+    if (radio) {
+        radio.checked = true;
+    }
+}

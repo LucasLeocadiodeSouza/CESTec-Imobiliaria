@@ -387,6 +387,45 @@ function GridForm_init(){
         })
     }
 
+    this.addJsonRow = (obj) => {
+        const tbody = document.getElementById(this.id).childNodes[0].childNodes[1].childNodes[0].childNodes[1];
+
+        const row = document.createElement("tr");
+
+        const campos = obj.split(",");
+        const aligns = this.columnAlign.split(",");
+
+        campos.forEach((campo,index) => {
+            const td = document.createElement("td");
+            td.innerHTML = campo;
+
+            if(this.tema === '2') {
+                td.style.color = '#FFF';
+            }
+
+            if(aligns[index] === "e") td.classList.add("tdalign-esq");
+            if(aligns[index] === "c") td.classList.add("tdalign-cen");
+            if(aligns[index] === "d") td.classList.add("tdalign-dir");
+            if(aligns[index] === "eoe") td.classList.add("tdalign-esqoverellip");
+            else td.classList.add("tdalign-esq");
+            
+            if(!colunasLabel[index]) td.style.display = "none";
+
+            row.appendChild(td)
+        });
+
+        row.onclick = () => event_click_table(this, row, event);
+        
+        //
+        //cor mouse hover
+        if(this.mousehouve){
+            row.addEventListener("mouseover", ()=>{row.classList.add("mouseovercolor")});
+            row.addEventListener("mouseout",  ()=>{row.classList.remove("mouseovercolor")});
+        }
+
+        tbody.appendChild(row);
+    }
+
     //
     //retornos grid
     this.getTableNode = ()=>{
