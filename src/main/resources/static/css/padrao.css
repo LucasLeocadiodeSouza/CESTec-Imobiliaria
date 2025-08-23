@@ -268,6 +268,10 @@ textarea:disabled {border-color: rgba(118, 118, 118, 0.3); color: #8a8a8a; backg
                 background-color: #FFF;
                 box-shadow: 0 0 1.0vw #1d3561;}
 
+.DMF_ativa {display: block !important;
+            z-index: 999999;
+            position: absolute;}
+
 div.grid {display: flex;
           justify-content: center;
           align-items: flex-start;}
