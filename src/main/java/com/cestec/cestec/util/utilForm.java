@@ -63,6 +63,10 @@ public class utilForm {
         if (column == null) {
             column = new ArrayList<>();
         }
+        if(dado == null){
+            dado = "";
+        }
+
         column.add(dado);
         row.add(column);
         column = null;
