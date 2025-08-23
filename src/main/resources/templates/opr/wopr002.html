@@ -31,8 +31,12 @@
                  text-align: right;}
 
     .labelmodal2 {font-weight: 600; 
-                 width: 110px;
-                 text-align: right;}
+                  width: 110px;
+                  text-align: right;}
+
+    .labelmodal2 {font-weight: 600; 
+                  width: 125px;
+                  text-align: right;}
 
     .dmf {width: 100%;
           height: auto;
@@ -46,12 +50,21 @@
     .container-grid {display: grid !important; grid-template-columns: 1fr 1fr; padding-top: 15px;}
     .container-row  {display: flex; flex-direction: row; justify-content: space-between; width: 100%;}
 
-    #dmodalf_cadastrar {width: 650px; height: 330px;}
+    #dmodalf_cadastrar {width: 650px; height: auto; padding-bottom: 15px;}
     #dmodalf_cadastrar textarea {height: 85px;}
 
     #dmodalf_painel {overflow-y: auto;}
     #dmodalf_programas {width: 720px; height: 500px;}
-    #dmodalf_programas_mod {width: 630px; height: 470px;}
+    #dmodalf_programas_mod {width: 550px; height: 300px;}
+    #dmodalf_direciona  {width: 600px; height: auto; padding-bottom: 20px;}
+
+    #dmodalf_direciona textarea {height: 85px;}
+
+    #mobssolic {width: 500px;}
+
+    #bfichasolic {margin-top: 0px;}
+
+    #tabela_programas, #tabela_programas_mod {margin-inline: 5px;}
 
     .whole-line {grid-column: span 2}
 
@@ -80,9 +93,9 @@
             </div>
 
             <div class="if">
-                <label class="labelmodal">Ativo:</label>
+                <label class="labelmodal">Situacão:</label>
                 <input type="radio" id="rativo" name="rsituacao" value="1">
-                <label class="labelfiltro" style="text-align: left;" for="rativo">Ativos</label>
+                <label class="labelfiltro" style="text-align: left;" for="rativo">Somente Ativos</label>
                 <input type="radio" id="rtodos" name="rsituacao" value="0">
                 <label class="labelfiltro" style="text-align: left;" for="rtodos">Todos</label>
             </div>
@@ -101,12 +114,22 @@
 
         <div id="tabela_chamados"></div>
         <div id="tabela_solic"></div>
+        <div id="tabela_solicdir"></div>
 
         <!--  MODAIS -->
         <div id="dmodalf_cadastrar">
             <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
                 <h2><span id="stitulocadas" name="stitulocadas"></span></h2>
                 <span     id="sacaocadas"   name="sacaocadas" style="display: none"></span>
+            </div>
+
+            <div id="dmabrirficha" class='dmf buttoninline'>
+                <div id="bfichasolic" name="bfichasolic" class="button" value="Abrir Solic." data-icon="/icons/acess_icon.png"></div>
+            </div>
+
+            <div id="dmnmrsol" class='dmf'>
+                <label class="labelmodal2">Solicitacão: </label>
+                <input id="mmnmrsolic"  name="mmnmrsolic"  class="p" disabled>
             </div>
 
             <div class='dmf'>
@@ -124,16 +147,64 @@
                 <select id="mprioricadas"  name="mprioricadas"  class="large"></select>
             </div>
 
+            <div id="dmestado" class='dmf'>
+                <label class="labelmodal2">Estado: </label>
+                <input id="mestadomod"  name="mestadomod"  class="medium" disabled>
+            </div>
+
+            <div id="dmfila" class='dmf'>
+                <label class="labelmodal2">Fila: </label>
+                <input id="mfilamod"  name="mfilamod"  class="large" disabled>
+            </div>
+
             <div class='dmf buttonclass'>
                 <div id="bsalvarsolic" name="bsalvarsolic"  class="button" value="Salvar"    data-icon="/icons/ok-icon.png"></div>
                 <div id="bsolicitar"   name="bsolicitar"    class="button" value="Solicitar" data-icon="/icons/cadastro.png"></div>
+                <div id="bcancelsol"   name="bcancelsol"    class="button" value="Cancelar" data-icon="/icons/cadastro.png"></div>
+            </div>
+        </div>
+
+        <div id="dmodalf_direciona">
+            <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
+                <h2><span id="stitulodir" name="stitulodir"></span></h2>
+                <span     id="sacaodir"   name="sacaodir" style="display: none"></span>
+            </div>
+
+            <div class='dmf buttoninline'>
+                <div id="bfichasolic2" name="bfichasolic2" class="button" value="Abrir Solic." data-icon="/icons/acess_icon.png"></div>
+            </div>
+
+            <div id="dmnmrsol" class='dmf'>
+                <label class="labelmodal2">Solicitacão: </label>
+                <input id="mmmnmrsolic"  name="mmmnmrsolic"  class="p" disabled>
+            </div>
+
+            <div class='dmf'>
+                <label class="labelmodal2">Título: </label>
+                <input type="text" id="mmtitulodir"  name="mmtitulodir"  class="exexlarge" disabled>
+            </div>
+
+            <div class='dmf'>
+                <label class="labelmodal2">Descricao: </label>
+                <textarea id="mmdescdir"  name="mmdescdir"  class="exexlarge" disabled></textarea>  
+            </div>
+
+            <div class='dmf'>
+                <label class="labelmodal2">Usuário: </label>
+                <input type="text" id="mideusuvinc"     name="mideusuvinc"     class="medium">
+                <input type="text" id="mnomeideusuvinc" name="mnomeideusuvinc" class="extralarge" disabled>
+            </div>
+
+            <div class='dmf buttonclass'>
+                <div id="bdireciona" name="bdireciona" class="button" value="Direcionar" data-icon="/icons/acess_icon.png"></div>
             </div>
         </div>
 
         <div id="dmodalf_painel">
+            <input type="hidden" id="nmrservpainel" name="nmrservpainel">
+
             <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
                 <h2><span id="stitulopainel" name="stitulopainel"></span></h2>
-                <span     id="nmrservpainel" name="nmrservpainel" style="display: none"></span>
             </div>
 
             <div id='abaspainelsolic'></div>
@@ -196,7 +267,7 @@
     
                     <div class='dmf whole-line'>
                         <label class="labelmodal">Observacão: </label>
-                        <p id="mobssolic"></p>
+                        <textarea id="mobssolic"></textarea>
                     </div>
     
                     <div class='dmf'>
@@ -243,7 +314,6 @@
         <div id="dmodalf_programas">
             <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
                 <h2><span id="stituloprog" name="stituloprog"></span></h2>
-                <span     id="nmrservprog" name="nmrservprog" style="display: none"></span>
             </div>
 
             <div class='dmf buttoninline'>
@@ -258,25 +328,26 @@
         <div id="dmodalf_programas_mod">
             <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
                 <h2><span id="stituloprogmod" name="stituloprogmod"></span></h2>
-                <span     id="nmrservprogmod" name="nmrservprogmod" style="display: none"></span>
             </div>
 
             <div class='dmf'>
-                <label class="labelmodal">Numero Merge: </label>
+                <label class="labelmodal2">Número Merge: </label>
                 <input type="text" id="mnummerge" name="mnummerge" class="ppp">
             </div>
 
             <div class='dmf'>
-                <label class="labelmodal">Branch name: </label>
-                <input type="text" id="mbranchname" name="mbranchname" class="large">
+                <label class="labelmodal2">Branch name: </label>
+                <input type="text" id="mbranchname" name="mbranchname" class="extralarge">
             </div>
 
-            <div class='dmf buttoninline'>
-                <div id="binclprogmod" name="binclprogmod" class="button" value="Incluir" data-icon="/icons/plus_icon.png"></div>
-            </div>
-            
             <div class='dmf'>
-                <div id="tabela_programas_mod"></div>
+                <label class="labelmodal2">Programa: </label>
+                <input type="text" id="mprogname" name="mprogname" class="large">
+            </div>
+
+            <div class='dmf'>
+                <label class="labelmodal2">Extensão: </label>
+                <input type="text" id="mextensao" name="mextensao" class="p">
             </div>
 
             <div class='dmf buttonclass'>
