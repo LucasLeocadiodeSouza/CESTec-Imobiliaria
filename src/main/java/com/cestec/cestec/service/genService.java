@@ -13,4 +13,16 @@ public class genService {
     public String getNomeByIdeusu(String ideusu){
         return funcionarioRepository.findNomeByIdeusu(ideusu);
     }
+
+    public String findCargoByIdeusu(String ideusu){
+        return funcionarioRepository.findCargoByIdeusu(ideusu);
+    }
+
+    public String findSetorByIdeusu(String ideusu){
+        return funcionarioRepository.findSetorByIdeusu(ideusu);
+    } 
+
+    public String findCodSetorByIdeusu(String ideusu){
+        return funcionarioRepository.findCodSetorByIdeusu(ideusu);
+    }
 }
