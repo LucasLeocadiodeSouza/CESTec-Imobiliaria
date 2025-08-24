@@ -13,6 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class chamadoSolicDTO {
     private Integer   idsolic;
+    private String    nomeusufila;
     private String    ideusufila;
     private String    titulo;
     private String    descricao;

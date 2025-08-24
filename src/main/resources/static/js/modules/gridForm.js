@@ -266,6 +266,8 @@ function GridForm_init(){
             const colunasLabel = this.columnLabel.split(",");
             const aligns       = this.columnAlign.split(",");
             const dados        = data;
+            
+            if(dados.length == 0) return;
 
             if(document.getElementById(this.id + "res")) this.clearGrid();
 
@@ -388,42 +390,155 @@ function GridForm_init(){
     }
 
     this.addJsonRow = (obj) => {
-        const tbody = document.getElementById(this.id).childNodes[0].childNodes[1].childNodes[0].childNodes[1];
+        if(document.getElementById(this.id).childNodes[0].childNodes.length > 1){
+            const tbody = getTBody(this.id);
+            const row   = document.createElement("tr");
 
-        const row = document.createElement("tr");
+            const aligns       = this.columnAlign.split(",");
+            const colunasLabel = this.columnLabel.split(",");
 
-        const campos = obj.split(",");
-        const aligns = this.columnAlign.split(",");
+            var i = 0;
+            for(const coluna in obj) {
+                const td = document.createElement("td");
+                td.innerHTML = obj[coluna];
 
-        campos.forEach((campo,index) => {
-            const td = document.createElement("td");
-            td.innerHTML = campo;
+                if(this.tema === '2') {
+                    td.style.color = '#FFF';
+                }
 
-            if(this.tema === '2') {
-                td.style.color = '#FFF';
+                if(aligns[i] === "e") td.classList.add("tdalign-esq");
+                if(aligns[i] === "c") td.classList.add("tdalign-cen");
+                if(aligns[i] === "d") td.classList.add("tdalign-dir");
+                if(aligns[i] === "eoe") td.classList.add("tdalign-esqoverellip");
+                else td.classList.add("tdalign-esq");
+                
+                if(!colunasLabel[i]) td.style.display = "none";
+
+                row.appendChild(td);
+
+                i++;
+            };
+
+            row.onclick = () => event_click_table(this, row, event);
+            
+            //
+            //cor mouse hover
+            if(this.mousehouve){
+                row.addEventListener("mouseover", ()=>{row.classList.add("mouseovercolor")});
+                row.addEventListener("mouseout",  ()=>{row.classList.remove("mouseovercolor")});
             }
 
-            if(aligns[index] === "e") td.classList.add("tdalign-esq");
-            if(aligns[index] === "c") td.classList.add("tdalign-cen");
-            if(aligns[index] === "d") td.classList.add("tdalign-dir");
-            if(aligns[index] === "eoe") td.classList.add("tdalign-esqoverellip");
-            else td.classList.add("tdalign-esq");
-            
-            if(!colunasLabel[index]) td.style.display = "none";
-
-            row.appendChild(td)
-        });
-
-        row.onclick = () => event_click_table(this, row, event);
-        
-        //
-        //cor mouse hover
-        if(this.mousehouve){
-            row.addEventListener("mouseover", ()=>{row.classList.add("mouseovercolor")});
-            row.addEventListener("mouseout",  ()=>{row.classList.remove("mouseovercolor")});
+            tbody.appendChild(row);
         }
+        else{
+            const colunas      = this.columnName.split(",");
+            const colunasLabel = this.columnLabel.split(",");
+            const aligns       = this.columnAlign.split(",");
 
-        tbody.appendChild(row);
+            if(document.getElementById(this.id + "res")) this.clearGrid();
+
+            const divres = document.createElement("div");
+            divres.id    = "d" + this.id + "res";
+            divres.classList.add("divtableres");
+
+            const table  = document.createElement("table");
+            table.id     = this.id + "res";
+            table.classList.add("tabledata2");
+
+            if(this.tema === '0' || this.tema === '2') {
+                table.style.border = 'none';
+            }
+
+            const originalHeaderCells = document.querySelectorAll(`#${this.id} .tablecolun th`);
+
+            const headerbody = document.createElement("thead");
+            const trbody     = document.createElement("tr");
+
+            headerbody.style.visibility = "collapse";
+
+            var si = 0;
+            colunas.forEach((coluna,index) =>{
+                const th = document.createElement("th");
+
+                th.id = coluna.trim() + "_res_" + si;
+                th.textContent = this.columnLabel.split(",")[si];
+
+                if (originalHeaderCells[index]) {
+                    th.style.width = originalHeaderCells[index].style.width;
+                    th.style.minWidth = originalHeaderCells[index].style.width;
+                }
+
+                if(!colunasLabel[index]) th.style.display = "none";
+
+                trbody.appendChild(th);
+                si++;
+            })
+            headerbody.appendChild(trbody);
+
+            const tbody = document.createElement("tbody");
+
+            const row = document.createElement("tr");
+            
+            var i = 0;
+            for(const coluna in obj) {
+                const td = document.createElement("td");
+                td.innerHTML = obj[coluna];
+
+                if(this.tema === '2') {
+                    td.style.color = '#FFF';
+                }
+
+                if(aligns[i] === "e") td.classList.add("tdalign-esq");
+                if(aligns[i] === "c") td.classList.add("tdalign-cen");
+                if(aligns[i] === "d") td.classList.add("tdalign-dir");
+                if(aligns[i] === "eoe") td.classList.add("tdalign-esqoverellip");
+                else td.classList.add("tdalign-esq");
+                
+                if(!colunasLabel[i]) td.style.display = "none";
+
+                row.appendChild(td);
+
+                i++;
+            };
+
+            row.onclick = () => event_click_table(this, row, event);
+
+            if(this.mouseover_table) row.addEventListener("mouseover", ()=>{this.mouseover_table()});
+            
+            //
+            //cor mouse hover
+            if(this.mousehouve){
+                row.addEventListener("mouseover", ()=>{row.classList.add("mouseovercolor")});
+                row.addEventListener("mouseout",  ()=>{row.classList.remove("mouseovercolor")});
+            }
+
+            tbody.appendChild(row);
+
+            if(this.miniModalOver){
+                const modal = document.createElement("div");
+
+                if(!document.getElementById("dcontainer-minimodalrow")){
+                    modal.id    = "dcontainer-minimodalrow"
+                    modal.classList.add("container-minimodalrow");
+                    document.body.appendChild(modal);
+                }
+
+                row.addEventListener("mouseover", (e)=>{ criarChildModalOverCol(row, this.id + "tabcolumn", this.colsModalOver, e)});
+                row.addEventListener("mouseout",  (e)=>{ 
+                    const bodyTemModal = document.body.contains(document.getElementById("dcontainer-minimodalrow"));
+                    if(bodyTemModal) setDisplay("dcontainer-minimodalrow", "none") 
+                });
+            } 
+        
+            table.appendChild(headerbody);
+            table.appendChild(tbody);
+            divres.appendChild(table);
+            document.getElementById(this.id).childNodes[0].appendChild(divres);
+            
+            if(this.destacarclick){
+                clickRowBorder(table.id);
+            }
+        }
     }
 
     //
@@ -446,6 +561,10 @@ function GridForm_init(){
     this.getTable = ()=>{
         return document.getElementById(this.id + "tabcolumn");
     }
+}
+
+function getTBody(idtable){
+    return document.getElementById(idtable).childNodes[0].childNodes[1].childNodes[0].childNodes[1]
 }
 
 function clickRowBorder(idtable){
