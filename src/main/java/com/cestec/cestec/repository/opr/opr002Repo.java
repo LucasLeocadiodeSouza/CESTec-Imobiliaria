@@ -27,22 +27,20 @@ public class opr002Repo {
 
     public List<chamadoSolicDTO> buscarSolicitacoes(String ideusu, boolean somenteAtivo){
         String query   = "SELECT new com.cestec.cestec.model.opr.chamadoSolicDTO(" + 
-                         "solic.id, func.nome, solic.titulo, solic.descricao, solic.estado, solic.prioridade, solic.complex, solic.previsao, solic.obs, solic.datconcl, solic.feedback, solic.datregistro, solic.ideususolic)" + 
+                         "solic.id, func.nome, user.login, solic.titulo, solic.descricao, solic.estado, solic.prioridade, solic.complex, solic.previsao, solic.obs, solic.datconcl, solic.feedback, solic.datregistro, solic.ideususolic)" + 
                          " FROM opr_chamados_solic solic " +
-                         " JOIN solic.codfuncfila func";
+                         " JOIN solic.codfuncfila func" +
+                         " JOIN func.sp_user user" +
+                         (!somenteAtivo?"":" WHERE (solic.estado = 1 OR solic.estado = 2) ");
 
-        boolean temand = false;
+        boolean temand = somenteAtivo;
 
         if(ideusu != null){
-            query += " WHERE solic.ideususolic LIKE :ideusu ";
+            query += (temand?" AND ":" WHERE ") + " solic.ideususolic LIKE :ideusu ";
             temand = true;
         }
-        if(somenteAtivo){
-            query += (temand?" AND ":" WHERE ") + " solic.estado = 1 OR solic.estado = 2 ";
-            temand = true;
-        }  
 
-
+        System.out.println(query);
         var q = em.createQuery(query, chamadoSolicDTO.class);
 
         if(ideusu != null){
