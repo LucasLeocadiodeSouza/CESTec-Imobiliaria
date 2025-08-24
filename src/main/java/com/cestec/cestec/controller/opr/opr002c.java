@@ -28,6 +28,11 @@ public class opr002c {
         return opr002s.getOptionsPrioridade();
     } 
 
+    @GetMapping("/getOptionsComplex")
+    public List<?> getOptionsComplex(){
+        return opr002s.getOptionsComplex();
+    }
+
     @PostMapping("/abrirSolicitacao")
     public ResponseEntity<?> abrirSolicitacao(@RequestBody chamadoSolicDTO solicitacao){
         return opr002s.abrirSolicitacao(solicitacao);
@@ -39,8 +44,24 @@ public class opr002c {
     }
 
     @PostMapping("/direcionarSolic")
-    public ResponseEntity<?> direcionarSolic(@RequestParam(value = "ideusu", required = false) String ideusu,@RequestParam(value = "ideusudirec", required = false) String ideusudirec, @RequestParam(value = "idsolic", required = false) Integer idsolic){
-        return opr002s.direcionarSolic(ideusu,ideusudirec,idsolic);
+    public ResponseEntity<?> direcionarSolic(@RequestParam(value = "ideusu", required = false) String ideusu, @RequestParam(value = "ideusudirec", required = false) String ideusudirec, @RequestParam(value = "complex", required = false) Integer complex, @RequestParam(value = "idsolic", required = false) Integer idsolic){
+        return opr002s.direcionarSolic(ideusu,ideusudirec,complex,idsolic);
+    }
+
+    @PostMapping("/incluirVersionamento")
+    public ResponseEntity<?> incluirVersionamento(@RequestParam(value = "ideusu", required = false) String ideusu,
+                                                  @RequestParam(value = "idsolic", required = false) Integer idsolic,
+                                                  @RequestParam(value = "merge", required = false) Integer merge,
+                                                  @RequestParam(value = "branch", required = false) String branch,
+                                                  @RequestParam(value = "prog", required = false) String prog){
+        return opr002s.incluirVersionamento(ideusu, idsolic, merge, branch, prog);
+    }
+
+    @PostMapping("/finalizarSolicitacao")
+    public ResponseEntity<?> finalizarSolicitacao(@RequestParam(value = "ideusu", required = false) String ideusu,
+                                                  @RequestParam(value = "idsolic", required = false) Integer idsolic,
+                                                  @RequestParam(value = "obs", required = false) String obs){
+        return opr002s.finalizarSolicitacao(ideusu, obs, idsolic);
     }
 
     @GetMapping("/carregarGridChamSolicitados")
@@ -51,5 +72,10 @@ public class opr002c {
     @GetMapping("/carregarGridChamados")
     public List<?> carregarGridChamados(@RequestParam(value = "ideusu", required = false) String ideusu, @RequestParam(value = "somenteAtivo", required = false) Integer somenteAtivo, @RequestParam(value = "acao", required = false) String acao){
         return opr002s.carregarGridChamados(ideusu, somenteAtivo, acao);
+    } 
+
+    @GetMapping("/carregarGridversionamento")
+    public List<?> carregarGridversionamento(@RequestParam(value = "idsolic", required = false) Integer idsolic){
+        return opr002s.carregarGridversionamento(idsolic);
     }
 }

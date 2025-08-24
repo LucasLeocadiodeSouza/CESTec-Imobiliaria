@@ -54,8 +54,8 @@
     #dmodalf_cadastrar textarea {height: 85px;}
 
     #dmodalf_painel {overflow-y: auto;}
-    #dmodalf_programas {width: 720px; height: 500px;}
-    #dmodalf_programas_mod {width: 550px; height: 300px;}
+    #dmodalf_programas {width: 900px; height: 500px;}
+    #dmodalf_programas_mod {width: 550px; height: 260px;}
     #dmodalf_direciona  {width: 600px; height: auto; padding-bottom: 20px;}
 
     #dmodalf_direciona textarea {height: 85px;}
@@ -64,7 +64,7 @@
 
     #bfichasolic {margin-top: 0px;}
 
-    #tabela_programas, #tabela_programas_mod {margin-inline: 5px;}
+    #tabela_programas {margin-inline: 5px; margin-top: 0px;}
 
     .whole-line {grid-column: span 2}
 
@@ -88,12 +88,12 @@
 
         <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
             <div class='if'>
-                <label class="labelmodal">Número da Solicitacao:</label>
+                <label class="labelmodal">Número da Solicitação:</label>
                 <input type="text" id="nmrsolic"  name="nmrsolic"  class="p">
             </div>
 
             <div class="if">
-                <label class="labelmodal">Situacão:</label>
+                <label class="labelmodal">Situação:</label>
                 <input type="radio" id="rativo" name="rsituacao" value="1">
                 <label class="labelfiltro" style="text-align: left;" for="rativo">Somente Ativos</label>
                 <input type="radio" id="rtodos" name="rsituacao" value="0">
@@ -138,7 +138,7 @@
             </div>
 
             <div class='dmf'>
-                <label class="labelmodal2">Descricao: </label>
+                <label class="labelmodal2">Descrição: </label>
                 <textarea id="mdesccadas"  name="mdesccadas"  class="exexlarge"></textarea>  
             </div>
 
@@ -185,7 +185,7 @@
             </div>
 
             <div class='dmf'>
-                <label class="labelmodal2">Descricao: </label>
+                <label class="labelmodal2">Descrição: </label>
                 <textarea id="mmdescdir"  name="mmdescdir"  class="exexlarge" disabled></textarea>  
             </div>
 
@@ -195,6 +195,11 @@
                 <input type="text" id="mnomeideusuvinc" name="mnomeideusuvinc" class="extralarge" disabled>
             </div>
 
+            <div class='dmf'>
+                <label class="labelmodal2">Complexidade: </label>
+                <select id="mscomplex"  name="mscomplex"  class="large"></select>
+            </div>
+
             <div class='dmf buttonclass'>
                 <div id="bdireciona" name="bdireciona" class="button" value="Direcionar" data-icon="/icons/acess_icon.png"></div>
             </div>
@@ -202,12 +207,12 @@
 
         <div id="dmodalf_painel">
             <input type="hidden" id="nmrservpainel" name="nmrservpainel">
+            <input type="hidden" id="mpodealterar"  name="mpodealterar">
 
             <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
                 <h2><span id="stitulopainel" name="stitulopainel"></span></h2>
             </div>
 
-            <div id='abaspainelsolic'></div>
             <div id="mficha-solic" class="flex-column">
                 <fieldset class="container-grid fieldset">
                     <div class='dmf'>
@@ -216,7 +221,7 @@
                     </div>
                     
                     <div class='dmf'>
-                        <label class="labelmodal">Número Solicitacao: </label>
+                        <label class="labelmodal">Número Solicitação: </label>
                         <p id="mnmrsolic"></p>
                     </div>
     
@@ -287,27 +292,6 @@
                     <div id="bcancelar"  name="bcancelar"  class="button" value="Cancelar"></div>
                 </div>
             </div>
-
-            <!-- Grid para hoarios -->
-             <div id="fhorarios">
-                 <fieldset class="fieldset flex-column">
-                    <div class='container-row'>
-                        <div class="dmf">
-                            <label class="labelmodal">Horário Total: </label>
-                            <p id="mhoratothora"></p>
-                        </div>
-    
-                        <div class='dmf'>
-                            <label class="labelmodal">Complexidade: </label>
-                            <p id="mcomplexhora"></p>
-                        </div>
-                    </div>
-    
-                    <div class='dmf'>
-                        <div id="tabela_horario"></div>
-                    </div>
-                 </fieldset>
-             </div>
         </div>
         
         
@@ -317,7 +301,7 @@
             </div>
 
             <div class='dmf buttoninline'>
-                <div id="bcadastrar" name="bcadastrar" class="button" value="Cadastrar" data-icon="/icons/plus_icon.png"></div>
+                <div id="bincluirver" name="bincluirver" class="button" value="Incluir" data-icon="/icons/plus_icon.png"></div>
             </div>
 
             <div class='dmf'>
@@ -343,11 +327,6 @@
             <div class='dmf'>
                 <label class="labelmodal2">Programa: </label>
                 <input type="text" id="mprogname" name="mprogname" class="large">
-            </div>
-
-            <div class='dmf'>
-                <label class="labelmodal2">Extensão: </label>
-                <input type="text" id="mextensao" name="mextensao" class="p">
             </div>
 
             <div class='dmf buttonclass'>
