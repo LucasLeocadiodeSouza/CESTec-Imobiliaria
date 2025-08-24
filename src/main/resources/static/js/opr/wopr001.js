@@ -181,7 +181,7 @@ function event_click_aba(obj){
         }
     }    
 
-    if(obj.id === ABAFILTRO.id){
+    if(obj.id === "abasfiltroagen"){
         switch (ABAFILTRO.getIndex()) {
         case 0: criarGridFunc();
                 carregaGridFuncionarios();
