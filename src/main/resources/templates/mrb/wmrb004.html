@@ -1,0 +1,128 @@
+<!-- 
+    Dev: Lucas Leocadio de Souza
+    Data: 25/08/25
+    IM: 00017
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/padrao.css">
+    <title>Bloqueio de Acesso</title>
+    <script src="/js/modules/adicionaScripts.js"></script>
+    <script>
+        adicionarHeadLinks();
+        adicionaHeader();
+        addScriptsHead("/js/mrb/wmrb004.js");
+    </script>
+<style>
+    .ppp         {width: 32px  !important;}
+    .p           {width: 60px  !important;}
+    .medium      {width: 120px !important;}
+    .Intermedium {width: 180px !important;}
+    .large       {width: 240px !important;}
+    .extralarge  {width: 300px !important;}
+
+    .labelmodal {font-weight: 600; 
+                 width: 185px;
+                 text-align: right;}
+
+    #dmodalf_bloqueio  {width: 700px;
+                        opacity: 1;
+                        padding-bottom: 20px;}
+
+    .container-grid {display: grid !important; grid-template-columns: 1fr 1fr; padding-top: 15px;}
+
+    body {background-color: #1d3561;}
+</style>
+</head>
+<body>
+    <div class="gen princbody">
+        <input type="hidden" id="ideusu" name="ideusu">
+
+        <div class="titulo">
+            <h2>Bloqueio de Acesso</h2>
+        </div>
+
+        <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
+            <div class='if'>
+                <label class="labelmodal">Código da Aplicação: </label>
+                <input type="text" id="codapl" name="codapl" class="ppp">
+            </div>
+
+            <div class='if'>
+                <label class="labelmodal">Modulo da Aplicação: </label>
+                <input type="text" id="codmodel"  name="codmodel"  class="ppp">
+            </div>
+
+            <div  class='if' style="display: flex; height: auto;">
+                <label class="labelmodal"></label>                
+                <div id="bbuscar"    name="bbuscar"    class="button" value="Buscar"      data-icon="/icons/buscar.png"></div>
+                <div id="bnovabusca" name="bnovabusca" class="button" value="Nova Busca"  data-icon="/icons/novaPesquisa.png"></div>
+                <div id="blimpar"    name="blimpar"    class="button" value="Limpar"      data-icon="/icons/limparIcon.png"></div>
+            </div>
+        </fieldset>
+        
+        <div class='if' style="display: flex; margin-left: 5px;">                            
+            <div id="bcadastra"  name="bcadastra"  class="button" value="Cadastrar"  data-icon="/icons/plus_icon.png"></div>
+            <div id="bcadastrar" name="bcadastrar" class="button" value="Cadastrar"  data-icon="/icons/plus_icon.png"></div>
+            <div id="bimprimir"  name="bimprimir"  class="button" value="Imprimir"   data-icon="/icons/printer.png"></div>
+        </div>
+
+        <div id="tabela_bloqueio"></div>
+
+        <!--  MODAL -->
+        <div id="dmodalf_bloqueio">
+            <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
+                <h2><span id="stitulo" name="stitulo"></span></h2>
+                <span     id="sacao"   name="sacao" style="display: none"></span>
+            </div>
+
+            <fieldset class="fieldset container-grid" style="display: flex; flex-direction: column;">
+                <div class='dmf'>
+                    <label class="labelmodal">Modulo: </label>
+                    <input type="text" id="mbmodulo"  name="mbmodulo"  class="ppp" disabled>
+                    <input type="text" id="mbdescmod" name="mbdescmod" class="extralarge" disabled>
+                </div>
+
+                <div class='dmf'>
+                    <label class="labelmodal">Aplicação: </label>
+                    <input type="text" id="mbaplicacao" name="mbaplicacao" class="ppp" disabled>
+                    <input type="text" id="mbdescapl"   name="mbdescapl"   class="extralarge" disabled>
+                </div>
+
+                <div class='dmf'>
+                    <label class="labelmodal">Acesso: </label>
+                    <input type="text" id="mbcodacesso"  name="mbcodacesso"  class="ppp" disabled>
+                    <input type="text" id="mbdescacesso" name="mbdescacesso" class="large" disabled>
+                </div>
+            </fieldset>
+
+            <div class='dmf buttoninline'>
+                <div id="bincluirusu" name="bincluirusu" class="button" value="Incluir"></div>
+            </div>
+
+            <div id="mbtabela_usubloq"></div>
+        </div>
+
+        <div id="dmodalf_usuario">
+            <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
+                <h2><span id="mstitulousu" name="mstitulousu"></span></h2>
+            </div>
+
+            <div class='dmf'>
+                    <label class="labelmodal">Usuário: </label>
+                    <input type="text" id="muideusu"  name="muideusu"  class="medium">
+                    <input type="text" id="munomeusu" name="munomeusu" class="large" disabled>
+                </div>
+
+            <div class='dmf buttonclass'>
+                <div id="bsalvarusu" name="bsalvarusu" class="button" value="Incluir"></div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
