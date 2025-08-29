@@ -79,6 +79,7 @@ body .gen {padding: 10px}
                  font-weight: 600;}
 
 .buttoninline {display: flex; margin-left: 5px;}
+.buttoncenter {display: flex; justify-content: center;}
 
 .gen a      {font-weight:     bolder;
              color:           #025bc9;
