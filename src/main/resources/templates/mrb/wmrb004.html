@@ -29,11 +29,23 @@
                  width: 185px;
                  text-align: right;}
 
-    #dmodalf_bloqueio  {width: 700px;
+    .labelfieldset {font-weight: 600; 
+                    width: 75px;
+                    text-align: right;}
+
+    #dmodalf_bloqueio  {width: 800px;
                         opacity: 1;
                         padding-bottom: 20px;}
+                    
+    #dmodalf_usuario {padding-bottom: 20px; width: 630px;}
+
+    #dmodalf_cadastro {width: 630px; padding-bottom: 20px;}
+
+    #mbtabela_usubloq, #mbtabela_respobloq {margin-inline: 5px; margin-top: 0px;}
 
     .container-grid {display: grid !important; grid-template-columns: 1fr 1fr; padding-top: 15px;}
+
+    .mt10 {margin-top: 10px !important;}
 
     body {background-color: #1d3561;}
 </style>
@@ -46,16 +58,19 @@
             <h2>Bloqueio de Acesso</h2>
         </div>
 
-        <fieldset class="fieldset gen" style="display: flex; flex-direction: column;">
-            <div class='if'>
-                <label class="labelmodal">Código da Aplicação: </label>
-                <input type="text" id="codapl" name="codapl" class="ppp">
-            </div>
-
+        <fieldset class="fieldset gen mt10" style="display: flex; flex-direction: column;">
             <div class='if'>
                 <label class="labelmodal">Modulo da Aplicação: </label>
                 <input type="text" id="codmodel"  name="codmodel"  class="ppp">
+                <input type="text" id="descmodel" name="descmodel" class="extralarge" disabled>
             </div>
+
+            <div class='if'>
+                <label class="labelmodal">Código da Aplicação: </label>
+                <input type="text" id="codapl"  name="codapl"  class="ppp">
+                <input type="text" id="descapl" name="descapl" class="extralarge" disabled>
+            </div>
+
 
             <div  class='if' style="display: flex; height: auto;">
                 <label class="labelmodal"></label>                
@@ -67,49 +82,78 @@
         
         <div class='if' style="display: flex; margin-left: 5px;">                            
             <div id="bcadastra"  name="bcadastra"  class="button" value="Cadastrar"  data-icon="/icons/plus_icon.png"></div>
-            <div id="bcadastrar" name="bcadastrar" class="button" value="Cadastrar"  data-icon="/icons/plus_icon.png"></div>
             <div id="bimprimir"  name="bimprimir"  class="button" value="Imprimir"   data-icon="/icons/printer.png"></div>
         </div>
 
         <div id="tabela_bloqueio"></div>
 
         <!--  MODAL -->
+          <div id="dmodalf_cadastro">
+            <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
+                <h2><span id="mstitulocadas" name="mstitulocadas"></span></h2>
+            </div>
+
+            <div class='dmf'>
+                <label class="labelmodal">Código do Módulo: </label>
+                <input type="text" id="mccodmod"  name="mccodmod"  class="ppp">
+                <input type="text" id="mcnomemod" name="mcnomemod" class="extralarge" disabled>
+            </div>
+
+            <div class='dmf'>
+                <label class="labelmodal">Código da Aplicação: </label>
+                <input type="text" id="mccodapl"  name="mccodapl"  class="ppp">
+                <input type="text" id="mcnomeapl" name="mcnomeapl" class="extralarge" disabled>
+            </div>
+
+            <div class='dmf buttoncenter'>
+                <div id="bsalvarcadas" name="bsalvarcadas" class="button" value="Cadastrar"></div>
+            </div>
+        </div>
+
+
         <div id="dmodalf_bloqueio">
+            <input type="hidden" id="hcodbloqueio" name="hcodbloqueio">
+
             <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
                 <h2><span id="stitulo" name="stitulo"></span></h2>
                 <span     id="sacao"   name="sacao" style="display: none"></span>
             </div>
 
-            <fieldset class="fieldset container-grid" style="display: flex; flex-direction: column;">
+            <fieldset class="fieldset container-grid mt10">
                 <div class='dmf'>
-                    <label class="labelmodal">Modulo: </label>
+                    <label class="labelfieldset">Modulo: </label>
                     <input type="text" id="mbmodulo"  name="mbmodulo"  class="ppp" disabled>
-                    <input type="text" id="mbdescmod" name="mbdescmod" class="extralarge" disabled>
+                    <input type="text" id="mbdescmod" name="mbdescmod" class="Intermedium" disabled>
                 </div>
 
                 <div class='dmf'>
-                    <label class="labelmodal">Aplicação: </label>
+                    <label class="labelfieldset">Aplicação: </label>
                     <input type="text" id="mbaplicacao" name="mbaplicacao" class="ppp" disabled>
-                    <input type="text" id="mbdescapl"   name="mbdescapl"   class="extralarge" disabled>
-                </div>
-
-                <div class='dmf'>
-                    <label class="labelmodal">Acesso: </label>
-                    <input type="text" id="mbcodacesso"  name="mbcodacesso"  class="ppp" disabled>
-                    <input type="text" id="mbdescacesso" name="mbdescacesso" class="large" disabled>
+                    <input type="text" id="mbdescapl"   name="mbdescapl"   class="Intermedium" disabled>
                 </div>
             </fieldset>
 
             <div class='dmf buttoninline'>
-                <div id="bincluirusu" name="bincluirusu" class="button" value="Incluir"></div>
+                <input type="button" id="bincluirusu" name="bincluirusu" value="Incluir Usu.">
             </div>
 
-            <div id="mbtabela_usubloq"></div>
+            <div class='dmf'>
+                <div id="mbtabela_usubloq"></div>
+            </div>
+
+            <div class='dmf buttoninline'>
+                <input type="button" id="bincluirresp" name="bincluirresp" value="Incluir Repon.">
+            </div>
+
+            <div class='dmf'>
+                <div id="mbtabela_respobloq"></div>
+            </div>
         </div>
 
         <div id="dmodalf_usuario">
             <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
                 <h2><span id="mstitulousu" name="mstitulousu"></span></h2>
+                <span     id="sacaousu"   name="sacaousu" style="display: none"></span>
             </div>
 
             <div class='dmf'>
@@ -118,7 +162,7 @@
                     <input type="text" id="munomeusu" name="munomeusu" class="large" disabled>
                 </div>
 
-            <div class='dmf buttonclass'>
+            <div class='dmf buttoncenter'>
                 <div id="bsalvarusu" name="bsalvarusu" class="button" value="Incluir"></div>
             </div>
         </div>

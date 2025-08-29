@@ -57,6 +57,7 @@ function wopr002_init(){
     DMFDiv.formModal();
 
     CONSUL = new consulForm_init();
+    filaFetchInit();
 
     iniciarEventos();
     buscarUserName();

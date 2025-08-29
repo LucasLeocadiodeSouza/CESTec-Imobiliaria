@@ -81,4 +81,11 @@ public class utilForm {
         return sdf.format(dataSql);
     }
 
+    public static String formatarLogical(Boolean dado) {
+        if (dado == null) {
+            return "Não";
+        }
+        
+        return dado?"Sim":"Não";
+    }
 }

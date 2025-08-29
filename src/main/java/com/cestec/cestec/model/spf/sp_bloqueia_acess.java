@@ -42,7 +42,6 @@ public class sp_bloqueia_acess {
     @JoinColumn(name = "id_aplicacao", nullable = false)
     private sp_aplicacoes aplicacao;
 
-    private boolean   ativo;
     private LocalDate datregistro;
     private String    ideusu; 
 }
