@@ -189,10 +189,12 @@ function filaFetchInit(){
             case "cadastrarBloqueioUsuario": alert("Erro ao Incluir Usuário!", retorno, 4);
                                              break;
 
+            case "cadastrarBloqueioResponsavel": alert("Erro ao Incluir Reponsavel!", retorno, 4);
+                                                 break;
+
             case "alteraEstadoBloqueioUsuario": alert("Erro ao alterar estado do Usuário!", retorno, 4);
                                                 break;
 
-            
             case "alteraEstadoBloqueioResp": alert("Erro ao alterar estado do Responsavel!", retorno, 4);
                                              break;
             }

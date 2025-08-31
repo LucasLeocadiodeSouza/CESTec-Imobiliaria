@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.cestec.cestec.service.genService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/gen")
 public class genController {
@@ -26,5 +28,10 @@ public class genController {
     @GetMapping("/getNomeByIdeusu")
     public String getNomeByIdeusu(@RequestParam(value = "ideusu", required = false) String ideusu){
         return gen.getNomeByIdeusu(ideusu);
+    }
+
+    @GetMapping("/usuarioTemAcessoAplicacao")
+    public Boolean usuarioTemAcessoAplicacao(@RequestParam(value = "codmod", required = false) Integer codmod, @RequestParam(value = "codapl", required = false) Integer codapl, HttpServletRequest request){
+        return gen.usuarioTemAcessoAplicacao(codmod, codapl, gen.getUserName(request));
     }
 }

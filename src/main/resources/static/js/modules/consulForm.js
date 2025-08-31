@@ -104,7 +104,7 @@ function consulForm_init(){
                 resulta = await response.text();
             }
 
-            this.filaFetch(resulta);
+            if(this.filaFetch) this.filaFetch(resulta);
 
             if(!ocultarloader){
                 clearTimeout(loaderTimeout);

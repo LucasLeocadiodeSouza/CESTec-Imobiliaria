@@ -13,4 +13,7 @@ import com.cestec.cestec.model.spf.sp_bloqueia_acess_respId;
 public interface bloqueioAcessRespRepo extends JpaRepository<sp_bloqueia_acess_resp, sp_bloqueia_acess_respId> {
     @Query("SELECT bloqresp FROM sp_bloqueia_acess_resp bloqresp WHERE bloqresp.seq.id_bloqueia_acess = :idbloqacess")
     List<sp_bloqueia_acess_resp> findAllBloqueioResp(@Param("idbloqacess") Integer idbloqacess);
+
+    @Query("SELECT bloqresp FROM sp_bloqueia_acess_resp bloqresp WHERE bloqresp.seq.id_bloqueia_acess = :idbloqacess AND bloqresp.seq.id_funcionario = :idfunc AND bloqresp.ativo = TRUE")
+    sp_bloqueia_acess_resp usuarioEhReponsavel(@Param("idbloqacess") Integer idbloqacess, @Param("idfunc") Integer idfunc);
 }
