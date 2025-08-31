@@ -1,3 +1,19 @@
+function getCookie(name){
+    const nameEQ = name + "=";
+    const cookies = document.cookie.split(';');
+    
+    for(let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i];
+        while (cookie.charAt(0) === ' ') {
+            cookie = cookie.substring(1, cookie.length).replaceAll("+", " ");
+        }
+        if (cookie.indexOf(nameEQ) === 0) {
+            return cookie.substring(nameEQ.length, cookie.length).replaceAll("+", " ");
+        }
+    }
+    return null;
+}
+
 function adicionarHeadLinks(){
     const favicon = document.createElement("link");
     favicon.rel   = 'icon';
@@ -59,8 +75,39 @@ function adicionaHeader(){
     .then(res => res.text())
     .then(html => { 
         cabecalho.innerHTML = html; 
+        addVariaveisAmbiente();
         document.body.insertBefore(cabecalho, document.body.firstChild);
     });
+}
+
+function addVariaveisAmbiente(){
+    const sectionAmb = document.createElement("section");
+    sectionAmb.style.display = "none";
+    
+    const hiddenModulo     = document.createElement("input");
+    hiddenModulo.type      = "hidden";
+    hiddenModulo.id        = "hcodmodulo_sis";
+    const hiddenDescMod    = document.createElement("input");
+    hiddenDescMod.type     = "hidden";
+    hiddenDescMod.id       = "hdescmodulo_sis";
+    const hiddenAplica     = document.createElement("input");
+    hiddenAplica.type      = "hidden";
+    hiddenAplica.id        = "hcodapl_sis";
+    const hiddenDescAplica = document.createElement("input");
+    hiddenDescAplica.type  = "hidden";
+    hiddenDescAplica.id    = "hdescapl_sis";
+
+    hiddenModulo.value     = getCookie("codmodulo");
+    hiddenDescMod.value    = getCookie("descmodulo");
+    hiddenAplica.value     = getCookie("codaplicacao");
+    hiddenDescAplica.value = getCookie("descapl");
+
+    sectionAmb.appendChild(hiddenModulo);
+    sectionAmb.appendChild(hiddenDescMod);
+    sectionAmb.appendChild(hiddenAplica);
+    sectionAmb.appendChild(hiddenDescAplica);
+
+    document.body.insertBefore(sectionAmb, document.body.firstChild);
 }
 
 function addScript(prog){

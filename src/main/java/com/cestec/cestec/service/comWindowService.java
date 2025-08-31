@@ -3,15 +3,12 @@ package com.cestec.cestec.service;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import com.cestec.cestec.model.contratoDTO;
 import com.cestec.cestec.model.corretorDTO;
 import com.cestec.cestec.model.funcionario;
 import com.cestec.cestec.model.historicoAcessoAplDTO;

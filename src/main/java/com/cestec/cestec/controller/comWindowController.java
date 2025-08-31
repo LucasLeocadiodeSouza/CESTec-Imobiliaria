@@ -17,6 +17,7 @@ import com.cestec.cestec.model.sp_aplicacoes;
 import com.cestec.cestec.model.opr.agendamentoDTO;
 import com.cestec.cestec.model.spf.sp_notificacao_usu;
 import com.cestec.cestec.service.comWindowService;
+import com.cestec.cestec.service.genService;
 import com.cestec.cestec.service.sp_userService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +26,9 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/home") // URL base para acessar
 public class comWindowController {
+
+    @Autowired
+    private genService gen;
 
     @Autowired
     private sp_userService sp_userService;
@@ -37,17 +41,7 @@ public class comWindowController {
 
     @GetMapping("/userlogin")
     public String getUserName(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null){
-            for(Cookie cookie : cookies){
-                if("authToken".equals(cookie.getName())){
-                    String token = cookie.getValue();
-                    String username = tokenService.getExtractedUsernameFromToken(token);
-                    return username;
-                }
-            }
-        }
-        return "";
+        return gen.getUserName(request);
     }
 
     @GetMapping("/getBotoesAplMenu")
