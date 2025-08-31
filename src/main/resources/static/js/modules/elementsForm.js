@@ -165,3 +165,14 @@ function alert(titulo, message, timeout){
     });
 
 }
+
+function includeBloquearApl(aviso){
+    const body = document.body;
+
+    body.innerHTML = "";
+    body.innerHTML = `
+        <div style="position: absolute;background: #FFF;padding: 10px;border-radius: 5px;transform: translate(-50%, -50%); top: 15%; left: 50%;">
+            <label>${aviso}</label>
+        </div>
+    `
+}

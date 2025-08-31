@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.cestec.cestec.model.funcionario;
 import com.cestec.cestec.model.funcionarioDTO;
 import com.cestec.cestec.model.sp_aplicacoes;
 import com.cestec.cestec.model.sp_modulos;
@@ -15,6 +17,7 @@ import com.cestec.cestec.model.spf.sp_bloqueia_acess_respId;
 import com.cestec.cestec.model.spf.sp_bloqueia_acess_usu;
 import com.cestec.cestec.model.spf.sp_bloqueia_acess_usuId;
 import com.cestec.cestec.repository.generico.aplicacoesRepository;
+import com.cestec.cestec.repository.generico.funcionarioRepository;
 import com.cestec.cestec.repository.generico.modulosRepository;
 
 import jakarta.persistence.EntityManager;
@@ -25,6 +28,9 @@ public class prjControleDeUsuarioRepository {
 
     @Autowired
     private aplicacoesRepository aplRepo;
+
+    @Autowired
+    private funcionarioRepository funcRepo;
 
     @Autowired
     private modulosRepository modRepo;

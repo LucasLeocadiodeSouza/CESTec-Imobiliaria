@@ -17,4 +17,10 @@ public interface bloqueioAcessUsuRepo extends JpaRepository<sp_bloqueia_acess_us
 
     @Query("SELECT bloqusu FROM sp_bloqueia_acess_usu bloqusu WHERE bloqusu.seq.id_bloqueia_acess = :idbloqacess")
     List<sp_bloqueia_acess_usu> findAllBloqueioUsu(@Param("idbloqacess") Integer idbloqacess);
+
+    @Query("SELECT bloqusu FROM sp_bloqueia_acess_usu bloqusu WHERE " +
+           " bloqusu.seq.id_funcionario = :idfunc AND " + 
+           " bloqusu.seq.id_bloqueia_acess = :idbloq AND" + 
+           " bloqusu.ativo = true")
+    sp_bloqueia_acess_usu findBloqueioUsuAtivoByCodFunc(@Param("idbloq") Integer idbloq, @Param("idfunc") Integer idfunc);
 }

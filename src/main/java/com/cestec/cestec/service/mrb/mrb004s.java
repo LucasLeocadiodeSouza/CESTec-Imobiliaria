@@ -56,6 +56,16 @@ public class mrb004s {
     private bloqueioAcessRespRepo bloqAcessRespRepo;
 
 
+    public void validaReponsavel(Integer codbloq, String ideusuSolic){
+        funcionario funcionarioSistema = funcRepo.findFuncByIdeusu(ideusuSolic);
+
+        if(bloqAcessRespRepo.usuarioEhReponsavel(codbloq, funcionarioSistema.getCodfuncionario()) == null) throw new RuntimeException("Usuário não é responsavel pela manutenção do bloqueio do sistema!");
+    }
+
+    public Boolean getTemUsuariosBloqueados(Integer idbloq){
+        return bloqAcessUsuRepo.findAllBloqueioUsuAtivos(idbloq).size() > 0;
+    }
+
     @Transactional
     public void cadastrarBloqueio(Integer codapl, Integer codmod, String ideusu){
         if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
@@ -67,6 +77,9 @@ public class mrb004s {
         if(aplicacao == null) throw new RuntimeException("Aplicacão deve não encontrada com o codigo informado '" + codapl + "'!");
 
         if(!aplicacao.getModulo().equals(modulo)) throw new RuntimeException("O módulo informado '" + codmod + "' é diferente do módulo cadastrado para a Aplicação '" + codapl + "'!");
+
+        List<sp_bloqueia_acess> bloqueiosAnalise = bloqAcess.findAllByModuloIhAplicacao(codapl, codmod);
+        if(bloqueiosAnalise.size() > 0) throw new RuntimeException("O jã existe um bloquio para o módulo ['" + codmod + "'] e a Aplicação ['" + codapl + "'] informados!");
 
         sp_bloqueia_acess bloqueio = new sp_bloqueia_acess();
         bloqueio.setAplicacao(aplicacao);
@@ -92,6 +105,7 @@ public class mrb004s {
     @Transactional
     public void cadastrarBloqueioResponsavel(String ideusuSolic, Integer codbloqueio, String ideusu){
         if(ideusuSolic == null || ideusuSolic.isBlank()) throw new RuntimeException("Informe um Usuário para incluir no bloqueio!");
+        validaReponsavel(codbloqueio, ideusu);
 
         if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
         if(sp_user.loadUserByUsername(ideusuSolic) == null) throw new RuntimeException("Funcionario não encontrado no sistema!");
@@ -117,6 +131,7 @@ public class mrb004s {
     @Transactional
     public void cadastrarBloqueioUsuario(String ideusuSolic, Integer codbloqueio, String ideusu){
         if(ideusuSolic == null || ideusuSolic.isBlank()) throw new RuntimeException("Informe um Usuário para incluir no bloqueio!");
+        validaReponsavel(codbloqueio, ideusu);
 
         if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
         if(sp_user.loadUserByUsername(ideusuSolic) == null) throw new RuntimeException("Funcionario não encontrado no sistema!");
@@ -142,6 +157,7 @@ public class mrb004s {
     @Transactional
     public void alteraEstadoBloqueioUsuario(String ideusuSolic, Integer codbloqueio, String ideusu){
         if(ideusuSolic == null || ideusuSolic.isBlank()) throw new RuntimeException("Informe um Usuário para Ativar/Inativar!");
+        validaReponsavel(codbloqueio, ideusu);
 
         if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
         if(sp_user.loadUserByUsername(ideusuSolic) == null) throw new RuntimeException("Funcionario não encontrado no sistema!");
@@ -162,6 +178,7 @@ public class mrb004s {
     @Transactional
     public void alteraEstadoBloqueioResp(String ideusuSolic, Integer codbloqueio, String ideusu){
         if(ideusuSolic == null || ideusuSolic.isBlank()) throw new RuntimeException("Informe um Usuário para Ativar/Inativar!");
+        if(bloqAcess.usuarioEhQuemCadastrou(codbloqueio, ideusuSolic) == null) validaReponsavel(codbloqueio, ideusu);
 
         if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
         if(sp_user.loadUserByUsername(ideusuSolic) == null) throw new RuntimeException("Funcionario não encontrado no sistema!");
@@ -177,12 +194,6 @@ public class mrb004s {
         bloqueioResp.setAtivo(!bloqueioResp.isAtivo());
 
         bloqAcessRespRepo.save(bloqueioResp);
-    }
-
-    public Boolean getTemUsuariosBloqueados(Integer idbloq){
-        List<sp_bloqueia_acess_usu> usuariosBloq = bloqAcessUsuRepo.findAllBloqueioUsuAtivos(idbloq);
-
-        return usuariosBloq.size() > 0;
     }
 
     /* Grids */
