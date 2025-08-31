@@ -281,6 +281,9 @@ function limparTela(opc){
         form('mbdescmod').value    = "";
         form('mbaplicacao').value  = "";
         form('mbdescapl').value    = "";
+
+        RESPBLOQUE_GRID.clearGrid();
+        USUBLOQ_GRID.clearGrid();
     }
     if(opc === "modalusu"){
         form('muideusu').value  = "";
