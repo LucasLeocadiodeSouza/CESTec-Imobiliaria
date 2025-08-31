@@ -78,6 +78,9 @@ body .gen {padding: 10px}
                  font-size: 13px;
                  font-weight: 600;}
 
+.buttoninline {display: flex; margin-left: 5px;}
+.buttoncenter {display: flex; justify-content: center;}
+
 .gen a      {font-weight:     bolder;
              color:           #025bc9;
              text-decoration: underline;}

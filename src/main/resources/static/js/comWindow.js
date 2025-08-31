@@ -230,6 +230,7 @@ function criarBotaoExterno(divpai,botoes){
                     window.open("/buscarPath/" + botaoint.codapl, "Consulta de Tabelas", "_blank,width=1300,height=680");
                 }else{
                     salvarHistoricoApl(botao.codmodulo, botaoint.codapl);
+                    salvarCookieAplicacao("/buscarPath/" + botaoint.codapl, botao.codmodulo, botaoint.codapl);
                     window.open("/buscarPath/" + botaoint.codapl + "?idmodulo=" + botao.codmodulo + "&nomemodulo=" + botao.menu + "&idapl=" + botaoint.codapl + "&nomeapl=" + botaoint.descricao + "&prog=" + botaoint.prog_ini, "_blank", "noopener");
                     //window.location.href = "/buscarPath/" + botaoint.codapl;
                 }
@@ -510,6 +511,10 @@ function buscarUserName(){
 
 function buscarUserId(){
     CONSUL.consultar("buscarUserId",`/home/userid`,'','',{},true)
+}
+
+function salvarCookieAplicacao(caminho, idmodulo, idaplicacao){
+    CONSUL.consultar("pathAplication",`/auth/pathAplication?path=${caminho}&codmod=${idmodulo}&codapl=${idaplicacao}`,"POST")
 }
 
 function valorMetaMensal(){
