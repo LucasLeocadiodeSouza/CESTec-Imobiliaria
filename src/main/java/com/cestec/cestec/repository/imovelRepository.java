@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.cestec.cestec.model.ImovelProprietarioDTO;
-import com.cestec.cestec.model.pcp_imovel;
+import com.cestec.cestec.model.cri.pcp_imovel;
 
 @Repository
 public interface imovelRepository extends JpaRepository<pcp_imovel, Integer> {

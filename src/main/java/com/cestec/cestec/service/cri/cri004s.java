@@ -1,4 +1,4 @@
-package com.cestec.cestec.service;
+package com.cestec.cestec.service.cri;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -8,22 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cestec.cestec.model.contratoDTO;
-import com.cestec.cestec.model.pcp_cliente;
-import com.cestec.cestec.model.pcp_contrato;
 import com.cestec.cestec.model.pcp_corretor;
-import com.cestec.cestec.model.pcp_imovel;
-import com.cestec.cestec.model.pcp_proprietario;
+import com.cestec.cestec.model.cri.pcp_cliente;
+import com.cestec.cestec.model.cri.pcp_contrato;
+import com.cestec.cestec.model.cri.pcp_imovel;
+import com.cestec.cestec.model.cri.pcp_proprietario;
 import com.cestec.cestec.repository.clienteRepository;
 import com.cestec.cestec.repository.contratoRepository;
 import com.cestec.cestec.repository.corretorRepository;
 import com.cestec.cestec.repository.imovelRepository;
-import com.cestec.cestec.repository.proprietarioRepository;
+import com.cestec.cestec.repository.cri.proprietarioRepository;
 import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
 import com.cestec.cestec.repository.generico.funcionarioRepository;
 import com.cestec.cestec.util.utilForm;
 
 @Service
-public class contratoService {
+public class cri004s {
     
     @Autowired
     private contratoRepository contratoRepository;

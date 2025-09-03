@@ -92,3 +92,27 @@ function setRadioValue(opc,valor) {
         radio.checked = true;
     }
 }
+
+function formatDocToCpf(doc){
+    const numeros = doc.replace(/\D/g, '');
+
+    const cpfLimpo = numeros.substring(0, 11);
+    
+    if (!cpfLimpo || cpfLimpo.length < 11) return doc;
+    
+    return cpfLimpo.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+}
+
+function formatDocToCnpj(doc){
+    const numeros = doc.replace(/\D/g, '');
+    
+    const cnpjLimpo = numeros.substring(0, 14);
+    
+    if (!cnpjLimpo || cnpjLimpo.length < 14) return doc;
+
+    return cnpjLimpo.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+}
+
+function retirarFormatDoc(doc){
+    return doc.replace(/\D/g, '');
+}

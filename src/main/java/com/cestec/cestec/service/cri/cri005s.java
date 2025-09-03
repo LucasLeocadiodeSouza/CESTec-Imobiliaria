@@ -1,4 +1,4 @@
-package com.cestec.cestec.service;
+package com.cestec.cestec.service.cri;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ import com.cestec.cestec.util.utilForm;
 import jakarta.transaction.Transactional;
 
 @Service
-public class wcr005s {
+public class cri005s {
     
     @Autowired
     private metaRepository metaRepository;
