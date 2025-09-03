@@ -240,8 +240,6 @@ function limparTela(opc){
         CONTRATOS_GRID.clearGrid();
     }
     if(opc == "modal"){
-        fillSelect("msimovel","0|Selecione um Imovel");
-
         form('mcodcliente').value   = "0";
         form('mdesccliente').value  = "";
         form('mcodprop').value      = "0";
@@ -340,22 +338,4 @@ function getDescCorretor(){
 
 function buscarUserName(){
     CONSUL.consultar("buscarUserName",`/home/userlogin`);
-}
-
-
-function fillSelect(selectId, data) {
-    let select = document.getElementById(selectId);
-    select.innerHTML = "";
-
-    let items = data.split("#");
-
-    items.forEach(item => {
-        let parts = item.split("|");
-        if (parts.length === 2) {
-            let option         = document.createElement("option");
-            option.value       = parts[0];
-            option.textContent = parts[1];
-            select.appendChild(option);
-        }
-    });
 }

@@ -1,11 +1,15 @@
 package com.cestec.cestec.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.cestec.cestec.infra.security.tokenService;
 import com.cestec.cestec.model.funcionario;
+import com.cestec.cestec.model.cri.pcp_proprietario;
 import com.cestec.cestec.model.spf.sp_bloqueia_acess;
+import com.cestec.cestec.repository.cri.proprietarioRepository;
 import com.cestec.cestec.repository.generico.aplicacoesRepository;
 import com.cestec.cestec.repository.generico.funcionarioRepository;
 import com.cestec.cestec.repository.generico.modulosRepository;
@@ -35,6 +39,9 @@ public class genService {
     @Autowired
     private bloqueioAcessUsuRepo bloqueioUsuApl;
 
+    @Autowired
+    private proprietarioRepository proprietarioRepository;
+
     public String getUserName(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if(cookies != null){
@@ -49,56 +56,60 @@ public class genService {
         return "";
     }
 
-    public Integer getCodModuloUser(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null){
-            for(Cookie cookie : cookies){
-                System.out.println(cookie.getName());
-
-                if("codmodulo".equals(cookie.getName())){
-                    String codmodulo = cookie.getValue();
-                    return Integer.parseInt(codmodulo);
-                }
-            }
-        }
-        return 0;
-    }
-
-    public Integer getCodAplicacaoUser(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null){
-            for(Cookie cookie : cookies){
-                if("codaplicacao".equals(cookie.getName())){
-                    String codaplicacao = cookie.getValue();
-                    return Integer.parseInt(codaplicacao);
-                }
-            }
-        }
-        return 0;
-    }
-
     public String getNomeByIdeusu(String ideusu){
         return funcionarioRepository.findNomeByIdeusu(ideusu);
     }
 
+    public String getNomeByCodFunc(Integer codfunc){
+        String funcname = funcionarioRepository.findNameByUser(codfunc);
+
+        if(funcname == null) throw new RuntimeException("Não encontrado nenhum funcionario com o código informado!");
+
+        return funcname;
+    }
+
     public String findCargoByIdeusu(String ideusu){
-        return funcionarioRepository.findCargoByIdeusu(ideusu);
+        String cargoname = funcionarioRepository.findCargoByIdeusu(ideusu);
+
+        if(cargoname == null) throw new RuntimeException("Não encontrado o Cargo para o funcionario informado!");
+
+        return cargoname;
     }
 
     public String findSetorByIdeusu(String ideusu){
-        return funcionarioRepository.findSetorByIdeusu(ideusu);
+        String setorname = funcionarioRepository.findSetorByIdeusu(ideusu);
+
+        if(setorname == null) throw new RuntimeException("Não encontrado o Setor para o funcionario informado!");
+
+        return setorname;
     } 
 
     public String findCodSetorByIdeusu(String ideusu){
-        return funcionarioRepository.findCodSetorByIdeusu(ideusu);
+        String codsetor = funcionarioRepository.findCodSetorByIdeusu(ideusu);
+
+        if(codsetor == null) throw new RuntimeException("Não encontrado o Código do Setor para o funcionario informado!");
+
+        return codsetor;
     }
 
     public String getDescricaoModulo(Integer codmodulo){
-        return modulosRepository.findByIdModulos(codmodulo).getDescricao();
+        String descmodulo = modulosRepository.findByIdModulos(codmodulo).getDescricao();
+
+        if(descmodulo == null) throw new RuntimeException("Não encontrado a descricão do modulo com o código informado!");
+
+        return descmodulo;
     } 
 
     public String getDescricaoAplicacao(Integer codmodulo){
         return aplicacoesRepository.findByCodApl(codmodulo).getDescricao();
+    }
+
+    public String getNomeProp(Integer codProprietario) {
+        String propname = proprietarioRepository.findByCodproprietario(codProprietario).getNome();
+
+        if(propname == null) throw new RuntimeException("Código do proprietario [" + codProprietario + "] não encontrado");
+
+        return propname;
     }
 
     public Boolean usuarioTemAcessoAplicacao(Integer idmodulo, Integer idaplicacao, String ideusu){

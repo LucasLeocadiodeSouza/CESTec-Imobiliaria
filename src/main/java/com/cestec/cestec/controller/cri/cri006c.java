@@ -1,4 +1,4 @@
-package com.cestec.cestec.controller;
+package com.cestec.cestec.controller.cri;
 
 import java.util.List;
 
@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cestec.cestec.model.pcp_contrato;
-import com.cestec.cestec.service.contratoService;
-import com.cestec.cestec.service.wcr006s;
+import com.cestec.cestec.model.cri.pcp_contrato;
+import com.cestec.cestec.service.cri.cri004s;
+import com.cestec.cestec.service.cri.cri006s;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/wcr006c")
-public class wcr006c {
+public class cri006c {
     
     @Autowired
-    private contratoService contratoService;
+    private cri004s contratoService;
 
     @Autowired
-    private wcr006s wcr006s;
+    private cri006s wcr006s;
 
     @GetMapping("/buscarContratoAprovacao")
     public List<?> buscarContratoAprovacao(@RequestParam(value="codprop", required = false) Integer codprop,

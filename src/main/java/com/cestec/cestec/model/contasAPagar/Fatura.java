@@ -7,7 +7,9 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import com.cestec.cestec.model.pcp_cliente;
+
+import com.cestec.cestec.model.cri.pcp_cliente;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

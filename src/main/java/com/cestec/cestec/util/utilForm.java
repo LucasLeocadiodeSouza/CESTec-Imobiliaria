@@ -88,4 +88,20 @@ public class utilForm {
         
         return dado?"Sim":"Não";
     }
+
+    public static String formatDocToCpf(String documento){
+        if (documento == null || documento.length() != 11) {
+            return documento;
+        }
+        
+        return documento.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
+    }
+
+    public static String formatDocToCnpj(String documento){
+        if (documento == null || documento.length() != 14) {
+            return documento;
+        }
+        
+        return documento.replaceAll("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})", "$1.$2.$3/$4-$5");
+    }
 }

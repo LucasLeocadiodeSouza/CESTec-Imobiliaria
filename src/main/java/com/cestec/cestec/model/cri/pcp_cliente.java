@@ -1,4 +1,4 @@
-package com.cestec.cestec.model;
+package com.cestec.cestec.model.cri;
 
 import java.time.LocalDateTime;
 

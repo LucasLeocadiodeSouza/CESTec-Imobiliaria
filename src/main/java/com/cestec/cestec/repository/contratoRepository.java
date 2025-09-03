@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.cestec.cestec.model.contratoDTO;
-import com.cestec.cestec.model.pcp_contrato;
+import com.cestec.cestec.model.cri.pcp_contrato;
 
 @Repository
 public interface contratoRepository extends JpaRepository<pcp_contrato, Integer> {

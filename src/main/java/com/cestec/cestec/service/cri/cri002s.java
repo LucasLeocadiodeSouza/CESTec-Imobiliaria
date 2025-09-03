@@ -1,4 +1,4 @@
-package com.cestec.cestec.service;
+package com.cestec.cestec.service.cri;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,15 +9,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import com.cestec.cestec.model.ImovelProprietarioDTO;
-import com.cestec.cestec.model.pcp_imovel;
-import com.cestec.cestec.model.pcp_proprietario;
+import com.cestec.cestec.model.cri.pcp_imovel;
+import com.cestec.cestec.model.cri.pcp_proprietario;
 import com.cestec.cestec.repository.imovelRepository;
-import com.cestec.cestec.repository.proprietarioRepository;
+import com.cestec.cestec.repository.cri.proprietarioRepository;
 import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
 import com.cestec.cestec.util.utilForm;
 
 @Service
-public class pcp_proprietarioService {
+public class cri002s {
 
     @Autowired
     private proprietarioRepository proprietarioRepository;
@@ -27,142 +27,6 @@ public class pcp_proprietarioService {
 
      @Autowired
     private prjContratosCustomRepository contratosCustomRepository;
-
-    public String validaProprietario(pcp_proprietario proprietario) {
-        if (proprietario.getDocumento() == "") {
-            return "Proprietario Não pode ser cadastrado sem um CPF";
-        }
-        if (proprietario.getEmail() == "") {
-            return "Deve ser Preenchido o Campo Email do proprietario";
-        }
-        if (proprietario.getNome() == "") {
-            return "Deve ser Preenchido o Campo Nome do proprietario";
-        }
-        if (proprietario.getNumtel() == "") {
-            return "Deve ser informado o Numero de telefone do proprietario";
-        }
-        if (proprietario.getEndereco_bairro() == "") {
-            return "Deve ser informado o Endereco [Bairro] do proprietario";
-        }
-        if (proprietario.getEndereco_numero() == "") {
-            return "Deve ser informado o Endereco [Número] do proprietario";
-        }
-        if (proprietario.getEndereco_logradouro() == "") {
-            return "Deve ser informado o Endereco [Logradouro] do proprietario";
-        }
-        if (proprietario.getEndereco_cep() == "") {
-            return "Deve ser informado o Endereco [Cep] do proprietario";
-        }
-        if (proprietario.getEndereco_cep().length() != 9) {
-            return "Cep [" + proprietario.getEndereco_cep().toString() + "] Informado inválido";
-        }
-        if (proprietario.getEndereco_cidade() == "") {
-            return "Deve ser informado o Endereco [Cidade] do proprietario";
-        }
-        if (proprietario.getEndereco_uf() == "") {
-            return "Deve ser informado o Endereco [UF] do proprietario";
-        }
-        return "OK";
-    }
-
-    @Transactional
-    public ResponseEntity<String> salvarProprietario(pcp_proprietario pcp_proprietario) {
-        String validacao = validaProprietario(pcp_proprietario);
-        if (!validacao.equals("OK")) {
-            return ResponseEntity.ok(validacao);
-        }
-
-        try {
-            pcp_proprietario proprietarioAnalise = proprietarioRepository
-                    .findByCodproprietario(pcp_proprietario.getCodproprietario());
-
-            proprietarioAnalise.setDocumento(pcp_proprietario.getDocumento());
-            proprietarioAnalise.setEmail(pcp_proprietario.getEmail());
-            proprietarioAnalise.setEndereco_bairro(pcp_proprietario.getEndereco_bairro());
-            proprietarioAnalise.setEndereco_cep(pcp_proprietario.getEndereco_cep());
-            proprietarioAnalise.setEndereco_cidade(pcp_proprietario.getEndereco_cidade());
-            proprietarioAnalise.setEndereco_complemento(pcp_proprietario.getEndereco_complemento());
-            proprietarioAnalise.setEndereco_numero(pcp_proprietario.getEndereco_numero());
-            proprietarioAnalise.setEndereco_uf(pcp_proprietario.getEndereco_uf());
-            proprietarioAnalise.setEndereco_logradouro(pcp_proprietario.getEndereco_logradouro());
-            proprietarioAnalise.setNome(pcp_proprietario.getNome());
-            proprietarioAnalise.setNumtel(pcp_proprietario.getNumtel());
-            proprietarioAnalise.setCriado_em(proprietarioAnalise.getCriado_em() == null ? LocalDateTime.now() : proprietarioAnalise.getCriado_em());
-            proprietarioAnalise.setAtualizado_em(LocalDateTime.now());
-            if (proprietarioAnalise.getCodproprietario() == null) proprietarioAnalise.setId_usuario(pcp_proprietario.getId_usuario());
-
-            proprietarioRepository.save(proprietarioAnalise);
-            return ResponseEntity.ok("OK");
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage());
-        }
-    }
-
-    public pcp_imovel salvarImovel(pcp_imovel imovel, Integer codproprietario) {
-        pcp_proprietario proprietario = proprietarioRepository.findById(codproprietario)
-                .orElseThrow(
-                        () -> new RuntimeException("Proprietário não encontrado com o código: " + codproprietario));
-        imovel.setPcp_proprietario(proprietario);
-
-        pcp_imovel verificaimovel = imovelRepository.existeimovel(imovel.getCodimovel(), codproprietario);
-        if (verificaimovel != null) {
-            verificaimovel.setArea(imovel.getArea());
-            verificaimovel.setDatinicontrato(imovel.getDatinicontrato());
-            verificaimovel.setEndereco(imovel.getEndereco());
-            verificaimovel.setNegociacao(imovel.getNegociacao());
-            verificaimovel.setPreco(imovel.getPreco());
-            verificaimovel.setPcp_proprietario(proprietario);
-            verificaimovel.setQuartos(imovel.getQuartos());
-            verificaimovel.setStatus(imovel.getStatus());
-            verificaimovel.setTipo(imovel.getTipo());
-            verificaimovel.setVlrcondominio(imovel.getVlrcondominio());
-        }
-        ;
-        return imovelRepository.save(imovel);
-    }
-
-    public List<pcp_proprietario> listarProprietarios() {
-        return proprietarioRepository.findAll();
-    }
-
-    public List<pcp_imovel> listarImoveisPorProprietario(Integer codProprietario) {
-        return imovelRepository.findByProprietario(codProprietario);
-    }
-
-    public List<pcp_imovel> listarImoveis() {
-        return imovelRepository.findAll();
-    }
-
-    public List<?> buscarProprietario(Integer codprop) {
-        List<pcp_proprietario> proprietarios = contratosCustomRepository.buscarProprietario(codprop);
-
-        utilForm.initGrid();
-        for (int i = 0; i < proprietarios.size(); i++) {
-            String enderecocompl = proprietarios.get(i).getEndereco_bairro() + ", "
-                    + proprietarios.get(i).getEndereco_numero() + ", " + proprietarios.get(i).getEndereco_cidade()
-                    + ", " + proprietarios.get(i).getEndereco_uf();
-
-            utilForm.criarRow();
-            utilForm.criarColuna(proprietarios.get(i).getCodproprietario().toString());
-            utilForm.criarColuna(proprietarios.get(i).getNome());
-            utilForm.criarColuna(proprietarios.get(i).getDocumento().toString());
-            utilForm.criarColuna(enderecocompl);
-            utilForm.criarColuna(proprietarios.get(i).getNumtel().toString());
-            utilForm.criarColuna(proprietarios.get(i).getEmail());
-            utilForm.criarColuna(proprietarios.get(i).getEndereco_logradouro());
-            utilForm.criarColuna(proprietarios.get(i).getEndereco_numero());
-            utilForm.criarColuna(proprietarios.get(i).getEndereco_cidade());
-            utilForm.criarColuna(proprietarios.get(i).getEndereco_uf());
-            utilForm.criarColuna(proprietarios.get(i).getEndereco_cep());
-        }
-
-        return utilForm.criarGrid();
-    }
-
-    public ImovelProprietarioDTO buscarImovelGrid(Integer index) {
-        return imovelRepository.buscarImovelGrid(imovelRepository.buscarimoveis().get(index).getCodimovel(),
-                imovelRepository.buscarimoveis().get(index).getCodproprietario());
-    }
 
     public String getBuscaTipoImovel(Integer codImovel) {
         Integer tipo = imovelRepository.findById(codImovel).get().getTipo();
@@ -212,12 +76,144 @@ public class pcp_proprietarioService {
         return "Descricão não encontrada";
     }
 
-    public String getNomeProp(Integer codProprietario) {
-        pcp_proprietario proprietario = proprietarioRepository.findById(codProprietario)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, // Status HTTP 404
-                        "Código do proprietario [" + codProprietario + "] não encontrado"));
+    public String validaProprietario(pcp_proprietario proprietario) {
+        if (proprietario.getDocumento() == "") {
+            return "Proprietario Não pode ser cadastrado sem um CPF";
+        }
+        if (proprietario.getEmail() == "") {
+            return "Deve ser Preenchido o Campo Email do proprietario";
+        }
+        if (proprietario.getNome() == "") {
+            return "Deve ser Preenchido o Campo Nome do proprietario";
+        }
+        if (proprietario.getNumtel() == "") {
+            return "Deve ser informado o Numero de telefone do proprietario";
+        }
+        if (proprietario.getEndereco_bairro() == "") {
+            return "Deve ser informado o Endereco [Bairro] do proprietario";
+        }
+        if (proprietario.getEndereco_numero() == "") {
+            return "Deve ser informado o Endereco [Número] do proprietario";
+        }
+        if (proprietario.getEndereco_logradouro() == "") {
+            return "Deve ser informado o Endereco [Logradouro] do proprietario";
+        }
+        if (proprietario.getEndereco_cep() == "") {
+            return "Deve ser informado o Endereco [Cep] do proprietario";
+        }
+        if (proprietario.getEndereco_cep().length() != 9) {
+            return "Cep [" + proprietario.getEndereco_cep().toString() + "] Informado inválido";
+        }
+        if (proprietario.getEndereco_cidade() == "") {
+            return "Deve ser informado o Endereco [Cidade] do proprietario";
+        }
+        if (proprietario.getEndereco_uf() == "") {
+            return "Deve ser informado o Endereco [UF] do proprietario";
+        }
+        return "OK";
+    }
 
-        return proprietario.getNome();
+    @Transactional
+    public void salvarProprietario(pcp_proprietario pcp_proprietario) {
+        String validacao = validaProprietario(pcp_proprietario);
+        if (!validacao.equals("OK"))  throw new RuntimeException(validacao);
+
+        if(!pcp_proprietario.isPessoa_fisica() && pcp_proprietario.getDocumento().length() != 14) throw new RuntimeException("CPNJ inválido!");
+        if(pcp_proprietario.isPessoa_fisica() && pcp_proprietario.getDocumento().length() != 11) throw new RuntimeException("CPF inválido!");
+
+        pcp_proprietario proprietarioAnalise = proprietarioRepository.findByCodproprietario(pcp_proprietario.getCodproprietario());
+        if(proprietarioAnalise == null) proprietarioAnalise = new pcp_proprietario();
+
+        if(proprietarioAnalise.getCodproprietario() == null){
+            proprietarioAnalise.setNome(pcp_proprietario.getNome());
+            proprietarioAnalise.setDocumento(pcp_proprietario.getDocumento());
+            proprietarioAnalise.setCriado_em(proprietarioAnalise.getCriado_em() == null ? LocalDateTime.now() : proprietarioAnalise.getCriado_em());
+            proprietarioAnalise.setIdeusu(pcp_proprietario.getIdeusu());
+            proprietarioAnalise.setPessoa_fisica(pcp_proprietario.isPessoa_fisica());
+        }
+
+        proprietarioAnalise.setEmail(pcp_proprietario.getEmail());
+        proprietarioAnalise.setEndereco_bairro(pcp_proprietario.getEndereco_bairro());
+        proprietarioAnalise.setEndereco_cep(pcp_proprietario.getEndereco_cep());
+        proprietarioAnalise.setEndereco_cidade(pcp_proprietario.getEndereco_cidade());
+        proprietarioAnalise.setEndereco_complemento(pcp_proprietario.getEndereco_complemento());
+        proprietarioAnalise.setEndereco_numero(pcp_proprietario.getEndereco_numero());
+        proprietarioAnalise.setEndereco_uf(pcp_proprietario.getEndereco_uf());
+        proprietarioAnalise.setEndereco_logradouro(pcp_proprietario.getEndereco_logradouro());
+        proprietarioAnalise.setNumtel(pcp_proprietario.getNumtel());
+        proprietarioAnalise.setAtualizado_em(LocalDateTime.now());
+
+        proprietarioRepository.save(proprietarioAnalise);
+    }
+
+    public pcp_imovel salvarImovel(pcp_imovel imovel, Integer codproprietario) {
+        pcp_proprietario proprietario = proprietarioRepository.findById(codproprietario)
+                .orElseThrow(
+                        () -> new RuntimeException("Proprietário não encontrado com o código: " + codproprietario));
+        imovel.setPcp_proprietario(proprietario);
+
+        pcp_imovel verificaimovel = imovelRepository.existeimovel(imovel.getCodimovel(), codproprietario);
+        if (verificaimovel != null) {
+            verificaimovel.setArea(imovel.getArea());
+            verificaimovel.setDatinicontrato(imovel.getDatinicontrato());
+            verificaimovel.setEndereco(imovel.getEndereco());
+            verificaimovel.setNegociacao(imovel.getNegociacao());
+            verificaimovel.setPreco(imovel.getPreco());
+            verificaimovel.setPcp_proprietario(proprietario);
+            verificaimovel.setQuartos(imovel.getQuartos());
+            verificaimovel.setStatus(imovel.getStatus());
+            verificaimovel.setTipo(imovel.getTipo());
+            verificaimovel.setVlrcondominio(imovel.getVlrcondominio());
+        }
+        ;
+        return imovelRepository.save(imovel);
+    }
+
+    public List<pcp_proprietario> listarProprietarios() {
+        return proprietarioRepository.findAll();
+    }
+
+    public List<pcp_imovel> listarImoveisPorProprietario(Integer codProprietario) {
+        return imovelRepository.findByProprietario(codProprietario);
+    }
+
+    public List<pcp_imovel> listarImoveis() {
+        return imovelRepository.findAll();
+    }
+
+    public List<?> buscarProprietario(Integer codprop) {
+        List<pcp_proprietario> proprietarios = contratosCustomRepository.buscarProprietario(codprop);
+
+        utilForm.initGrid();
+        for (int i = 0; i < proprietarios.size(); i++) {
+            String enderecocompl = proprietarios.get(i).getEndereco_bairro() + ", "
+                    + proprietarios.get(i).getEndereco_numero() + ", " + proprietarios.get(i).getEndereco_cidade()
+                    + ", " + proprietarios.get(i).getEndereco_uf();
+
+            String documento = proprietarios.get(i).isPessoa_fisica()? utilForm.formatDocToCnpj(proprietarios.get(i).getDocumento()) : utilForm.formatDocToCpf(proprietarios.get(i).getDocumento());
+
+            utilForm.criarRow();
+            utilForm.criarColuna(proprietarios.get(i).getCodproprietario().toString());
+            utilForm.criarColuna(proprietarios.get(i).getNome());
+            utilForm.criarColuna(documento);
+            utilForm.criarColuna(enderecocompl);
+            utilForm.criarColuna(proprietarios.get(i).getNumtel().toString());
+            utilForm.criarColuna(proprietarios.get(i).getEmail());
+            utilForm.criarColuna(proprietarios.get(i).getEndereco_bairro());
+            utilForm.criarColuna(proprietarios.get(i).getEndereco_logradouro());
+            utilForm.criarColuna(proprietarios.get(i).getEndereco_numero());
+            utilForm.criarColuna(proprietarios.get(i).getEndereco_cidade());
+            utilForm.criarColuna(proprietarios.get(i).getEndereco_uf());
+            utilForm.criarColuna(proprietarios.get(i).getEndereco_cep());
+            utilForm.criarColuna(Boolean.toString(proprietarios.get(i).isPessoa_fisica()));
+        }
+
+        return utilForm.criarGrid();
+    }
+
+    public ImovelProprietarioDTO buscarImovelGrid(Integer index) {
+        return imovelRepository.buscarImovelGrid(imovelRepository.buscarimoveis().get(index).getCodimovel(),
+                imovelRepository.buscarimoveis().get(index).getCodproprietario());
     }
 
     public List<?> buscarImoveis() {

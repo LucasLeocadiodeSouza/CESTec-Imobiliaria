@@ -1,4 +1,4 @@
-package com.cestec.cestec.controller;
+package com.cestec.cestec.controller.cri;
 
 import java.util.List;
 
@@ -8,17 +8,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cestec.cestec.model.corretorDTO;
-import com.cestec.cestec.service.wcr005s;
+import com.cestec.cestec.service.cri.cri005s;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/wcr005")
-public class wcr005c {
+public class cri005c {
     
     @Autowired
-    private wcr005s wcr005s;
+    private cri005s wcr005s;
 
     @GetMapping("/buscarMetasCorretoresGrid")
     public List<?> buscarMetasCorretoresGrid(){

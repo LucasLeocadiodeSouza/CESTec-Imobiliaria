@@ -87,6 +87,9 @@ function consulForm_init(){
                 }
 
                 const textError = await response.text();
+                
+                alert('Ocorreu um erro!',textError,4);
+                
                 this.filaFetch(`Erro na requisição: ${response.status} - ${textError}`, response.status);
 
                 throw new Error(`Erro na requisição: ${response.status} - ${textError}`);

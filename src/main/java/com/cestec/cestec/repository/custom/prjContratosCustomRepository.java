@@ -5,8 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import com.cestec.cestec.model.aplicacaoDTO;
 import com.cestec.cestec.model.contratoDTO;
-import com.cestec.cestec.model.pcp_cliente;
-import com.cestec.cestec.model.pcp_proprietario;
+import com.cestec.cestec.model.cri.pcp_cliente;
+import com.cestec.cestec.model.cri.pcp_proprietario;
 
 import jakarta.persistence.EntityManager;
 

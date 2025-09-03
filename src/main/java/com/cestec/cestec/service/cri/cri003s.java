@@ -1,4 +1,4 @@
-package com.cestec.cestec.service;
+package com.cestec.cestec.service.cri;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,13 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cestec.cestec.model.pcp_cliente;
+import com.cestec.cestec.model.cri.pcp_cliente;
 import com.cestec.cestec.repository.clienteRepository;
 import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
 import com.cestec.cestec.util.utilForm;
 
 @Service
-public class pcp_clienteService {
+public class cri003s {
     
     @Autowired
     private clienteRepository clienteRepository;

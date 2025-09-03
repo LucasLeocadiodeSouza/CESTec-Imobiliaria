@@ -1,4 +1,4 @@
-package com.cestec.cestec.service;
+package com.cestec.cestec.service.cri;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +7,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.cestec.cestec.model.contratoDTO;
-import com.cestec.cestec.model.pcp_contrato;
+import com.cestec.cestec.model.cri.pcp_contrato;
 import com.cestec.cestec.repository.contratoRepository;
 import com.cestec.cestec.repository.userRepository;
 import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
 import com.cestec.cestec.util.utilForm;
 
 @Service
-public class wcr006s {
+public class cri006s {
     
     @Autowired
     private contratoRepository contratoRepository;
