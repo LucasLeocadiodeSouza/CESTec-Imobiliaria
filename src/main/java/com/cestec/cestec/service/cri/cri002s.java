@@ -129,7 +129,7 @@ public class cri002s {
                     + proprietarios.get(i).getEndereco_numero() + ", " + proprietarios.get(i).getEndereco_cidade()
                     + ", " + proprietarios.get(i).getEndereco_uf();
 
-            String documento = proprietarios.get(i).isPessoa_fisica()? utilForm.formatDocToCnpj(proprietarios.get(i).getDocumento()) : utilForm.formatDocToCpf(proprietarios.get(i).getDocumento());
+            String documento = proprietarios.get(i).isPessoa_fisica()? utilForm.formatDocToCpf(proprietarios.get(i).getDocumento()) : utilForm.formatDocToCnpj(proprietarios.get(i).getDocumento());
 
             utilForm.criarRow();
             utilForm.criarColuna(proprietarios.get(i).getCodproprietario().toString());

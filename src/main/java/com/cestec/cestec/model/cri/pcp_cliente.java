@@ -1,5 +1,6 @@
 package com.cestec.cestec.model.cri;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,8 +45,8 @@ public class pcp_cliente {
 
     private String        numtel;
     private String        email;
-    private LocalDateTime criado_em;
-    private LocalDateTime atualizado_em;
+    private LocalDate     criado_em;
+    private LocalDate     atualizado_em;
 
     @Column(columnDefinition = "TINYINT(1)")
     private boolean pessoa_fisica;

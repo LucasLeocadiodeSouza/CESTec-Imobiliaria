@@ -81,11 +81,6 @@ public class cri001c {
         return cri001s.buscarImoveis(codcontrato,codprop,tipimovel);
     }
 
-    @PostMapping("/buscarImovelGrid")
-    public ImovelProprietarioDTO buscarImovelGrid(@RequestParam(value = "index", required = false) Integer index){        
-        return cri001s.buscarImovelGrid(index);
-    }
-
     @GetMapping("/getOptionsTpContrato")
     public List<modelUtilForm> getOptionsTpContrato() {
         return cri001s.getOptionsTpContrato();

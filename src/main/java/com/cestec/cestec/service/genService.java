@@ -1,21 +1,17 @@
 package com.cestec.cestec.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
 import com.cestec.cestec.infra.security.tokenService;
 import com.cestec.cestec.model.funcionario;
-import com.cestec.cestec.model.cri.pcp_proprietario;
 import com.cestec.cestec.model.spf.sp_bloqueia_acess;
+import com.cestec.cestec.repository.cri.clienteRepository;
 import com.cestec.cestec.repository.cri.proprietarioRepository;
 import com.cestec.cestec.repository.generico.aplicacoesRepository;
 import com.cestec.cestec.repository.generico.funcionarioRepository;
 import com.cestec.cestec.repository.generico.modulosRepository;
 import com.cestec.cestec.repository.spf.bloqueioAcessRepo;
 import com.cestec.cestec.repository.spf.bloqueioAcessUsuRepo;
-
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -41,6 +37,10 @@ public class genService {
 
     @Autowired
     private proprietarioRepository proprietarioRepository;
+
+    @Autowired
+    private clienteRepository clienteRepository;
+
 
     public String getUserName(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
@@ -106,10 +106,18 @@ public class genService {
 
     public String getNomeProp(Integer codProprietario) {
         String propname = proprietarioRepository.findByCodproprietario(codProprietario).getNome();
-        System.out.println(codProprietario);
+
         if(propname == "") throw new RuntimeException("Código do proprietario [" + codProprietario + "] não encontrado");
 
         return propname;
+    }
+
+    public String getNomeCliente(Integer codcliente) {
+        String clientename = clienteRepository.findByCodcliente(codcliente).getNome();
+
+        if(clientename == "") throw new RuntimeException("Código do Cliente [" + codcliente + "] não encontrado");
+
+        return clientename;
     }
 
     public Boolean usuarioTemAcessoAplicacao(Integer idmodulo, Integer idaplicacao, String ideusu){

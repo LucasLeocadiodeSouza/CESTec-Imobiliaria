@@ -20,7 +20,7 @@
 <style>
     .ppp         {width: 32px;}
     .p           {width: 60px;}
-    .medium      {width: 120px;}
+    .medium      {width: 130px;}
     .Intermedium {width: 180px;}
     .large       {width: 240px;}
     .extralarge  {width: 300px;}
@@ -33,11 +33,6 @@
                  width: 120px;
                  text-align: right;}
 
-    .grid {width: 99%;
-           height: 400px;
-           margin-top: 25px;
-           margin-inline: 7px;
-           overflow-y: scroll;}
     ::-webkit-scrollbar {
         width: 1px;
     }
@@ -47,7 +42,7 @@
     }
 
     #dmodalf_cliente {width: 600px;
-                      height: 380px;
+                      padding-bottom: 20px;
                       opacity: 1;}
 
 </style>
@@ -101,6 +96,14 @@
             <div class='dmf'>
                 <label class="labelmodal">Documento: </label>
                 <input type="text" id="mcpf"  name="mcpf"  class="medium">
+            </div>
+
+            <div class='dmf'>
+                <label class="labelmodal">Pessoa Fisica: </label>
+                <select id="mspessoafis" name="mspessoafis" class="ppp">
+                    <option value="0">Sim</option>
+                    <option value="1">Não</option>
+                </select>
             </div>
 
             <div class='dmf'>

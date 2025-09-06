@@ -48,7 +48,7 @@ function iniciarEventos() {
     event_selected_init("codproprietario");
     inputOnlyNumber('codproprietario,mnmr');
 
-    CONSUL.filterChange('codproprietario','',`/gen/getNomeProp`,['codprop=codproprietario'],'descproprietario');
+    CONSUL.filterChange('codproprietario','',`/gen/getNomeProp`,['codprop:codproprietario'],'descproprietario');
 
     controlaTela("inicia");     
 }
@@ -64,7 +64,7 @@ function event_click(obj) {
                                break;
 
             case   "binserir": form("sacao").innerText   = "Inserindo";
-                               form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
+                               form("stitulo").innerText = "Cadastro de Proprietario - " + form("sacao").innerText;
                            
                                controlaTela("modal");
                                DMFDiv.openModal("dmodalf_proprietario");
@@ -147,7 +147,7 @@ function adicionarProprietario() {
                            documento:           retirarFormatDoc(form("mcpf").value),
                            numtel:              form("mddd").value + form("mtelefone").value,
                            email:               form("memail").value,
-                           pessoa_fisica:       form('mspessoafis').value == "0",
+                           pessoa_fisica:       form('mspessoafis').value == "1",
                            endereco_bairro:     form('mbairro').value,
                            endereco_numero:     form('mnmr').value,
                            endereco_logradouro: form('mlogradouro').value,
