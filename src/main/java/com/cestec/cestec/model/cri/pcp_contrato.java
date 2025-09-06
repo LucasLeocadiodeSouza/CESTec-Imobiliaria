@@ -1,15 +1,12 @@
 package com.cestec.cestec.model.cri;
 
 import java.sql.Date;
-
 import com.cestec.cestec.model.pcp_corretor;
-
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,23 +21,23 @@ import lombok.Setter;
 @Table(name = "pcp_contrato")
 public class pcp_contrato {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer codcontrato;
+    @EmbeddedId
+    private pcp_contratoId id;
 
     @ManyToOne
-    @JoinColumn(name = "codcliente", nullable = false)
-    private pcp_cliente pcp_cliente;
-
-    @ManyToOne
-    @JoinColumn(name = "codimovel", nullable = false)
+    @MapsId("codimovel")
+    @JoinColumn(name = "codimovel")
     private pcp_imovel pcp_imovel;
 
     @ManyToOne
-    @JoinColumn(name = "codproprietario", nullable = false)
-    private pcp_proprietario pcp_proprietario;
+    @JoinColumn(name = "codcliente")
+    private pcp_cliente pcp_cliente;
 
     @ManyToOne
+    @JoinColumn(name = "codproprietario")
+    private pcp_proprietario pcp_proprietario;
+
+    @ManyToOne 
     @JoinColumn(name = "codcorretor")
     private pcp_corretor pcp_corretor;
 

@@ -319,7 +319,7 @@ function getBotoesAplMenu(){
 }
 
 function buscarAgendamentos(){
-    CONSUL.consultar("buscarAgendamentos",`/home/buscarAgendamentosFunc?ideusu=${form("ideusu").value}`,'','',{},true);
+    CONSUL.consultar("buscarAgendamentos",`/home/buscarAgendamentosFunc`,["ideusu:ideusu"],'','',{},true);
 }
 
 function criarDescricaoData(mesanalise){
@@ -452,11 +452,11 @@ function criarModalHoverAgendamento(div, day, mes, year){
 } 
 
 function salvarHistoricoApl(modulo, aplicacao){
-    CONSUL.consultar("salvarHistoricoApl",`/home/salvarHistoricoApl?codmod=${modulo}&codapl=${aplicacao}`,"POST");
+    CONSUL.consultar("salvarHistoricoApl",`/home/salvarHistoricoApl`,["codmod="+modulo,"codapl="+aplicacao],"POST");
 } 
  
 function inativarNotificacao(idnotific){
-    CONSUL.consultar("inativarNotificacao",`/home/inativarNotificacao?idnotific=${idnotific}`,"POST",'',{},true);
+    CONSUL.consultar("inativarNotificacao",`/home/inativarNotificacao`,["idnotific="+idnotific],"POST",'',{},true);
 }
 
 function adicionarListaHistoricoAcesso(li, codapl, codmodulo, nomemodulo, nomeapl, numacesso){
@@ -514,7 +514,10 @@ function buscarUserId(){
 }
 
 function salvarCookieAplicacao(caminho, idmodulo, idaplicacao){
-    CONSUL.consultar("pathAplication",`/auth/pathAplication?path=${caminho}&codmod=${idmodulo}&codapl=${idaplicacao}`,"POST")
+    CONSUL.consultar("pathAplication",`/auth/pathAplication`,["path="+caminho,
+                                                              "codmod="+idmodulo,
+                                                              "codapl="+idaplicacao],
+                                                              "POST")
 }
 
 function valorMetaMensal(){
@@ -634,7 +637,7 @@ function carregaMes(){ //IM: 00004 - montar calendario/agenda
 }
 
 function carregarNotificacoes(){
-    NOTIFY_GRID.carregaGrid("/home/buscarNotificacoesGrid","","",true);
+    NOTIFY_GRID.carregaGrid("/home/buscarNotificacoesGrid",[],"","",true);
 }
 
 function temNotificacaoPendente(){

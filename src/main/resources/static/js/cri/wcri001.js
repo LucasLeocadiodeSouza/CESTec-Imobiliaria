@@ -10,6 +10,8 @@ window.addEventListener("load", function () {
 var IMOVEIS_GRID;
 var DMFDiv, ABA, CONSUL;
 
+const ACAOBUSCA = {};
+
 function wcri001_init(){
     elementsForm_init();
 
@@ -45,21 +47,26 @@ function iniciarEventos() {
     controlaTela("inicia");
 
     event_selected_init("codcontrato,codproprietario");
+    inputOnlyNumber('codcontrato,codproprietario,mcodproprietario,mmetrosquad,mquartos,mcondominio,mvlr');
 
     event_click("bnovabusca");
     event_click("bbuscar");
     event_click("binserir");
     event_click("blimpar");
     event_click("bcadastro");
-    
-    event_change("codproprietario");
-    event_change("mcodproprietario");
+
+    CONSUL.filterChange('codproprietario','',`/gen/getNomeProp`,['codprop:codproprietario'],'descproprietario');
+    CONSUL.filterChange('mcodproprietario','',`/gen/getNomeProp`,['codprop:mcodproprietario'],'mdescproprietario');
+
 }
 
 function event_click_table(obj,row,e){
     switch (obj) {
     case IMOVEIS_GRID: if (e.target === row.cells[0]) return;
                        const valoresLinha = IMOVEIS_GRID.getRowNode(row);
+
+                       form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
+                       form("stitulo").innerText = "Cadastro de Imóvel - " + form("sacao").innerText;
 
                        controlaTela("modal");
                        preencherDadosModal(valoresLinha);
@@ -102,19 +109,6 @@ function event_click(obj) {
     }
 }
 
-function event_change(obj){
-    if(obj == "codproprietario"){
-        form(obj).addEventListener("change", function(){
-            form(obj).value!=""?descProprietario(obj,"descproprietario") : form("descproprietario").value = "Todos";
-        });
-    }
-    if(obj == "mcodproprietario"){
-        form(obj).addEventListener("change", function(){
-            form(obj).value!=""?descProprietario(obj,"mdescproprietario") : form("mdescproprietario").value = "";
-        });
-    }
-}
-
 function event_click_aba(){
     switch (ABA.getIndex()) {
     case 0: 
@@ -141,7 +135,16 @@ function filaFetchInit(){
                                           DMFDiv.closeModal();
                                           break;
 
-        case          "descProprietario": form("mdescproprietario").value = retorno;
+        case      "getOptionsTpContrato": fillSelect("mstpcontrato",retorno,true);
+                                          form('mstpcontrato').childNodes[0].disabled = true;
+                                          form('mstpcontrato').value  = ACAOBUSCA.getOptionsTpContrato.valorinicial;
+                                          break;
+
+        case        "getOptionsTpImovel": fillSelect("mstpimovel",retorno,true);
+                                          form('mstpimovel').childNodes[0].disabled = true;
+                                          form('mstpimovel').value  = ACAOBUSCA.getOptionsTpImovel.valorinicial;
+
+                                          if(ACAOBUSCA.getOptionsTpImovel.origem == 'limpaTela') getOptionsTpContrato('0');
                                           break;
         }
     }
@@ -155,11 +158,9 @@ function controlaTela(opc){
         desabilitaCampo('codcontrato',     false);
         desabilitaCampo('codproprietario', false);
         desabilitaCampo('descproprietario', true);
-        desabilitaCampo('periodoini',      false);
-        desabilitaCampo('periodofin',      false);
-        desabilitaCampo('periodoindef',    false);
         desabilitaCampo('raluguel',        false);
         desabilitaCampo('rvenda',          false);
+        desabilitaCampo('rambas',          false);
 
         setDisplay("binserir", ehManutencao()?"block":"none");
     }
@@ -169,14 +170,12 @@ function controlaTela(opc){
         desabilitaCampo('codcontrato',     true);
         desabilitaCampo('codproprietario', true);
         desabilitaCampo('descproprietario', true);
-        desabilitaCampo('periodoini',      true);
-        desabilitaCampo('periodofin',      true);
-        desabilitaCampo('periodoindef',    true);
         desabilitaCampo('raluguel',        true);
         desabilitaCampo('rvenda',          true);
+        desabilitaCampo('rambas',          true);
     }
     if(opc == "modal"){
-        desabilitaCampo('mcodproprietario',  ehConsulta());
+        desabilitaCampo('mcodproprietario',  !ehInserindo());
         desabilitaCampo('mstpimovel',        ehConsulta());
         desabilitaCampo('mstpcontrato',      ehConsulta());
         desabilitaCampo('mmetrosquad',       ehConsulta());
@@ -184,25 +183,27 @@ function controlaTela(opc){
         desabilitaCampo('mcondominio',       ehConsulta());
         desabilitaCampo('mloc',              ehConsulta());
         desabilitaCampo('mvlr',              ehConsulta());
-        desabilitaCampo('mperiodoini',       ehConsulta());
+        desabilitaCampo('mperiodoini',       !ehInserindo());
         desabilitaCampo('bcadastro',         ehConsulta());
     }
 }
 
 
 function limparTela(opc){
-    if(opc === "inicia" || opc === 'buscar'){        
+    if(opc === "inicia"){
+        form('codcontrato').value      = "0";
         form('codproprietario').value  = "0";
         form('descproprietario').value = "Todos os Proprietarios";
+        setRadioValue('rimovel','0'); 
     }
     if(opc === "inicia" || opc === "novabusca"){
         IMOVEIS_GRID.clearGrid();
     }
     if(opc === "modal"){
+        getOptionsTpImovel('0', 'limpaTela');
+
         form('mcodproprietario').value     = "";
         form('mdescproprietario').value    = "";
-        form('mstpimovel').value           = "0";
-        form('mstpcontrato').value         = "0";
         form('mmetrosquad').value          = "";
         form('mquartos').value             = "";
         form('mcondominio').value          = "";
@@ -213,16 +214,14 @@ function limparTela(opc){
 }
 
 function preencherDadosModal(valores){
-    form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
-    form("stitulo").innerText = "Cadastro de Imóvel - " + form("sacao").innerText;
+    getOptionsTpContrato(valores[13]);
+    getOptionsTpImovel(valores[12], "table");
 
     form("mcodimovel").value        = valores[0];
     form("mcodproprietario").value  = valores[1];
     form("mdescproprietario").value = valores[2];
-    form("mstpimovel").value        = valores[12];
     form("msituacao").value         = valores[4];
     form("mvlr").value          	= valores[5];
-    form("mstpcontrato").value     	= valores[13];
     form("mloc").value     	        = valores[7];
     form("mmetrosquad").value     	= valores[8];
     form("mquartos").value       	= valores[9];
@@ -252,13 +251,32 @@ function adicionarContratoImovel() {
                      datiregistro:      new Date().toISOString().split('T')[0],
                      datinicontrato:    form("mperiodoini").value};
 
-    CONSUL.consultar("adicionarContratoImovel",`/contratosCadastroClientes/proprietario/${form("mcodproprietario").value}/salvarImovel`,"POST","",{body: imovel});
+    CONSUL.consultar("adicionarContratoImovel",`/cri001/salvarImovel`,['codprop:mcodproprietario'],"POST","",{body: imovel});
 }
 
-function descProprietario(codigo) {
-    CONSUL.consultar("descProprietario",`/contratosCadastroClientes/proprietario/${form(codigo).value}/nomepropri`);
+function getOptionsTpContrato(valorinicial) {
+    ACAOBUSCA.getOptionsTpContrato = {
+        valorinicial: valorinicial
+    };
+
+    CONSUL.consultar("getOptionsTpContrato",`/cri001/getOptionsTpContrato`);
+}
+
+function getOptionsTpImovel(valorinicial, origem) {
+    ACAOBUSCA.getOptionsTpImovel = {
+        valorinicial: valorinicial,
+        origem:     origem
+    };
+
+    CONSUL.consultar("getOptionsTpImovel",`/cri001/getOptionsTpImovel`);
 }
 
 function carregaGridImoveis(){
-    IMOVEIS_GRID.carregaGrid("/contratosCadastroClientes/proprietario/buscarImoveis","","");
+    IMOVEIS_GRID.carregaGrid(`/cri001/buscarImoveis`,["codcontrato:codcontrato",
+                                                      "codprop:codproprietario",
+                                                      "tipimovel=" + getRadioValue("rimovel")]);
+}
+
+function ehInserindo(){
+    return form("sacao").innerText == "Inserindo";
 }

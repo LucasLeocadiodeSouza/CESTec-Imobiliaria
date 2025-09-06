@@ -116,3 +116,9 @@ function formatDocToCnpj(doc){
 function retirarFormatDoc(doc){
     return doc.replace(/\D/g, '');
 }
+
+function formatarData(data, mesant) {
+    const dataAjustada = new Date(data);
+    dataAjustada.setMonth(dataAjustada.getMonth() - mesant);
+    return dataAjustada.toISOString().split('T')[0];
+}

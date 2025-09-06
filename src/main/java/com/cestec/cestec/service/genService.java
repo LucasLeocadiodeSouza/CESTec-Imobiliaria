@@ -106,8 +106,8 @@ public class genService {
 
     public String getNomeProp(Integer codProprietario) {
         String propname = proprietarioRepository.findByCodproprietario(codProprietario).getNome();
-
-        if(propname == null) throw new RuntimeException("Código do proprietario [" + codProprietario + "] não encontrado");
+        System.out.println(codProprietario);
+        if(propname == "") throw new RuntimeException("Código do proprietario [" + codProprietario + "] não encontrado");
 
         return propname;
     }

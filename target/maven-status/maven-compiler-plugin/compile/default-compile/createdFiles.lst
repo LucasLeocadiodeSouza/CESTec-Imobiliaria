@@ -17,7 +17,6 @@ com\cestec\cestec\model\securityLogin\RegisterDTO.class
 com\cestec\cestec\model\contasAPagar\Cobranca.class
 com\cestec\cestec\infra\pagamento\MultaInput.class
 com\cestec\cestec\service\mrb\mrb002s.class
-com\cestec\cestec\repository\proprietarioRepository.class
 com\cestec\cestec\controller\mrb\mrb002c.class
 com\cestec\cestec\service\comWindowService.class
 com\cestec\cestec\infra\pagamento\JurosMoraInput$JurosMoraInputBuilder.class
@@ -25,11 +24,9 @@ com\cestec\cestec\repository\pagamento\pagamentoCustomRepo.class
 com\cestec\cestec\infra\pagamento\JurosMoraInput.class
 com\cestec\cestec\controller\pga\pag001c.class
 com\cestec\cestec\infra\pagamento\CobrancaInput$CobrancaInputBuilder.class
-com\cestec\cestec\model\pcp_contrato.class
 com\cestec\cestec\model\contasAPagar\BoletoRegistrado.class
 com\cestec\cestec\repository\metaRepository.class
 com\cestec\cestec\repository\pagamento\faturaRegistradaRepository.class
-com\cestec\cestec\model\pcp_imovel.class
 com\cestec\cestec\infra\pagamento\controller\AcessTokenController.class
 com\cestec\cestec\model\contasAPagar\Empresa.class
 com\cestec\cestec\repository\custom\prjContratosCustomRepository.class
@@ -51,7 +48,6 @@ com\cestec\cestec\model\LibAcessoId.class
 com\cestec\cestec\model\aplicacaoDTO.class
 com\cestec\cestec\service\mrb\mrb001s.class
 com\cestec\cestec\service\genService.class
-com\cestec\cestec\model\pcp_cliente.class
 com\cestec\cestec\controller\pagamento\FaturaController.class
 com\cestec\cestec\util\utilForm.class
 com\cestec\cestec\model\cargo.class
@@ -88,6 +84,5 @@ com\cestec\cestec\model\email.class
 com\cestec\cestec\repository\contratoRepository.class
 com\cestec\cestec\service\pagamento\pga001s.class
 com\cestec\cestec\infra\pagamento\PagadorInput.class
-com\cestec\cestec\model\pcp_proprietario.class
 com\cestec\cestec\infra\pagamento\PagadorInput$PagadorInputBuilder.class
 com\cestec\cestec\model\funcionario.class

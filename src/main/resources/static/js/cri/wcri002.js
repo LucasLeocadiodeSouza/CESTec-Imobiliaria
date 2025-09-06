@@ -46,51 +46,47 @@ function iniciarEventos() {
     event_click("bcadastro");
 
     event_selected_init("codproprietario");
+    inputOnlyNumber('codproprietario,mnmr');
+
+    CONSUL.filterChange('codproprietario','',`/gen/getNomeProp`,['codprop=codproprietario'],'descproprietario');
 
     controlaTela("inicia");     
 }
 
 function event_click(obj) {
-    if(obj == "bnovabusca"){
-        form(obj).addEventListener("click", function () {
-            controlaTela("novabusca");
-        });
-    }
-    if(obj == "bbuscar"){
-        form(obj).addEventListener("click", function () {
-            controlaTela("buscar");
-            buscarDadosTable(); 
-        });
-    }
-    if(obj == 'binserir'){
-        form(obj).addEventListener("click", function () {
-            form("sacao").innerText   = "Inserindo";
-            form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
+    form(obj).addEventListener("click", function () {
+        switch (obj) {
+            case "bnovabusca": controlaTela("novabusca");
+                               break;
 
-            controlaTela("modal");
-            DMFDiv.openModal("dmodalf_proprietario");
-        });
-    }
-    if(obj == 'blimpar'){
-        form(obj).addEventListener("click", function () {
-            controlaTela("inicia");
-        });
-    }
-    if(obj == 'bcadastro'){
-        form(obj).addEventListener("click", function () {
-            adicionarProprietario();
-            DMFDiv.closeModal();
-        });
-    }
+            case    "bbuscar": controlaTela("buscar");
+                               buscarDadosTable(); 
+                               break;
+
+            case   "binserir": form("sacao").innerText   = "Inserindo";
+                               form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
+                           
+                               controlaTela("modal");
+                               DMFDiv.openModal("dmodalf_proprietario");
+                               break;
+
+            case    "blimpar": controlaTela("inicia");
+                               break;
+
+            case  "bcadastro": adicionarProprietario();
+                               break;
+        
+        }
+    });
 }
 
 function event_click_table(obj, row){
     switch (obj) {
     case PROPRI_GRID: const valoresLinha = PROPRI_GRID.getRowNode(row);
-                      controlaTela("modal");
-
                       form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
                       form("stitulo").innerText = "Cadastro de Proprietario - " + form("sacao").innerText;
+                      
+                      controlaTela("modal");
 
                       buscarPropriGrid(valoresLinha);
                       DMFDiv.openModal("dmodalf_proprietario");
@@ -115,9 +111,10 @@ function filaFetchInit(){
                                           break;
 
         case     "adicionarProprietario": alert("Sucesso!",'Dados foram salvos com sucesso! Proprietario está cadastrado no sistema.',5);
-                                          if(form("sacao").innerText == "Inserindo")if(confirm("Deseja enviar um Email de Boas Vindas para o Proprietario?")) enviarEmail();
+                                          if(form("sacao").innerText == "Inserindo") if(confirm("Deseja enviar um Email de Boas Vindas para o Proprietario?")) enviarEmail();
 
                                           buscarDadosTable();
+                                          DMFDiv.closeModal();
                                           break;
         }
     }
@@ -141,7 +138,7 @@ function buscarPropriGrid(valoresLinha){
 }
 
 function buscarDadosTable(){
-    PROPRI_GRID.carregaGrid(`/cri002/buscarPropriGrid?codprop=${form("codproprietario").value}`,"","");
+    PROPRI_GRID.carregaGrid(`/cri002/buscarPropriGrid`,["codprop:codproprietario"],"","");
 }
 
 function adicionarProprietario() {
@@ -159,7 +156,7 @@ function adicionarProprietario() {
                            endereco_uf:         form('muf').value,
                            ideusu:              form('ideusu').value};
 
-    CONSUL.consultar("adicionarProprietario",`/cri002/salvarproprietario`,"POST","",{body: proprietario});
+    CONSUL.consultar("adicionarProprietario",`/cri002/salvarproprietario`,[],"POST","",{body: proprietario});
 }
 
 function enviarEmail(){
@@ -182,7 +179,7 @@ function enviarEmail(){
             + "</body>"
             + "</html>"}
 
-    CONSUL.consultar("enviarEmail",`/email`,"POST","",{body: email})
+    CONSUL.consultar("enviarEmail",`/email`,[],"POST","",{body: email})
 }
 
 function buscarUserName(){
@@ -204,8 +201,8 @@ function controlaTela(opc){
         desabilitaCampo('codproprietario', true);
     }
     if(opc == "modal"){
-        desabilitaCampo('mnome',       ehConsulta() || ehInserindo());
-        desabilitaCampo('mcpf',        ehConsulta() || ehInserindo());
+        desabilitaCampo('mnome',       ehConsulta() || !ehInserindo());
+        desabilitaCampo('mcpf',        ehConsulta() || !ehInserindo());
         desabilitaCampo('mddd',        ehConsulta());
         desabilitaCampo('mtelefone',   ehConsulta());
         desabilitaCampo('memail',      ehConsulta());
@@ -217,13 +214,14 @@ function controlaTela(opc){
         desabilitaCampo('mlogradouro', ehConsulta());
         desabilitaCampo('mcepini',     ehConsulta());
         desabilitaCampo('mcepdigito',  ehConsulta());
-        desabilitaCampo('mspessoafis', ehConsulta() || ehInserindo());
+        desabilitaCampo('mspessoafis', ehConsulta() || !ehInserindo());
     }
 }
 
 function limparTela(opc){
     if(opc == "inicia" || opc == 'novabusca'){        
-        form('codproprietario').value = "0";
+        form('codproprietario').value  = "0";
+        form('descproprietario').value = "";
     }
     if(opc === "inicia" || opc === "novabusca"){
         PROPRI_GRID.clearGrid();

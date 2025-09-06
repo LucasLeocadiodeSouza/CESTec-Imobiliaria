@@ -38,10 +38,8 @@
     }
 
     #dmodalf_contrato {width: 700px;
-                       height: 470px;
+                       padding-bottom: 20px;
                        opacity: 1;}
-
-    body {background-color: #1d3561;}
 </style>
 </head>
 <body>
@@ -64,16 +62,6 @@
                 <input type="text" id="descproprietario" name="descproprietario" class="large" disabled>
             </div>
 
-            <div class='if' >
-                <label class="labelmodal">Validade do Contrato: </label>
-                <input type="date" id="periodoini"  name="periodoini">&nbsp;
-                <label> até </label> &nbsp;
-                <input type="date" id="periodofin"  name="periodofin">&nbsp;
-
-                <input type="checkbox" id="periodoindef" name="periodoindef">
-                <label class="labelmodal" style="text-align: left;" for="periodoindef">periodo Indefinido</label>&nbsp;
-            </div>
-
             <div class='if'>
                 <label class="labelmodal">Tipo de Imóvel:</label>
 
@@ -82,6 +70,9 @@
 
                 <input type="radio" id="rvenda" name="rimovel" value="2">
                 <label class="labelmodal" style="text-align: left; width: 80px" for="rvenda">Venda</label>
+
+                <input type="radio" id="rambas" name="rimovel" value="0">
+                <label class="labelmodal" style="text-align: left; width: 80px" for="rambas">Ambas</label>
             </div>
 
             <div  class='if' style="display: flex; height: auto;">
@@ -117,26 +108,17 @@
 
             <div class='dmf'>
                 <label class="labelmodal">Tipo de Imovel: </label>
-                <select id="mstpimovel" name="mstpimovel" class="Intermedium">
-                    <option value="0">Selecione o Tipo de imovel</option>
-                    <option value="1">Apartamento</option>
-                    <option value="2">Casa</option>
-                    <option value="3">Terreno</option>
-                </select>
+                <select id="mstpimovel" name="mstpimovel" class="Intermedium"></select>
             </div>
 
             <div class='dmf'>
                 <label class="labelmodal">Tipo de Contrato: </label>
-                <select id="mstpcontrato" name="mstpcontrato" class="Intermedium">
-                    <option value="0">Selecione o Tipo de contrato</option>
-                    <option value="1">Aluguel</option>
-                    <option value="2">Venda</option>
-                </select>
+                <select id="mstpcontrato" name="mstpcontrato" class="Intermedium"></select>
             </div>
             
             <div class='dmf'>
                 <label class="labelmodal">Area Total(M²): </label>
-                <input type="text" id="mmetrosquad" name="mmetrosquad" class="ppp">
+                <input type="text" id="mmetrosquad" name="mmetrosquad" class="p">
             </div>
 
             <div class='dmf'>
@@ -164,9 +146,7 @@
                 <input type="date" id="mperiodoini" name="mperiodoini" class="medium">
             </div>
 
-            <div class='if' style="display: flex; margin-left: 5px;"></div>
-
-            <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
+            <div class='dmf buttoncenter'>                            
                 <div id="bcadastro" name="bcadastro" class="button" value="Cadastrar" data-icon="/icons/cadastro.png">
             </div>
         </div>

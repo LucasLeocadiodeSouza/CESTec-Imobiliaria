@@ -10,14 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.cestec.cestec.model.ImovelProprietarioDTO;
 import com.cestec.cestec.model.cri.pcp_imovel;
 import com.cestec.cestec.model.cri.pcp_proprietario;
 import com.cestec.cestec.service.genService;
 import com.cestec.cestec.service.cri.cri002s;
-
-
 
 @RestController
 @RequestMapping("/cri002")
@@ -41,11 +37,6 @@ public class cri002c {
             return ResponseEntity.internalServerError()
                     .body("Erro interno ao cadastrar bloqueio: " + e.getMessage());
         }
-    }
-
-    @PostMapping("/{codProprietario}/salvarImovel")
-    public pcp_imovel salvarImovel(@RequestBody pcp_imovel imovel, @PathVariable Integer codProprietario) {
-        return cri002s.salvarImovel(imovel, codProprietario);
     }
 
     @GetMapping()
@@ -73,41 +64,9 @@ public class cri002c {
         }
         return fselect;
     }
-
-    @GetMapping("/{codImovel}/getTipoImovel")
-    public String getTipoImovel(@PathVariable Integer codImovel) {
-        return cri002s.getTipoImovel(codImovel);
-    }
     
-    @GetMapping("/{codImovel}/getEnderecoImovel")
-    public String getEnderecoImovel(@PathVariable Integer codImovel) {
-        return cri002s.getEnderecoImovel(codImovel);
-    }
-
-    @GetMapping("/{codImovel}/getTipoContratoImovel")
-    public String getTipoContratoImovel(@PathVariable Integer codImovel) {
-        return cri002s.getTipoContratoImovel(codImovel);
-    }
-
-    @GetMapping("/{codImovel}/getValorImovel")
-    public double getValorImovel(@PathVariable Integer codImovel) {
-        return cri002s.getValorImovel(codImovel);
-    }
-
-    @GetMapping("/buscarImoveis")
-    public List<?> buscarImoveis() {
-        return cri002s.buscarImoveis();
-    }
-
     @GetMapping("/{codProprietario}/nomepropri")
     public String getNomeProp(@PathVariable Integer codProprietario) {
         return gen.getNomeProp(codProprietario);
-    }
-    
-    @PostMapping("/{index}/buscarImovelGrid")
-    public ImovelProprietarioDTO buscarImovelGrid(@PathVariable Integer index){        
-        return cri002s.buscarImovelGrid(index);
-    }
-    
-    
+    }    
 }

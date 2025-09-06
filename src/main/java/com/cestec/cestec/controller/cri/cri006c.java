@@ -1,20 +1,13 @@
 package com.cestec.cestec.controller.cri;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.cestec.cestec.model.cri.pcp_contrato;
 import com.cestec.cestec.service.cri.cri004s;
 import com.cestec.cestec.service.cri.cri006s;
-
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -35,12 +28,12 @@ public class cri006c {
         return wcr006s.buscarContratoAprovacao(codprop, codcliente, codcorretor, acao);
     }
     
-    @PostMapping("/aprovarReprovarContrato")
-    public ResponseEntity<?> aprovarReprovarContrato(@RequestBody pcp_contrato contrato) {
-        if(contrato == null) {
-            return ResponseEntity.badRequest().body("Dados do contrato não podem ser nulos");
-        }
+    // @PostMapping("/aprovarReprovarContrato")
+    // public ResponseEntity<?> aprovarReprovarContrato(@RequestBody pcp_contrato contrato) {
+    //     if(contrato == null) {
+    //         return ResponseEntity.badRequest().body("Dados do contrato não podem ser nulos");
+    //     }
     
-        return wcr006s.aprovarReprovarContrato(contrato);
-    }
+    //     return wcr006s.aprovarReprovarContrato(contrato);
+    // }
 }
