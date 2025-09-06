@@ -1,6 +1,7 @@
 package com.cestec.cestec.model.cri;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,14 +31,15 @@ public class pcp_imovel {
     @JoinColumn(name = "codproprietario", nullable = false)
     private pcp_proprietario pcp_proprietario;
 
-    private String  endereco;
-    private Integer quartos;
-    private double  area;
-    private double  vlrcondominio;
-    private Integer status;
-    private Date    datiregistro;
-    private Date    datinicontrato;
-    private double  preco;
-    private Integer tipo;
-    private Integer negociacao;
+    private String    endereco;
+    private Integer   quartos;
+    private Double    area;
+    private Double    vlrcondominio;
+    private Integer   status;
+    private LocalDate datiregistro;
+    private Date      datinicontrato;
+    private Double    preco;
+    private Integer   tipo;
+    private Integer   negociacao;
+    private String    ideusu;
 }

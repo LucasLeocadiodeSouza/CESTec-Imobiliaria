@@ -1,5 +1,6 @@
 :root{
   --bd-mg-tp: 0px;
+  --red-negacao: #dd0000;
 }
 
 body      {background-color: #1d3561;}
@@ -330,6 +331,8 @@ table {
 }
 
 .h100 {height: 100%;}
+
+.negacao {background: var(--red-negacao, #dd0000)}
 
 .divtableres {height: calc(100% - 42px); overflow-y: auto;}
 

@@ -10,6 +10,7 @@ import com.cestec.cestec.model.cri.pcp_proprietario;
 import com.cestec.cestec.repository.cri.imovelRepository;
 import com.cestec.cestec.repository.cri.proprietarioRepository;
 import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
+import com.cestec.cestec.service.sp_userService;
 import com.cestec.cestec.util.utilForm;
 
 @Service
@@ -23,6 +24,9 @@ public class cri002s {
 
     @Autowired
     private prjContratosCustomRepository contratosCustomRepository;
+
+    @Autowired
+    private sp_userService sp_user;
 
     public String getDescStatus(Integer status) {
         switch (status) {
@@ -75,6 +79,8 @@ public class cri002s {
 
     @Transactional
     public void salvarProprietario(pcp_proprietario pcp_proprietario) {
+        if(sp_user.loadUserByUsername(pcp_proprietario.getIdeusu()) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
+
         String validacao = validaProprietario(pcp_proprietario);
         if (!validacao.equals("OK"))  throw new RuntimeException(validacao);
 

@@ -1,6 +1,6 @@
 package com.cestec.cestec.service.cri;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,9 @@ import com.cestec.cestec.model.cri.pcp_proprietario;
 import com.cestec.cestec.repository.cri.contratosCustomRepo;
 import com.cestec.cestec.repository.cri.imovelRepository;
 import com.cestec.cestec.repository.cri.proprietarioRepository;
+import com.cestec.cestec.service.sp_userService;
 import com.cestec.cestec.util.utilForm;
+import jakarta.transaction.Transactional;
 
 @Service
 public class cri001s {
@@ -25,6 +27,9 @@ public class cri001s {
 
     @Autowired
     private contratosCustomRepo contratosCustomRepo;
+
+    @Autowired
+    private sp_userService sp_user;
 
 
     public String getBuscaTipoImovel(Integer codImovel) {
@@ -125,28 +130,57 @@ public class cri001s {
     /* ***************** */ 
 
     /* ******** Salvar ********* */ 
-    public pcp_imovel salvarImovel(pcp_imovel imovel, Integer codproprietario) {
-        pcp_proprietario proprietario = proprietarioRepository.findById(codproprietario)
-                .orElseThrow(
-                        () -> new RuntimeException("Proprietário não encontrado com o código: " + codproprietario));
-        imovel.setPcp_proprietario(proprietario);
+    @Transactional
+    public void salvarImovel(pcp_imovel imovel, Integer codproprietario, String ideusu) {
+        if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
 
-        pcp_imovel verificaimovel = imovelRepository.existeimovel(imovel.getCodimovel(), codproprietario);
-        if (verificaimovel != null) {
-            verificaimovel.setArea(imovel.getArea());
-            verificaimovel.setDatinicontrato(imovel.getDatinicontrato());
-            verificaimovel.setEndereco(imovel.getEndereco());
-            verificaimovel.setNegociacao(imovel.getNegociacao());
-            verificaimovel.setPreco(imovel.getPreco());
-            verificaimovel.setPcp_proprietario(proprietario);
-            verificaimovel.setQuartos(imovel.getQuartos());
-            verificaimovel.setStatus(imovel.getStatus());
-            verificaimovel.setTipo(imovel.getTipo());
-            verificaimovel.setVlrcondominio(imovel.getVlrcondominio());
-        };
+        if(imovel.getNegociacao() == null || getDescTipos(imovel.getNegociacao()) == "") throw new RuntimeException("O tipo de contrato informado '" + getDescTipos(imovel.getNegociacao()) +"' é invalido!");
+        if(imovel.getTipo() == null || getTipoImovel(imovel.getTipo()) == "") throw new RuntimeException("O tipo de imovel informado '" + getTipoImovel(imovel.getTipo()) +"' é invalido!");
+        if(imovel.getArea() == null || imovel.getArea() == 0.00) throw new RuntimeException("É preciso informar o campo 'Area Total(M²)' para salvar o registro do Imovel!");
+        if(imovel.getQuartos() == null || imovel.getQuartos() == 0) throw new RuntimeException("É preciso informar o campo 'Quartos' para salvar o registro do Imovel!");
+        if(imovel.getEndereco() == null || imovel.getEndereco() == "") throw new RuntimeException("É preciso informar o campo 'Localização' para salvar o registro do Imovel!");
+        if(imovel.getPreco() == null || imovel.getPreco() == 0.00) throw new RuntimeException("É preciso informar o campo 'Valor (R$)' para salvar o registro do Imovel!");
+        if(imovel.getDatinicontrato() == null) throw new RuntimeException("É preciso informar o campo 'Inicio do Contrato' para salvar o registro do Imovel!");
 
-        return imovelRepository.save(imovel);
+        pcp_imovel imovelAnalise = imovelRepository.findByCodimovel(imovel.getCodimovel());
+        if(imovelAnalise == null) imovelAnalise = new pcp_imovel();
+
+        if(imovelAnalise.getStatus() != null && imovelAnalise.getStatus() == 3) throw new RuntimeException("Não é possível alterar as informacoes do imovel Inativo!");
+
+        imovelAnalise.setArea(imovel.getArea());
+        imovelAnalise.setEndereco(imovel.getEndereco());
+        imovelAnalise.setNegociacao(imovel.getNegociacao());
+        imovelAnalise.setPreco(imovel.getPreco());
+        imovelAnalise.setQuartos(imovel.getQuartos());
+        imovelAnalise.setTipo(imovel.getTipo());
+        imovelAnalise.setVlrcondominio(imovel.getVlrcondominio());
+
+        if(imovel.getCodimovel() == null){
+            pcp_proprietario proprietario = proprietarioRepository.findById(codproprietario).orElseThrow(() -> new RuntimeException("Proprietário não encontrado com o código: " + codproprietario));
+            imovelAnalise.setPcp_proprietario(proprietario);
+            imovelAnalise.setDatinicontrato(imovel.getDatinicontrato());
+            imovelAnalise.setStatus(1);
+            imovelAnalise.setIdeusu(ideusu);
+            imovelAnalise.setDatiregistro(LocalDate.now());
+        }
+
+        imovelRepository.save(imovelAnalise);
     }
+
+     @Transactional
+    public void inativarImovel(Integer codimovel, String ideusu) {
+        if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
+
+        pcp_imovel imovelAnalise = imovelRepository.findByCodimovel(codimovel);
+        if(imovelAnalise == null) throw new RuntimeException("O codigo do imovel informado '" + codimovel + "' é invalido!");
+
+        if(imovelAnalise.getStatus() != 1) throw new RuntimeException("O Imovel informado '" + codimovel + "' não pode ser desativado pois está com o estado de '" + getDescStatus(imovelAnalise.getStatus()) + "'!");
+        
+        imovelAnalise.setStatus(3);
+
+        imovelRepository.save(imovelAnalise);
+    }
+
     /* ***************** */ 
 
     /* ********* GRIDS ******** */ 
@@ -183,6 +217,7 @@ public class cri001s {
             utilForm.criarColuna(imoveis.get(i).getDatinicontrato().toString());
             utilForm.criarColuna(imoveis.get(i).getTipo().toString());
             utilForm.criarColuna(imoveis.get(i).getNegociacao().toString());
+            utilForm.criarColuna(imoveis.get(i).getStatus().toString());
         }
 
         return utilForm.criarGrid();
