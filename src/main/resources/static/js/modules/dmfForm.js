@@ -111,8 +111,8 @@ function DMFForm_init(){
         modalStack.push(idDiv);
 
         if(this.fullScream) {
-            modal.style.width  = "95%";
-            modal.style.height = "95%";
+            modal.style.width  = "90%";
+            modal.style.height = "90%";
         }
 
         modal.classList.remove("DMF_ativa");

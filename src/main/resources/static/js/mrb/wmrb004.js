@@ -75,11 +75,12 @@ function iniciarEventos() {
     event_click("bincluirresp");
     event_click("bsalvarusu");
 
-    event_change("codmodel");
-    event_change("codapl");
-    event_change("mccodapl");
-    event_change("mccodmod");
-    event_change("muideusu");
+    CONSUL.filterChange('codmodel','',`/gen/getDescricaoModulo`,['codmod:codmodel'],'descmodel');
+    CONSUL.filterChange('mccodmod','',`/gen/getDescricaoModulo`,['codmod:mccodmod'],'mcnomemod');
+    CONSUL.filterChange('codapl','',`/gen/getDescricaoAplicacao`,['codapl:codapl'],'descapl');
+    CONSUL.filterChange('mccodapl','',`/gen/getDescricaoAplicacao`,['codapl:mccodapl'],'mcnomeapl');
+    CONSUL.filterChange('muideusu','',`/gen/getNomeByIdeusu`,['ideusu:muideusu'],'munomeusu');
+
 }
 
 function event_click_table(obj, row){
@@ -147,27 +148,6 @@ function event_click(obj) {
     });
 }
 
-function event_change(obj){
-    form(obj).addEventListener("change", function(){
-        switch (obj) {
-            case   "codmodel": getDescricaoModuloFiltro();
-                               break;
-
-            case     "codapl": getDescricaoAplicacaoFiltro();
-                               break;
-
-            case   "mccodapl": getDescricaoAplicacaoModal();
-                               break;
-
-            case   "mccodmod": getDescricaoModuloModel();
-                               break;
-
-            case   "muideusu": getNomeUsuario();
-                               break;
-        }
-    });
-}
-
 function filaFetchGridInit(){
     USUBLOQ_GRID.filaFetchGrid = ()=>{
         eventClickLinksUsu();
@@ -202,25 +182,6 @@ function filaFetchInit(){
         }
 
         switch (CONSUL.obj) {
-        case              "getNomeUsuario": if(retorno == "") {
-                                                 alert("Erro ao Buscar usuário!", "Usuário não encontrado no sistema", 4);
-                                                 return;
-                                             }
-                                             form('munomeusu').value  = retorno;
-                                             break;
-
-        case      "getDescricaoModuloModel": form("mcnomemod").value = retorno;
-                                             break;
-
-        case   "getDescricaoAplicacaoModal": form("mcnomeapl").value = retorno;
-                                             break;
-
-        case     "getDescricaoModuloFiltro": form("descmodel").value = retorno;
-                                             break;
-
-        case  "getDescricaoAplicacaoFiltro": form("descapl").value = retorno;
-                                             break;
-
         case               "buscarUserName": form("ideusu").value = retorno;
                                              break;
 
@@ -330,54 +291,49 @@ function buscarUserName(){
     CONSUL.consultar("buscarUserName",`/home/userlogin`);
 }
 
-function getDescricaoAplicacaoFiltro(){
-    CONSUL.consultar("getDescricaoAplicacaoFiltro",`/gen/getDescricaoAplicacao?codapl=${form("codapl").value}`);
-}
-
-function getDescricaoModuloFiltro(){
-    CONSUL.consultar("getDescricaoModuloFiltro",`/gen/getDescricaoModulo?codmod=${form("codmodel").value}`);
-}
-
-function getDescricaoAplicacaoModal(){
-    CONSUL.consultar("getDescricaoAplicacaoModal",`/gen/getDescricaoAplicacao?codapl=${form("mccodapl").value}`);
-}
-
-function getDescricaoModuloModel(){
-    CONSUL.consultar("getDescricaoModuloModel",`/gen/getDescricaoModulo?codmod=${form("mccodmod").value}`);
-}
-
 function cadastrarBloqueio(){
-    CONSUL.consultar("cadastrarBloqueio",`/mrb004c/cadastrarBloqueio?codapl=${form("mccodapl").value}&codmod=${form("mccodmod").value}&ideusu=${form("ideusu").value}`, "POST");
+    CONSUL.consultar("cadastrarBloqueio",`/mrb004c/cadastrarBloqueio`,["codapl:mccodapl",
+                                                                       "codmod:mccodmod",
+                                                                       "ideusu:ideusu"],
+                                                                       "POST");
 }
 
 function cadastrarBloqueioUsuario(){
-    CONSUL.consultar("cadastrarBloqueioUsuario",`/mrb004c/cadastrarBloqueioUsuario?ideusuSolic=${form("muideusu").value}&codbloqueio=${form("hcodbloqueio").value}&ideusu=${form("ideusu").value}`, "POST");
+    CONSUL.consultar("cadastrarBloqueioUsuario",`/mrb004c/cadastrarBloqueioUsuario`,["ideusuSolic:muideusu",
+                                                                                     "codbloqueio:hcodbloqueio",
+                                                                                     "ideusu:ideusu"], 
+                                                                                     "POST");
 }
 
 function cadastrarBloqueioResponsavel(){
-    CONSUL.consultar("cadastrarBloqueioResponsavel",`/mrb004c/cadastrarBloqueioResponsavel?ideusuSolic=${form("muideusu").value}&codbloqueio=${form("hcodbloqueio").value}&ideusu=${form("ideusu").value}`, "POST");
+    CONSUL.consultar("cadastrarBloqueioResponsavel",`/mrb004c/cadastrarBloqueioResponsavel`,["ideusuSolic:muideusu",
+                                                                                             "codbloqueio:hcodbloqueio",
+                                                                                             "ideusu:ideusu"], 
+                                                                                             "POST");
 }
 
 function alteraEstadoBloqueioResp(idusuario){
-    CONSUL.consultar("alteraEstadoBloqueioResp",`/mrb004c/alteraEstadoBloqueioResp?ideusuSolic=${idusuario}&codbloqueio=${form("hcodbloqueio").value}&ideusu=${form("ideusu").value}`, "POST");
+    CONSUL.consultar("alteraEstadoBloqueioResp",`/mrb004c/alteraEstadoBloqueioResp`,["ideusuSolic=" + idusuario,
+                                                                                     "codbloqueio:hcodbloqueio",
+                                                                                     "ideusu:ideusu"],
+                                                                                     "POST");
 }
 
 function alteraEstadoBloqueioUsuario(idusuario){
-    CONSUL.consultar("alteraEstadoBloqueioUsuario",`/mrb004c/alteraEstadoBloqueioUsuario?ideusuSolic=${idusuario}&codbloqueio=${form("hcodbloqueio").value}&ideusu=${form("ideusu").value}`, "POST");
-}
-
-function getNomeUsuario(){
-    CONSUL.consultar("getNomeUsuario",`/gen/getNomeByIdeusu?ideusu=${form("muideusu").value}`);
+    CONSUL.consultar("alteraEstadoBloqueioUsuario",`/mrb004c/alteraEstadoBloqueioUsuario`,["ideusuSolic=" + idusuario,
+                                                                                           "codbloqueio:hcodbloqueio",
+                                                                                           "ideusu:ideusu"],
+                                                                                           "POST");
 }
 
 function carregarGridBloqueios(){
-    BLOQUE_GRID.carregaGrid(`/mrb004c/carregarGridBloqueios?codapl=${form("codapl").value}&codmodu=${form("codmodel").value}`,"","");
+    BLOQUE_GRID.carregaGrid(`/mrb004c/carregarGridBloqueios`,["codapl:codapl","codmodu:codmodel"]);
 }
 
 function carregarGridUsuariosBloq(){
-    USUBLOQ_GRID.carregaGrid(`/mrb004c/carregarGridUsuariosBloq?idbloq=${form("hcodbloqueio").value}`,"","");
+    USUBLOQ_GRID.carregaGrid(`/mrb004c/carregarGridUsuariosBloq`,["idbloq:hcodbloqueio"],"","");
 }
 
 function carregarGridUsuariosResp(){
-    RESPBLOQUE_GRID.carregaGrid(`/mrb004c/carregarGridUsuariosResp?idbloq=${form("hcodbloqueio").value}`,"","");
+    RESPBLOQUE_GRID.carregaGrid(`/mrb004c/carregarGridUsuariosResp`,["idbloq:hcodbloqueio"],"","");
 }

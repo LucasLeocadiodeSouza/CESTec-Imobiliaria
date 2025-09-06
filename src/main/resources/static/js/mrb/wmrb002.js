@@ -91,7 +91,7 @@ function limparTela(opc){
 }
 
 function buscarTabelas(){
-    TABELASBANCO_GRID.carregaGrid(`/mrb002/buscarTabelas?nomeTabela=${form("codtable").value}`);
+    TABELASBANCO_GRID.carregaGrid(`/mrb002/buscarTabelas`,["nomeTabela:codtable"]);
 }
 
 //CONSUL.consultar("buscarRoleAcess",`/mrb001/buscarRoleAcess`)
@@ -101,9 +101,9 @@ function buscarTabelas(){
 //});
 
 function buscarColunas(tabela){
-    COLUNAS_GRID.carregaGrid(`/mrb002/buscarColunas?nomeTabela=${tabela}`);
+    COLUNAS_GRID.carregaGrid(`/mrb002/buscarColunas`,["nomeTabela=" + tabela]);
 }
 
 function buscarIndexs(tabela){
-    INDEX_GRID.carregaGrid(`/mrb002/buscarIndexs?nomeTabela=${tabela}`);
+    INDEX_GRID.carregaGrid(`/mrb002/buscarIndexs`,["nomeTabela=" + tabela]);
 }

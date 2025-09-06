@@ -34,4 +34,29 @@ public class genController {
     public Boolean usuarioTemAcessoAplicacao(@RequestParam(value = "codmod", required = false) Integer codmod, @RequestParam(value = "codapl", required = false) Integer codapl, HttpServletRequest request){
         return gen.usuarioTemAcessoAplicacao(codmod, codapl, gen.getUserName(request));
     }
+
+    @GetMapping("/getNomeByCodFunc")
+    public String getNomeByCodFunc(@RequestParam(value = "codfunc", required = false) Integer codfunc){
+        return gen.getNomeByCodFunc(codfunc);
+    }
+
+    @GetMapping("/findCargoByIdeusu")
+    public String findCargoByIdeusu(@RequestParam(value = "ideusu", required = false) String ideusu){
+        return gen.findCargoByIdeusu(ideusu);
+    }
+
+    @GetMapping("/findSetorByIdeusu")
+    public String findSetorByIdeusu(@RequestParam(value = "ideusu", required = false) String ideusu){
+        return gen.findSetorByIdeusu(ideusu);
+    }
+
+    @GetMapping("/findCodSetorByIdeusu")
+    public String findCodSetorByIdeusu(@RequestParam(value = "ideusu", required = false) String ideusu){
+        return gen.findCodSetorByIdeusu(ideusu);
+    }
+
+    @GetMapping("/getNomeProp")
+    public String getNomeProp(@RequestParam(value = "codprop", required = false) Integer codProprietario){
+        return gen.getNomeProp(codProprietario);
+    }
 }

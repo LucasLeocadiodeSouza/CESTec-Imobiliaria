@@ -1,4 +1,4 @@
-package com.cestec.cestec.repository;
+package com.cestec.cestec.repository.cri;
 
 import java.util.List;
 

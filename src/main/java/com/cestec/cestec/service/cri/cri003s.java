@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cestec.cestec.model.cri.pcp_cliente;
-import com.cestec.cestec.repository.clienteRepository;
+import com.cestec.cestec.repository.cri.clienteRepository;
 import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
 import com.cestec.cestec.util.utilForm;
 

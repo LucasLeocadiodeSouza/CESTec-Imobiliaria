@@ -7,9 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.cestec.cestec.model.contratoDTO;
+import com.cestec.cestec.model.cri.pcp_cliente;
 import com.cestec.cestec.model.cri.pcp_contrato;
-import com.cestec.cestec.repository.contratoRepository;
 import com.cestec.cestec.repository.userRepository;
+import com.cestec.cestec.repository.cri.clienteRepository;
+import com.cestec.cestec.repository.cri.contratoRepository;
 import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
 import com.cestec.cestec.util.utilForm;
 
@@ -93,27 +95,27 @@ public class cri006s {
         return utilForm.criarGrid();
     }
 
-    @Transactional
-    public ResponseEntity<?> aprovarReprovarContrato(pcp_contrato contratoDTO){
-        try{
-            if(contratoDTO.getSituacao() != 2 && contratoDTO.getSituacao() != 3) return ResponseEntity.badRequest().body("Acão inserida inválida! (2 - Aprovado | 3 - Reprovado)");
+    // @Transactional
+    // public ResponseEntity<?> aprovarReprovarContrato(pcp_contrato contratoDTO){
+    //     try{
+    //         if(contratoDTO.getSituacao() != 2 && contratoDTO.getSituacao() != 3) return ResponseEntity.badRequest().body("Acão inserida inválida! (2 - Aprovado | 3 - Reprovado)");
 
-            if(loadUserByUsername(contratoDTO.getIdeusu()) == null) return ResponseEntity.badRequest().body("Usuário não encontrado no sistema!");
+    //         if(loadUserByUsername(contratoDTO.getIdeusu()) == null) return ResponseEntity.badRequest().body("Usuário não encontrado no sistema!");
 
-            pcp_contrato contratoAnalise = contratoRepository.findById(contratoDTO.getCodcontrato()).orElseThrow(() -> new RuntimeException("Erro: Não encontrado contrato com o código informado [" + contratoDTO.getCodcontrato() + "]"));
+    //         pcp_contrato contratoAnalise = contratoRepository.findById().orElseThrow(() -> new RuntimeException("Erro: Não encontrado contrato com o código informado [" + contratoDTO.getCodcontrato() + "]"));
 
-            if(contratoAnalise.getSituacao() != 1 && contratoAnalise.getSituacao() != 3) return ResponseEntity.badRequest().body("Contrato não está em situacão de se aprovado/reprovado!");
+    //         if(contratoAnalise.getSituacao() != 1 && contratoAnalise.getSituacao() != 3) return ResponseEntity.badRequest().body("Contrato não está em situacão de se aprovado/reprovado!");
 
-            contratoAnalise.setSituacao(contratoDTO.getSituacao());
-            contratoAnalise.setObservacao(contratoDTO.getObservacao());
-            contratoAnalise.setValorliberado(contratoDTO.getValorliberado());
+    //         contratoAnalise.setSituacao(contratoDTO.getSituacao());
+    //         contratoAnalise.setObservacao(contratoDTO.getObservacao());
+    //         contratoAnalise.setValorliberado(contratoDTO.getValorliberado());
 
-            contratoRepository.save(contratoAnalise);
+    //         contratoRepository.save(contratoAnalise);
 
-            return ResponseEntity.ok("OK");
-        }catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro ao salvar o contrato: " + e.getMessage());    
-        }
-    }
+    //         return ResponseEntity.ok("OK");
+    //     }catch (Exception e) {
+    //         return ResponseEntity.internalServerError().body("Erro ao salvar o contrato: " + e.getMessage());    
+    //     }
+    // }
 
 }

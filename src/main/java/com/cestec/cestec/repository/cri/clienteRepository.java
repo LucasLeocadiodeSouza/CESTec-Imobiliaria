@@ -1,4 +1,4 @@
-package com.cestec.cestec.repository;
+package com.cestec.cestec.repository.cri;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

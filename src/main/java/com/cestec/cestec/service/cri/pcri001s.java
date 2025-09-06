@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cestec.cestec.model.contratoDTO;
-import com.cestec.cestec.repository.clienteRepository;
-import com.cestec.cestec.repository.contratoRepository;
 import com.cestec.cestec.repository.corretorRepository;
-import com.cestec.cestec.repository.imovelRepository;
+import com.cestec.cestec.repository.cri.clienteRepository;
+import com.cestec.cestec.repository.cri.contratoRepository;
+import com.cestec.cestec.repository.cri.imovelRepository;
 import com.cestec.cestec.repository.cri.proprietarioRepository;
 import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
 import com.cestec.cestec.repository.generico.funcionarioRepository;

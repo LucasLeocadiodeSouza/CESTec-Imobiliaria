@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cestec.cestec.infra.pagamento.CobrancaInput;
 import com.cestec.cestec.model.contasAPagar.BoletoRegistrado;
 import com.cestec.cestec.model.contasAPagar.Fatura;
-import com.cestec.cestec.repository.clienteRepository;
+import com.cestec.cestec.repository.cri.clienteRepository;
 import com.cestec.cestec.repository.pagamento.contaRepository;
 import com.cestec.cestec.repository.pagamento.convenioRepository;
 import com.cestec.cestec.service.pagamento.faturaService;
