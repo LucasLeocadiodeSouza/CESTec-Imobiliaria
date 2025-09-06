@@ -10,9 +10,9 @@ import com.cestec.cestec.model.ImovelProprietarioDTO;
 import com.cestec.cestec.model.modelUtilForm;
 import com.cestec.cestec.model.cri.pcp_imovel;
 import com.cestec.cestec.model.cri.pcp_proprietario;
-import com.cestec.cestec.repository.cri.contratosCustomRepo;
 import com.cestec.cestec.repository.cri.imovelRepository;
 import com.cestec.cestec.repository.cri.proprietarioRepository;
+import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
 import com.cestec.cestec.service.sp_userService;
 import com.cestec.cestec.util.utilForm;
 import jakarta.transaction.Transactional;
@@ -26,7 +26,7 @@ public class cri001s {
     private imovelRepository imovelRepository;
 
     @Autowired
-    private contratosCustomRepo contratosCustomRepo;
+    private prjContratosCustomRepository contratosCustomRepo;
 
     @Autowired
     private sp_userService sp_user;
@@ -184,15 +184,6 @@ public class cri001s {
     /* ***************** */ 
 
     /* ********* GRIDS ******** */ 
-    public ImovelProprietarioDTO buscarImovelGrid(Integer index) {
-        return imovelRepository.buscarImovelGrid(imovelRepository.buscarimoveis().get(index).getCodimovel(),
-                imovelRepository.buscarimoveis().get(index).getCodproprietario());
-    }
-
-    public List<pcp_imovel> listarImoveis() {
-        return imovelRepository.findAll();
-    }
-
     public List<?> buscarImoveis(Integer codcontrato, Integer codprop, Integer tipimovel) {
         List<ImovelProprietarioDTO> imoveis = contratosCustomRepo.buscarContratoAprovacao(codcontrato, codprop, tipimovel);
 

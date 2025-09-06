@@ -59,4 +59,9 @@ public class genController {
     public String getNomeProp(@RequestParam(value = "codprop", required = false) Integer codProprietario){
         return gen.getNomeProp(codProprietario);
     }
+
+    @GetMapping("/getNomeCliente")
+    public String getNomeCliente(@RequestParam(value = "codcli", required = false) Integer codcli){
+        return gen.getNomeCliente(codcli);
+    }
 }
