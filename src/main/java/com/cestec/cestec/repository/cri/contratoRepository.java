@@ -5,17 +5,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import com.cestec.cestec.model.contratoDTO;
+import com.cestec.cestec.model.cri.contratoDTO;
 import com.cestec.cestec.model.cri.pcp_contrato;
 import com.cestec.cestec.model.cri.pcp_contratoId;
 
 @Repository
 public interface contratoRepository extends JpaRepository<pcp_contrato, pcp_contratoId> {
+    pcp_contrato findTopByOrderByIdDesc();
+
     @Query("SELECT contr FROM pcp_contrato contr WHERE contr.id.codcontrato = :codcontr")
     List<pcp_contrato> buscarContratosById(@Param("codcontr") Integer codcontr);
 
-    @Query("SELECT new com.cestec.cestec.model.contratoDTO( " +
-            "con.id.codcontrato, c.codcliente, c.nome, p.codproprietario, p.nome, i.codimovel, i.tipo, i.negociacao, i.preco, con.datinicio, con.datfinal, con.valor, i.endereco, corr.codcorretor) " +
+    @Query("SELECT contr FROM pcp_contrato contr WHERE contr.id.codcontrato = :codcontr AND contr.id.codimovel = :codimovel")
+    pcp_contrato findByCodContratoImovel(@Param("codcontr") Integer codcontr, @Param("codimovel") Integer codimovel);
+
+    @Query("SELECT new com.cestec.cestec.model.cri.contratoDTO( " +
+            "con.id.codcontrato, c.codcliente, c.nome, p.codproprietario, p.nome, i.codimovel, i.tipo, i.negociacao, i.preco, con.datinicio, con.datfinal, con.valor, i.endereco, corr.codcorretor,con.situacao) " +
             "FROM pcp_contrato con " + 
             "JOIN con.pcp_proprietario p " + 
             "JOIN con.pcp_corretor corr "  +
@@ -23,7 +28,7 @@ public interface contratoRepository extends JpaRepository<pcp_contrato, pcp_cont
             "JOIN con.pcp_imovel i")
     List<contratoDTO> buscarContratoGrid();
     
-    @Query("SELECT new com.cestec.cestec.model.contratoDTO( " +
+    @Query("SELECT new com.cestec.cestec.model.cri.contratoDTO( " +
             "con.id.codcontrato, i.codimovel, p.codproprietario, c.codcliente, con.datinicio, con.datfinal, i.tipo, corr.codcorretor, i.preco, i.negociacao, p.nome, c.nome, func.nome, con.valor, i.quartos, i.vlrcondominio, i.area, c.documento, i.endereco, con.valorliberado, con.observacao) " +
             "FROM pcp_contrato con "       +
             "JOIN con.pcp_corretor corr "  +

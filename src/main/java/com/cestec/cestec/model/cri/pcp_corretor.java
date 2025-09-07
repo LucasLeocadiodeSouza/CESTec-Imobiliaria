@@ -1,4 +1,6 @@
-package com.cestec.cestec.model;
+package com.cestec.cestec.model.cri;
+
+import com.cestec.cestec.model.funcionario;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

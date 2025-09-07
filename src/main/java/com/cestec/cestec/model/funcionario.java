@@ -45,7 +45,7 @@ public class funcionario {
     @Column(length = 15)
     private String ideusu;
 
-    private double    salario;
+    private Double    salario;
     private String    nome;
     private LocalDate datinasc;
     private String    cpf;

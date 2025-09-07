@@ -1,9 +1,7 @@
 package com.cestec.cestec.controller.cri;
 
-import java.sql.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,12 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.cestec.cestec.model.ImovelProprietarioDTO;
 import com.cestec.cestec.model.modelUtilForm;
 import com.cestec.cestec.model.cri.pcp_imovel;
 import com.cestec.cestec.service.genService;
 import com.cestec.cestec.service.cri.cri001s;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -27,11 +23,6 @@ public class cri001c {
 
     @Autowired
     private genService gen;
-
-    @GetMapping("/getTipoImovel")
-    public String getTipoImovel(@RequestParam(value = "codImovel", required = false) Integer codImovel) {
-        return cri001s.getTipoImovel(codImovel);
-    }
 
     @PostMapping("/salvarImovel")
     public ResponseEntity<?> salvarImovel(@RequestBody pcp_imovel imovel, @RequestParam(value = "codprop", required = false) Integer codprop, HttpServletRequest request) {
@@ -57,21 +48,6 @@ public class cri001c {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Erro interno ao inativar imovel: " + e.getMessage());
         }
-    }
-
-    @GetMapping("/getEnderecoImovel")
-    public String getEnderecoImovel(@RequestParam(value = "codImovel", required = false) Integer codImovel) {
-        return cri001s.getEnderecoImovel(codImovel);
-    }
-
-    @GetMapping("/getTipoContratoImovel")
-    public String getTipoContratoImovel(@RequestParam(value = "codImovel", required = false) Integer codImovel) {
-        return cri001s.getTipoContratoImovel(codImovel);
-    }
-
-    @GetMapping("/getValorImovel")
-    public double getValorImovel(@RequestParam(value = "codImovel", required = false) Integer codImovel) {
-        return cri001s.getValorImovel(codImovel);
     }
 
     @GetMapping("/buscarImoveis")

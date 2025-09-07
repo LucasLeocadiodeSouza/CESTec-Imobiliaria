@@ -11,10 +11,17 @@ import com.cestec.cestec.model.cri.pcp_imovel;
 
 @Repository
 public interface imovelRepository extends JpaRepository<pcp_imovel, Integer> {
-    pcp_imovel findByCodimovel(Integer codimovel);
+    @Query("SELECT i FROM pcp_imovel i WHERE i.codimovel = :codimovel")
+    pcp_imovel findByCodimovel(@Param("codimovel") Integer codimovel);
 
     @Query("SELECT i FROM pcp_imovel i WHERE i.pcp_proprietario.codproprietario = :codproprietario")
     List<pcp_imovel> findByProprietario(@Param("codproprietario") Integer codproprietario);
+
+    @Query("SELECT i FROM pcp_imovel i WHERE i.pcp_proprietario.codproprietario = :codproprietario AND i.status = 1")
+    List<pcp_imovel> findAtivosByProprietario(@Param("codproprietario") Integer codproprietario);
+
+    @Query("SELECT i FROM pcp_imovel i WHERE i.status = 1")
+    List<pcp_imovel> findAtivos();
 
     @Query("SELECT i FROM pcp_imovel i WHERE i.pcp_proprietario.codproprietario = :codproprietario AND i.codimovel = :codimovel")
     pcp_imovel existeimovel(@Param("codimovel") Integer codimovel, @Param("codproprietario") Integer codproprietario);
@@ -30,4 +37,6 @@ public interface imovelRepository extends JpaRepository<pcp_imovel, Integer> {
            "WHERE i.codimovel = :codimovel AND "+
            "p.codproprietario = :codproprietario")
     ImovelProprietarioDTO buscarImovelGrid(@Param("codimovel") Integer codimovel,@Param("codproprietario") Integer codproprietario);
+
+
 }

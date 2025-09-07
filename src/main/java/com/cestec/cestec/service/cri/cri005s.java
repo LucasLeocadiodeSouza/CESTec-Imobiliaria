@@ -7,9 +7,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import com.cestec.cestec.model.corretorDTO;
-import com.cestec.cestec.model.pcp_corretor;
+
 import com.cestec.cestec.model.pcp_meta;
+import com.cestec.cestec.model.cri.corretorDTO;
+import com.cestec.cestec.model.cri.pcp_corretor;
 import com.cestec.cestec.repository.corretorRepository;
 import com.cestec.cestec.repository.metaRepository;
 import com.cestec.cestec.util.utilForm;

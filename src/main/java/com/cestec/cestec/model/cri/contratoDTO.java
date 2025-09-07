@@ -1,4 +1,4 @@
-package com.cestec.cestec.model;
+package com.cestec.cestec.model.cri;
 
 import java.sql.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -69,7 +69,7 @@ public class contratoDTO {
     @Column(length = 20)
     private String endereco_cep;  
 
-    public contratoDTO(Integer codcontrato, Integer codcliente, String nomeCliente, Integer codproprietario, String nomeProp, Integer codimovel, Integer tipo, Integer negociacao, double preco, Date datinicio, Date datfinal, double valor, String endereco, Integer codcorretor) {
+    public contratoDTO(Integer codcontrato, Integer codcliente, String nomeCliente, Integer codproprietario, String nomeProp, Integer codimovel, Integer tipo, Integer negociacao, double preco, Date datinicio, Date datfinal, double valor, String endereco, Integer codcorretor, Integer situacao) {
         this.codcontrato     = codcontrato;
         this.codimovel       = codimovel;
         this.codproprietario = codproprietario;
@@ -84,6 +84,7 @@ public class contratoDTO {
         this.valor           = valor;
         this.endereco_bairro = endereco;
         this.codcorretor     = codcorretor;
+        this.situacao        = situacao;
     }
     
     public contratoDTO(Integer codcontrato, Integer codimovel, Integer codproprietario, Integer codcliente, Date datinicio, Date datfinal, Integer tipo, Integer codcorretor, double preco, Integer negociacao, String nomeProp, String nomeCliente, String nomeCorretor, double valor, Integer quartos, Double vlrcondominio, Double area, String documento, String endereco, double valorliberado, String observacao) {

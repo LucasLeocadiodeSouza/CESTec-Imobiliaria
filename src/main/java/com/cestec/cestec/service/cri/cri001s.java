@@ -3,9 +3,7 @@ package com.cestec.cestec.service.cri;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import com.cestec.cestec.model.ImovelProprietarioDTO;
 import com.cestec.cestec.model.modelUtilForm;
 import com.cestec.cestec.model.cri.pcp_imovel;
@@ -30,21 +28,6 @@ public class cri001s {
 
     @Autowired
     private sp_userService sp_user;
-
-
-    public String getBuscaTipoImovel(Integer codImovel) {
-        Integer tipo = imovelRepository.findById(codImovel).get().getTipo();
-
-        switch (tipo) {
-            case 1:
-                return "Apartamento";
-            case 2:
-                return "Casa";
-            case 3:
-                return "Terreno";
-        }
-        return "Tipo do imovel não encontrado";
-    }
 
     public String getTipoImovel(Integer codtipo) {
         switch (codtipo) {
@@ -80,25 +63,8 @@ public class cri001s {
         return "";
     }
 
-    public String getEnderecoImovel(Integer codImovel) {
-        pcp_imovel imovel = imovelRepository.findById(codImovel)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Não encontrado imovel para o código informado [" + codImovel + "]"));
-
-        return imovel.getEndereco();
-    }
-    
-    public double getValorImovel(Integer codImovel) {
-        return imovelRepository.findById(codImovel).get().getPreco();
-    }
-
 
     /* ********* Options ******** */ 
-    public String getTipoContratoImovel(Integer codImovel) {
-        Integer negociacao = imovelRepository.findById(codImovel).get().getNegociacao();
-        return getDescTipos(negociacao);
-    }
-
     public List<modelUtilForm> getOptionsTpContrato(){
         List<modelUtilForm> listaOpt = new java.util.ArrayList<>();
         int i = 1;

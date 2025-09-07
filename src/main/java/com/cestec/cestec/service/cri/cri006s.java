@@ -6,7 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.cestec.cestec.model.contratoDTO;
+
+import com.cestec.cestec.model.cri.contratoDTO;
 import com.cestec.cestec.model.cri.pcp_cliente;
 import com.cestec.cestec.model.cri.pcp_contrato;
 import com.cestec.cestec.repository.userRepository;

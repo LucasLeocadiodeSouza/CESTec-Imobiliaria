@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cestec.cestec.model.corretorDTO;
+import com.cestec.cestec.model.cri.corretorDTO;
 import com.cestec.cestec.service.cri.cri005s;
 
 import org.springframework.web.bind.annotation.GetMapping;

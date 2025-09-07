@@ -1,7 +1,8 @@
 package com.cestec.cestec.model.cri;
 
 import java.sql.Date;
-import com.cestec.cestec.model.pcp_corretor;
+import java.time.LocalDate;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -41,25 +42,25 @@ public class pcp_contrato {
     @JoinColumn(name = "codcorretor")
     private pcp_corretor pcp_corretor;
 
-    private Date    datinicio;
-    private Date    datfinal;
-    private Integer situacao;
-    private Date    datiregistro;
-    private float   valor;
-    private float   valorliberado;
-    private String  observacao;
-    private String  ideusu;
-    private boolean ativo;
+    private Date      datinicio;
+    private Date      datfinal;
+    private Integer   situacao;
+    private LocalDate datiregistro;
+    private Double    valor;
+    private Double    valorliberado;
+    private String    observacao;
+    private String    ideusu;
+    private boolean   ativo;
     
     public pcp_contrato(pcp_cliente pcp_cliente,
                         pcp_imovel pcp_imovel,
                         pcp_proprietario pcp_proprietario,
                         Date datinicio, 
                         Date datfinal, 
-                        Date datiregistro,
+                        LocalDate datiregistro,
                         Integer situacao,
                         pcp_corretor pcp_corretor, 
-                        float valor, 
+                        Double valor, 
                         boolean ativo) {
 
         this.pcp_cliente      = pcp_cliente;
