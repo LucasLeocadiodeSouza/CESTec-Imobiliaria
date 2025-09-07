@@ -38,9 +38,7 @@ com\cestec\cestec\service\pagamento\geradorBoleto.class
 com\cestec\cestec\repository\userRepository.class
 com\cestec\cestec\model\contasAPagar\TipoFatura.class
 com\cestec\cestec\repository\pagamento\contaRepository.class
-com\cestec\cestec\model\pcp_corretor.class
 com\cestec\cestec\model\sp_modulos.class
-com\cestec\cestec\model\contratoDTO.class
 com\cestec\cestec\model\contasAPagar\faturamentoDTO.class
 com\cestec\cestec\model\LibAcessoId.class
 com\cestec\cestec\model\aplicacaoDTO.class
@@ -67,7 +65,6 @@ com\cestec\cestec\infra\pagamento\CobrancaInput.class
 com\cestec\cestec\model\securityLogin\loginResponseDTO.class
 com\cestec\cestec\model\LibAcesso.class
 com\cestec\cestec\repository\pagamento\convenioRepository.class
-com\cestec\cestec\model\corretorDTO.class
 com\cestec\cestec\model\securityLogin\userRole.class
 com\cestec\cestec\repository\corretorRepository.class
 com\cestec\cestec\controller\userController.class

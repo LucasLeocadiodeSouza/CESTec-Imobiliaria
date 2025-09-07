@@ -4,8 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cestec.cestec.infra.security.tokenService;
 import com.cestec.cestec.model.funcionario;
+import com.cestec.cestec.model.sp_aplicacoes;
+import com.cestec.cestec.model.sp_modulos;
+import com.cestec.cestec.model.cri.pcp_cliente;
+import com.cestec.cestec.model.cri.pcp_imovel;
+import com.cestec.cestec.model.cri.pcp_proprietario;
 import com.cestec.cestec.model.spf.sp_bloqueia_acess;
 import com.cestec.cestec.repository.cri.clienteRepository;
+import com.cestec.cestec.repository.cri.imovelRepository;
 import com.cestec.cestec.repository.cri.proprietarioRepository;
 import com.cestec.cestec.repository.generico.aplicacoesRepository;
 import com.cestec.cestec.repository.generico.funcionarioRepository;
@@ -41,6 +47,8 @@ public class genService {
     @Autowired
     private clienteRepository clienteRepository;
 
+    @Autowired
+    private imovelRepository imovelRepository;
 
     public String getUserName(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
@@ -60,9 +68,15 @@ public class genService {
         return funcionarioRepository.findNomeByIdeusu(ideusu);
     }
 
+    public String getIdeusuByCodFunc(Integer codfunc){
+        funcionario funcionario = funcionarioRepository.findFuncBycodfunc(codfunc);
+        if(funcionario == null) throw new RuntimeException("Não encontrado nenhum funcionario com o código informado!");
+
+        return funcionario.getSp_user().getLogin();
+    }
+
     public String getNomeByCodFunc(Integer codfunc){
         String funcname = funcionarioRepository.findNameByUser(codfunc);
-
         if(funcname == null) throw new RuntimeException("Não encontrado nenhum funcionario com o código informado!");
 
         return funcname;
@@ -70,7 +84,6 @@ public class genService {
 
     public String findCargoByIdeusu(String ideusu){
         String cargoname = funcionarioRepository.findCargoByIdeusu(ideusu);
-
         if(cargoname == null) throw new RuntimeException("Não encontrado o Cargo para o funcionario informado!");
 
         return cargoname;
@@ -78,7 +91,6 @@ public class genService {
 
     public String findSetorByIdeusu(String ideusu){
         String setorname = funcionarioRepository.findSetorByIdeusu(ideusu);
-
         if(setorname == null) throw new RuntimeException("Não encontrado o Setor para o funcionario informado!");
 
         return setorname;
@@ -86,38 +98,44 @@ public class genService {
 
     public String findCodSetorByIdeusu(String ideusu){
         String codsetor = funcionarioRepository.findCodSetorByIdeusu(ideusu);
-
         if(codsetor == null) throw new RuntimeException("Não encontrado o Código do Setor para o funcionario informado!");
 
         return codsetor;
     }
 
     public String getDescricaoModulo(Integer codmodulo){
-        String descmodulo = modulosRepository.findByIdModulos(codmodulo).getDescricao();
+        sp_modulos modulo = modulosRepository.findByIdModulos(codmodulo);
+        if(modulo == null) throw new RuntimeException("Não encontrado a descricão do modulo com o código informado!");
 
-        if(descmodulo == null) throw new RuntimeException("Não encontrado a descricão do modulo com o código informado!");
-
-        return descmodulo;
+        return modulo.getDescricao();
     } 
 
     public String getDescricaoAplicacao(Integer codmodulo){
-        return aplicacoesRepository.findByCodApl(codmodulo).getDescricao();
+        sp_aplicacoes aplicacao = aplicacoesRepository.findByCodApl(codmodulo);
+        if(aplicacao == null) throw new RuntimeException("Código do modulo [" + codmodulo + "] não encontrado!");
+
+        return aplicacao.getDescricao();
     }
 
     public String getNomeProp(Integer codProprietario) {
-        String propname = proprietarioRepository.findByCodproprietario(codProprietario).getNome();
+        pcp_proprietario prop = proprietarioRepository.findByCodproprietario(codProprietario);
+        if(prop == null) throw new RuntimeException("Código do proprietario [" + codProprietario + "] não encontrado!");
 
-        if(propname == "") throw new RuntimeException("Código do proprietario [" + codProprietario + "] não encontrado");
-
-        return propname;
+        return prop.getNome();
     }
 
     public String getNomeCliente(Integer codcliente) {
-        String clientename = clienteRepository.findByCodcliente(codcliente).getNome();
+        pcp_cliente cliente = clienteRepository.findByCodcliente(codcliente);
+        if(cliente == null) throw new RuntimeException("Código do Cliente [" + codcliente + "] não encontrado!");
 
-        if(clientename == "") throw new RuntimeException("Código do Cliente [" + codcliente + "] não encontrado");
+        return cliente.getNome();
+    }
 
-        return clientename;
+    public String getEnderecoImovel(Integer codimovel) {
+        pcp_imovel imovel = imovelRepository.findByCodimovel(codimovel);
+        if(imovel == null) throw new RuntimeException("Código do Imovel [" + codimovel + "] não encontrado!");
+
+        return imovel.getEndereco();
     }
 
     public Boolean usuarioTemAcessoAplicacao(Integer idmodulo, Integer idaplicacao, String ideusu){

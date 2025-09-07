@@ -2,6 +2,8 @@ package com.cestec.cestec.model;
 
 import java.sql.Date;
 
+import com.cestec.cestec.model.cri.pcp_corretor;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cestec.cestec.model.ImovelProprietarioDTO;
 import com.cestec.cestec.model.aplicacaoDTO;
-import com.cestec.cestec.model.contratoDTO;
+import com.cestec.cestec.model.cri.contratoDTO;
 import com.cestec.cestec.model.cri.pcp_cliente;
 import com.cestec.cestec.model.cri.pcp_contrato;
 import com.cestec.cestec.model.cri.pcp_proprietario;
@@ -67,7 +67,7 @@ public class prjContratosCustomRepository {
     }
 
     public List<contratoDTO> buscarContratoAprovacao(Integer codprop, Integer codcliente, Integer codcorretor, Integer acao){
-        String query = "SELECT new com.cestec.cestec.model.contratoDTO( " +
+        String query = "SELECT new com.cestec.cestec.model.cri.contratoDTO( " +
                        "con.codcontrato, i.codimovel, p.codproprietario, c.codcliente, con.datinicio, con.datfinal, i.tipo, corr.codcorretor, i.preco, i.negociacao, p.nome, c.nome, func.nome, con.valor, i.quartos, i.vlrcondominio, i.area, c.documento, i.endereco, con.valorliberado, con.observacao) " +
                        "FROM pcp_contrato con "       +
                        "JOIN con.pcp_corretor corr "  +
@@ -148,35 +148,33 @@ public class prjContratosCustomRepository {
         return q.getResultList();
     }
 
-    public List<contratoDTO> buscarContratoGrid(Integer codprop, Integer codcliente){
-        String query = "SELECT new com.cestec.cestec.model.contratoDTO( " +
-                       "con.codcontrato, c.codcliente, c.nome, p.codproprietario, p.nome, i.codimovel, i.tipo, i.negociacao, i.preco, con.datinicio, con.datfinal, con.valor, i.endereco, corr.codcorretor) " +
-                       "FROM pcp_contrato con "       + 
-                       "JOIN con.pcp_proprietario p " + 
-                       "JOIN con.pcp_corretor corr "  +
-                       "JOIN con.pcp_cliente c "      +
-                       "JOIN con.pcp_imovel i";
+    public List<contratoDTO> buscarContratoGrid(Integer codprop, Integer codcliente, Integer tipimovel){
+        String query = "SELECT new com.cestec.cestec.model.cri.contratoDTO( " +
+                       "con.id.codcontrato, con.pcp_cliente.codcliente, con.pcp_cliente.nome, con.pcp_proprietario.codproprietario, con.pcp_proprietario.nome, con.pcp_imovel.codimovel, con.pcp_imovel.tipo, con.pcp_imovel.negociacao, con.pcp_imovel.preco, con.datinicio, con.datfinal, con.valor, con.pcp_imovel.endereco, con.pcp_corretor.codcorretor, con.situacao) " +
+                       "FROM pcp_contrato con ";
 
         boolean temand = false;
 
         if(codprop != null && codprop != 0){
-            query += (temand?" AND ":" WHERE ") + " p.codproprietario = :codprop";
+            query += (temand?" AND ":" WHERE ") + " con.pcp_proprietario.codproprietario = :codprop";
             temand = true;
         }
 
         if(codcliente != null && codcliente != 0){
-            query += (temand?" AND ":" WHERE ") + " c.codcliente = :codcliente";
+            query += (temand?" AND ":" WHERE ") + " con.pcp_cliente.codcliente = :codcliente";
+            temand = true;
+        }
+
+        if(tipimovel != null && tipimovel != 0){
+            query += (temand?" AND ":" WHERE ") + " con.pcp_imovel.negociacao = :tipoimovel";
             temand = true;
         }
 
         var q = em.createQuery(query, contratoDTO.class);
 
-        if(codprop != null && codprop != 0){
-            q.setParameter("codprop", codprop);
-        }
-        if(codcliente != null && codcliente != 0){
-            q.setParameter("codcliente", codcliente);
-        }
+        if(codprop != null && codprop != 0) q.setParameter("codprop", codprop);
+        if(codcliente != null && codcliente != 0) q.setParameter("codcliente", codcliente);
+        if(tipimovel != null && tipimovel != 0) q.setParameter("tipoimovel", tipimovel);
 
         return q.getResultList();
     }
