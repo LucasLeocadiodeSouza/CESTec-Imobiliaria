@@ -27,7 +27,7 @@ public class prjContratosCustomRepository {
     @Autowired
     private contratoRepository contratoRepo;
 
-    public List<ImovelProprietarioDTO> buscarContratoAprovacao(Integer codcontrato, Integer codprop, Integer tipimovel){
+    public List<ImovelProprietarioDTO> buscarImoveisGrid(Integer codcontrato, Integer codprop, Integer tipimovel){
         String query = "SELECT new com.cestec.cestec.model.ImovelProprietarioDTO( " +
                        "i.codimovel, i.pcp_proprietario.codproprietario, i.pcp_proprietario.nome, i.tipo, i.status, i.preco, i.negociacao, i.endereco, i.area, i.quartos, i.vlrcondominio, i.datinicontrato) " +
                        "FROM pcp_imovel i ";
@@ -52,7 +52,7 @@ public class prjContratosCustomRepository {
             temand = true;
         }
 
-        if(tipimovel != 0){
+        if(tipimovel != null && tipimovel != 0){
             query += (temand?" AND ":" WHERE ") + " i.negociacao = :tipoimovel";
             temand = true;
         }
@@ -66,52 +66,47 @@ public class prjContratosCustomRepository {
         return q.getResultList();
     }
 
-    public List<contratoDTO> buscarContratoAprovacao(Integer codprop, Integer codcliente, Integer codcorretor, Integer acao){
+    public List<contratoDTO> buscarContratoAprovacaoGrid(Integer codprop, Integer codcliente, Integer codcorretor, Integer tipimovel, Integer acao){
         String query = "SELECT new com.cestec.cestec.model.cri.contratoDTO( " +
-                       "con.codcontrato, i.codimovel, p.codproprietario, c.codcliente, con.datinicio, con.datfinal, i.tipo, corr.codcorretor, i.preco, i.negociacao, p.nome, c.nome, func.nome, con.valor, i.quartos, i.vlrcondominio, i.area, c.documento, i.endereco, con.valorliberado, con.observacao) " +
-                       "FROM pcp_contrato con "       +
-                       "JOIN con.pcp_corretor corr "  +
-                       "JOIN corr.funcionario func "  +
-                       "JOIN con.pcp_proprietario p " +
-                       "JOIN con.pcp_cliente c "      +
-                       "JOIN con.pcp_imovel i ";
+                       "con.id.codcontrato, con.pcp_imovel.codimovel, con.pcp_proprietario.codproprietario, con.pcp_cliente.codcliente, con.datinicio, con.datfinal, con.pcp_imovel.tipo, con.pcp_corretor.codcorretor, con.pcp_imovel.preco, con.pcp_imovel.negociacao, con.pcp_proprietario.nome, con.pcp_cliente.nome, con.pcp_corretor.funcionario.nome, con.valor, con.pcp_imovel.quartos, con.pcp_imovel.vlrcondominio, con.pcp_imovel.area, con.pcp_cliente.documento, con.pcp_imovel.endereco, con.valorliberado, con.observacao) " +
+                       "FROM pcp_contrato con ";
 
         boolean temand = false;
 
-        if(codprop != null){
-            query += (temand?" AND ":" WHERE ") + " p.codproprietario = :codprop";
+        if(codprop != null && codprop != 0){
+            query += (temand?" AND ":" WHERE ") + " con.pcp_proprietario.codproprietario = :codprop";
             temand = true;
         }
 
-        if(codcliente != null){
-            query += (temand?" AND ":" WHERE ") + " c.codcliente = :codcliente";
+        if(codcliente != null && codcliente != 0){
+            query += (temand?" AND ":" WHERE ") + " con.pcp_cliente.codcliente = :codcliente";
             temand = true;
         }
 
-        if(codcorretor != null){
-            query += (temand?" AND ":" WHERE ") + " corr.codcorretor = :codcorretor";
+        if(codcorretor != null && codcorretor != 0){
+            query += (temand?" AND ":" WHERE ") + " con.pcp_corretor.codcorretor = :codcorretor";
+            temand = true;
+        }
+
+        if(tipimovel != null && tipimovel != 0){
+            query += (temand?" AND ":" WHERE ") + " con.pcp_imovel.negociacao = :tipoimovel";
             temand = true;
         }
 
         if(acao == 1){
-            query += (temand?" AND ":" WHERE ") + " con.situacao = :acao";
+            query += (temand?" AND ":" WHERE ") + " con.situacao = 2";
             temand = true;
         }
 
         var q = em.createQuery(query, contratoDTO.class);
 
-        if(codprop != null){
-            q.setParameter("codprop", codprop);
-        }
-        if(codcliente != null){
-            q.setParameter("codcliente", codcliente);
-        }
-        if(codcorretor != null){
-            q.setParameter("codcorretor", codcorretor);
-        }
-        if(acao == 1){
-            q.setParameter("acao", acao);
-        }
+        if(codprop != null && codprop != 0) q.setParameter("codprop", codprop);
+
+        if(codcliente != null && codcliente != 0)  q.setParameter("codcliente", codcliente);
+        
+        if(codcorretor != null && codcorretor != 0) q.setParameter("codcorretor", codcorretor);
+
+        if(tipimovel != null && tipimovel != 0) q.setParameter("tipoimovel", tipimovel);
 
         return q.getResultList();
     }
@@ -119,15 +114,11 @@ public class prjContratosCustomRepository {
     public List<pcp_cliente> buscarClientes(Integer codcliente){
         String query = "SELECT c FROM pcp_cliente AS c ";
 
-        if(codcliente != null && codcliente != 0){
-            query += " WHERE c.codcliente = :codcliente";
-        }
+        if(codcliente != null && codcliente != 0) query += " WHERE c.codcliente = :codcliente";
 
         var q = em.createQuery(query, pcp_cliente.class);
 
-        if(codcliente != null && codcliente != 0){
-            q.setParameter("codcliente", codcliente);
-        }
+        if(codcliente != null && codcliente != 0) q.setParameter("codcliente", codcliente);
 
         return q.getResultList();
     }
@@ -135,15 +126,11 @@ public class prjContratosCustomRepository {
     public List<pcp_proprietario> buscarProprietario(Integer codprop){
         String query = "SELECT p FROM pcp_proprietario AS p ";
 
-        if(codprop != null && codprop != 0){
-            query += " WHERE p.codproprietario = :codprop";
-        }
+        if(codprop != null && codprop != 0) query += " WHERE p.codproprietario = :codprop";
 
         var q = em.createQuery(query, pcp_proprietario.class);
 
-        if(codprop != null && codprop != 0){
-            q.setParameter("codprop", codprop);
-        }
+        if(codprop != null && codprop != 0) q.setParameter("codprop", codprop);
 
         return q.getResultList();
     }

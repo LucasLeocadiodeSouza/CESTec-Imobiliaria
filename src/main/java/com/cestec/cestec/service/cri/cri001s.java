@@ -151,7 +151,7 @@ public class cri001s {
 
     /* ********* GRIDS ******** */ 
     public List<?> buscarImoveis(Integer codcontrato, Integer codprop, Integer tipimovel) {
-        List<ImovelProprietarioDTO> imoveis = contratosCustomRepo.buscarContratoAprovacao(codcontrato, codprop, tipimovel);
+        List<ImovelProprietarioDTO> imoveis = contratosCustomRepo.buscarImoveisGrid(codcontrato, codprop, tipimovel);
 
         utilForm.initGrid();
         for (int i = 0; i < imoveis.size(); i++) {

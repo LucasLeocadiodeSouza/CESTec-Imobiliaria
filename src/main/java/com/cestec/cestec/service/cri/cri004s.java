@@ -74,6 +74,17 @@ public class cri004s {
         return "Descricão não encontrada";
     }
 
+    public String getSituacaoContrato(Integer codsit) {
+        switch (codsit) {
+            case 0: return "Cancelado";
+            case 1: return "Aberta";
+            case 2: return "Aguardando aprovação";
+            case 3: return "Aprovada";
+            case 4: return "Reprovada";
+        }
+        return "";
+    }
+
     public String getBuscaTipoImovel(Integer codimovel) {
         pcp_imovel imovel = imovelRepository.findByCodimovel(codimovel);
         if(imovel == null)  throw new RuntimeException("Código do Imovel [" + codimovel + "] não encontrado!");
@@ -178,7 +189,7 @@ public class cri004s {
             Integer ultimoCodContrato = 1;
             if(ultimoContrato != null) ultimoCodContrato = ultimoContrato.getId().getCodcontrato();
 
-            contratoAnalise.setId(new pcp_contratoId(ultimoCodContrato, imovel.getCodimovel())); // ultimo registro do contrato no banco e codigo imovel do parametro
+            contratoAnalise.setId(new pcp_contratoId(ultimoCodContrato + 1, imovel.getCodimovel())); // ultimo registro do contrato no banco e codigo imovel do parametro
 
             contratoAnalise.setDatiregistro(LocalDate.now());
             contratoAnalise.setIdeusu(ideusu);
@@ -208,6 +219,25 @@ public class cri004s {
 
         contratoRepository.save(contratoAnalise);
    }
+
+   @Transactional
+    public void enviarContratoAprovacao(Integer codcontrato, Integer codimovel, String ideusu){
+        if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
+
+        if(codimovel == null || codimovel == 0) throw new RuntimeException("É preciso informar o codigo do imovel para vincular com contrato!");
+
+        pcp_imovel imovel = imovelRepository.findByCodimovel(codimovel);
+        if(imovel == null) throw new RuntimeException("Imovel não encontrado com o codigo informado '" + codimovel + "'!");
+
+        pcp_contrato contratoAnalise = contratoRepository.findByCodContratoImovel(codcontrato, codimovel);
+
+        if(contratoAnalise == null) throw new RuntimeException("O contrato não foi encontrado com o codigo do contrato e imovel informado");
+        else if(contratoAnalise.getSituacao() != 1 && contratoAnalise.getSituacao() != 4) throw new RuntimeException("O contrato não esta em uma situacão que permita alteracão de informacões");
+
+        contratoAnalise.setSituacao(2);
+
+        contratoRepository.save(contratoAnalise);
+   }
    /*****************/
 
     /*  ******* GRIDS ****** */
@@ -218,6 +248,7 @@ public class cri004s {
         for (int i = 0; i < contratos.size(); i++) {
             utilForm.criarRow();
             utilForm.criarColuna(contratos.get(i).getCodcontrato().toString());
+            utilForm.criarColuna(getSituacaoContrato(contratos.get(i).getSituacao()));
             utilForm.criarColuna(contratos.get(i).getCodcliente().toString());
             utilForm.criarColuna(contratos.get(i).getNomeCliente());
             utilForm.criarColuna(contratos.get(i).getCodproprietario().toString());

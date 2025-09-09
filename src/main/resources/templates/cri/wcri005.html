@@ -40,19 +40,6 @@
     .contrato  {height: auto !important;}
     .aprovacao {margin-top: 15px;}
 
-    #fichacontrato {height: 100%;}
-    #fichacompleta {height: auto !important; padding-top: 0 !important;}
-    .ciclo {display: none !important;}
-
-    .grid {display: block !important;
-           height: 400px;
-           margin-top: 25px;
-           margin-inline: 7px;
-           overflow-y: auto;
-           overflow-x:scroll;}
-
-    #botoes {display: none !important;}
-
     .dado {display:         flex;
            justify-content: center;
            align-items:     center;
@@ -68,20 +55,13 @@
     
     #tabela_aprovacao {overflow-x: auto;}
 
-    #dmodalf_aprovacao {width: calc(100% - 300px); /* Subtrai 150px de cada lado */
-                        height: auto; /* Subtrai 50px de cada lado, considerando a margem superior e inferior */
-                        opacity: 1;
-                        display: flex;
-                        flex-direction: column;
-                        margin-inline: 150px;  /* Margem de 150px nas laterais */
-                        margin-block: 50px;}
+    #dmodalf_aprovacao {padding-bottom: 20px;
+                        opacity: 1;}
 
     #dmodalf_aprovacao img {filter: invert(100%);}
 
     .buttonsmodal {display: flex; justify-content: center; align-items: center; margin: 25px;}
     div.buttonsmodal input{color: #FFF;}
-
-    body {background-color: #1d3561;}
 </style>
 </head>
 <body>
@@ -117,10 +97,13 @@
                 <label class="labelfiltro">Tipo de Imóvel:</label>
 
                 <input type="radio" id="raluguel" name="rimovel" value="1">
-                <label class="labelfiltro" style="text-align: left; width: 80px" for="raluguel">Aluguel</label>
+                <label style="text-align: left; width: 80px" for="raluguel">Aluguel</label>
 
                 <input type="radio" id="rvenda" name="rimovel" value="2">
-                <label class="labelfiltro" style="text-align: left; width: 80px" for="rvenda">Venda</label>
+                <label style="text-align: left; width: 80px" for="rvenda">Venda</label>
+
+                <input type="radio" id="rambas" name="rimovel" value="0">
+                <label style="text-align: left; width: 80px" for="rambas">Ambas</label>
             </div>
 
             <div  class='if' style="display: flex; height: auto;">
