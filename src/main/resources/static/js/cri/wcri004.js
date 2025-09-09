@@ -16,10 +16,10 @@ function iniciarEventos() {
 
     CONTRATOS_GRID               = new GridForm_init();
     CONTRATOS_GRID.id            = "tabela_contrato";
-    CONTRATOS_GRID.columnName    = "codcontrato,codcliente,nomeCliente,codproprietario,nomeProp,codimovel,tipo,negociacao,preco,_datinicio,_datfinal,_valor,_endereco_bairro,_codcorretor,_codtipo,_nomevendedor,_situacao";
-    CONTRATOS_GRID.columnLabel   = "Contrato,Cod. Cli.,Nome Cli.,Cod. Prop.,Nome Pro.,Cod. Imov.,Tipo,Contrato,Valor (R$)";
-    CONTRATOS_GRID.columnWidth   = "10,10,15,10,15,10,10,10,10";
-    CONTRATOS_GRID.columnAlign   = "c,c,eoe,c,eoe,c,c,c,d";
+    CONTRATOS_GRID.columnName    = "codcontrato,situacao,codcliente,nomeCliente,codproprietario,nomeProp,codimovel,tipo,negociacao,preco,_datinicio,_datfinal,_valor,_endereco_bairro,_codcorretor,_codtipo,_nomevendedor,_situacao";
+    CONTRATOS_GRID.columnLabel   = "Contrato,Situação,Cod. Cli.,Nome Cli.,Cod. Prop.,Nome Pro.,Cod. Imov.,Tipo,Contrato,Valor (R$)";
+    CONTRATOS_GRID.columnWidth   = "9,8,9,15,9,15,9,11,10,10";
+    CONTRATOS_GRID.columnAlign   = "c,c,c,eoe,c,eoe,c,c,c,d";
     CONTRATOS_GRID.mousehouve    = true;
     CONTRATOS_GRID.destacarclick = true;
     CONTRATOS_GRID.createGrid();
@@ -50,6 +50,7 @@ function iniciarEventos() {
     event_click("binserir");
     event_click("bcadastro");
     event_click("bcancela");
+    event_click("benviaaprov");
     
     event_change("msimovel");
 
@@ -66,7 +67,7 @@ function event_click_table(obj,row){
                          form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
                          form("stitulo").innerText = "Cadastro de Contrato - " + form("sacao").innerText;
                          
-                         form("hmsitcontrato").value = valoresLinha[16];
+                         form("hmsitcontrato").value = valoresLinha[17];
 
                          controlaTela("modal");
                          preencherModal(valoresLinha);
@@ -105,6 +106,9 @@ function event_click(obj) {
 
             case   "bcancela": cancelarContrato();
                                break;
+
+            case "benviaaprov": enviarContratoAprovacao();
+                                break;
         }
     });
 }
@@ -186,7 +190,13 @@ function filaFetchInit(){
         case          "getNomePropModal": form("mdescprop").value = retorno;
                                           break;
 
-        case          "cancelarContrato": alert("Sucesso!", "Cadastro cancelado com sucesso!", 4);
+        case          "cancelarContrato": alert("Sucesso!", "Contrato cancelado com sucesso!", 4);
+
+                                          buscarContratoGrid();
+                                          DMFDiv.closeModal();
+                                          break;
+
+        case   "enviarContratoAprovacao": alert("Sucesso!", "Contrato enviado para analise com sucesso!", 4);
 
                                           buscarContratoGrid();
                                           DMFDiv.closeModal();
@@ -204,6 +214,7 @@ function controlaTela(opc){
         desabilitaCampo('codcliente',      false);
         desabilitaCampo('raluguel',        false);
         desabilitaCampo('rvenda',          false);
+        desabilitaCampo('rambas',          false);
 
         setDisplay("binserir", ehConsulta()?"none":"flex");
     }
@@ -225,10 +236,13 @@ function controlaTela(opc){
         desabilitaCampo('mperiodofin',   ehConsulta() || (!ehSituacaoAberta() && ehAlterando()));
         desabilitaCampo('bcadastro',     ehConsulta() || (!ehSituacaoAberta() && ehAlterando()));
         desabilitaCampo('bcancela',      !ehManutencao() && !ehSituacaoAberta() && !ehAlterando());
+        desabilitaCampo('benviaaprov',   ehConsulta() || !ehAlterando() || (!ehSituacaoAberta() && !ehSituacaoReprovada()));
 
-        setDisplay("dmcontrato", ehInserindo()?"none":"flex");
-        setDisplay("bcadastro",  ehConsulta() || (!ehSituacaoAberta() && ehAlterando())?"none":"flex");
-        setDisplay("bcancela",   ehManutencao() && ehSituacaoAberta() && ehAlterando()?"block":"none");
+        setDisplay("dmcontrato",  ehInserindo()?"none":"block");
+        setDisplay("dmsituacao",  ehInserindo()?"none":"block");
+        setDisplay("bcadastro",   ehConsulta() || (!ehSituacaoAberta() && ehAlterando())?"none":"flex");
+        setDisplay("bcancela",    ehManutencao() && ehSituacaoAberta() && ehAlterando()?"block":"none");
+        setDisplay("benviaaprov", ehManutencao() && ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada())?"block":"none");
     }
 }
 
@@ -246,6 +260,7 @@ function limparTela(opc){
     }
     if(opc == "modal"){
         form('hmcodcontrato').value = "0";
+        form("msituacao").value     = "";
         form('mcodcliente').value   = "0";
         form('mdesccliente').value  = "";
         form('mcodprop').value      = "0";
@@ -283,25 +298,30 @@ function ehSituacaoAberta(){
     return form("hmsitcontrato").value == "1";
 }
 
+function ehSituacaoReprovada(){
+    return form("hmsitcontrato").value == "4";
+}
+
 function preencherModal(valoresLinha){                
-    form('mcodprop').value      = valoresLinha[3];
+    form('mcodprop').value      = valoresLinha[4];
     
     form("mcodcontrato").value  = valoresLinha[0];
     form("hmcodcontrato").value = valoresLinha[0];
-    form('mcodcliente').value   = valoresLinha[1];
-    form('mdesccliente').value  = valoresLinha[2];
-    form('mdescprop').value     = valoresLinha[4];
-    form('mtpimovel').value     = valoresLinha[6];
-    form('mloc').value          = valoresLinha[12];
-    form('mtpcontrato').value   = valoresLinha[7];
-    form('mvlrimovel').value    = valoresLinha[8];
-    form('mvlrnegociado').value = valoresLinha[11];
-    form("mperiodoini").value   = valoresLinha[9];
-    form("mperiodofin").value   = valoresLinha[10];
-    form("mvendedor").value     = valoresLinha[13];
-    form("mnome").value         = valoresLinha[15];
+    form("msituacao").value     = valoresLinha[1];
+    form('mcodcliente').value   = valoresLinha[2];
+    form('mdesccliente').value  = valoresLinha[3];
+    form('mdescprop').value     = valoresLinha[5];
+    form('mtpimovel').value     = valoresLinha[7];
+    form('mloc').value          = valoresLinha[13];
+    form('mtpcontrato').value   = valoresLinha[8];
+    form('mvlrimovel').value    = valoresLinha[9];
+    form('mvlrnegociado').value = valoresLinha[12];
+    form("mperiodoini").value   = valoresLinha[10];
+    form("mperiodofin").value   = valoresLinha[11];
+    form("mvendedor").value     = valoresLinha[14];
+    form("mnome").value         = valoresLinha[16];
     
-    getOptionsImovel("0", valoresLinha[5]);
+    getOptionsImovel("0", valoresLinha[6]);
 }
 
 function buscarContratoGrid(){
@@ -328,6 +348,11 @@ function cancelarContrato(){
                                                                     "POST");
 }
 
+function enviarContratoAprovacao(){
+    CONSUL.consultar("enviarContratoAprovacao",`/cri004/enviarContratoAprovacao`,["codcontrato:hmcodcontrato",
+                                                                                  "codimovel:msimovel"],
+                                                                                  "POST");
+}
 
 function getTipoImovel(){
     CONSUL.consultar("getTipoImovel",`/cri004/getBuscaTipoImovel`,["codimovel:msimovel"]);

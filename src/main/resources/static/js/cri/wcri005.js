@@ -27,7 +27,7 @@ function iniciarEventos() {
 
     ABA      = new abaForm_init();
     ABA.id   = "abas";
-    ABA.name = "Consulta,Manutenção";
+    ABA.name = "Consulta,Analise Contrato";
     ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
     ABA.createAba();
 
@@ -40,74 +40,46 @@ function iniciarEventos() {
     CONSUL = new consulForm_init();
     filaFetchInit()
 
+    controlaTela("inicia");
+
     event_click("bnovabusca");
     event_click("bbuscar");
-    event_click("bclose");
     event_click("blimpar");
     event_click("baprovar");
     event_click("breprovar");
     
     event_blur_init("mvlrlib");
     event_selected_init("mvlrlib,mobs,codproprietario,codcliente,codcorretor");
+    inputOnlyNumber('codcliente,codproprietario,mvlrlib,codcorretor');
 
-    event_change("codproprietario");
-    event_change("codcliente");
-    event_change("codcorretor");
-
-    controlaTela("inicia");
+    CONSUL.filterChange('codproprietario','',`/gen/getNomeProp`,['codprop:codproprietario'],'descproprietario');
+    CONSUL.filterChange('codcliente','',`/gen/getNomeCliente`,['codcli:codcliente'],'desccliente');
+    CONSUL.filterChange('codcorretor','',`/gen/getNomeByCodFunc`,['codfunc:codcorretor'],'desccorretor');
 }
 
 
 function event_click(obj) {
-    if(obj == "bnovabusca"){
-        form(obj).addEventListener("click", function () {
-            controlaTela("novabusca");
-        });
-    }
-    if(obj == 'blimpar'){
-        form(obj).addEventListener("click", function () {
-            controlaTela("inicia");
-        });
-    }
-    if(obj == "bbuscar"){
-        form(obj).addEventListener("click", function () {
-            controlaTela("buscar");
+    form(obj).addEventListener("click", ()=>{
+        switch (obj) {
+            case "bnovabusca": controlaTela("novabusca");
+                               break;
 
-            buscarContratoAprovacao();
-        });        
-    }
-    if(obj == "baprovar"){
-        form(obj).addEventListener("click", function () {
-            if(!confirm("Deseja mesmo Aprovar esse contrato?")) return;
+            case    "blimpar": controlaTela("inicia");
+                               break;
 
-            aprovarReprovarContrato(2);
-        });
-    }
-    if(obj == "breprovar"){
-        form(obj).addEventListener("click", function () {
-            if(!confirm("Deseja mesmo Reprovar esse contrato?")) return;
+            case    "bbuscar": controlaTela("buscar");
+                               buscarContratoAprovacao();
+                               break;
 
-            aprovarReprovarContrato(3);
-        });
-    }
-}
+            case   "baprovar": if(!confirm("Deseja mesmo Aprovar esse contrato?")) return;
+                               aprovarReprovarContrato(2);
+                               break;
 
-function event_change(obj){
-    if(obj == "codproprietario"){
-        form(obj).addEventListener("change", function(){
-            descProprietario();
-        });
-    }
-    if(obj == "codcliente"){
-        form(obj).addEventListener("change", function(){
-            form("desccliente").value = form(obj).value!=""? getDescCliente(obj) : "Todos os Clientes";
-        });
-    }
-    if(obj == "codcorretor"){
-        form(obj).addEventListener("change", function(){
-            getDescCorretor();
-        });
-    }
+            case  "breprovar": if(!confirm("Deseja mesmo Reprovar esse contrato?")) return;
+                               aprovarReprovarContrato(3);
+                               break;
+        }
+    });
 }
 
 function event_click_table(obj,row){
@@ -142,8 +114,7 @@ function filaFetchInit(){
         case             "buscarUserName": form("ideusu").value = retorno;
                                            break;
 
-        case    "aprovarReprovarContrato": if(retorno != "OK") return alert(retorno);
-                                           alert("Contrato " + (retorno == 2?"Aprovado":"Reprovado") + " com Sucesso!");
+        case    "aprovarReprovarContrato": alert("Sucesso!", "Contrato " + (retorno == 2?"Aprovado":"Reprovado") + " com Sucesso!",4);
                                            enviarEmailAprovacaoReprovacao(retorno);
 
                                            DMFDiv.closeModal();
@@ -151,15 +122,6 @@ function filaFetchInit(){
                                            form("bnovabusca").click();
                                            form("bbuscar").click();
                                            break;
-
-        case         "getDescCorretor": form("desccorretor").value = form("codcorretor").value != ""? retorno:"Todos os Corretores";
-                                        break;
-
-        case          "getDescCliente": form("desccorretor").value = form("codcorretor").value != ""? retorno:"Todos os Corretores";
-                                        break;
-
-        case        "descProprietario": form("descproprietario").value = form("codproprietario").value!=""?retorno : "Todos";
-                                        break;
         }
     }
 }
@@ -192,12 +154,13 @@ function controlaTela(opc){
 
 function limparTela(opc){
     if(opc == "inicia" || opc == 'novabusca'){
-        form('codproprietario').value   = "";
-        form('descproprietario').value  = "Todos os Proprietarios";
-        form('codcliente').value        = "";
-        form('desccliente').value       = "Todos os Clientes";
-        form('codcorretor').value       = "";
-        form('desccorretor').value      = "Todos os Corretores";
+        form('codproprietario').value  = "0";
+        form('descproprietario').value = "Todos os Proprietarios";
+        form('codcliente').value       = "0";
+        form('desccliente').value      = "Todos os Clientes";
+        form('codcorretor').value      = "0";
+        form('desccorretor').value     = "Todos os Corretores";
+        setRadioValue('rimovel','0'); 
     }
     if(opc === "inicia" || opc === "novabusca"){
         CONTRATOS_GRID.clearGrid();
@@ -236,7 +199,11 @@ function puxarFichaContrato(valoresLinha){
 }
 
 function buscarContratoAprovacao(){
-    CONTRATOS_GRID.carregaGrid(`/wcr006c/buscarContratoAprovacao?codprop=${form("codproprietario").value}&codcliente=${form("codcliente").value}&codcorretor=${form("codcorretor").value}&acao=${ABA.getIndex()}`,"","");
+    CONTRATOS_GRID.carregaGrid(`/cri005/buscarContratoAprovacao`,["codprop:codproprietario",
+                                                                  "codcliente:codcliente",
+                                                                  "codcorretor:codcorretor",
+                                                                  "tipimovel=" + getRadioValue("rimovel"),
+                                                                  "acao=" + ABA.getIndex()]);
 }
 
 function enviarEmailAprovacaoReprovacao(acao){
@@ -256,29 +223,15 @@ function enviarEmailAprovacaoReprovacao(acao){
             + "</body>"
             + "</html>"}
 
-    CONSUL.consultar("enviarEmailAprovacaoReprovacao",`/email`,"POST",{ "Content-Type": "application/json" },{body: email})
+    CONSUL.consultar("enviarEmailAprovacaoReprovacao",`/email`,[],"POST",{ "Content-Type": "application/json" },{body: email})
 }
 
 function aprovarReprovarContrato(acao) {
-    const contrato = {codcontrato:         form("hcodcorretor").value,
-                      valorliberado:       parseFloat(form("mvlrlib").value),
-                      observacao:          form("mobs").value,
-                      situacao:            acao,
-                      ideusu:              form('ideusu').value};
-
-    CONSUL.consultar("aprovarReprovarContrato",`/wcr006c/aprovarReprovarContrato`,"POST",{ "Content-Type": "application/json" },{body: contrato});
-}
-
-function getDescCliente(){
-    CONSUL.consultar("getDescCliente",`/cliente/${form("codcliente").value}/findNomeClienteById`);
-}
-
-function descProprietario() {
-    CONSUL.consultar("descProprietario",`/contratosCadastroClientes/proprietario/${form("codproprietario").value}/nomepropri`)
-}
-
-function getDescCorretor(){
-    CONSUL.consultar("getDescCorretor",`/contrato/${form("codcorretor").value}/getNomeByIdeusu`)
+    CONSUL.consultar("aprovarReprovarContrato",`/cri005/aprovarReprovarContrato`,["codcontrato:hcodcorretor",
+                                                                                   "valorliberado:mvlrlib",
+                                                                                   "observacao:mobs",
+                                                                                   "situacao=" + acao],
+                                                                                   "POST");
 }
 
 function buscarUserName(){

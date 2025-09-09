@@ -1,122 +1,84 @@
 package com.cestec.cestec.service.cri;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.cestec.cestec.model.cri.contratoDTO;
-import com.cestec.cestec.model.cri.pcp_cliente;
-import com.cestec.cestec.model.cri.pcp_contrato;
-import com.cestec.cestec.repository.userRepository;
-import com.cestec.cestec.repository.cri.clienteRepository;
-import com.cestec.cestec.repository.cri.contratoRepository;
-import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
+import com.cestec.cestec.model.pcp_meta;
+import com.cestec.cestec.model.cri.corretorDTO;
+import com.cestec.cestec.model.cri.pcp_corretor;
+import com.cestec.cestec.repository.corretorRepository;
+import com.cestec.cestec.repository.metaRepository;
 import com.cestec.cestec.util.utilForm;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class cri006s {
     
     @Autowired
-    private contratoRepository contratoRepository;
+    private metaRepository metaRepository;
 
     @Autowired
-    private userRepository userRepository;
+    private corretorRepository corretorRepository;
 
-    @Autowired
-    private prjContratosCustomRepository contratosCustomRepository;
-    
-    public UserDetails loadUserByUsername(String username) {
-        return userRepository.findByLogin(username);
-    }
-
-    public String getTipoImovel(Integer codImovel) {
-        switch (codImovel) {
-            case 1:
-                return "Apartamento";
-            case 2:
-                return "Casa";
-            case 3:
-                return "Terreno";
-        }
-        return "Tipo do imovel não encontrado";
-    }
-
-    public String getDescTipos(Integer tipo) {
-        switch (tipo) {
-            case 1:
-                return "Aluguel";
-            case 2:
-                return "Venda";
-        }
-        return "Descricão não encontrada";
-    }
-
-    public String getDescStatus(Integer status) {
+    public String getDescSituacao(Integer status) {
         switch (status) {
             case 1:
-                return "Ativo";
+                return "Não paga";
             case 2:
-                return "Ocupado";
-            case 3:
-                return "Inativo";
+                return "Concluída";
         }
         return "Descricão não encontrada";
     }
 
-    public List<?> buscarContratoAprovacao(Integer codprop, Integer codcliente, Integer codcorretor, Integer acao){
-        List<contratoDTO> contratos = contratosCustomRepository.buscarContratoAprovacao(codprop, codcliente, codcorretor, acao);
+    public List<?> findAllMetasGrid(){
+        List<corretorDTO> metas = metaRepository.findAllMetasGrid();
 
         utilForm.initGrid();
-        for (int i = 0; i < contratos.size(); i++) {
+        for (int i = 0; i < metas.size(); i++) {
             utilForm.criarRow();
-            utilForm.criarColuna(contratos.get(i).getCodcontrato().toString());
-            utilForm.criarColuna(contratos.get(i).getCodimovel().toString());
-            utilForm.criarColuna(getTipoImovel(contratos.get(i).getTipo()));
-            utilForm.criarColuna(contratos.get(i).getCodproprietario().toString());
-            utilForm.criarColuna(contratos.get(i).getNomeProp());
-            utilForm.criarColuna(contratos.get(i).getCodcliente().toString());
-            utilForm.criarColuna(contratos.get(i).getNomeCliente());
-            utilForm.criarColuna(contratos.get(i).getCodcorretor().toString());
-            utilForm.criarColuna(contratos.get(i).getNomeCorretor());
-            utilForm.criarColuna(contratos.get(i).getDatinicio() + " - " + contratos.get(i).getDatfinal());
-            utilForm.criarColuna(String.valueOf(contratos.get(i).getPreco()));
-            utilForm.criarColuna(String.valueOf(contratos.get(i).getValor()));
-            utilForm.criarColuna(String.valueOf(contratos.get(i).getVlrcondominio()));
-            utilForm.criarColuna(String.valueOf(contratos.get(i).getArea()));
-            utilForm.criarColuna(contratos.get(i).getQuartos().toString());
-            utilForm.criarColuna(contratos.get(i).getDocumento());
-            utilForm.criarColuna(contratos.get(i).getEndereco());
-            utilForm.criarColuna(String.valueOf(contratos.get(i).getValorliberado()));
-            utilForm.criarColuna(contratos.get(i).getObservacao());
+            utilForm.criarColuna(metas.get(i).getCodmeta().toString());
+            utilForm.criarColuna(metas.get(i).getCodcorretor().toString());
+            utilForm.criarColuna(metas.get(i).getNome());
+            utilForm.criarColuna(String.valueOf(metas.get(i).getVlrmeta()));
+            utilForm.criarColuna(metas.get(i).getDatiniciometa() + " - " + metas.get(i).getDatfinalmeta());
+            utilForm.criarColuna(getDescSituacao(metas.get(i).getSituacao()));
+            utilForm.criarColuna(metas.get(i).getDatiniciometa().toString());
+            utilForm.criarColuna(metas.get(i).getDatfinalmeta().toString());
         }
 
         return utilForm.criarGrid();
     }
 
-    // @Transactional
-    // public ResponseEntity<?> aprovarReprovarContrato(pcp_contrato contratoDTO){
-    //     try{
-    //         if(contratoDTO.getSituacao() != 2 && contratoDTO.getSituacao() != 3) return ResponseEntity.badRequest().body("Acão inserida inválida! (2 - Aprovado | 3 - Reprovado)");
+    @Transactional
+    public ResponseEntity<?> salvarMetaCorretor(corretorDTO meta) {
+        pcp_corretor corretor = corretorRepository.findCorretorById(meta.getIdlogin());
 
-    //         if(loadUserByUsername(contratoDTO.getIdeusu()) == null) return ResponseEntity.badRequest().body("Usuário não encontrado no sistema!");
+        if (corretor == null) return ResponseEntity.ok("Deve ser informado um Corretor para registrar a meta!");
+        if (meta.getVlrmeta() == 0) return ResponseEntity.ok("Deve ser informado um valor para a Meta!");
+        if (meta.getDatiniciometa() == null || meta.getDatfinalmeta() == null) return ResponseEntity.ok("Deve ser informado um periodo para o comprimento da meta!");
+        if (meta.getDatiniciometa().after(meta.getDatfinalmeta())) return ResponseEntity.ok("Data inicio da meta não pode ser superior a data final do comprimento da meta!");
 
-    //         pcp_contrato contratoAnalise = contratoRepository.findById().orElseThrow(() -> new RuntimeException("Erro: Não encontrado contrato com o código informado [" + contratoDTO.getCodcontrato() + "]"));
+        try{
+            pcp_meta metaCorretor = new pcp_meta(corretor,
+                                                 meta.getVlrmeta(),
+                                                 meta.getDatiniciometa(),
+                                                 meta.getDatfinalmeta(),
+                                                 1,
+                                                 Date.valueOf(LocalDate.now()),
+                                                 meta.getNome()); //vou usar o nome para salvar o ideusu de quem adicionou ele
+            metaRepository.save(metaCorretor);
 
-    //         if(contratoAnalise.getSituacao() != 1 && contratoAnalise.getSituacao() != 3) return ResponseEntity.badRequest().body("Contrato não está em situacão de se aprovado/reprovado!");
-
-    //         contratoAnalise.setSituacao(contratoDTO.getSituacao());
-    //         contratoAnalise.setObservacao(contratoDTO.getObservacao());
-    //         contratoAnalise.setValorliberado(contratoDTO.getValorliberado());
-
-    //         contratoRepository.save(contratoAnalise);
-
-    //         return ResponseEntity.ok("OK");
-    //     }catch (Exception e) {
-    //         return ResponseEntity.internalServerError().body("Erro ao salvar o contrato: " + e.getMessage());    
-    //     }
-    // }
+            return ResponseEntity.ok("OK"); 
+        }
+        catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao salvar Meta: " + e.getMessage());    
+        }
+    }
 
 }

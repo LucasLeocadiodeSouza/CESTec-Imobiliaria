@@ -91,4 +91,18 @@ public class cri004c {
             return ResponseEntity.internalServerError().body("Erro interno ao cancelar o contrato: " + e.getMessage());
         }
     }
+    
+    @PostMapping("/enviarContratoAprovacao")
+    public ResponseEntity<?> enviarContratoAprovacao(@RequestParam(value = "codcontrato", required = false)    Integer codcontrato,
+                                                     @RequestParam(value = "codimovel", required = false)      Integer codimovel,
+                                                     HttpServletRequest request){
+        try {
+            cri004s.enviarContratoAprovacao(codcontrato, codimovel, gen.getUserName(request));
+            return ResponseEntity.ok("OK");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro interno ao enviar o contrato para aprovação: " + e.getMessage());
+        }
+    }
 }
