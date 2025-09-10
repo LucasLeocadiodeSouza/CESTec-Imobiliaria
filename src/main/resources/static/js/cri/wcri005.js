@@ -10,6 +10,9 @@ window.addEventListener("load", function () {
 
 var ABA,DMFDiv,CONSUL,CONTRATOS_GRID;
 
+let map;
+var marcadorElementImovel;
+
 function iniciarEventos() {
     elementsForm_init();
 
@@ -55,6 +58,8 @@ function iniciarEventos() {
     CONSUL.filterChange('codproprietario','',`/gen/getNomeProp`,['codprop:codproprietario'],'descproprietario');
     CONSUL.filterChange('codcliente','',`/gen/getNomeCliente`,['codcli:codcliente'],'desccliente');
     CONSUL.filterChange('codcorretor','',`/gen/getNomeByCodFunc`,['codfunc:codcorretor'],'desccorretor');
+
+    initMap();
 }
 
 
@@ -95,7 +100,9 @@ function event_click_table(obj,row){
                          form('mvlrlib').value      = valoresLinha[17];
                          form('mobs').value         = valoresLinha[18];
 
+                         DMFDiv.fullScream = true;
                          DMFDiv.openModal("dmodalf_aprovacao");
+                         DMFDiv.fullScream = false;
                          break;
     }
 }
@@ -115,7 +122,7 @@ function filaFetchInit(){
                                            break;
 
         case    "aprovarReprovarContrato": alert("Sucesso!", "Contrato " + (retorno == 2?"Aprovado":"Reprovado") + " com Sucesso!",4);
-                                           enviarEmailAprovacaoReprovacao(retorno);
+                                           //enviarEmailAprovacaoReprovacao(retorno);
 
                                            DMFDiv.closeModal();
 
@@ -196,6 +203,15 @@ function puxarFichaContrato(valoresLinha){
     form('codnegociante').innerText   = valoresLinha[5];
     form('nomecliente').innerText     = valoresLinha[6];
     form('cpfcliente').innerText      = valoresLinha[15];
+
+    const dadosmarcador = {tipo:     valoresLinha[2],
+                           price:    valoresLinha[10],
+                           endereco: valoresLinha[16],
+                           quarto:   valoresLinha[14],
+                           banheiro: valoresLinha[14],
+                           tamanho:  valoresLinha[13]};
+
+    criarMarcadorImovel(map.center, dadosmarcador);
 }
 
 function buscarContratoAprovacao(){
@@ -206,25 +222,27 @@ function buscarContratoAprovacao(){
                                                                   "acao=" + ABA.getIndex()]);
 }
 
-function enviarEmailAprovacaoReprovacao(acao){
-    const email = {
-        to: form("memail").value,
-        subject: "Contrato " + (acao == 2?"Aprovado":"Reprovado") + "!",
-        body: "<html>"
-            + "<head>"
-            + "</head>"
-            + "<body style='font-family: Arial, sans-serif; color: #333;'>"
-            + '<div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">'
-            + "<p>Após análise o contrato foi " + (acao == 2?"Aprovado":"Reprovado") + " pelo gestor!</p>"
-            + "<p><strong>Código do contrato:</strong>" + form("hcodcorretor").value + "</p>"
-            + (acao == 1?"<p><strong>Valor Liberado:</strong> " + form("mvlrlib").value + "</p>":"")
-            + "<p><strong>Observacão:</strong> " + form("mobs").value + "</p>"
-            + "</div>"
-            + "</body>"
-            + "</html>"}
+//Montar pelo java
+//
+// function enviarEmailAprovacaoReprovacao(acao){
+//     const email = {
+//         to: form("memail").value,
+//         subject: "Contrato " + (acao == 2?"Aprovado":"Reprovado") + "!",
+//         body: "<html>"
+//             + "<head>"
+//             + "</head>"
+//             + "<body style='font-family: Arial, sans-serif; color: #333;'>"
+//             + '<div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">'
+//             + "<p>Após análise o contrato foi " + (acao == 2?"Aprovado":"Reprovado") + " pelo gestor!</p>"
+//             + "<p><strong>Código do contrato:</strong>" + form("hcodcorretor").value + "</p>"
+//             + (acao == 1?"<p><strong>Valor Liberado:</strong> " + form("mvlrlib").value + "</p>":"")
+//             + "<p><strong>Observacão:</strong> " + form("mobs").value + "</p>"
+//             + "</div>"
+//             + "</body>"
+//             + "</html>"}
 
-    CONSUL.consultar("enviarEmailAprovacaoReprovacao",`/email`,[],"POST",{ "Content-Type": "application/json" },{body: email})
-}
+//     CONSUL.consultar("enviarEmailAprovacaoReprovacao",`/email`,[],"POST",{ "Content-Type": "application/json" },{body: email})
+// }
 
 function aprovarReprovarContrato(acao) {
     CONSUL.consultar("aprovarReprovarContrato",`/cri005/aprovarReprovarContrato`,["codcontrato:hcodcorretor",
@@ -236,4 +254,73 @@ function aprovarReprovarContrato(acao) {
 
 function buscarUserName(){
     CONSUL.consultar("buscarUserName",`/home/userlogin`)
+}
+
+async function criarMarcadorImovel(coordenada, registro){
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+    if(marcadorElementImovel) marcadorElementImovel.setMap(null);
+
+    marcadorElementImovel = new AdvancedMarkerElement({
+        map,
+        position: coordenada,
+        content: buildContent(registro),
+        title: registro.tipo
+    });
+    marcadorElementImovel.addListener("click", () => {
+        EventoInfoWindow(marcadorElementImovel);
+    });
+}
+
+function EventoInfoWindow(marcador) {
+    if (marcador.content.classList.contains("highlight")) {
+        marcador.content.classList.remove("highlight");
+        marcador.zIndex = null;
+    }
+    else {
+        marcador.content.classList.add("highlight");
+        marcador.zIndex = 1;
+    }
+}
+
+function buildContent(registro) {
+    const content = document.createElement("div");
+    content.classList.add("marcador");
+    content.innerHTML = `
+    <div class="icon">
+        <img src="/icons/house_icon.png">
+    </div>
+    <div class="details">
+        <div class="price">R$ ${registro.price}</div>
+        <div class="address">${registro.endereco}</div>
+        <div class="features">
+        <div>
+            <span><img src="/icons/bedroom_icon.png" style="height: 17px; width: 17px; margin: 0px;" title="Quartos"></span>
+            <span>${registro.quarto}</span>
+        </div>
+        <div>
+            <span><img src="/icons/bathroom_icon.png" style="height: 17px; width: 17px; margin: 0px;" title="Banheiros"></span>
+            <span>${registro.banheiro}</span>
+        </div>
+        <div>
+            <span><img src="/icons/area_icon.png" style="height: 17px; width: 17px; margin: 0px;" title="Area"></span>
+            <span>${registro.tamanho} m<sup>2</sup></span>
+        </div>
+        </div>
+    </div>
+    `;
+    return content;
+}
+
+async function initMap() {
+    const { Map } = await google.maps.importLibrary("maps");
+
+    map = new Map(form("map"), {
+      center: { lat: -23.421578, lng: -51.898191 },
+      zoom: 15,
+      fullscreenControl: false,
+      cameraControl: false,
+      mapId: "map",
+      mapTypeId: 'roadmap'
+    });
 }
