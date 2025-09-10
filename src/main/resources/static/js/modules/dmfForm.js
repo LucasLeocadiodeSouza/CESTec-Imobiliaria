@@ -79,8 +79,8 @@ function DMFForm_init(){
             const imgclose = document.createElement("img");
             imgclose.src   = "/icons/close-modal.png";
             imgclose.id	   = "imgclose"+ div;
-            imgclose.style.width  = "80%";
-            imgclose.style.height = "80%";
+            imgclose.style.width  = "19px";
+            imgclose.style.height = "21px";
             imgclose.style.margin = "0px";
 
             modal.style.display = "none";
