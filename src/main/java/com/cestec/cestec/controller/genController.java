@@ -76,6 +76,18 @@ public class genController {
         }
     }
 
+    @GetMapping("/getNomeCorretorByIdeusu")
+    public ResponseEntity<?> getNomeCorretorByIdeusu(@RequestParam(value = "ideusu", required = false) String ideusu){
+        try {
+            return ResponseEntity.ok(gen.getNomeCorretorByIdeusu(ideusu));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/findCargoByIdeusu")
     public ResponseEntity<?> findCargoByIdeusu(@RequestParam(value = "ideusu", required = false) String ideusu){
         try {
@@ -86,7 +98,7 @@ public class genController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage());
         }
-    }
+    } 
 
     @GetMapping("/findSetorByIdeusu")
     public ResponseEntity<?> findSetorByIdeusu(@RequestParam(value = "ideusu", required = false) String ideusu){

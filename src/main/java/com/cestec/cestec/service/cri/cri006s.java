@@ -55,30 +55,30 @@ public class cri006s {
         return utilForm.criarGrid();
     }
 
-    @Transactional
-    public ResponseEntity<?> salvarMetaCorretor(corretorDTO meta) {
-        pcp_corretor corretor = corretorRepository.findCorretorById(meta.getIdlogin());
+    // @Transactional
+    // public ResponseEntity<?> salvarMetaCorretor(corretorDTO meta) {
+    //     pcp_corretor corretor = corretorRepository.findCorretorById(meta.getIdlogin());
 
-        if (corretor == null) return ResponseEntity.ok("Deve ser informado um Corretor para registrar a meta!");
-        if (meta.getVlrmeta() == 0) return ResponseEntity.ok("Deve ser informado um valor para a Meta!");
-        if (meta.getDatiniciometa() == null || meta.getDatfinalmeta() == null) return ResponseEntity.ok("Deve ser informado um periodo para o comprimento da meta!");
-        if (meta.getDatiniciometa().after(meta.getDatfinalmeta())) return ResponseEntity.ok("Data inicio da meta não pode ser superior a data final do comprimento da meta!");
+    //     if (corretor == null) return ResponseEntity.ok("Deve ser informado um Corretor para registrar a meta!");
+    //     if (meta.getVlrmeta() == 0) return ResponseEntity.ok("Deve ser informado um valor para a Meta!");
+    //     if (meta.getDatiniciometa() == null || meta.getDatfinalmeta() == null) return ResponseEntity.ok("Deve ser informado um periodo para o comprimento da meta!");
+    //     if (meta.getDatiniciometa().after(meta.getDatfinalmeta())) return ResponseEntity.ok("Data inicio da meta não pode ser superior a data final do comprimento da meta!");
 
-        try{
-            pcp_meta metaCorretor = new pcp_meta(corretor,
-                                                 meta.getVlrmeta(),
-                                                 meta.getDatiniciometa(),
-                                                 meta.getDatfinalmeta(),
-                                                 1,
-                                                 Date.valueOf(LocalDate.now()),
-                                                 meta.getNome()); //vou usar o nome para salvar o ideusu de quem adicionou ele
-            metaRepository.save(metaCorretor);
+    //     try{
+    //         pcp_meta metaCorretor = new pcp_meta(corretor,
+    //                                              meta.getVlrmeta(),
+    //                                              meta.getDatiniciometa(),
+    //                                              meta.getDatfinalmeta(),
+    //                                              1,
+    //                                              Date.valueOf(LocalDate.now()),
+    //                                              meta.getNome()); //vou usar o nome para salvar o ideusu de quem adicionou ele
+    //         metaRepository.save(metaCorretor);
 
-            return ResponseEntity.ok("OK"); 
-        }
-        catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro ao salvar Meta: " + e.getMessage());    
-        }
-    }
+    //         return ResponseEntity.ok("OK"); 
+    //     }
+    //     catch (Exception e) {
+    //         return ResponseEntity.internalServerError().body("Erro ao salvar Meta: " + e.getMessage());    
+    //     }
+    // }
 
 }

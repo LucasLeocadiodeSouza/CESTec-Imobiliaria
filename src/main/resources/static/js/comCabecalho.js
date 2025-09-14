@@ -5,7 +5,7 @@ window.addEventListener("load", () => {
 
     const modulo    = params.get("idmodulo") + " - " + params.get("nomemodulo");
     const aplicacao = params.get("idapl") + " - " + params.get("nomeapl");
-    const separador = " -> ";
+    const separador = " » ";
 
     const textModulo     = document.createElement("label");
     textModulo.innerText = modulo;

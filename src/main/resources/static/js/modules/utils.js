@@ -19,6 +19,8 @@ function event_blur_init(obj){
         form(opc).addEventListener('blur', function(e) {
             e.target.value = parseFloat(e.target.value || 0).toFixed(2);
         });
+
+        form(opc).dispatchEvent(new Event("blur"));
     });
 }
 

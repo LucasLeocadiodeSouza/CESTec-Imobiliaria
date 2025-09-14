@@ -13,19 +13,20 @@ var ABA,DMFDiv,CONSUL,CONTRATOS_GRID;
 let map;
 var marcadorElementImovel;
 
+const chamadaParam = {};
+
 function iniciarEventos() {
     elementsForm_init();
 
     CONTRATOS_GRID               = new GridForm_init();
     CONTRATOS_GRID.id            = "tabela_aprovacao";
-    CONTRATOS_GRID.columnName    = "codcontrato,codimovel,tipo,codproprietario,nomeProp,codcliente,nomeCliente,codcorretor,nomeCorretor,periodo,preco,valor,vlrcondominio,area,quartos,documento,endereco,vlrliber,observacao";
+    CONTRATOS_GRID.columnName    = "codcontrato,codimovel,tipo,codproprietario,nomeProp,codcliente,nomeCliente,codcorretor,nomeCorretor,periodo,preco,valor,_vlrcondominio,_area,_quartos,_documento,_endereco,_vlrliber,_observacao,_ehpessoafisica,_banheiros";
     CONTRATOS_GRID.columnLabel   = "Cód. Contrato,Cód. Imovel,Tipo Imovel,Código Prop,Proprietario,Código Cliente,Cliente,Código Corretor,Corretor,Periodo,Preço (R$),Valor negoc. (R$)";
     CONTRATOS_GRID.columnWidth   = "7,6,9,6,11,6,11,6,11,11,8,8";
     CONTRATOS_GRID.columnAlign   = "c,c,e,c,e,c,e,c,e,c,d,d";
     CONTRATOS_GRID.mousehouve    = true;
     CONTRATOS_GRID.destacarclick = true;
     CONTRATOS_GRID.gridWidth     = "2200px";
-    CONTRATOS_GRID.gridHeight    = "auto";
     CONTRATOS_GRID.createGrid();
 
     ABA      = new abaForm_init();
@@ -77,11 +78,11 @@ function event_click(obj) {
                                break;
 
             case   "baprovar": if(!confirm("Deseja mesmo Aprovar esse contrato?")) return;
-                               aprovarReprovarContrato(2);
+                               aprovarReprovarContrato("aprovar");
                                break;
 
             case  "breprovar": if(!confirm("Deseja mesmo Reprovar esse contrato?")) return;
-                               aprovarReprovarContrato(3);
+                               aprovarReprovarContrato("reprovar");
                                break;
         }
     });
@@ -91,7 +92,7 @@ function event_click_table(obj,row){
     switch (obj) {
     case CONTRATOS_GRID: const valoresLinha = CONTRATOS_GRID.getRowNode(row);
                          form("sacao").innerText   = ehConsulta()?"Consultando":"Analisando";
-                         form("stitulo").innerText = form("sacao").innerText + " o Contrato - " + form("sacao").innerText;
+                         form("stitulo").innerText = form("sacao").innerText + " Contrato - " + form("sacao").innerText;
                          controlaTela("modal");
 
                          puxarFichaContrato(valoresLinha);
@@ -116,12 +117,14 @@ function event_click_aba(){
 }
 
 function filaFetchInit(){
-    CONSUL.filaFetch = (retorno)=>{
+    CONSUL.filaFetch = (retorno,error)=>{
+        if(error) return;
+
         switch (CONSUL.obj) {
         case             "buscarUserName": form("ideusu").value = retorno;
                                            break;
 
-        case    "aprovarReprovarContrato": alert("Sucesso!", "Contrato " + (retorno == 2?"Aprovado":"Reprovado") + " com Sucesso!",4);
+        case    "aprovarReprovarContrato": alert("Sucesso!", "Contrato " + (chamadaParam.aprovarReprovarContrato == "aprovar"?"Aprovado":"Reprovado") + " com Sucesso!",4);
                                            //enviarEmailAprovacaoReprovacao(retorno);
 
                                            DMFDiv.closeModal();
@@ -174,7 +177,7 @@ function limparTela(opc){
     }
     if(opc === "modal"){
         form("hcodcorretor").value = "";
-        form('mvlrlib').value      = "0";
+        form('mvlrlib').value      = "0.00";
         form('mobs').value         = "";
     }
 } 
@@ -190,10 +193,13 @@ function ehManutencao(){
 function puxarFichaContrato(valoresLinha){
     form('codimovel').innerText       = valoresLinha[1];
     form('tpimovel').innerText        = valoresLinha[2];
+    form("codprop").innerText         = valoresLinha[3];
+    form("nomeprop").innerText        = valoresLinha[4];
     form('vlrimovel').innerText       = valoresLinha[10];
     form('vlrcondominio').innerText   = valoresLinha[12];
     form('areatotal').innerText       = valoresLinha[13];
     form('numquartos').innerText      = valoresLinha[14];
+    form('numbanheiros').innerText    = valoresLinha[20];
     form('endereco').innerText        = valoresLinha[16];
     form('codcontrato').innerText     = valoresLinha[0];
     form('tpcontrato').innerText      = valoresLinha[1];
@@ -203,12 +209,13 @@ function puxarFichaContrato(valoresLinha){
     form('codnegociante').innerText   = valoresLinha[5];
     form('nomecliente').innerText     = valoresLinha[6];
     form('cpfcliente').innerText      = valoresLinha[15];
+    form('ehpf').innerText            = valoresLinha[19];
 
     const dadosmarcador = {tipo:     valoresLinha[2],
                            price:    valoresLinha[10],
                            endereco: valoresLinha[16],
                            quarto:   valoresLinha[14],
-                           banheiro: valoresLinha[14],
+                           banheiro: valoresLinha[20],
                            tamanho:  valoresLinha[13]};
 
     criarMarcadorImovel(map.center, dadosmarcador);
@@ -245,11 +252,15 @@ function buscarContratoAprovacao(){
 // }
 
 function aprovarReprovarContrato(acao) {
+    chamadaParam.aprovarReprovarContrato = {
+        acao: acao
+    }
+
     CONSUL.consultar("aprovarReprovarContrato",`/cri005/aprovarReprovarContrato`,["codcontrato:hcodcorretor",
-                                                                                   "valorliberado:mvlrlib",
-                                                                                   "observacao:mobs",
-                                                                                   "situacao=" + acao],
-                                                                                   "POST");
+                                                                                  "valorliberado:mvlrlib",
+                                                                                  "observacao:mobs",
+                                                                                  "acao=" + acao],
+                                                                                  "POST");
 }
 
 function buscarUserName(){
@@ -288,10 +299,10 @@ function buildContent(registro) {
     content.classList.add("marcador");
     content.innerHTML = `
     <div class="icon">
-        <img src="/icons/house_icon.png">
+        <img src="/icons/${registro.tipo.toLowerCase() == "casa"?"house_icon.png":"apartamento_icon.png"}">
     </div>
     <div class="details">
-        <div class="price">R$ ${registro.price}</div>
+        <div class="price">R$${registro.price}</div>
         <div class="address">${registro.endereco}</div>
         <div class="features">
         <div>

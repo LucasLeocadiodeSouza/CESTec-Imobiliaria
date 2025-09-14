@@ -584,7 +584,11 @@ function GridForm_init(){
         let rowsInner = [];
 
         rowsnode.forEach(row =>{
-            rowsInner.push(row.innerText);
+            var valor = row.innerText;
+
+            if(valor == "null") valor = "";
+
+            rowsInner.push(valor);
         });
 
         return rowsInner;

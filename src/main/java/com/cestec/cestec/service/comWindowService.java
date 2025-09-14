@@ -1,5 +1,6 @@
 package com.cestec.cestec.service;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -9,7 +10,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import com.cestec.cestec.model.funcionario;
 import com.cestec.cestec.model.historicoAcessoAplDTO;
 import com.cestec.cestec.model.pcp_meta;
@@ -71,7 +71,7 @@ public class comWindowService {
         return "#FFF";
     }
 
-    public Double getMetaCorretorMensal(String ideusu){
+    public BigDecimal getMetaCorretorMensal(String ideusu){
         List<corretorDTO> corretores = metaRepository.findMetaMensalByIdeusu(ideusu);
         corretorDTO corretor = null;
 
@@ -86,7 +86,7 @@ public class comWindowService {
             return corretor.getVlrmeta();
         }
         else{
-            return 0.0;
+            return BigDecimal.ZERO;
         }
     }
 
@@ -145,22 +145,22 @@ public class comWindowService {
         return funcionarioRepository.findCargoIdByNome(codfunc);
     }
 
-    public Double getVlrEfetivadoCorretor(String ideusu){
-        List<Double> valoresContrato = contratoRepository.buscarValoresContratoByIdeusu(ideusu);
-        Double vlr = 0.0;
+    public BigDecimal getVlrEfetivadoCorretor(String ideusu){
+        List<BigDecimal> valoresContrato = contratoRepository.buscarValoresContratoByIdeusu(ideusu);
+        BigDecimal vlr = BigDecimal.ZERO;
 
         for(int i = 0; i < valoresContrato.size(); i++){
-            vlr += valoresContrato.get(i);
+            vlr = vlr.add(valoresContrato.get(i));
         }
 
         return vlr;
     }
 
-    public Double getPercentMetaMes(String ideusu){
-        Double meta = getMetaCorretorMensal(ideusu);        
-        Double vlrEfetivado = getVlrEfetivadoCorretor(ideusu);
+    public BigDecimal getPercentMetaMes(String ideusu){
+        BigDecimal meta = getMetaCorretorMensal(ideusu);        
+        BigDecimal vlrEfetivado = getVlrEfetivadoCorretor(ideusu);
 
-        return Math.floor((vlrEfetivado/ meta) * 100);
+        return ((meta.divide(vlrEfetivado)).multiply(BigDecimal.valueOf(100)));
     }
 
     public String findMesMetaByIdeusu(String ideusu){

@@ -1,5 +1,6 @@
 package com.cestec.cestec.model;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -45,11 +46,11 @@ public class funcionario {
     @Column(length = 15)
     private String ideusu;
 
-    private Double    salario;
-    private String    nome;
-    private LocalDate datinasc;
-    private String    cpf;
-    private String    numtel;
-    private String    endereco;
-    private LocalDate criado_em;
+    private BigDecimal salario;
+    private String     nome;
+    private LocalDate  datinasc;
+    private String     cpf;
+    private String     numtel;
+    private String     endereco;
+    private LocalDate  criado_em;
 }

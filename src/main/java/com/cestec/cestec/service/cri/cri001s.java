@@ -1,5 +1,6 @@
 package com.cestec.cestec.service.cri;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,8 +105,14 @@ public class cri001s {
         if(imovel.getTipo() == null || getTipoImovel(imovel.getTipo()) == "") throw new RuntimeException("O tipo de imovel informado '" + getTipoImovel(imovel.getTipo()) +"' é invalido!");
         if(imovel.getArea() == null || imovel.getArea() == 0.00) throw new RuntimeException("É preciso informar o campo 'Area Total(M²)' para salvar o registro do Imovel!");
         if(imovel.getQuartos() == null || imovel.getQuartos() == 0) throw new RuntimeException("É preciso informar o campo 'Quartos' para salvar o registro do Imovel!");
-        if(imovel.getEndereco() == null || imovel.getEndereco() == "") throw new RuntimeException("É preciso informar o campo 'Localização' para salvar o registro do Imovel!");
-        if(imovel.getPreco() == null || imovel.getPreco() == 0.00) throw new RuntimeException("É preciso informar o campo 'Valor (R$)' para salvar o registro do Imovel!");
+        if(imovel.getBanheiros() == null || imovel.getBanheiros() == 0) throw new RuntimeException("É preciso informar o campo 'Banheiros' para salvar o registro do Imovel!");
+        if(imovel.getEndereco_bairro() == null || imovel.getEndereco_bairro() == "") throw new RuntimeException("É preciso informar o campo 'Bairro' para salvar o registro do Imovel!");
+        if(imovel.getEndereco_rua() == null    || imovel.getEndereco_rua() == "")    throw new RuntimeException("É preciso informar o campo 'Rua' para salvar o registro do Imovel!");
+        if(imovel.getEndereco_cidade() == null || imovel.getEndereco_cidade() == "") throw new RuntimeException("É preciso informar o campo 'Cidade' para salvar o registro do Imovel!");
+        if(imovel.getEndereco_estado() == null || imovel.getEndereco_estado() == "") throw new RuntimeException("É preciso informar o campo 'Estado' para salvar o registro do Imovel!");
+        if(imovel.getEndereco_postal() == null || imovel.getEndereco_postal() == "") throw new RuntimeException("É preciso informar o campo 'CEP' para salvar o registro do Imovel!");
+        if(imovel.getEndereco_numero() == null || imovel.getEndereco_numero() == "") throw new RuntimeException("É preciso informar o campo 'Número' para salvar o registro do Imovel!");
+        if(imovel.getPreco() == null || imovel.getPreco().compareTo(BigDecimal.ZERO) <= 0) throw new RuntimeException("É preciso informar o campo 'Valor (R$)' para salvar o registro do Imovel!");
         if(imovel.getDatinicontrato() == null) throw new RuntimeException("É preciso informar o campo 'Inicio do Contrato' para salvar o registro do Imovel!");
 
         pcp_imovel imovelAnalise = imovelRepository.findByCodimovel(imovel.getCodimovel());
@@ -114,10 +121,16 @@ public class cri001s {
         if(imovelAnalise.getStatus() != null && imovelAnalise.getStatus() == 3) throw new RuntimeException("Não é possível alterar as informacoes do imovel Inativo!");
 
         imovelAnalise.setArea(imovel.getArea());
-        imovelAnalise.setEndereco(imovel.getEndereco());
+        imovelAnalise.setEndereco_bairro(imovel.getEndereco_bairro());
+        imovelAnalise.setEndereco_rua(imovel.getEndereco_rua());
+        imovelAnalise.setEndereco_cidade(imovel.getEndereco_cidade());
+        imovelAnalise.setEndereco_estado(imovel.getEndereco_estado());
+        imovelAnalise.setEndereco_postal(imovel.getEndereco_postal());
+        imovelAnalise.setEndereco_numero(imovel.getEndereco_numero());
         imovelAnalise.setNegociacao(imovel.getNegociacao());
         imovelAnalise.setPreco(imovel.getPreco());
         imovelAnalise.setQuartos(imovel.getQuartos());
+        imovelAnalise.setBanheiros(imovel.getBanheiros());
         imovelAnalise.setTipo(imovel.getTipo());
         imovelAnalise.setVlrcondominio(imovel.getVlrcondominio());
 
@@ -167,7 +180,12 @@ public class cri001s {
             utilForm.criarColuna(descstatus);
             utilForm.criarColuna(String.valueOf(imoveis.get(i).getPreco()));
             utilForm.criarColuna(desctiponego);
-            utilForm.criarColuna(imoveis.get(i).getEndereco());
+            utilForm.criarColuna(imoveis.get(i).getEndereco_bairro());
+            utilForm.criarColuna(imoveis.get(i).getEndereco_numero().toString());
+            utilForm.criarColuna(imoveis.get(i).getEndereco_postal().toString());
+            utilForm.criarColuna(imoveis.get(i).getEndereco_cidade());
+            utilForm.criarColuna(imoveis.get(i).getEndereco_estado());
+            utilForm.criarColuna(imoveis.get(i).getEndereco_rua());
             utilForm.criarColuna(imoveis.get(i).getArea().toString());
             utilForm.criarColuna(imoveis.get(i).getQuartos().toString());
             utilForm.criarColuna(String.valueOf(imoveis.get(i).getVlrcondominio()));
@@ -175,6 +193,7 @@ public class cri001s {
             utilForm.criarColuna(imoveis.get(i).getTipo().toString());
             utilForm.criarColuna(imoveis.get(i).getNegociacao().toString());
             utilForm.criarColuna(imoveis.get(i).getStatus().toString());
+            utilForm.criarColuna(imoveis.get(i).getBanheiros().toString());
         }
 
         return utilForm.criarGrid();
