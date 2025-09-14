@@ -372,7 +372,12 @@ function limparTela(opc){
 }
 
 function incluirVersionamento(){
-    CONSUL.consultar("incluirVersionamento",`/opr002/incluirVersionamento?ideusu=${form("ideusu").value}&idsolic=${form("nmrservpainel").value}&merge=${form("mnummerge").value}&branch=${form("mbranchname").value}&prog=${form("mprogname").value}`,"POST");
+    CONSUL.consultar("incluirVersionamento",`/opr002/incluirVersionamento?`,["ideusu:ideusu",
+                                                                             "idsolic:nmrservpainel",
+                                                                             "merge:mnummerge",
+                                                                             "branch:mbranchname",
+                                                                             "prog:mprogname"],
+                                                                             "POST");
 }
 
 function buscarUserName(){
@@ -386,23 +391,30 @@ function abrirSolicitacao(){
                    prioridade:  form("mprioricadas").value,
                    ideususolic: form("ideusu").value}
 
-    CONSUL.consultar("abrirSolicitacao",`/opr002/abrirSolicitacao`,"POST","",{body: solic})
+    CONSUL.consultar("abrirSolicitacao",`/opr002/abrirSolicitacao`,[],"POST","",{body: solic})
 }
 
 function enviarSolicitacao(){
-    CONSUL.consultar("enviarSolicitacao",`/opr002/enviarSolicitacao?ideusu=${form("ideusu").value}&idsolic=${form("mmnmrsolic").value}`,"POST");
+    CONSUL.consultar("enviarSolicitacao",`/opr002/enviarSolicitacao`,["ideusu:ideusu","idsolic:mmnmrsolic"],"POST");
 }
 
 function finalizarSolicitacao(){
-    CONSUL.consultar("finalizarSolicitacao",`/opr002/finalizarSolicitacao?ideusu=${form("ideusu").value}&idsolic=${form("nmrservpainel").value}&obs=${form("mobssolic").value}`,"POST");
+    CONSUL.consultar("finalizarSolicitacao",`/opr002/finalizarSolicitacao`,["ideusu:ideusu",
+                                                                            "idsolic:nmrservpainel",
+                                                                            "obs:mobssolic"],
+                                                                            "POST");
 }
 
 function direcionarSolic(){
-    CONSUL.consultar("direcionarSolic",`/opr002/direcionarSolic?ideusu=${form("ideusu").value}&ideusudirec=${form("mideusuvinc").value}&complex=${form("mscomplex").value}&idsolic=${form("mmmnmrsolic").value}`,"POST")
+    CONSUL.consultar("direcionarSolic",`/opr002/direcionarSolic`,["idsolic:mmmnmrsolic",
+                                                                  "complex:mscomplex",
+                                                                  "ideusudirec:mideusuvinc",
+                                                                  "ideusu:ideusu"],
+                                                                  "POST");
 } 
 
 function getNomeUsuario(){
-    CONSUL.consultar("getNomeUsuario",`/opr002/getNomeUsuario?ideusu=${form("mideusuvinc").value}`);
+    CONSUL.consultar("getNomeUsuario",`/opr002/getNomeUsuario`,["ideusu:mideusuvinc"]);
 }
 
 function getOptionsPrioridade(valorinicial){
@@ -502,17 +514,19 @@ function criarProgramasGrid(){
 }
 
 function carregarGridChamSolicitados(){
-    SOLIC_GRID.carregaGrid(`/opr002/carregarGridChamSolicitados?ideusu=${form("ideusu").value}&somenteAtivo=${getRadioValue("rsituacao")}`,"","");
+    SOLIC_GRID.carregaGrid(`/opr002/carregarGridChamSolicitados`,["somenteAtivo=" + getRadioValue("rsituacao"),
+                                                                  "acao=direcionar",
+                                                                  "ideusu:ideusu"]);
 }
 
 function carregarGridChamados(){
-    CHAMADOS_GRID.carregaGrid(`/opr002/carregarGridChamados?ideusu=${form("ideusu").value}&somenteAtivo=${getRadioValue("rsituacao")}&acao=direcionadas`,"","");
+    CHAMADOS_GRID.carregaGrid(`/opr002/carregarGridChamados`,["somenteAtivo=" + getRadioValue("rsituacao"),"acao=direcionadas","ideusu:ideusu"]);
 }
 
 function carregarGridChamadosParaVinc(){
-    SOLICDIR_GRID.carregaGrid(`/opr002/carregarGridChamados?somenteAtivo=${getRadioValue("rsituacao")}&acao=direcionar`,"","");
+    SOLICDIR_GRID.carregaGrid(`/opr002/carregarGridChamados`,["somenteAtivo=" + getRadioValue("rsituacao"),"acao=direcionar"]);
 }
 
 function carregarGridversionamento(){
-    PROGRAMAS_GRID.carregaGrid(`/opr002/carregarGridversionamento?idsolic=${form("nmrservpainel").value}`,"","");
+    PROGRAMAS_GRID.carregaGrid(`/opr002/carregarGridversionamento`,["idsolic=nmrservpainel"]);
 } 

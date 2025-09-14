@@ -1,4 +1,4 @@
-package com.cestec.cestec.model;
+package com.cestec.cestec.model.cri;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,7 +40,7 @@ public class pcp_proprietario {
     private String nome;
 
     @Column(length = 7)
-    private String id_usuario;
+    private String ideusu;
 
     private LocalDateTime criado_em;
     private LocalDateTime atualizado_em;

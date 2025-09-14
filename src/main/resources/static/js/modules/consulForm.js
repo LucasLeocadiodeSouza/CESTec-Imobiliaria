@@ -53,7 +53,89 @@ function consulForm_init(){
         }
     `;
 
-    this.consultar = async (nomefuncao,path,method,headers,options = {},ocultarloader)=>{
+    this.filterChange = async (campo,nomefuncao,path,arrayparam,retorno,headers)=>{
+        document.getElementById(campo).addEventListener("change", async ()=>{
+            var caminho = path;
+
+            if(!caminho) throw new Error("Caminho não especificado");
+    
+            const method = "GET";
+
+            if(!headers) headers = { "Content-Type": "application/json" };
+
+            if(arrayparam){
+                for(var i = 0; i < arrayparam.length; i++){
+                    var paramname;
+                    var paramreq;
+
+                    if(arrayparam[i].split(":").length > 1){
+                        paramname = arrayparam[i].split(":")[0];
+                        paramreq  = document.getElementById(arrayparam[i].split(":")[1]).value;
+
+                    }else if (arrayparam[i].split("=").length > 1){
+                        paramname = arrayparam[i].split("=")[0];
+                        paramreq  = arrayparam[i].split("=")[1];
+
+                    }else throw new Error(`Erro na requisição: ${response.status} - ${textError}`);
+    
+                    const parametro = paramname+"="+paramreq;
+    
+                    if(i == 0) caminho += "?" + parametro + (arrayparam.length > 1?"&":"");
+                    else if(i + 1 < arrayparam.length) caminho += parametro + "&";
+                    else caminho += parametro;
+                }
+            }
+
+            document.head.appendChild(style);
+
+            if(!document.body.contains(loader)) document.body.appendChild(loader);
+
+            loader.style.display = 'block';
+            loaderTimeout = setTimeout(() => {
+                loader.innerHTML += '<p>Carregando...</p>';
+            }, 1000);
+
+           const response = await fetch(caminho, {
+                method: method,
+                headers: headers
+            });
+ 
+            var resulta;
+
+            this.obj = nomefuncao;
+
+            if (!response.ok) {
+                clearTimeout(loaderTimeout);
+                loader.remove();
+
+                const textError = await response.text();
+                
+                alert('Ocorreu um erro!',textError,4);
+                
+                this.filaFetch(`Erro na requisição: ${response.status} - ${textError}`, response.status);
+
+                throw new Error(`Erro na requisição: ${response.status} - ${textError}`);
+            }
+
+            const contentType = response.headers.get('Content-Type');
+            
+
+            if (contentType?.includes('application/json')) {
+                resulta = await response.json();
+            } else {
+                resulta = await response.text();
+            }
+
+            if(this.filaFetch) this.filaFetch(resulta);
+            
+            clearTimeout(loaderTimeout);
+            loader.remove();
+
+            document.getElementById(retorno).value = resulta;
+        });
+    };
+
+    this.consultar = async (nomefuncao,path,arrayparam,method,headers,options = {},ocultarloader)=>{
         if(!path) throw new Error("Caminho não especificado");
     
         if(!method) method = "GET";
@@ -70,47 +152,74 @@ function consulForm_init(){
             }, 1000); // Mensagem após 1 segundos
         }
 
-           const response = await fetch(path, {
-                method: method,
-                headers: headers,
-                body: method !== 'GET' ? JSON.stringify(options.body) : null
-            });
-            
-            var resulta;
+        var caminho = path;
+        if(arrayparam){
+            for(var i = 0; i < arrayparam.length; i++){
+                var paramname;
+                var paramreq;
 
-            this.obj = nomefuncao;
-            
-            if (!response.ok) {
-                if(!ocultarloader){
-                    clearTimeout(loaderTimeout);
-                    loader.remove();
-                }
+                if(arrayparam[i].split(":").length > 1){
+                    paramname = arrayparam[i].split(":")[0];
+                    paramreq  = document.getElementById(arrayparam[i].split(":")[1]).value;
 
-                const textError = await response.text();
-                this.filaFetch(`Erro na requisição: ${response.status} - ${textError}`, response.status);
+                }else if (arrayparam[i].split("=").length > 1){
+                    paramname = arrayparam[i].split("=")[0];
+                    paramreq  = arrayparam[i].split("=")[1];
 
-                throw new Error(`Erro na requisição: ${response.status} - ${textError}`);
+                }else throw new Error(`Erro na requisição: ${response.status} - ${textError}`);
+   
+                const parametro = paramname+"="+paramreq;
+ 
+                if(i == 0) caminho += "?" + parametro + (arrayparam.length > 1?"&":"");
+                else if(i + 1 < arrayparam.length) caminho += parametro + "&";
+                else caminho += parametro;
             }
+        }
 
-            const contentType = response.headers.get('Content-Type');
-            
+        const response = await fetch(caminho, {
+            method: method,
+            headers: headers,
+            body: method !== 'GET' ? JSON.stringify(options.body) : null
+        });
+        
+        var resulta;
 
-            if (contentType?.includes('application/pdf') || options.responseType === 'arraybuffer') {
-                resulta = await response.arrayBuffer();
-            }
-            else if (contentType?.includes('application/json')) {
-                resulta = await response.json();
-            } else {
-                resulta = await response.text();
-            }
-
-            if(this.filaFetch) this.filaFetch(resulta);
-
+        this.obj = nomefuncao;
+        
+        if (!response.ok) {
             if(!ocultarloader){
                 clearTimeout(loaderTimeout);
                 loader.remove();
             }
+
+            const textError = await response.text();
             
-            return resulta;
+            alert('Ocorreu um erro!',textError,4);
+            
+            this.filaFetch(`Erro na requisição: ${response.status} - ${textError}`, response.status);
+
+            throw new Error(`Erro na requisição: ${response.status} - ${textError}`);
+        }
+
+        const contentType = response.headers.get('Content-Type');
+        
+
+        if (contentType?.includes('application/pdf') || options.responseType === 'arraybuffer') {
+            resulta = await response.arrayBuffer();
+        }
+        else if (contentType?.includes('application/json')) {
+            resulta = await response.json();
+        } else {
+            resulta = await response.text();
+        }
+
+        if(this.filaFetch) this.filaFetch(resulta);
+
+        if(!ocultarloader){
+            clearTimeout(loaderTimeout);
+            loader.remove();
+        }
+        
+        return resulta;
     };
 }

@@ -22,8 +22,8 @@ function elementsForm_init(){
             const divimg = document.createElement("div");
             const img    = document.createElement("img");
             img.src      = iconUrl;
-            img.style.width             = "20px";
-            img.style.height            = "60%";
+            img.style.width             = "21px";
+            img.style.height            = "18px";
             img.style.margin            = "3px";
             img.style.marginLeft        = "6px";
             divimg.style.width          = "20px";

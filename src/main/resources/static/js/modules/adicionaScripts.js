@@ -118,6 +118,16 @@ function addScript(prog){
     document.head.appendChild(script);
 }
 
+// function addVariaveisRoot(){
+//     const windowProp = window.getComputedStyle(document.body);
+
+//     var marginExtra = "";
+//     if(document.getElementById("comcab_init")) marginExtra = '45px'
+//     else marginExtra = '15px';
+
+//     document.documentElement.style.setProperty('--body-heigth', 'calc(' + document.body.offsetHeight + 'px + ' + marginExtra + ')');
+// }
+
 function addScriptsHead(progs){
     const programasPadrao = '/js/modules/gridForm.js,/js/modules/dmfForm.js,/js/modules/abaForm.js,/js/modules/consulForm.js,/js/modules/elementsForm.js,/js/modules/utils.js,/js/modules/zoomForm.js';
     const programasHead   = programasPadrao + "," + progs;
@@ -129,3 +139,6 @@ function addScriptsHead(progs){
 
 window.adicionarHeadLinks = adicionarHeadLinks;
 window.addScriptsHead     = addScriptsHead;
+// window.addEventListener("load", ()=>{
+//     addVariaveisRoot();
+// });

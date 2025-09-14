@@ -280,7 +280,7 @@ function adicionarAplicacao() {
                         arquivo_inic:  form('marqinit').value,
                         ideusu:        form('ideusu').value};
 
-    CONSUL.consultar("adicionarAplicacao",`/mrb001/cadastrarAplicacao`,"POST","",{body: aplicacao});
+    CONSUL.consultar("adicionarAplicacao",`/mrb001/cadastrarAplicacao`,[],"POST","",{body: aplicacao});
 }
 
 function buscarRoleAcess(valorinicial){
@@ -296,9 +296,9 @@ function buscarUserName(){
 }
 
 function getDescricaoModulo(){
-    CONSUL.consultar("getDescricaoModulo",`/mrb001/getDescricaoModulo?codmodulo=${form("mmodulo").value}`)
+    CONSUL.consultar("getDescricaoModulo",`/mrb001/getDescricaoModulo`,["codmodulo:mmodulo"]);
 }
 
 function carregaGridAplicacoes(){
-    CADAPL_GRID.carregaGrid(`/mrb001/buscarAplicacoesGrid?codapl=${form("codapl").value}&codmodu=${form("codmodel").value}&ideusu=${form("ideusu").value}`,"","");
+    CADAPL_GRID.carregaGrid(`/mrb001/buscarAplicacoesGrid`,["codapl:codapl","codmodu:codmodel","ideusu:ideusu"],"","");
 }

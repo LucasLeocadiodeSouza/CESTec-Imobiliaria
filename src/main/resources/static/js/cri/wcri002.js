@@ -16,9 +16,9 @@ function iniciarEventos() {
 
     PROPRI_GRID               = new GridForm_init();
     PROPRI_GRID.id            = "tabela_propri";
-    PROPRI_GRID.columnName    = "codproprietario,nome,documento,enderecocompl,numtel,email,endereco_logradouro,endereco_numero,endereco_cidade,endereco_uf,endereco_cep";
+    PROPRI_GRID.columnName    = "codproprietario,nome,documento,enderecocompl,numtel,email,endereco_bairro,endereco_logradouro,endereco_numero,endereco_cidade,endereco_uf,endereco_cep,ehpf";
     PROPRI_GRID.columnLabel   = "Cod. Prop.,Nome,Documento,Endereço,Telefone";
-    PROPRI_GRID.columnWidth   = "10,40,10,30,10";
+    PROPRI_GRID.columnWidth   = "10,35,13,30,12";
     PROPRI_GRID.columnAlign   = "c,e,c,e,c";
     PROPRI_GRID.mousehouve    = true;
     PROPRI_GRID.destacarclick = true;
@@ -46,51 +46,47 @@ function iniciarEventos() {
     event_click("bcadastro");
 
     event_selected_init("codproprietario");
+    inputOnlyNumber('codproprietario,mnmr');
+
+    CONSUL.filterChange('codproprietario','',`/gen/getNomeProp`,['codprop:codproprietario'],'descproprietario');
 
     controlaTela("inicia");     
 }
 
 function event_click(obj) {
-    if(obj == "bnovabusca"){
-        form(obj).addEventListener("click", function () {
-            controlaTela("novabusca");
-        });
-    }
-    if(obj == "bbuscar"){
-        form(obj).addEventListener("click", function () {
-            controlaTela("buscar");
-            buscarDadosTable(); 
-        });
-    }
-    if(obj == 'binserir'){
-        form(obj).addEventListener("click", function () {
-            form("sacao").innerText   = "Inserindo";
-            form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
+    form(obj).addEventListener("click", function () {
+        switch (obj) {
+            case "bnovabusca": controlaTela("novabusca");
+                               break;
 
-            controlaTela("modal");
-            DMFDiv.openModal("dmodalf_proprietario");
-        });
-    }
-    if(obj == 'blimpar'){
-        form(obj).addEventListener("click", function () {
-            controlaTela("inicia");
-        });
-    }
-    if(obj == 'bcadastro'){
-        form(obj).addEventListener("click", function () {
-            adicionarProprietario();
-            DMFDiv.closeModal();
-        });
-    }
+            case    "bbuscar": controlaTela("buscar");
+                               buscarDadosTable(); 
+                               break;
+
+            case   "binserir": form("sacao").innerText   = "Inserindo";
+                               form("stitulo").innerText = "Cadastro de Proprietario - " + form("sacao").innerText;
+                           
+                               controlaTela("modal");
+                               DMFDiv.openModal("dmodalf_proprietario");
+                               break;
+
+            case    "blimpar": controlaTela("inicia");
+                               break;
+
+            case  "bcadastro": adicionarProprietario();
+                               break;
+        
+        }
+    });
 }
 
 function event_click_table(obj, row){
     switch (obj) {
     case PROPRI_GRID: const valoresLinha = PROPRI_GRID.getRowNode(row);
-                      controlaTela("modal");
-
                       form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
                       form("stitulo").innerText = "Cadastro de Proprietario - " + form("sacao").innerText;
+                      
+                      controlaTela("modal");
 
                       buscarPropriGrid(valoresLinha);
                       DMFDiv.openModal("dmodalf_proprietario");
@@ -107,20 +103,18 @@ function event_click_aba(){
 }
 
 function filaFetchInit(){
-    CONSUL.filaFetch = (retorno)=>{
+    CONSUL.filaFetch = (retorno, error)=>{
+        if(error) return; 
+
         switch (CONSUL.obj) {
         case            "buscarUserName": form("ideusu").value = retorno;
                                           break;
 
-        case     "adicionarProprietario": if(retorno != "OK") {
-                                             alert(retorno,'',4);
-                                             return;
-                                          }
-                                          alert("Dados Salvos Com Sucesso!",'',5);
-                                          if(form("sacao").innerText == "Inserindo")if(confirm("Deseja enviar um Email de Boas Vindas para o Proprietario?")) enviarEmail();
+        case     "adicionarProprietario": alert("Sucesso!",'Dados foram salvos com sucesso! Proprietario está cadastrado no sistema.',5);
+                                          if(form("sacao").innerText == "Inserindo") if(confirm("Deseja enviar um Email de Boas Vindas para o Proprietario?")) enviarEmail();
 
-                                          form("bnovabusca").click();
-                                          form("bbuscar").click();
+                                          buscarDadosTable();
+                                          DMFDiv.closeModal();
                                           break;
         }
     }
@@ -133,34 +127,36 @@ function buscarPropriGrid(valoresLinha){
     form("mddd").value          	= valoresLinha[4].substring(0,2);
     form("mtelefone").value     	= valoresLinha[4].substring(2);
     form("memail").value        	= valoresLinha[5];
-    form('mbairro').value           = valoresLinha[3];
-    form('mnmr').value              = valoresLinha[7];
-    form('mcidade').value           = valoresLinha[8];
-    form('muf').value               = valoresLinha[9];
-    form('mlogradouro').value       = valoresLinha[6];
-    form('mcepini').value           = valoresLinha[10].substring(0,5);
-    form('mcepdigito').value        = valoresLinha[10].substring(6,9);
+    form('mbairro').value           = valoresLinha[6];
+    form('mnmr').value              = valoresLinha[8];
+    form('mcidade').value           = valoresLinha[9];
+    form('muf').value               = valoresLinha[10];
+    form('mlogradouro').value       = valoresLinha[7];
+    form('mcepini').value           = valoresLinha[11].substring(0,5);
+    form('mcepdigito').value        = valoresLinha[11].substring(6,9);
+    form('mspessoafis').value       = valoresLinha[12] == "false"?"0":"1";
 }
 
 function buscarDadosTable(){
-    PROPRI_GRID.carregaGrid(`/contratosCadastroClientes/proprietario/buscarPropriGrid?codprop=${form("codproprietario").value}`,"","");
+    PROPRI_GRID.carregaGrid(`/cri002/buscarPropriGrid`,["codprop:codproprietario"],"","");
 }
 
 function adicionarProprietario() {
     const proprietario = { codproprietario:     form("mcodproprietario").value,
                            nome:                form("mnome").value,
-                           documento:           form("mcpf").value,
+                           documento:           retirarFormatDoc(form("mcpf").value),
                            numtel:              form("mddd").value + form("mtelefone").value,
                            email:               form("memail").value,
+                           pessoa_fisica:       form('mspessoafis').value == "1",
                            endereco_bairro:     form('mbairro').value,
                            endereco_numero:     form('mnmr').value,
                            endereco_logradouro: form('mlogradouro').value,
                            endereco_cep:        form('mcepini').value + "-" + form('mcepdigito').value,
                            endereco_cidade:     form('mcidade').value,
                            endereco_uf:         form('muf').value,
-                           id_usuario:          form('ideusu').value};
+                           ideusu:              form('ideusu').value};
 
-    CONSUL.consultar("adicionarProprietario",`/contratosCadastroClientes/proprietario`,"POST","",{body: proprietario});
+    CONSUL.consultar("adicionarProprietario",`/cri002/salvarproprietario`,[],"POST","",{body: proprietario});
 }
 
 function enviarEmail(){
@@ -183,7 +179,7 @@ function enviarEmail(){
             + "</body>"
             + "</html>"}
 
-    CONSUL.consultar("enviarEmail",`/email`,"POST","",{body: email})
+    CONSUL.consultar("enviarEmail",`/email`,[],"POST","",{body: email})
 }
 
 function buscarUserName(){
@@ -197,7 +193,7 @@ function controlaTela(opc){
         desabilitaCampo('bbuscar',         false);
         desabilitaCampo('codproprietario', false);
 
-        form("binserir").style.display     = ehManutencao()?"flex":"none";
+        form("binserir").style.display = ehManutencao()?"flex":"none";
     }
     if(opc == "buscar"){
         desabilitaCampo('bnovabusca',      false);
@@ -205,8 +201,8 @@ function controlaTela(opc){
         desabilitaCampo('codproprietario', true);
     }
     if(opc == "modal"){
-        desabilitaCampo('mnome',       ehConsulta());
-        desabilitaCampo('mcpf',        ehConsulta());
+        desabilitaCampo('mnome',       ehConsulta() || !ehInserindo());
+        desabilitaCampo('mcpf',        ehConsulta() || !ehInserindo());
         desabilitaCampo('mddd',        ehConsulta());
         desabilitaCampo('mtelefone',   ehConsulta());
         desabilitaCampo('memail',      ehConsulta());
@@ -218,12 +214,14 @@ function controlaTela(opc){
         desabilitaCampo('mlogradouro', ehConsulta());
         desabilitaCampo('mcepini',     ehConsulta());
         desabilitaCampo('mcepdigito',  ehConsulta());
+        desabilitaCampo('mspessoafis', ehConsulta() || !ehInserindo());
     }
 }
 
 function limparTela(opc){
     if(opc == "inicia" || opc == 'novabusca'){        
-        form('codproprietario').value = "0";
+        form('codproprietario').value  = "0";
+        form('descproprietario').value = "";
     }
     if(opc === "inicia" || opc === "novabusca"){
         PROPRI_GRID.clearGrid();
@@ -241,6 +239,7 @@ function limparTela(opc){
         form('mlogradouro').value  = "";
         form('mcepini').value      = "";
         form('mcepdigito').value   = "";
+        form('mspessoafis').value  = "0";
     }
 }
 
@@ -251,4 +250,8 @@ function ehConsulta(){
 
 function ehManutencao(){
     return ABA.getIndex() === 1;
+}
+
+function ehInserindo(){
+    return form("sacao").innerText == "Inserindo";
 }

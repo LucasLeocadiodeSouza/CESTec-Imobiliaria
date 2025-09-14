@@ -1,5 +1,6 @@
 package com.cestec.cestec.service.mrb;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -77,7 +78,7 @@ public class mrb003s {
             cargo cargofunc = cargoRepository.findCargoByCodCargo(funcionario.getCodcargo());
             if(cargofunc == null) return ResponseEntity.badRequest().body("Cargo informado não cadastrado!");
 
-            if(funcionario.getSalario() == 0) return ResponseEntity.badRequest().body("Deve ser informado o Salario do Funcionario!");
+            if(funcionario.getSalario().equals(BigDecimal.ZERO)) return ResponseEntity.badRequest().body("Deve ser informado o Salario do Funcionario!");
 
             funcionario funcAnalise = funcionarioRepo.findFuncBycodfunc(funcionario.getCodfunc());
 

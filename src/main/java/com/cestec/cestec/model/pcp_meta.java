@@ -1,6 +1,9 @@
 package com.cestec.cestec.model;
 
+import java.math.BigDecimal;
 import java.sql.Date;
+
+import com.cestec.cestec.model.cri.pcp_corretor;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,14 +33,14 @@ public class pcp_meta {
     @JoinColumn(name="pcp_corretor_codcorretor", nullable = false)
     private pcp_corretor pcp_corretor;
 
-    private double  valor_meta;
+    private BigDecimal  valor_meta;
     private Date    datinicio;
     private Date    datfinal;
     private Integer situacao;
     private Date    datregistro;
     private String  ideusu;
 
-    public pcp_meta(pcp_corretor pcp_corretor, double valor_meta, Date datinicio, Date datfinal, Integer situacao, Date datregistro, String ideusu) {
+    public pcp_meta(pcp_corretor pcp_corretor, BigDecimal valor_meta, Date datinicio, Date datfinal, Integer situacao, Date datregistro, String ideusu) {
         this.pcp_corretor = pcp_corretor;
         this.valor_meta   = valor_meta;
         this.datinicio    = datinicio;
