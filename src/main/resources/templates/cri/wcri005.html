@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/padrao.css">
     <title>Aprovacão de Contratos</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPxAZFCNRd1uSg9CYo8w81ZlqHquNHZ-U&loading=async&libraries=maps&v=beta" defer></script>
     <script src="/js/modules/adicionaScripts.js"></script>
     <script>
         adicionarHeadLinks();
@@ -26,62 +27,115 @@
     .large       {width: 240px;}
     .extralarge  {width: 300px;}
 
-    #baprovar {background-color: #099000 !important; color: #FFF;}
-    #breprovar {background-color: #ff0000 !important; color: #FFF;}
-
     .labelfiltro {font-weight: 600;
                   width: 190px !important;
                   text-align: right;}
 
     .labelmodal {font-weight: 600;
-                 width: 190px;
+                 width: 180px;
                  text-align: right;}
 
-    .contrato  {height: auto !important;}
     .aprovacao {margin-top: 15px;}
-
-    #fichacontrato {height: 100%;}
-    #fichacompleta {height: auto !important; padding-top: 0 !important;}
-    .ciclo {display: none !important;}
-
-    .grid {display: block !important;
-           height: 400px;
-           margin-top: 25px;
-           margin-inline: 7px;
-           overflow-y: auto;
-           overflow-x:scroll;}
-
-    #botoes {display: none !important;}
 
     .dado {display:         flex;
            justify-content: center;
            align-items:     center;
            gap:             3px;}
 
-    fieldset {margin:                2px;
-              display:               grid;
-              grid-template-columns: 1fr 1fr;
-              padding:               2px;}
+    .esquerda {width: 55%;}
+    .direita  {width: 45%; padding-inline: 10px;}
+    .contrato {display: flex;}
 
-    .dmf {width: auto !important;
-          margin-inline: 15px;}
-    
+    .ffichacontrato {margin-inline: 10px;}
+    .ffichacontrato fieldset {border-radius: 5px;}
+    .ffichacontrato label {font-size: 14px;}
+    .ffichacontrato p {font-size: 13px; width: 170px; font-family: "Inter"; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
+
+    .marcador {align-items: center;
+               background-color: #6283cf;
+               border-radius: 50%;
+               color: #263238;
+               display: flex;
+               font-size: 14px;
+               gap: 15px;
+               height: 30px;
+               justify-content: center;
+               padding: 4px;
+               position: relative;
+               position: relative;
+               transition: all 0.3s ease-out;
+               width: 30px;
+               transform: translateY(-9px);}
+
+
+    .marcador::after {border-left: 9px solid transparent;
+                      border-right: 9px solid transparent;
+                      border-top: 9px solid #6283cf;
+                      content: "";
+                      height: 0;
+                      left: 50%;
+                      position: absolute;
+                      top: 95%;
+                      transform: translate(-50%, 0);
+                      transition: all 0.3s ease-out;
+                      width: 0;
+                      z-index: 1;}
+
+    .marcador .icon {align-items: center;
+                     display: flex;
+                     justify-content: center;
+                     color: #FFFFFF;}
+
+    .marcador .icon svg {height: 20px;
+                         width: auto;}
+
+    .marcador .details {display: none;
+                        flex-direction: column;
+                        flex: 1;}
+
+    .marcador .price  {color: #FFFFFF; font-family: "Inter";}
+
+    .marcador .address {color: #FFFFFF;
+                        font-size: 10px;
+                        margin-bottom: 10px;
+                        margin-top: 5px;}
+
+    .marcador .features{align-items: flex-end;
+                        display: flex;
+                        flex-direction: row;
+                        gap: 10px;}
+
+    .marcador .features > div {align-items: center;
+                               background: #F5F5F5;
+                               border-radius: 5px;
+                               border: 1px solid #ccc;
+                               display: flex;
+                               font-size: 10px;
+                               gap: 5px;
+                               padding: 5px;}
+
+    .marcador.highlight {background-color: #6283cf;
+                         border-radius: 8px;
+                         box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.2);
+                         height: 80px;
+                         padding: 8px 15px;
+                         width: auto;}
+
+    .marcador.highlight::after { border-top: 9px solid #6283cf; }
+
+    .marcador.highlight .details { display: flex; }
+
+    #map {height: 95%; border-radius: 5px; border: 1px solid gray}
+
+    #dmodalf_aprovacao fieldset {margin:                2px;
+                                 display:               grid;
+                                 grid-template-columns: 1fr 1fr;
+                                 padding:               6px;}
+
     #tabela_aprovacao {overflow-x: auto;}
 
-    #dmodalf_aprovacao {width: calc(100% - 300px); /* Subtrai 150px de cada lado */
-                        height: auto; /* Subtrai 50px de cada lado, considerando a margem superior e inferior */
-                        opacity: 1;
-                        display: flex;
-                        flex-direction: column;
-                        margin-inline: 150px;  /* Margem de 150px nas laterais */
-                        margin-block: 50px;}
-
-    #dmodalf_aprovacao img {filter: invert(100%);}
-
-    .buttonsmodal {display: flex; justify-content: center; align-items: center; margin: 25px;}
+    .buttonsmodal {display: flex; justify-content: center; align-items: center;}
     div.buttonsmodal input{color: #FFF;}
-
-    body {background-color: #1d3561;}
 </style>
 </head>
 <body>
@@ -117,10 +171,13 @@
                 <label class="labelfiltro">Tipo de Imóvel:</label>
 
                 <input type="radio" id="raluguel" name="rimovel" value="1">
-                <label class="labelfiltro" style="text-align: left; width: 80px" for="raluguel">Aluguel</label>
+                <label style="text-align: left; width: 80px" for="raluguel">Aluguel</label>
 
                 <input type="radio" id="rvenda" name="rimovel" value="2">
-                <label class="labelfiltro" style="text-align: left; width: 80px" for="rvenda">Venda</label>
+                <label style="text-align: left; width: 80px" for="rvenda">Venda</label>
+
+                <input type="radio" id="rambas" name="rimovel" value="0">
+                <label style="text-align: left; width: 80px" for="rambas">Ambas</label>
             </div>
 
             <div  class='if' style="display: flex; height: auto;">
@@ -147,106 +204,134 @@
             </div>
 
             <div class='dmf contrato'>
-                <fieldset style="margin-top: 10px;">
-                    <legend>Imovel</legend>
-                    <div class='if dado'>
-                        <label class="labelfiltro">Código do Imovel: </label>
-                        <p id="codimovel"></p>
+                <div class="esquerda">
+                    <div class="ffichacontrato">
+                        <fieldset style="margin-top: 10px;">
+                            <legend>Imovel</legend>
+                            <div class='if dado'>
+                                <label class="labelmodal">Código do Negociante: </label>
+                                <p id="codprop"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Nome: </label>
+                                <p id="nomeprop"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Código do Imovel: </label>
+                                <p id="codimovel"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Tipo Imovel: </label>
+                                <p id="tpimovel"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Valor Solicitado (R$): </label>
+                                <p id="vlrimovel"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Condomínio (R$): </label>
+                                <p id="vlrcondominio"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Area Total(M²): </label>
+                                <p id="areatotal"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Num. Quartos: </label>
+                                <p id="numquartos"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Num. Banheiros: </label>
+                                <p id="numbanheiros"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Endereco: </label>
+                                <p id="endereco"></p>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Contrato</legend>
+                            <div class='if dado'>
+                                <label class="labelmodal">Código Contrato: </label>
+                                <p id="codcontrato"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Contrato: </label>
+                                <p id="tpcontrato"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Valor Negociado (R$): </label>
+                                <p id="vlrcontrato"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Período do Contrato: </label>
+                                <p id="periodocontrato"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Corretor: </label>
+                                <p id="corretor"></p>
+                            </div>            
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Negociante</legend>
+                            <div class='if dado'>
+                                <label class="labelmodal">Código do Negociante: </label>
+                                <p id="codnegociante"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Nome: </label>
+                                <p id="nomecliente"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Documento: </label>
+                                <p id="cpfcliente"></p>
+                            </div>
+
+                            <div class='if dado'>
+                                <label class="labelmodal">Pessoa Fisica: </label>
+                                <p id="ehpf"></p>
+                            </div>
+                        </fieldset>
                     </div>
 
-                    <div class='if dado'>
-                        <label class="labelfiltro">Tipo Imovel: </label>
-                        <p id="tpimovel"></p>
+                    <div class='aprovacao'>
+                        <div class='dmf'>
+                            <label class="labelmodal">Valor Liberado: </label>
+                            <input type="text" id="mvlrlib"  name="mvlrlib"  class="medium">
+                        </div>
+
+                        <div class='dmf'>
+                            <label class="labelmodal">Observacão: </label>
+                            <textarea id="mobs"  name="mobs"  class="extralarge"></textarea>                        
+                        </div>
                     </div>
-
-                    <div class='if dado'>
-                        <label class="labelfiltro">Valor Solicitado (R$): </label>
-                        <p id="vlrimovel"></p>
-                    </div>
-
-                    <div class='if dado'>
-                        <label class="labelfiltro">Condomínio (R$): </label>
-                        <p id="vlrcondominio"></p>
-                    </div>
-
-                    <div class='if dado'>
-                        <label class="labelfiltro">Area Total(M²): </label>
-                        <p id="areatotal"></p>
-                    </div>
-
-                    <div class='if dado'>
-                        <label class="labelfiltro">Num. Quartos: </label>
-                        <p id="numquartos"></p>
-                    </div>
-
-                    <div class='if dado'>
-                        <label class="labelfiltro">Endereco: </label>
-                        <p id="endereco"></p>
-                    </div>
-                </fieldset>
-
-                <fieldset>
-                    <legend>Contrato</legend>
-                    <div class='if dado'>
-                        <label class="labelfiltro">Código Contrato: </label>
-                        <p id="codcontrato"></p>
-                    </div>
-
-                    <div class='if dado'>
-                        <label class="labelfiltro">Contrato: </label>
-                        <p id="tpcontrato"></p>
-                    </div>
-
-                    <div class='if dado'>
-                        <label class="labelfiltro">Valor Negociado (R$): </label>
-                        <p id="vlrcontrato"></p>
-                    </div>
-
-                    <div class='if dado'>
-                        <label class="labelfiltro">Período do Contrato: </label>
-                        <p id="periodocontrato"></p>
-                    </div>
-
-                    <div class='if dado'>
-                        <label class="labelfiltro">Corretor: </label>
-                        <p id="corretor"></p>
-                    </div>            
-                </fieldset>
-
-                <fieldset>
-                    <legend>Negociante</legend>
-                    <div class='if dado'>
-                        <label class="labelfiltro">Código do Negociante: </label>
-                        <p id="codnegociante"></p>
-                    </div>
-
-                    <div class='if dado'>
-                        <label class="labelfiltro">Nome: </label>
-                        <p id="nomecliente"></p>
-                    </div>
-
-                    <div class='if dado'>
-                        <label class="labelfiltro">CPF: </label>
-                        <p id="cpfcliente"></p>
-                    </div>          
-                </fieldset>
-            </div>
-
-            <div class='dmf aprovacao'>
-                <div class='dmf'>
-                    <label class="labelmodal">Valor Liberado: </label>
-                    <input type="text" id="mvlrlib"  name="mvlrlib"  class="large">
                 </div>
 
-                <div class='dmf'>
-                    <label class="labelmodal">Observacão: </label>
-                    <textarea id="mobs"  name="mobs"  class="extralarge"></textarea>                        
+                <div class="direita">
+                    <div id="map"></div>
                 </div>
             </div>
 
             <div class='dmf buttonsmodal'>                            
-                <div id="baprovar"  name="baprovar"  class="button" value="Aprovar"  data-icon="/icons/ok-icon.png"></div>
-                <div id="breprovar" name="breprovar" class="button" value="Reprovar" data-icon="/icons/cancel.png"></div>
+                <div id="baprovar"  name="baprovar"  class="button aceitacao filter-invert" value="Aprovar"  data-icon="/icons/ok-icon.png"></div>
+                <div id="breprovar" name="breprovar" class="button negacao filter-invert"   value="Reprovar" data-icon="/icons/cancel.png"></div>
             </div>
         </div>
 

@@ -77,10 +77,10 @@ function DMFForm_init(){
             botaofechar.id        = "bclose" + div;
 
             const imgclose = document.createElement("img");
-            imgclose.src   = "/icons/fechartela.png";
+            imgclose.src   = "/icons/close-modal.png";
             imgclose.id	   = "imgclose"+ div;
-            imgclose.style.width  = "80%";
-            imgclose.style.height = "80%";
+            imgclose.style.width  = "19px";
+            imgclose.style.height = "21px";
             imgclose.style.margin = "0px";
 
             modal.style.display = "none";
@@ -111,8 +111,8 @@ function DMFForm_init(){
         modalStack.push(idDiv);
 
         if(this.fullScream) {
-            modal.style.width  = "95%";
-            modal.style.height = "95%";
+            modal.style.width  = "90%";
+            modal.style.height = "90%";
         }
 
         modal.classList.remove("DMF_ativa");

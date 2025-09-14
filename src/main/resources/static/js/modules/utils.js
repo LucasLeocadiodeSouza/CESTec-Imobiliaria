@@ -19,6 +19,8 @@ function event_blur_init(obj){
         form(opc).addEventListener('blur', function(e) {
             e.target.value = parseFloat(e.target.value || 0).toFixed(2);
         });
+
+        form(opc).dispatchEvent(new Event("blur"));
     });
 }
 
@@ -91,4 +93,34 @@ function setRadioValue(opc,valor) {
     if (radio) {
         radio.checked = true;
     }
+}
+
+function formatDocToCpf(doc){
+    const numeros = doc.replace(/\D/g, '');
+
+    const cpfLimpo = numeros.substring(0, 11);
+    
+    if (!cpfLimpo || cpfLimpo.length < 11) return doc;
+    
+    return cpfLimpo.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+}
+
+function formatDocToCnpj(doc){
+    const numeros = doc.replace(/\D/g, '');
+    
+    const cnpjLimpo = numeros.substring(0, 14);
+    
+    if (!cnpjLimpo || cnpjLimpo.length < 14) return doc;
+
+    return cnpjLimpo.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+}
+
+function retirarFormatDoc(doc){
+    return doc.replace(/\D/g, '');
+}
+
+function formatarData(data, mesant) {
+    const dataAjustada = new Date(data);
+    dataAjustada.setMonth(dataAjustada.getMonth() - mesant);
+    return dataAjustada.toISOString().split('T')[0];
 }

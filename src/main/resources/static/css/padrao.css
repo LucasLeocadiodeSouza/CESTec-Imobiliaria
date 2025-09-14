@@ -1,11 +1,14 @@
 :root{
   --bd-mg-tp: 0px;
+  --body-heigth: calc(100vh - (29px + var(--bd-mg-tp)));
+  --red-negacao: #dd0000;
+  --green-aceitacao: #009f0d;
 }
 
-
+body      {background-color: #1d3561;}
 body .gen {padding: 10px}
 
-.princbody {margin-top: var(--bd-mg-tp, 0px); background-color: #f5f5f5; height: 100vh; display: flex; justify-content: center; padding: 15px;flex-direction: column;justify-content: flex-start;}
+.princbody {margin-top: var(--bd-mg-tp, 0px); background-color: #f5f5f5; height: var(--body-heigth, 100vh); display: flex; justify-content: center; padding: 15px;flex-direction: column;justify-content: flex-start;}
 
 .cabecalho {position: fixed; top: 0; width: 100%; left: 0; z-index: 99999;}
 
@@ -38,7 +41,7 @@ body .gen {padding: 10px}
          border-radius: 6px;
          width: auto;
          min-width: 85px;
-         height: 35px;
+         height: 31px;
          transition: 0.2s;
          margin-inline: 5px;
          padding: 2px;
@@ -66,8 +69,7 @@ body .gen {padding: 10px}
                .buttonfe {color: #FFF !important}
                .buttonfe img{filter: invert(100%)}}
 
-.buttonfe {width: 100%;
-           height: 100%; 
+.buttonfe {width: 100%; 
            display: flex; 
            flex-direction: row;
            gap: 2px;}
@@ -177,7 +179,9 @@ body .gen {padding: 10px}
 
 .dmf {width: 100%; 
       height: auto;
-      margin-top: 6px;}
+      margin-top: 6px;
+      display: flex;
+      gap: 3px;}
 
 .container-row {display: flex; flex-direction: row;}
 .container-row100 {display: flex; flex-direction: row; width: 100%;}
@@ -192,13 +196,13 @@ body .gen {padding: 10px}
 .closediv {display: flex; justify-content: space-between; align-items: center; height: 35px; border-radius: 5px;}
 
 .bpc {display: flex;
-      border: 3px solid #4a4a4a9e;
+      border: 2px solid #4a4a4ac2;
       margin-inline: 10px;
       align-items: center;
       justify-content: center;
       height: 23px;}
 
-.bpc:hover {opacity: 0.3;}
+.bpc:hover {opacity: 0.4;}
 
 .razao-modal label {margin-inline: 10px;
                     font-weight: 900;
@@ -331,6 +335,10 @@ table {
 
 .h100 {height: 100%;}
 
+.negacao {background: var(--red-negacao, #dd0000)}
+.aceitacao {background: var(--green-aceitacao, #009f0d);}
+.filter-invert img {filter: invert(100%);}
+
 .divtableres {height: calc(100% - 42px); overflow-y: auto;}
 
 .tablecolun {border: 1px solid rgb(0, 0, 0); border-collapse: collapse;}
@@ -345,7 +353,7 @@ table {
 .tabledata2 tbody {border-top: hidden; overflow-y: auto; max-height: calc(100% - 40px);}
 
 .mouseovercolor   {background-color: rgba(102, 146, 207, 0.55); filter: brightness(1.4);}
-.clicktableborder {border: solid #003462 !important;}
+.clicktableborder {border-block: solid #003462 !important;}
 .efeitorowclick td{font-weight: bold;}
 
 .img-filtro-grid {display:     flex;

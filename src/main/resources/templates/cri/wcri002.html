@@ -1,7 +1,7 @@
 <!-- 
     Dev: Lucas Leocadio de Souza
     Data: 19/02/25
-    IM: 00011
+    IM: 00013
 -->
 
 <!DOCTYPE html>
@@ -20,7 +20,7 @@
 <style>
     .ppp         {width: 32px;}
     .p           {width: 60px;}
-    .medium      {width: 120px;}
+    .medium      {width: 130px;}
     .Intermedium {width: 180px;}
     .large       {width: 240px;}
     .extralarge  {width: 300px;}
@@ -33,17 +33,11 @@
                  width: 130px;
                  text-align: right;}
 
-    .grid {width: 99%;
-           height: 400px;
-           margin-top: 25px;
-           margin-inline: 7px;
-           overflow-y: scroll;}
-
     #dmodalf_proprietario {width:  600px;
                            height: 400px;
-                           opacity: 1;}
+                           opacity: 1;
+                           padding-bottom: 10px;}
 
-    body {background-color: #1d3561;}
 </style>
 </head>
 <body>
@@ -91,12 +85,21 @@
                 <label class="labelmodal">Proprietario: </label>
                 <input type="text" id="mnome"  name="mnome"  class="large">
             </div>
-                
+
+            
             <div class='dmf'>
-                <label class="labelmodal">CPF: </label>
+                <label class="labelmodal">Documento: </label>
                 <input type="text" id="mcpf"  name="mcpf"  class="medium">
             </div>
-
+            
+            <div class='dmf'>
+                <label class="labelmodal">Pessoa Fisica: </label>
+                <select id="mspessoafis" name="mspessoafis" class="ppp">
+                    <option value="1">Sim</option>
+                    <option value="0">Não</option>
+                </select>
+            </div>
+            
             <div class='dmf'>
                 <label class="labelmodal">Telefone: </label>
                 <input type="text" id="mddd"  name="mddd" maxlength="3" class="ppp">
@@ -131,10 +134,10 @@
                 <input type="text" id="mcidade"  name="mcidade"  class="medium"> &nbsp;
             
                 <label class="labelmodal" style="width: auto !important;">UF:</label>
-                <input type="text" id="muf"  name="muf"  class="ppp">
+                <input type="text" id="muf"  name="muf"  class="ppp" maxlength="3">
             </div>
 
-            <div class='dmf' style="display: flex; justify-content: center; align-items: center;">                            
+            <div class='dmf buttoncenter'>                            
                 <div id="bcadastro" class="button" value="Cadastrar" data-icon="/icons/cadastro.png"></div>
             </div>
         </div>

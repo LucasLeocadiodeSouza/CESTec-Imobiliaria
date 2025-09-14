@@ -54,9 +54,10 @@ function iniciarEventos() {
     event_click("bcadastrar");
     event_click("blimpar");
     event_click("bsalvar");
-    
-    event_change("mcodcargo");
-    event_change("mcodsetor");
+
+    CONSUL.filterChange('mcodcargo','',`/mrb003/buscarNomeCargo`,['codcargo:mcodcargo'],'mdesccargo');
+    CONSUL.filterChange('mcodsetor','',`/mrb003/buscarNomeSetor`,['codsetor:mcodsetor'],'mdescsetor');
+    CONSUL.filterChange('ideusufunc','',`/gen/getNomeByIdeusu`,['ideusu:ideusufunc'],'nomefunc');
 }
 
 function event_click_table(obj,row){
@@ -106,20 +107,6 @@ function event_click(obj) {
     }
 }
 
-function event_change(obj){
-    if(obj == "mcodcargo"){
-        form(obj).addEventListener("change", function(){
-            buscarNomeCargo(form("mcodcargo").value);
-        });
-    }
-
-    if(obj == "mcodsetor"){
-        form(obj).addEventListener("change", function(){
-            buscarNomeSetor(form("mcodsetor").value);
-        });
-    }
-}
-
 function event_click_aba(){
     switch (ABA.getIndex()) {
     case 0: 
@@ -133,14 +120,6 @@ function filaFetchInit(){
     CONSUL.filaFetch = (retorno,error)=>{
         if(error){
             switch (CONSUL.obj) {
-            case    "buscarNomeCargo": alert("Erro ao buscar o registro do Cargo", "Não encontrado registro de Cargo com o codigo informado!", 4);
-                                       form("mcodcargo").value = "0";
-                                       break;
-
-            case    "buscarNomeSetor": alert("Erro ao buscar o registro do Setor", "Não encontrado registro de Setor com o codigo informado!", 4);
-                                       form("mcodsetor").value = "0";
-                                       break;
-
             case   "cadastrarUsuario": alert("Erro ao cadastrar Usuário!", retorno, 4);
                                        break;
             }
@@ -149,12 +128,6 @@ function filaFetchInit(){
 
         switch (CONSUL.obj) {
         case     "buscarUserName": form("ideusu").value = retorno;
-                                   break;
-        
-        case    "buscarNomeCargo": form("mdesccargo").value = retorno;
-                                   break;
-        
-        case    "buscarNomeSetor": form("mdescsetor").value = retorno;
                                    break;
 
         case   "cadastrarUsuario": alert("Sucesso!", "Usuário cadastrado com sucesso!", 4);
@@ -258,17 +231,13 @@ function cadastrarUsuario(){
                      salario   : form('msalario').value,
                      datinasc  : form('mdatnasc').value}
 
-    CONSUL.consultar("cadastrarUsuario",`/mrb003/cadastrarUsuario?ideusu=${form("ideusu").value}&acao=${form("sacao").innerText.trim()}`,'POST','',{body: usuario});
-}
-
-function buscarNomeCargo(codcargo){
-    CONSUL.consultar("buscarNomeCargo",`/mrb003/buscarNomeCargo?codcargo=${codcargo}`);
-}
-
-function buscarNomeSetor(codsetor){
-    CONSUL.consultar("buscarNomeSetor",`/mrb003/buscarNomeSetor?codsetor=${codsetor}`);
+    CONSUL.consultar("cadastrarUsuario",`/mrb003/cadastrarUsuario`,["ideusu:ideusu",
+                                                                    "acao=" + form("sacao").innerText.trim()],
+                                                                    'POST',
+                                                                    '',
+                                                                    {body: usuario});
 }
 
 function carregarGridFuncionarios(){
-    USUARIO_GRID.carregaGrid(`/mrb003/carregarGridFuncionarios?ideusu=${form("ideusufunc").value}`,"","");
+    USUARIO_GRID.carregaGrid(`/mrb003/carregarGridFuncionarios`,["ideusu:ideusufunc"]);
 }

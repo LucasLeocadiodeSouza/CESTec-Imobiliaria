@@ -1,7 +1,9 @@
-package com.cestec.cestec.model;
+package com.cestec.cestec.model.cri;
 
+import java.math.BigDecimal;
 import java.sql.Date;
-
+import java.time.LocalDate;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,43 +26,47 @@ public class pcp_contrato {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer codcontrato;
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "codcliente", nullable = false)
-    private pcp_cliente pcp_cliente;
-
-    @ManyToOne
-    @JoinColumn(name = "codimovel", nullable = false)
+    @JoinColumn(name = "codimovel")
     private pcp_imovel pcp_imovel;
 
     @ManyToOne
-    @JoinColumn(name = "codproprietario", nullable = false)
-    private pcp_proprietario pcp_proprietario;
+    @JoinColumn(name = "codcliente")
+    private pcp_cliente pcp_cliente;
 
     @ManyToOne
+    @JoinColumn(name = "codproprietario")
+    private pcp_proprietario pcp_proprietario;
+
+    @ManyToOne 
     @JoinColumn(name = "codcorretor")
     private pcp_corretor pcp_corretor;
 
-    private Date    datinicio;
-    private Date    datfinal;
-    private Integer situacao;
-    private Date    datiregistro;
-    private float   valor;
-    private float   valorliberado;
-    private String  observacao;
-    private String  ideusu;
-    private boolean ativo;
+    @Column(name = "valor", precision = 10, scale = 2)
+    private BigDecimal valor;
+
+    @Column(name = "valorliberado", precision = 10, scale = 2)
+    private BigDecimal valorliberado;
+
+    private Date      datinicio;
+    private Date      datfinal;
+    private Integer   situacao;
+    private LocalDate datiregistro;
+    private String    observacao;
+    private String    ideusu;
+    private boolean   ativo;
     
     public pcp_contrato(pcp_cliente pcp_cliente,
                         pcp_imovel pcp_imovel,
                         pcp_proprietario pcp_proprietario,
                         Date datinicio, 
                         Date datfinal, 
-                        Date datiregistro,
+                        LocalDate datiregistro,
                         Integer situacao,
                         pcp_corretor pcp_corretor, 
-                        float valor, 
+                        BigDecimal valor, 
                         boolean ativo) {
 
         this.pcp_cliente      = pcp_cliente;

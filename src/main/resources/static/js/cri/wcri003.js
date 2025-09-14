@@ -15,7 +15,7 @@ function iniciarEventos() {
 
     CLIENTES_GRID               = new GridForm_init();
     CLIENTES_GRID.id            = "tabela_clientes";
-    CLIENTES_GRID.columnName    = "codcliente,nome,documento,endereco,numtel,email,endereco_logradouro,endereco_cidade,endereco_numero,endereco_bairro,endereco_uf,endereco_cep";
+    CLIENTES_GRID.columnName    = "codcliente,nome,documento,endereco,numtel,_email,_endereco_logradouro,_endereco_cidade,_endereco_numero,_endereco_bairro,_endereco_uf,_endereco_cep,_pessoafisica";
     CLIENTES_GRID.columnLabel   = "Cod. Cliente,Nome,Documento,Endereço,Telefone";
     CLIENTES_GRID.columnWidth   = "10,40,10,30,10";
     CLIENTES_GRID.columnAlign   = "c,e,c,e,c";
@@ -46,51 +46,48 @@ function iniciarEventos() {
     event_click("blimpar");
     event_click("bcadastro");
 
-    event_selected_init("codcliente");
+    event_selected_init("codcliente,mddd,mtelefone,mnmr,mcepini,mcepdigito,mcidade,muf,mbairro,memail,mcpf,mnome,mlogradouro");
+    inputOnlyNumber('codcliente,mddd,mtelefone,mnmr,mcepini,mcepdigito');
+
+    CONSUL.filterChange('codcliente','',`/gen/getNomeCliente`,['codcli:codcliente'],'desccliente');
 
     controlaTela("inicia");
 }
 
 function event_click(obj) {
-    if(obj == "bnovabusca"){
-        form(obj).addEventListener("click", function () {
-            controlaTela("novabusca");
-        });
-    }
-    if(obj == "bbuscar"){
-        form(obj).addEventListener("click", function () {
-            controlaTela("buscar");            
-            buscarDadosTable(); 
-        });        
-    }
-    if(obj == 'binserir'){
-        form(obj).addEventListener("click", function () {
-            form("sacao").innerText   = "Inserindo";
-            form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
+    form(obj).addEventListener("click", function () {
+        switch (obj) {
+            case "bnovabusca": controlaTela("novabusca");
+                               break;
 
-            DMFDiv.openModal("dmodalf_cliente");
-            controlaTela("modal");
-        });
-    }
-    if(obj == 'blimpar'){
-        form(obj).addEventListener("click", function () {
-            controlaTela("inicia");
-        });
-    }
-    if(obj == 'bcadastro'){
-        form(obj).addEventListener("click", function () {
-            adicionarCliente();
-        });
-    }
+            case    "bbuscar": controlaTela("buscar");
+                               buscarDadosTable(); 
+                               break;
+
+            case   "binserir": form("sacao").innerText   = "Inserindo";
+                               form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
+                           
+                               controlaTela("modal");
+                               DMFDiv.openModal("dmodalf_cliente");
+                               break;
+
+            case    "blimpar": controlaTela("inicia");
+                               break;
+
+            case  "bcadastro": adicionarCliente();
+                               break;
+        
+        }
+    });
 }
 
 function event_click_table(obj,row){
     switch (obj) {
     case CLIENTES_GRID: const valoresLinha = CLIENTES_GRID.getRowNode(row);
-                        controlaTela("modal");
-
                         form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
                         form("stitulo").innerText = "Cadastro de Cliente - " + form("sacao").innerText;
+                        
+                        controlaTela("modal");
                         buscarClienteGrid(valoresLinha);
 
                         DMFDiv.openModal("dmodalf_cliente");
@@ -113,12 +110,11 @@ function filaFetchInit(){
         case            "buscarUserName": form("ideusu").value = retorno;
                                           break;
 
-        case          "adicionarCliente": if(data != "OK") return alert(retorno);
-                                          alert("Dados Salvos Com Sucesso!");
-                                          if(form("sacao").innerText == "Inserindo")if(confirm("Deseja enviar um Email de Boas Vindas para o cliente?")) enviarEmail();
-
+        case          "adicionarCliente": alert("Dados Salvos Com Sucesso!","O cliente foi registrado com Sucesso no sistema!", 4);
                                           DMFDiv.closeModal();
-
+                                          
+                                          if(form("sacao").innerText == "Inserindo") if(confirm("Deseja enviar um Email de Boas Vindas para o cliente?")) enviarEmail();
+                                          
                                           form("bnovabusca").click();
                                           form("bbuscar").click();
                                           break;
@@ -141,16 +137,17 @@ function buscarClienteGrid(valoresLinha){
     form('mnmr').value        = valoresLinha[8];
     form('mcidade').value     = valoresLinha[7];
     form('muf').value         = valoresLinha[10];
+    form('mspessoafis').value = valoresLinha[12] == "false"?"0":"1";
 }
 
 function buscarDadosTable(){
-    CLIENTES_GRID.carregaGrid(`/cliente/buscarClientes?codcliente=${form("codcliente").value}`,"","");
+    CLIENTES_GRID.carregaGrid(`/cri003/buscarClientes`,['codcliente:codcliente']);
 }
 
 function adicionarCliente() {
     const cliente = {codcliente:          form("mcodcliente").value,
                      nome:                form("mnome").value,
-                     documento:           form("mcpf").value,
+                     documento:           retirarFormatDoc(form("mcpf").value),
                      numtel:              form("mddd").value + form("mtelefone").value,
                      email:               form("memail").value,
                      endereco_bairro:     form('mbairro').value,
@@ -159,9 +156,10 @@ function adicionarCliente() {
                      endereco_cep:        form('mcepini').value + "-" + form('mcepdigito').value,
                      endereco_cidade:     form('mcidade').value,
                      endereco_uf:         form('muf').value,
+                     pessoa_fisica:       form('mspessoafis').value == "1",
                      id_usuario:          form('ideusu').value};
 
-    CONSUL.consultar("adicionarCliente",`/cliente/salvarCliente`,"POST","",{body: cliente})
+    CONSUL.consultar("adicionarCliente",`/cri003/salvarCliente`,[],"POST","",{body: cliente})
 }
 
 function enviarEmail(){
@@ -205,8 +203,9 @@ function controlaTela(opc){
         desabilitaCampo('bbuscar',         true);        
         desabilitaCampo('codcliente',      true);
     }if(opc == "modal"){
-        desabilitaCampo('mnome',       ehConsulta());
-        desabilitaCampo('mcpf',        ehConsulta());
+        desabilitaCampo('mnome',       ehConsulta() || !ehInserindo());
+        desabilitaCampo('mcpf',        ehConsulta() || !ehInserindo());
+        desabilitaCampo('mspessoafis', ehConsulta() || !ehInserindo());
         desabilitaCampo('mddd',        ehConsulta());
         desabilitaCampo('mtelefone',   ehConsulta());
         desabilitaCampo('memail',      ehConsulta());
@@ -223,7 +222,8 @@ function controlaTela(opc){
 
 function limparTela(opc){
     if(opc == "inicia" || opc == 'novabusca'){        
-        form('codcliente').value = "0";
+        form('codcliente').value  = "0"; 
+        form('desccliente').value = "Todos os clientes";
     }
     if(opc === "inicia" || opc === "novabusca"){
         CLIENTES_GRID.clearGrid();
@@ -231,6 +231,7 @@ function limparTela(opc){
     if(opc == "modal"){
         form('mcodcliente').value   = "";
         form('mnome').value         = "";
+        form('mspessoafis').value   = "1";
         form('mcpf').value          = "";
         form('mddd').value          = "";
         form('mtelefone').value     = "";
@@ -251,4 +252,8 @@ function ehConsulta(){
 
 function ehManutencao(){
     return ABA.getIndex() === 1;
+}
+
+function ehInserindo(){
+    return form("sacao").innerText == "Inserindo";
 }

@@ -49,7 +49,7 @@ function buscarLogin(){
         passkey: form("passkey").value,
     }
 
-    CONSUL.consultar("buscarLogin",`/auth/login`,"POST","",{body: login})
+    CONSUL.consultar("buscarLogin",`/auth/login`,[],"POST","",{body: login})
 }
 
 /*

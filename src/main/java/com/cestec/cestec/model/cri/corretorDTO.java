@@ -1,5 +1,6 @@
-package com.cestec.cestec.model;
+package com.cestec.cestec.model.cri;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 import jakarta.persistence.Column;
@@ -14,22 +15,22 @@ import lombok.Setter;
 @AllArgsConstructor
 public class corretorDTO {
     
-    private Integer codfuncionario;
-    private Integer codcorretor;
+    private Integer    codfuncionario;
+    private Integer    codcorretor;
     //private Integer codsetor;
-    private Integer codmeta;
-    private double  salario;
-    private String  nome;
-    private Date    datinasc;
-    private String  documento;
-    private String  numtel;
-    private String  email;
-    private String  login;
-    private Integer idlogin;
-    private double  vlrmeta;
-    private Date    datiniciometa;
-    private Date    datfinalmeta;
-    private Integer situacao;
+    private Integer    codmeta;
+    private BigDecimal salario;
+    private String     nome;
+    private Date       datinasc;
+    private String     documento;
+    private String     numtel;
+    private String     email;
+    private String     login;
+    private Integer    idlogin;
+    private BigDecimal vlrmeta;
+    private Date       datiniciometa;
+    private Date       datfinalmeta;
+    private Integer    situacao;
 
     @Column(columnDefinition = "TINYINT(1)")
     private boolean pessoa_fisica;
@@ -63,7 +64,7 @@ public class corretorDTO {
         this.login          = login;
     }
 
-    public corretorDTO(Integer codmeta,Integer codcorretor, String nome, double vlrmeta, Date datiniciometa, Date datfinalmeta, Integer situacao) {
+    public corretorDTO(Integer codmeta,Integer codcorretor, String nome, BigDecimal vlrmeta, Date datiniciometa, Date datfinalmeta, Integer situacao) {
         this.codmeta       = codmeta;
         this.codcorretor   = codcorretor;
         this.nome          = nome;

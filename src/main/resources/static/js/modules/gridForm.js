@@ -146,12 +146,12 @@ function GridForm_init(){
 
             const container_text       = document.createElement("div");
             container_text.classList.add("tdalign-cen");
-            container_text.style.width = "90%";
+            container_text.style.width = "87%";
             container_text.innerHTML   = colunasLabel[pi];
 
             const container_img       = document.createElement("div");
             container_img.classList.add("img-filtro-grid");
-            container_img.style.width = "10%";
+            container_img.style.width = "13%";
 
             const img_seta  = document.createElement("img");
             img_seta.src    = "/icons/seta_filtro_grid_icon.png";
@@ -161,6 +161,8 @@ function GridForm_init(){
             container_row.appendChild(container_text);
             container_row.appendChild(container_img);
             th.appendChild(container_row);
+
+            th.title = colunasLabel[pi];
 
             headerRow.appendChild(th);
             pi++;
@@ -205,7 +207,7 @@ function GridForm_init(){
 
     //carregar dados para a grid
     //o conteudo puxado precisa ser um json
-    this.carregaGrid = async (path,method,headers,ocultarloader,body)=>{
+    this.carregaGrid = async (path,arrayparam,method,headers,ocultarloader,body)=>{
          if(!path) throw new Error("Caminho não especificado");
     
         if(!method) method = "GET";
@@ -251,13 +253,43 @@ function GridForm_init(){
             }, 1000);
         }
 
-        await fetch(path, {
+        var caminho = path;
+        if(arrayparam){
+            for(var i = 0; i < arrayparam.length; i++){
+                var paramname;
+                var paramreq;
+
+                if(arrayparam[i].split(":").length > 1){
+                    paramname = arrayparam[i].split(":")[0];
+                    paramreq  = document.getElementById(arrayparam[i].split(":")[1]).value;
+
+                }else if (arrayparam[i].split("=").length > 1){
+                    paramname = arrayparam[i].split("=")[0];
+                    paramreq  = arrayparam[i].split("=")[1];
+
+                }else throw new Error(`Erro na requisição: ${response.status} - ${textError}`);
+   
+                const parametro = paramname+"="+paramreq;
+ 
+                if(i == 0) caminho += "?" + parametro + (arrayparam.length > 1?"&":"");
+                else if(i + 1 < arrayparam.length) caminho += parametro + "&";
+                else caminho += parametro;
+            }
+        }
+
+        const response = await fetch(caminho, {
+            method: method,
+            headers: headers,
+            body: method !== 'GET' ? JSON.stringify(options.body) : null
+        });
+
+        await fetch(caminho, {
             method: method,
             headers: headers,
             body: method !== 'GET' ? JSON.stringify(body) : null
         })
         .then(response =>{
-            if(!response.ok) throw new Error("Ocorreu um erro ao tentar executar a consulta para o caminho " + path + ". Erro:" + response.status + " - " +  response.statusText);
+            if(!response.ok) throw new Error("Ocorreu um erro ao tentar executar a consulta para o caminho " + caminho + ". Erro:" + response.status + " - " +  response.statusText);
             
             return response.json();
         })
@@ -552,7 +584,11 @@ function GridForm_init(){
         let rowsInner = [];
 
         rowsnode.forEach(row =>{
-            rowsInner.push(row.innerText);
+            var valor = row.innerText;
+
+            if(valor == "null") valor = "";
+
+            rowsInner.push(valor);
         });
 
         return rowsInner;
