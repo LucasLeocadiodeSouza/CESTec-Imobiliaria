@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/padrao.css">
     <title>Cadastro de Imovel</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPxAZFCNRd1uSg9CYo8w81ZlqHquNHZ-U&loading=async&libraries=maps&v=beta" defer></script>
     <script src="/js/modules/adicionaScripts.js"></script>
     <script>
         adicionarHeadLinks();
@@ -127,13 +128,39 @@
             </div>
 
             <div class='dmf'>
+                <label class="labelmodal">Banheiros: </label>
+                <input type="text" id="mbanheiro" name="mbanheiro" class="ppp">
+            </div>
+
+            <div class='dmf'>
                 <label class="labelmodal">Condomínio(R$): </label>
                 <input type="text" id="mcondominio" name="mcondominio" class="p">
             </div>
 
             <div class='dmf'>
-                <label class="labelmodal">Localização: </label>
-                <input type="text" id="mloc" name="mloc" class="extralarge">
+                <label class="labelmodal">Bairro: </label>
+                <input type="text" id="mbairro"  name="mbairro"  class="large">&nbsp;&nbsp;
+
+                <label class="labelmodal" style="width: auto !important;">Número: </label>
+                <input type="text" id="mnmr"  name="mnmr"  class="ppp">
+            </div>
+            
+            <div class='dmf'>
+                <label class="labelmodal">Rua: </label>
+                <input type="text" id="mrua"  name="mrua"  class="large">&nbsp;&nbsp;
+
+                <label class="labelmodal" style="width: auto !important;">CEP: </label>
+                <input type="text" id="mcepini"    name="mcepini" maxlength="5" class="p">
+                <label class="labelmodal" style="width: auto !important;">-</label>
+                <input type="text" id="mcepdigito" name="mcepdigito" maxlength="3" class="ppp">
+            </div>
+
+            <div class='dmf'>
+                <label class="labelmodal">Cidade: </label>
+                <input type="text" id="mcidade"  name="mcidade"  class="medium"> &nbsp;
+            
+                <label class="labelmodal" style="width: auto !important;">UF:</label>
+                <input type="text" id="muf"  name="muf"  class="ppp" maxlength="3">
             </div>
 
             <div class='dmf'>

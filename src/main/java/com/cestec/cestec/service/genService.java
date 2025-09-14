@@ -7,9 +7,11 @@ import com.cestec.cestec.model.funcionario;
 import com.cestec.cestec.model.sp_aplicacoes;
 import com.cestec.cestec.model.sp_modulos;
 import com.cestec.cestec.model.cri.pcp_cliente;
+import com.cestec.cestec.model.cri.pcp_corretor;
 import com.cestec.cestec.model.cri.pcp_imovel;
 import com.cestec.cestec.model.cri.pcp_proprietario;
 import com.cestec.cestec.model.spf.sp_bloqueia_acess;
+import com.cestec.cestec.repository.corretorRepository;
 import com.cestec.cestec.repository.cri.clienteRepository;
 import com.cestec.cestec.repository.cri.imovelRepository;
 import com.cestec.cestec.repository.cri.proprietarioRepository;
@@ -50,6 +52,9 @@ public class genService {
     @Autowired
     private imovelRepository imovelRepository;
 
+    @Autowired
+    private corretorRepository corretorRepository;
+
     public String getUserName(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if(cookies != null){
@@ -73,7 +78,7 @@ public class genService {
         if(funcionario == null) throw new RuntimeException("Não encontrado nenhum funcionario com o código informado!");
 
         return funcionario.getSp_user().getLogin();
-    }
+    } 
 
     public String getNomeByCodFunc(Integer codfunc){
         String funcname = funcionarioRepository.findNameByUser(codfunc);
@@ -81,6 +86,27 @@ public class genService {
 
         return funcname;
     }
+
+    public String getIdeusuCorretorById(Integer id){
+        pcp_corretor corretor = corretorRepository.findCorretorById(id);
+        if(corretor == null) throw new RuntimeException("Não encontrado nenhum funcionario com o código informado!");
+
+        return corretor.getFuncionario().getSp_user().getLogin();
+    } 
+
+    public String getNomeCorretorByIdeusu(String ideusu){
+        pcp_corretor corretor = corretorRepository.findCorretorByIdeusu(ideusu);
+        if(corretor == null) throw new RuntimeException("Não encontrado nenhum funcionario com o código informado!");
+
+        return corretor.getFuncionario().getNome();
+    } 
+
+    public String getNomeCorretorById(Integer id){
+        pcp_corretor corretor = corretorRepository.findCorretorById(id);
+        if(corretor == null) throw new RuntimeException("Não encontrado nenhum funcionario com o código informado!");
+
+        return corretor.getFuncionario().getNome();
+    } 
 
     public String findCargoByIdeusu(String ideusu){
         String cargoname = funcionarioRepository.findCargoByIdeusu(ideusu);
@@ -135,7 +161,7 @@ public class genService {
         pcp_imovel imovel = imovelRepository.findByCodimovel(codimovel);
         if(imovel == null) throw new RuntimeException("Código do Imovel [" + codimovel + "] não encontrado!");
 
-        return imovel.getEndereco();
+        return imovel.getEndereco_rua() + ", " + imovel.getEndereco_numero() + " - " + imovel.getEndereco_bairro() + ", " + imovel.getEndereco_cidade() + " - " + imovel.getEndereco_estado() + "," + imovel.getEndereco_postal();
     }
 
     public Boolean usuarioTemAcessoAplicacao(Integer idmodulo, Integer idaplicacao, String ideusu){

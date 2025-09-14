@@ -1,13 +1,15 @@
 package com.cestec.cestec.model.cri;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
-
-import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,11 +24,11 @@ import lombok.Setter;
 @Table(name = "pcp_contrato")
 public class pcp_contrato {
 
-    @EmbeddedId
-    private pcp_contratoId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @ManyToOne
-    @MapsId("codimovel")
     @JoinColumn(name = "codimovel")
     private pcp_imovel pcp_imovel;
 
@@ -42,12 +44,16 @@ public class pcp_contrato {
     @JoinColumn(name = "codcorretor")
     private pcp_corretor pcp_corretor;
 
+    @Column(name = "valor", precision = 10, scale = 2)
+    private BigDecimal valor;
+
+    @Column(name = "valorliberado", precision = 10, scale = 2)
+    private BigDecimal valorliberado;
+
     private Date      datinicio;
     private Date      datfinal;
     private Integer   situacao;
     private LocalDate datiregistro;
-    private Double    valor;
-    private Double    valorliberado;
     private String    observacao;
     private String    ideusu;
     private boolean   ativo;
@@ -60,7 +66,7 @@ public class pcp_contrato {
                         LocalDate datiregistro,
                         Integer situacao,
                         pcp_corretor pcp_corretor, 
-                        Double valor, 
+                        BigDecimal valor, 
                         boolean ativo) {
 
         this.pcp_cliente      = pcp_cliente;

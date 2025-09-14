@@ -44,6 +44,8 @@ function iniciarEventos() {
 
     controlaTela("inicia");
 
+    event_blur_init("mvlrnegociado");
+
     event_click("bnovabusca");
     event_click("bbuscar");
     event_click("blimpar");
@@ -234,15 +236,15 @@ function controlaTela(opc){
         desabilitaCampo('mvendedor',     ehConsulta() || (!ehSituacaoAberta() && ehAlterando()));
         desabilitaCampo('mperiodoini',   ehConsulta() || (!ehSituacaoAberta() && ehAlterando()));
         desabilitaCampo('mperiodofin',   ehConsulta() || (!ehSituacaoAberta() && ehAlterando()));
-        desabilitaCampo('bcadastro',     ehConsulta() || (!ehSituacaoAberta() && ehAlterando()));
-        desabilitaCampo('bcancela',      !ehManutencao() && !ehSituacaoAberta() && !ehAlterando());
+        desabilitaCampo('bcadastro',     ehConsulta() || !ehAlterando() || (!ehSituacaoAberta() && !ehSituacaoReprovada()));
+        desabilitaCampo('bcancela',      ehConsulta() || !ehAlterando() || (!ehSituacaoAberta() && !ehSituacaoReprovada()));
         desabilitaCampo('benviaaprov',   ehConsulta() || !ehAlterando() || (!ehSituacaoAberta() && !ehSituacaoReprovada()));
 
         setDisplay("dmcontrato",  ehInserindo()?"none":"block");
         setDisplay("dmsituacao",  ehInserindo()?"none":"block");
-        setDisplay("bcadastro",   ehConsulta() || (!ehSituacaoAberta() && ehAlterando())?"none":"flex");
-        setDisplay("bcancela",    ehManutencao() && ehSituacaoAberta() && ehAlterando()?"block":"none");
-        setDisplay("benviaaprov", ehManutencao() && ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada())?"block":"none");
+        setDisplay("bcadastro",   ehManutencao() && ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada())?"flex":"none");
+        setDisplay("bcancela",    ehManutencao() && ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada())?"flex":"none");
+        setDisplay("benviaaprov", ehManutencao() && ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada())?"flex":"none");
     }
 }
 

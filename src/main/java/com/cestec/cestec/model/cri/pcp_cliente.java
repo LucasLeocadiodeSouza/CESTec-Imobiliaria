@@ -2,6 +2,7 @@ package com.cestec.cestec.model.cri;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -11,7 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,9 +31,9 @@ public class pcp_cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codcliente;
 
-    @OneToOne(mappedBy = "pcp_cliente", cascade = CascadeType.ALL, orphanRemoval = false)    
+    @OneToMany(mappedBy = "pcp_cliente", cascade = CascadeType.ALL, orphanRemoval = false)    
     @JsonIgnore
-    private pcp_contrato pcp_contrato;
+    private List<pcp_contrato> pcp_contratos;
 
     @Column(length = 80)
     private String nome;

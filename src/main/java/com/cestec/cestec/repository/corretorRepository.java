@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import com.cestec.cestec.model.cri.corretorDTO;
 import com.cestec.cestec.model.cri.pcp_corretor;
 
@@ -29,8 +28,6 @@ public interface corretorRepository extends JpaRepository<pcp_corretor, Integer>
     @Query("SELECT new com.cestec.cestec.model.cri.pcp_corretor ( "
          + " cor.codcorretor, cor.funcionario, cor.email) "
          + " FROM pcp_corretor cor "
-         + " JOIN cor.funcionario func "
-         + " JOIN func.sp_user sp "
-         + " WHERE sp.id = :idlogin")
+         + " WHERE cor.codcorretor = :idlogin")
     pcp_corretor findCorretorById(@Param("idlogin") Integer idlogin);
 }

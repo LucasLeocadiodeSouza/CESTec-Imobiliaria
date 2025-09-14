@@ -33,6 +33,7 @@
 package com.cestec.cestec.util;
 
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,5 +104,16 @@ public class utilForm {
         }
         
         return documento.replaceAll("(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})", "$1.$2.$3/$4-$5");
+    }
+
+    public static String formatVlr(Double valor, Integer casas){
+        Double vlr = valor;
+
+        if (casas == null) casas = 2;
+        if (vlr == null) return "0." +  "0".repeat(casas);
+        
+        String pattern = "#." + "0".repeat(casas);
+
+        return (new DecimalFormat(pattern).format(vlr)).replace(",", ".");
     }
 }

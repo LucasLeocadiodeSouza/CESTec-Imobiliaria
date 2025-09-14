@@ -1,5 +1,6 @@
 package com.cestec.cestec.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -55,12 +56,12 @@ public class comWindowController {
     }
 
     @GetMapping("/{ideusu}/valorMetaMensal")
-    public Double valorMetaMensal(@PathVariable String ideusu) {
+    public BigDecimal valorMetaMensal(@PathVariable String ideusu) {
         return comWindowService.getMetaCorretorMensal(ideusu);
     }
     
     @GetMapping("/getVlrEfetivadoCorretor")
-    public Double getVlrEfetivadoCorretor(HttpServletRequest request) {
+    public BigDecimal getVlrEfetivadoCorretor(HttpServletRequest request) {
         return comWindowService.getVlrEfetivadoCorretor(getUserName(request));
     }
 
@@ -75,7 +76,7 @@ public class comWindowController {
     }
 
     @GetMapping("/getPercentMetaMes")
-    public Double getPercentMetaMes(HttpServletRequest request) {
+    public BigDecimal getPercentMetaMes(HttpServletRequest request) {
         return comWindowService.getPercentMetaMes(getUserName(request));
     }
     

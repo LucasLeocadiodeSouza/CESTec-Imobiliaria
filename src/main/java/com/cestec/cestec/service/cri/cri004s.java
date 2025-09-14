@@ -1,5 +1,6 @@
 package com.cestec.cestec.service.cri;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -10,7 +11,6 @@ import com.cestec.cestec.model.modelUtilForm;
 import com.cestec.cestec.model.cri.contratoDTO;
 import com.cestec.cestec.model.cri.pcp_cliente;
 import com.cestec.cestec.model.cri.pcp_contrato;
-import com.cestec.cestec.model.cri.pcp_contratoId;
 import com.cestec.cestec.model.cri.pcp_corretor;
 import com.cestec.cestec.model.cri.pcp_imovel;
 import com.cestec.cestec.model.cri.pcp_proprietario;
@@ -92,7 +92,7 @@ public class cri004s {
         return getTipoImovel(imovel.getTipo());
     }
 
-    public Double getValorImovel(Integer codimovel) {
+    public BigDecimal getValorImovel(Integer codimovel) {
         pcp_imovel imovel = imovelRepository.findByCodimovel(codimovel);
         if(imovel == null)  throw new RuntimeException("Código do Imovel [" + codimovel + "] não encontrado!");
 
@@ -126,7 +126,7 @@ public class cri004s {
         if(imoveis == null) return listaOpt;
 
         do{
-            String text = imoveis.get(i).getCodimovel().toString() + " - " + getTipoImovel(imoveis.get(i).getTipo()) + " - " + imoveis.get(i).getEndereco();
+            String text = imoveis.get(i).getCodimovel().toString() + " - " + getTipoImovel(imoveis.get(i).getTipo()) + " - " + getDescTipos(imoveis.get(i).getNegociacao());
 
             listaOpt.add(new modelUtilForm(imoveis.get(i).getCodimovel(), text));
             i++;
@@ -138,7 +138,7 @@ public class cri004s {
 
     /******** Salvar *********/
     @Transactional
-    public void salvarContrato(Integer codcontrato, Integer codcliente, Integer codprop, Integer codimovel, Double vlrnegoc, String ideusucorretor, Date datini, Date datfim, String ideusu){
+    public void salvarContrato(Integer codcontrato, Integer codcliente, Integer codprop, Integer codimovel, BigDecimal vlrnegoc, String ideusucorretor, Date datini, Date datfim, String ideusu){
         if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
 
         if(codcliente == null || codcliente == 0) throw new RuntimeException("É preciso informar o codigo do cliente para vincular com contrato!");
@@ -147,16 +147,14 @@ public class cri004s {
 
         if(codimovel == null || codimovel == 0) throw new RuntimeException("É preciso informar o codigo do imovel para vincular com contrato!");
 
-        if(vlrnegoc == null || vlrnegoc == 0) throw new RuntimeException("É preciso informar um valor negociado do imovel para vincular com contrato!");
-
-        if(vlrnegoc == null || vlrnegoc == 0) throw new RuntimeException("É preciso informar um valor negociado do imovel para vincular com contrato!");
+        if(vlrnegoc == null || vlrnegoc.compareTo(BigDecimal.ZERO) <= 0) throw new RuntimeException("É preciso informar um valor negociado do imovel para vincular com contrato!");
 
         if(sp_user.loadUserByUsername(ideusucorretor) == null) throw new RuntimeException("Corretor não encontrado no sistema!");
 
         if(datini == null) throw new RuntimeException("É preciso informar uma data inicial do contrato do imovel!");
         if(datfim == null) throw new RuntimeException("É preciso informar uma data final do contrato do imovel!");
 
-        pcp_imovel imovel = imovelRepository.findByCodimovel(codimovel);
+        pcp_imovel imovel = imovelRepository.findByCodimovelAndCodprop(codimovel,codprop);
         if(imovel == null) throw new RuntimeException("Imovel não encontrado com o codigo informado '" + codimovel + "'!");
 
         pcp_cliente cliente = clienteRepository.findByCodcliente(codcliente);
@@ -168,7 +166,7 @@ public class cri004s {
         pcp_corretor corretor = corretorRepository.findCorretorByIdeusu(ideusucorretor);
         if(corretor == null) throw new RuntimeException("Corretor não encontrado com o ideusu informado '" + ideusucorretor + "'!");
 
-        pcp_contrato contratoAnalise = contratoRepository.findByCodContratoImovel(codcontrato, codimovel);
+        pcp_contrato contratoAnalise = contratoRepository.findByCodContrato(codcontrato);
 
         if(contratoAnalise == null) contratoAnalise = new pcp_contrato();
         else if(contratoAnalise.getSituacao() != 1) throw new RuntimeException("O contrato não esta em uma situacão que permita alteracão de informacões");
@@ -184,32 +182,21 @@ public class cri004s {
         contratoAnalise.setValor(vlrnegoc);
         
         if(contratoAnalise.getId() == null){
-            pcp_contrato ultimoContrato = contratoRepository.findTopByOrderByIdDesc();
-            
-            Integer ultimoCodContrato = 1;
-            if(ultimoContrato != null) ultimoCodContrato = ultimoContrato.getId().getCodcontrato();
-
-            contratoAnalise.setId(new pcp_contratoId(ultimoCodContrato + 1, imovel.getCodimovel())); // ultimo registro do contrato no banco e codigo imovel do parametro
-
             contratoAnalise.setDatiregistro(LocalDate.now());
             contratoAnalise.setIdeusu(ideusu);
             contratoAnalise.setSituacao(1);
             contratoAnalise.setAtivo(true);
+            contratoAnalise.setValorliberado(BigDecimal.ZERO);
         }
 
         contratoRepository.save(contratoAnalise);
    }
 
    @Transactional
-    public void cancelarContrato(Integer codcontrato, Integer codimovel, String ideusu){
+    public void cancelarContrato(Integer codcontrato, String ideusu){
         if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
 
-        if(codimovel == null || codimovel == 0) throw new RuntimeException("É preciso informar o codigo do imovel para vincular com contrato!");
-
-        pcp_imovel imovel = imovelRepository.findByCodimovel(codimovel);
-        if(imovel == null) throw new RuntimeException("Imovel não encontrado com o codigo informado '" + codimovel + "'!");
-
-        pcp_contrato contratoAnalise = contratoRepository.findByCodContratoImovel(codcontrato, codimovel);
+        pcp_contrato contratoAnalise = contratoRepository.findByCodContrato(codcontrato);
 
         if(contratoAnalise == null) throw new RuntimeException("O contrato não foi encontrado com o codigo do contrato e imovel informado");
         else if(contratoAnalise.getSituacao() != 1) throw new RuntimeException("O contrato não esta em uma situacão que permita alteracão de informacões");
@@ -229,7 +216,7 @@ public class cri004s {
         pcp_imovel imovel = imovelRepository.findByCodimovel(codimovel);
         if(imovel == null) throw new RuntimeException("Imovel não encontrado com o codigo informado '" + codimovel + "'!");
 
-        pcp_contrato contratoAnalise = contratoRepository.findByCodContratoImovel(codcontrato, codimovel);
+        pcp_contrato contratoAnalise = contratoRepository.findByCodContrato(codcontrato);
 
         if(contratoAnalise == null) throw new RuntimeException("O contrato não foi encontrado com o codigo do contrato e imovel informado");
         else if(contratoAnalise.getSituacao() != 1 && contratoAnalise.getSituacao() != 4) throw new RuntimeException("O contrato não esta em uma situacão que permita alteracão de informacões");
@@ -256,14 +243,14 @@ public class cri004s {
             utilForm.criarColuna(contratos.get(i).getCodimovel().toString());
             utilForm.criarColuna(getTipoImovel(contratos.get(i).getTipo()));
             utilForm.criarColuna(getDescTipos(contratos.get(i).getNegociacao()));
-            utilForm.criarColuna(String.valueOf(contratos.get(i).getPreco()));
+            utilForm.criarColuna(contratos.get(i).getPreco().toString());
             utilForm.criarColuna(contratos.get(i).getDatinicio().toString());
             utilForm.criarColuna(contratos.get(i).getDatfinal().toString());
-            utilForm.criarColuna(String.valueOf(contratos.get(i).getValor()));
+            utilForm.criarColuna(contratos.get(i).getValor().toString());
             utilForm.criarColuna(contratos.get(i).getEndereco_bairro());
-            utilForm.criarColuna(gen.getIdeusuByCodFunc(contratos.get(i).getCodcorretor()));
+            utilForm.criarColuna(gen.getIdeusuCorretorById(contratos.get(i).getCodcorretor()));
             utilForm.criarColuna(contratos.get(i).getTipo().toString());
-            utilForm.criarColuna(gen.getNomeByCodFunc(contratos.get(i).getCodcorretor()));
+            utilForm.criarColuna(gen.getNomeCorretorById(contratos.get(i).getCodcorretor()));
             utilForm.criarColuna(contratos.get(i).getSituacao().toString());
         }
 

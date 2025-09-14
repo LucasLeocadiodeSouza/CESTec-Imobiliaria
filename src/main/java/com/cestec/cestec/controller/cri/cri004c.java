@@ -1,5 +1,6 @@
 package com.cestec.cestec.controller.cri;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class cri004c {
     }
 
     @GetMapping("/getValorImovel")
-    public Double getValorImovel(@RequestParam(value = "codimovel", required = false) Integer codimovel) {
+    public BigDecimal getValorImovel(@RequestParam(value = "codimovel", required = false) Integer codimovel) {
         return cri004s.getValorImovel(codimovel);
     }
     
@@ -63,7 +64,7 @@ public class cri004c {
                                                     @RequestParam(value = "codcliente", required = false)     Integer codcliente, 
                                                     @RequestParam(value = "codprop", required = false)        Integer codprop, 
                                                     @RequestParam(value = "codimovel", required = false)      Integer codimovel, 
-                                                    @RequestParam(value = "vlrnegoc", required = false)       Double vlrnegoc, 
+                                                    @RequestParam(value = "vlrnegoc", required = false)       BigDecimal vlrnegoc, 
                                                     @RequestParam(value = "ideusucorretor", required = false) String ideusucorretor, 
                                                     @RequestParam(value = "datini", required = false)         Date datini, 
                                                     @RequestParam(value = "datfim", required = false)         Date datfim,
@@ -83,7 +84,7 @@ public class cri004c {
                                               @RequestParam(value = "codimovel", required = false)      Integer codimovel,
                                               HttpServletRequest request){
         try {
-            cri004s.cancelarContrato(codcontrato, codimovel, gen.getUserName(request));
+            cri004s.cancelarContrato(codcontrato, gen.getUserName(request));
             return ResponseEntity.ok("OK");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
