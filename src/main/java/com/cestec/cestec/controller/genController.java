@@ -75,6 +75,18 @@ public class genController {
         }
     }
 
+    @GetMapping("/getCodFuncByIdeusu")
+    public ResponseEntity<?> getCodFuncByIdeusu(@RequestParam(value = "ideusu", required = false) String ideusu){
+        try {
+            return ResponseEntity.ok(gen.getCodFuncByIdeusu(ideusu));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/getNomeCorretorByIdeusu")
     public ResponseEntity<?> getNomeCorretorByIdeusu(@RequestParam(value = "ideusu", required = false) String ideusu){
         try {

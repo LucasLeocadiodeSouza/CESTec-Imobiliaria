@@ -281,7 +281,7 @@ function controlaTela(opc){
         desabilitaCampo('bbuscar',    false);
         desabilitaCampo('binserir',   false);
 
-        setDisplay("binserir",        ehAbaRegistros()?"block":"none");
+        setDisplay("binserir",        ehAbaRegistros()?"flex":"none");
         setDisplay("tabela_chamados", ehAbaPainel()?"block":"none");
         setDisplay("tabela_solic",    ehAbaRegistros()?"block":"none");
         setDisplay("tabela_solicdir", ehAbaVincular()?"block":"none");
