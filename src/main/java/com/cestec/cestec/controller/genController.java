@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.cestec.cestec.service.genService;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -68,6 +67,18 @@ public class genController {
     public ResponseEntity<?> getNomeByCodFunc(@RequestParam(value = "codfunc", required = false) Integer codfunc){
         try {
             return ResponseEntity.ok(gen.getNomeByCodFunc(codfunc));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/getCodFuncByIdeusu")
+    public ResponseEntity<?> getCodFuncByIdeusu(@RequestParam(value = "ideusu", required = false) String ideusu){
+        try {
+            return ResponseEntity.ok(gen.getCodFuncByIdeusu(ideusu));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
             

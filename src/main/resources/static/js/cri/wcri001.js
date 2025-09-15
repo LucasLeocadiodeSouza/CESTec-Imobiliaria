@@ -39,7 +39,7 @@ function wcri001_init(){
     DMFDiv.formModal();
 
     CONSUL = new consulForm_init();
-    filaFetchInit()
+    filaFetchInit();
 
     iniciarEventos();
 }
@@ -273,8 +273,8 @@ function ehManutencao(){
 }
 
 function adicionarContratoImovel() {
-    const endereco = form("mrua").value + ", " + form("mnmr").value + " - " + form("mbairro").value + ", " + form("mcidade").value + " - " + form("muf").value + ", " + form("mcepini").value + "-" + form("mcepdigito").value;
-    console.log(endereco);
+    //const endereco = form("mrua").value + ", " + form("mnmr").value + " - " + form("mbairro").value + ", " + form("mcidade").value + " - " + form("muf").value + ", " + form("mcepini").value + "-" + form("mcepdigito").value;
+    //console.log(endereco);
     //const coordenadas =  getCoordenadasEndereco(endereco);
 
     const imovel = { codimovel:         form("mcodimovel").value,

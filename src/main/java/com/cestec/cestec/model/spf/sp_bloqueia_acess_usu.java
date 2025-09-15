@@ -1,11 +1,7 @@
 package com.cestec.cestec.model.spf;
 
 import java.time.LocalDate;
-
 import com.cestec.cestec.model.funcionario;
-import com.cestec.cestec.model.sp_aplicacoes;
-import com.cestec.cestec.model.sp_modulos;
-
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
