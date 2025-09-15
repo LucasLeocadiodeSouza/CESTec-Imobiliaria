@@ -199,8 +199,8 @@ function controlaTela(opc){
         desabilitaCampo('bnovabusca',      true);
         desabilitaCampo('bbuscar',         false);
 
-        setDisplay("bliberar",   ehLiberacaoDeAcesso()?"block":"none");
-        setDisplay("bcadastrar", ehCadastroDeApl()?"block":"none");
+        setDisplay("bliberar",   ehLiberacaoDeAcesso()?"flex":"none");
+        setDisplay("bcadastrar", ehCadastroDeApl()?"flex":"none");
 
         setDisplay("tabela_libacess", ehLiberacaoDeAcesso()?"block":"none");
         setDisplay("tabela_APL",      ehCadastroDeApl()?"block":"none");
