@@ -78,7 +78,14 @@ public class genService {
         if(funcionario == null) throw new RuntimeException("Não encontrado nenhum funcionario com o código informado!");
 
         return funcionario.getSp_user().getLogin();
-    } 
+    }
+
+    public Integer getCodFuncByIdeusu(String ideusu){
+        funcionario funcionario = funcionarioRepository.findFuncByIdeusu(ideusu);
+        if(funcionario == null) throw new RuntimeException("Não encontrado nenhum funcionario com o código informado!");
+
+        return funcionario.getCodfuncionario();
+    }
 
     public String getNomeByCodFunc(Integer codfunc){
         String funcname = funcionarioRepository.findNameByUser(codfunc);

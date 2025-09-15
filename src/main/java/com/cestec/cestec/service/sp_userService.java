@@ -62,7 +62,7 @@ public class sp_userService implements UserDetailsService {
 
             preferencia = new sp_usu_preferencia();
             preferencia.setFunc(funcionario);
-            preferencia.setMini_cab(true);
+            preferencia.setMini_cab(false);
             
             usuPreferenciaRepo.save(preferencia);
             return;
