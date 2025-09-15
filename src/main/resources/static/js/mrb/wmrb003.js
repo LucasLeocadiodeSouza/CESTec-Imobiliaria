@@ -146,7 +146,7 @@ function controlaTela(opc){
         desabilitaCampo('bnovabusca',      true);
         desabilitaCampo('bbuscar',         false);
 
-       setDisplay("bcadastrar", ehManutencao()?"block":"none");
+       setDisplay("bcadastrar", ehManutencao()?"flex":"none");
     }
     if(opc == "buscar"){
         desabilitaCampo('ideusufunc',      true);
