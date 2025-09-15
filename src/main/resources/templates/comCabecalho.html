@@ -32,11 +32,36 @@
 
         .botao-cabecalho:hover {opacity: 0.3;
                                 box-shadow: 0 0 0 1px #5151525f;}
+
+        .label-perfil {font-weight: 600; font-size: 21px; font-family: 'Raleway'; margin-left: 10px;}
+
+        .fundo-titulo {padding: 6px; background: #4468a5; width: calc(100% - 12px); border-radius: 6px; margin-top: 0px; filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));}
+        .fundo-titulo label {font-family: 'Raleway'; font-weight: 600;}
+
+        .container-infousu {background: #f5f8fd; border-radius: 5px; padding: 5px; min-width: 300px; max-height: 165px; overflow: hidden;}
+
+        .container-expandido {margin-top: 11px; gap: 15px; padding: 10px; display: none; max-height: 185px; flex-direction: row-reverse; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;}
+
+        .cabecalhoexpandido {display: flex;}
+
+        .span-icon-color {height: 5px; width: 5px; border-radius: 5px; position: absolute; transform: translate(50%, 50%); top: 0px;}
+
+        .container-dataagenda {margin-left: 15px; gap: 5px; display: flex; overflow: hidden;}
+        .container-dataagenda label {font-family: 'Inter';}
+
+        .label-dataagenda {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+
+        .div-descagen {height: 28px; width: 100%; position: relative; overflow-x: hidden;}
+
+        .container-descagendamento {overflow-y: auto; height: calc(100% - 20px); width: calc(80% - 20px); background: #4468a5; padding: 10px; border-radius: 5px;}
+
+        .container-legenda {width: 20%;background: #39537f;border-radius: 10px;}
+
+        .heigth-desclegenda {height: calc(100% - 30px);}
     </style>
 </head>
 
 <!-- Inicio do cabecalho -->
-
 <header class="headRed">
     <div id="cabecalhoextendido">
         <div class="container-esquerda">
@@ -75,4 +100,50 @@
     </div>
 </header>
 
+<!-- Cabecalho expandido  -->
+<div id="ddivexpandido" class="container-expandido">
+    <!-- <div class="container-infousu">
+        <div class="dmf fundo-titulo">
+            <img src="/icons/work_icon.png" style="height: 30px;">
+            <label class="label-perfil">Perfil</label>
+        </div>
+        <div>
+            <div class="dmf">
+                <label>ID:</label>
+                <label id="cab_codusu"></label>
+            </div>
+            <div class="dmf">
+                <label>Ideusu:</label>
+                <label id="cab_ideusu"></label>
+            </div>
+            <div class="dmf">
+                <label>Nome:</label>
+                <label id="cab_nomeusu"></label>
+            </div>
+            <div class="dmf">
+                <label>Cargo:</label>
+                <label id="cab_cargo"></label>
+            </div>
+            <div class="dmf">
+                <label>Setor:</label>
+                <label id="cab_setor"></label>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- <div class="container-infousu" style="width: 100%;">
+        <div class="dmf fundo-titulo">
+            <img src="/icons/agenda_icon.png" style="height: 30px;">
+            <label class="label-perfil">Agenda</label>
+        </div>
+        <div id="ddescagendamentos" class="container-descagendamento"></div>
+    </div> -->
+
+    <!-- <div class="container-legenda">
+        <div class="dmf fundo-titulo">
+            <label>Legenda</label>
+        </div>
+        <div></div>
+    </div> -->
+</div>
 <!-- Fim do cabecalho -->

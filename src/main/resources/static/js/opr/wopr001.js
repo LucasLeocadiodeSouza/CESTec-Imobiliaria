@@ -230,7 +230,7 @@ function controlaTela(opc){
         desabilitaCampo('bnovabusca',      true);
         desabilitaCampo('bbuscar',         false);
 
-        setDisplay("binserir",   ehManutencao()?"block":"none");
+        setDisplay("binserir",   ehManutencao()?"flex":"none");
     }
     if(opc == "buscar"){
         desabilitaCampo('codfunc',         true);
@@ -252,7 +252,7 @@ function controlaTela(opc){
         setDisplay("dmfiltrofunc",  ehAbaFunc()?"block":"none");
         setDisplay("dmfiltrosetor", ehAbaSetor()?"block":"none");
         setDisplay("dmfiltrocargo", ehAbaCargo()?"block":"none");
-        setDisplay("bagendar",      ehManutencao()?"block":"none");
+        setDisplay("bagendar",      ehManutencao()?"flex":"none");
     }
 }
 
