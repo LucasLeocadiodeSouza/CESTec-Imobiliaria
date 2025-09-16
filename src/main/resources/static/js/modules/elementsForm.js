@@ -19,13 +19,10 @@ function elementsForm_init(){
         divpai.className = "buttonfe";
 
         if(iconUrl){
-            const divimg = document.createElement("div");
-            const img    = document.createElement("img");
-            img.src      = iconUrl;
-            img.style.width             = "21px";
-            img.style.height            = "18px";
-            img.style.margin            = "3px";
-            img.style.marginLeft        = "6px";
+            const divimg  = document.createElement("div");
+            const img     = document.createElement("img");
+            img.src       = iconUrl;
+            img.className = "imgbutton";
             divimg.style.width          = "20px";
             divimg.style.height         = "100%";
             divimg.style.display        = "flex";
@@ -37,7 +34,7 @@ function elementsForm_init(){
         }
 
         const divlabel = document.createElement("div");
-        divlabel.style.width          = iconUrl?"calc(100% - 25px)":"100%";
+        divlabel.style.width          = "auto";
         divlabel.style.display        = "flex";
         divlabel.style.justifyContent = "flex-start";
         divlabel.style.alignItems     = "center";

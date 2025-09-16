@@ -269,7 +269,7 @@ window.addEventListener("load", () => {
         divinfundousu.className = "fundo-titulo dmf";
 
         const imagemPerfil        = document.createElement("img");
-        imagemPerfil.src          = "/icons/work_icon.png";
+        imagemPerfil.src          = "/icons/work_icon4.png";
         imagemPerfil.style.height = "30px";
 
         const labelPerfil     = document.createElement("label");
