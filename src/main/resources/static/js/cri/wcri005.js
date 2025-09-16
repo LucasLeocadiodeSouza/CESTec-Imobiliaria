@@ -27,6 +27,8 @@ function iniciarEventos() {
     CONTRATOS_GRID.mousehouve    = true;
     CONTRATOS_GRID.destacarclick = true;
     CONTRATOS_GRID.gridWidth     = "2200px";
+    CONTRATOS_GRID.miniModalOver = true;
+    CONTRATOS_GRID.colsModalOver = "1,2,3";
     CONTRATOS_GRID.createGrid();
 
     ABA      = new abaForm_init();
