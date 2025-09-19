@@ -8,7 +8,7 @@
 
     <style>
         .headRed {height: 35px; display: flex; flex-direction: row;}
-        #cabecalhoextendido {width: 100%; height: 100%; display: flex; flex-direction: row; background-color: var(--color-cabecalho, #004577); padding: 5px 15px; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5))}
+        #cabecalhoextendido {width: 100%; height: 100%; display: flex; flex-direction: row; background-color: var(--color-cabecalho, #004577); padding: 5px 20px; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5))}
         #cabecalhominim     {background-color: #a70000; height: 15px; width: 100%;padding: 3px 20px; display: none; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); cursor: pointer;}
 
         .icon-cestec img {width: 35px; height: 35px;}
@@ -26,7 +26,7 @@
         #dnomeempresa {display: flex; align-items: center; height: 100%;}
         #dnomeempresa img {width: 185px; height: 30px;}
 
-        .container-buttons {display: flex; flex-direction: row; gap: 10px; }
+        .container-buttons {display: flex; flex-direction: row-reverse; gap: 10px; }
         .botao-cabecalho {width: 35px; height: 100%; background-color: #ffffff1a; border-radius: 5px; display: flex; justify-content: center; align-items: center; cursor: pointer;}
         .botao-cabecalho img {width: 28px; height: 28px; opacity: 0.7; filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5))}
 
@@ -39,7 +39,9 @@
         .fundo-titulo label {font-family: 'Raleway'; font-weight: 600; color: var(--color-lb-claro, #f5f5f5);}
         .fundo-titulo img{filter: invert(100%)}
 
-        .container-infousu {background:  var(--fundo-primario, #f5f5f5); border-radius: 5px; padding: 5px; min-width: 300px; max-height: 165px; overflow: hidden;}
+        .container-infousu {background:  var(--fundo-primario, #f5f5f5); border-radius: 5px; padding: 5px; min-width: 300px; height: 165px; overflow: hidden;}
+
+        .aplicacao-fav {background: #1d35613b; padding: 10px; width: calc(100% - 20px); border-radius: 5px;}
 
         .container-expandido {margin-top: 11px; gap: 15px; padding: 10px; display: none; max-height: 185px; flex-direction: row-reverse; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;}
 
@@ -59,6 +61,12 @@
         .container-legenda {width: 20%;background: var(--fundo-secundario, #dedede); border-radius: 10px;}
 
         .heigth-desclegenda {height: calc(100% - 30px);}
+
+        .divbuttonaplfav {overflow-y: scroll; height: calc(100% - 45px); margin-top: 5px; display: flex; flex-direction: column; gap: 7px; cursor: pointer; font-family: 'Inter';}
+        .divbuttonaplfav :hover {opacity: 0.7;}
+
+        .container-prefusu {width: calc(100% - 20px); padding: 5px; gap: 5px; display: flex; flex-direction: column;}
+        .container-prefusu label {text-align: right;}
     </style>
 </head>
 
@@ -74,17 +82,20 @@
                 <div id="dnomeempresa"><img src="/icons/logoAbrvEmpresa(2).png" alt="Carregando"></div>
             </div> 
         </div>
-        <div class="container-direita">
+        <div id="dbotoescab" class="container-direita">
             <div class="container-buttons">
-                <div id="dopcoescab" class="botao-cabecalho">
-                    <img src="/icons/file_manutencao.png" alt="Carregando">
+                <div id="dfecharcab" class="botao-cabecalho">
+                    <img src="/icons/close-button-fine.png" alt="Carregando">
                 </div>
                 <div id="dperfilcab" class="botao-cabecalho">
                     <img src="/icons/workIconCabecalho.png" alt="Carregando">
                 </div>
-                <div id="dfecharcab" class="botao-cabecalho">
-                    <img src="/icons/close-button-fine.png" alt="Carregando">
+                <div id="dopcoescab" class="botao-cabecalho">
+                    <img src="/icons/file_manutencao.png" alt="Carregando">
                 </div>
+                <!-- <div id="dfavaplcab" class="botao-cabecalho">
+                    <img id="cabimg_fav_icon" src="/icons/fav_icon.png" alt="Carregando">
+                </div> -->
             </div>
         </div>
     </div>
@@ -103,48 +114,31 @@
 
 <!-- Cabecalho expandido  -->
 <div id="ddivexpandido" class="container-expandido">
-    <!-- <div class="container-infousu">
-        <div class="dmf fundo-titulo">
-            <img src="/icons/work_icon.png" style="height: 30px;">
-            <label class="label-perfil">Perfil</label>
-        </div>
-        <div>
+<!-- <div class="container-infousu" style="width: 100%;">
+    <div class="dmf fundo-titulo">
+        <img src="/icons/agenda_icon.png" style="height: 30px;">
+        <div class="label-perfil">Preferencias</div>
+    </div>
+    <div style="height: 119px; padding: 5px 0px; display: flex; gap: 10px;">
+        <div class="container-prefusu">
             <div class="dmf">
-                <label>ID:</label>
-                <label id="cab_codusu"></label>
-            </div>
-            <div class="dmf">
-                <label>Ideusu:</label>
-                <label id="cab_ideusu"></label>
-            </div>
-            <div class="dmf">
-                <label>Nome:</label>
-                <label id="cab_nomeusu"></label>
-            </div>
-            <div class="dmf">
-                <label>Cargo:</label>
-                <label id="cab_cargo"></label>
-            </div>
-            <div class="dmf">
-                <label>Setor:</label>
-                <label id="cab_setor"></label>
-            </div>
-        </div>
-    </div> -->
+                <label style="width: 135px;">Tema do Menu:</label>
+                <input type="radio" id="rclaro" name="rtemamenu" value="claro">
+                <label style="text-align: left;" for="rclaro">Claro</label>
 
-    <!-- <div class="container-infousu" style="width: 100%;">
-        <div class="dmf fundo-titulo">
-            <img src="/icons/agenda_icon.png" style="height: 30px;">
-            <label class="label-perfil">Agenda</label>
+                <input type="radio" id="rescuro" name="rtemamenu" value="escuro">
+                <label style="text-align: left;" for="rescuro">Escuro</label>
+            </div>
+            <div class="dmf">
+                <label style="width: 135px;">Tamanho da fonte:</label>
+                <input type="radio" id="rfontpequena" name="rfont" value="pequena">
+                <label style="text-align: left;" for="rfontpequena">Pequena</label>
+                <input type="radio" id="rfontnormal" name="rfont" value="normal">
+                <label style="text-align: left;" for="rfontnormal">Normal</label><input type="radio" id="rfontgrande" name="rfont" value="grande">
+                <label style="text-align: left;" for="rfontgrande">Grande</label>
+            </div>
         </div>
-        <div id="ddescagendamentos" class="container-descagendamento"></div>
-    </div> -->
-
-    <!-- <div class="container-legenda">
-        <div class="dmf fundo-titulo">
-            <label>Legenda</label>
-        </div>
-        <div></div>
-    </div> -->
+    </div>
+</div> -->
 </div>
 <!-- Fim do cabecalho -->
