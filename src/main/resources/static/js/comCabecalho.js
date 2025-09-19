@@ -22,7 +22,6 @@ window.addEventListener("load", () => {
 
     const textAplica     = document.createElement("label");
     textAplica.id        = "cabtextAplica";
-    textAplica.title     = params.get("prog");
 
     getNomeApl(aplicacao,modulo);
 
@@ -36,56 +35,69 @@ window.addEventListener("load", () => {
     event_click("dfecharcab");
     event_click("cabecalhominim");
     event_click("dperfilcab");
+    event_click("dopcoescab");
     
     function $(opc){
         return document.getElementById(opc);
     }
-    
+
     function event_click(opc){
-        if(opc == "dfecharcab"){
-            $(opc).addEventListener("click", function () {
-                setMinimizarCabecalho('true');
+        $(opc).addEventListener("click", function () {
+            switch (opc) {
+                case "dfecharcab": setMinimizarCabecalho('true');
 
-                $("dopcoescab").disabled = false;
-                $("dperfilcab").disabled = false;
-                $("dfecharcab").disabled = false;
-                $("cabecalhoextendido").style.display = "none";
+                                   $("dopcoescab").disabled = false;
+                                   $("dperfilcab").disabled = false;
+                                   $("dfecharcab").disabled = false;
+                                   $("cabecalhoextendido").style.display = "none";
                 
-                $("cabecalhominim").style.display = "flex";
-                if($("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '20px');
+                                   $("cabecalhominim").style.display = "flex";
+                                   if($("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '20px');
 
-                $("ddivexpandido").innerHTML = "";
-                $("ddivexpandido").className = "container-expandido";
-            });
-        }
+                                   $("ddivexpandido").innerHTML = "";
+                                   $("ddivexpandido").className = "container-expandido";
+                                   break;
+            
+                case "dopcoescab": if($("ddivexpandido").classList.contains("cabecalhoexpandido")) {
+                                        $("ddivexpandido").innerHTML = "";
+                                        $("ddivexpandido").classList.remove("cabecalhoexpandido");
+                                        if($("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '45px');
+                                   } else expandirCabecalhoPerfil("preferencias");
+                                   break;
 
-        if(opc == "cabecalhominim"){
-            $(opc).addEventListener("click", function () {
-                setMinimizarCabecalho('false');
-
-                $("cabecalhominim").style.display = "none";
                 
-                $("dopcoescab").disabled = true;
-                $("dperfilcab").disabled = true;
-                $("dfecharcab").disabled = true;
-                $("cabecalhoextendido").style.display = "flex";
+                case "cabecalhominim": setMinimizarCabecalho('false');
+                                       $("cabecalhominim").style.display = "none";
+                                       $("dopcoescab").disabled = true;
+                                       $("dperfilcab").disabled = true;
+                                       $("dfecharcab").disabled = true;
+                                       $("cabecalhoextendido").style.display = "flex";
+                                       if($("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '45px');
+                                       break;
 
-                if($("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '45px');
-            });
-        }
+                case     "dperfilcab": if($("ddivexpandido").classList.contains("cabecalhoexpandido")) {
+                                           $("ddivexpandido").innerHTML = "";
+                                           $("ddivexpandido").classList.remove("cabecalhoexpandido");
+                                           if($("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '45px');
+                                       } else expandirCabecalhoPerfil("perfil");
+                                       break;
 
-        if(opc == "dperfilcab"){
-            $(opc).addEventListener("click", function () {
-                if($("ddivexpandido").classList.contains("cabecalhoexpandido")) {
-                    $("ddivexpandido").innerHTML = "";
-                    $("ddivexpandido").classList.remove("cabecalhoexpandido");
-                    if($("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '45px');
-                }
-                else {
-                    expandirCabecalhoPerfil();
-                }
-            });
-        }
+                case        "rclaro": setTemaMenu();
+                                      break;
+
+                case       "rescuro": setTemaMenu();
+                                      break;
+
+                case      "rpequena": setFontTextMenu();
+                                      break;
+
+                case       "rnormal": setFontTextMenu();
+                                      break;
+
+                case       "rgrande": setFontTextMenu();
+                                      break;
+            }
+        });
     }
 
     function getNomeByIdeusu(){
@@ -124,16 +136,48 @@ window.addEventListener("load", () => {
         CONSULTAR.consultar("getDescricaoModulo",`/gen/getDescricaoModulo`,['codmod='+codmod],"",{},[],true);
     }
 
+    function getProgInicial() {
+        CONSULTAR.consultar("getProgInicial",`/gen/getProgInicial`,['codapl='+aplicacao],"",{},[],true);
+    }
+
     function ehMinimizarCabecalho() {
         CONSULTAR.consultar("ehMinimizarCabecalho",`/user/getMinimizarCabecalho`,[],"",{},[],true);
     }
 
     function setMinimizarCabecalho(acao) {
-        CONSULTAR.consultar("setMinimizarCabecalho",`/user/setMinimizarCabecalho`,['ativo='+acao],"",{},[],true);
+        CONSULTAR.consultar("setMinimizarCabecalho",`/user/setMinimizarCabecalho`,['ativo='+acao],"POST",{},[],true);
     }
 
     function buscarAgendamentos(){
         CONSULTAR.consultar("buscarAgendamentos",`/home/buscarAgendamentosFunc`,["ideusu="+ $("cab_ideusu").innerText],'','',{},true);
+    }
+
+    function buscarAplicacoesFav(){
+        CONSULTAR.consultar("buscarAplicacoesFav",`/home/buscarAplicacoesFav`,[],'','',{},true);
+    }
+
+    function inserirDeletarAplicacaoFav(){
+        CONSULTAR.consultar("inserirDeletarAplicacaoFav",`/home/inserirDeletarAplicacaoFav`,['codapl='+aplicacao],'POST','',{},true);
+    }
+
+    function ehAplicacaoFavUsu(){
+        CONSULTAR.consultar("ehAplicacaoFavUsu",`/home/ehAplicacaoFavUsu`,['codapl='+aplicacao],'','',{},true);
+    }
+
+    function getTemaUsuPref() {
+        CONSULTAR.consultar("getTemaUsuPref",`/user/getTemaUsuPref`,[],"",{},[],true);
+    }
+
+    function getFonteTextoUsuPref() {
+        CONSULTAR.consultar("getFonteTextoUsuPref",`/user/getFonteTextoUsuPref`,[],"",{},[],true);
+    }
+
+    function setTemaMenu() {
+        CONSULTAR.consultar("setTemaMenu",`/user/setTemaMenu`,["tema=" + getRadioValue("rtemamenu")],"POST",{},[],true);
+    }
+
+    function setFontTextMenu() {
+        CONSULTAR.consultar("getFonteTextoUsuPref",`/user/getFonteTextoUsuPref`,["tamanho=" + getRadioValue("rfont")],"POST",{},[],true);
     }
 
     function filaFetchInit(){
@@ -173,6 +217,27 @@ window.addEventListener("load", () => {
                                              $("dcaminhoaplmini").innerHTML = "";
                                              $("dcaminhoaplmini").appendChild(textcaminhomini);
 
+                                             getProgInicial();
+                                             break;
+
+            case           "getProgInicial": $("cabtextAplica").title = retorno;
+                                             ehAplicacaoFavUsu();
+                                             break;
+
+            case        "ehAplicacaoFavUsu": if($("dfavaplcab")) $("dfavaplcab").remove();
+
+                                             const div = document.createElement("div");
+                                             div.id = "dfavaplcab";
+                                             div.className = "botao-cabecalho";
+            
+                                             const img = document.createElement("img");
+                                             img.src = retorno?"/icons/fav_icon2.png":"/icons/fav_icon.png";
+                                             img.style.filter = "invert(100%)";
+
+                                             div.appendChild(img);
+                                             div.addEventListener("click", ()=>{inserirDeletarAplicacaoFav()});
+
+                                             $("dbotoescab").appendChild(div);
                                              ehMinimizarCabecalho();
                                              break;
 
@@ -181,20 +246,37 @@ window.addEventListener("load", () => {
                                                 $("dperfilcab").disabled = false;
                                                 $("dfecharcab").disabled = false;
                                                 $("cabecalhoextendido").style.display = "none";
-
+                                                
                                                 $("cabecalhominim").style.display = "flex";
                                                 if($("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '20px');
+                                                $("ddivexpandido").innerHTML      = "";
                                              }
                                              else{
                                                 $("cabecalhominim").style.display = "none";
-                
+                                                
                                                 $("dopcoescab").disabled = true;
                                                 $("dperfilcab").disabled = true;
                                                 $("dfecharcab").disabled = true;
                                                 $("cabecalhoextendido").style.display = "flex";
-
+                                                
                                                 if($("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '45px');
+                                                if($("ddivexpandido").classList.contains("cabecalhoexpandido")) $("ddivexpandido").classList.remove("cabecalhoexpandido");
+                                                $("ddivexpandido").innerHTML = "";
                                              }
+                                             break;
+
+            case "inserirDeletarAplicacaoFav": ehAplicacaoFavUsu();
+                                               break;
+
+            case      "buscarAplicacoesFav": retorno.forEach(aplfav => {$("cab_listaplfav").appendChild(criarDivInfoAplFav(aplfav.aplicacoes.modulo.id, aplfav.aplicacoes.modulo.descricao, aplfav.aplicacoes.id, aplfav.aplicacoes.descricao)) });
+                                             getTemaUsuPref();
+                                             break;
+
+            case           "getTemaUsuPref": setRadioValue("rtemamenu", retorno);
+                                             getFonteTextoUsuPref();
+                                             break;
+
+            case     "getFonteTextoUsuPref": setRadioValue("rfont", retorno);
                                              break;
 
             case       "buscarAgendamentos":const divcontainerinfoagenda       = document.createElement("div");
@@ -243,20 +325,17 @@ window.addEventListener("load", () => {
                                             
                                             divcontainerinfoagenda.appendChild(divdescricao);
                                             $("ddivexpandido").appendChild(divcontainerinfoagenda);
-
-
                                             break;
             }
         }
     }
 
-    function expandirCabecalhoPerfil(){
+    function expandirCabecalhoPerfil(acao){
         $("ddivexpandido").innerHTML = "";
         $("ddivexpandido").classList.add("cabecalhoexpandido");
         
-        criarContainerPerfil();
-
-        //criarContainerAgendamentos();
+        if(acao == "perfil") criarContainerPerfil();
+        else if(acao == "preferencias") criarContainerFav();
 
         if($("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '240px');
     }
@@ -294,37 +373,50 @@ window.addEventListener("load", () => {
         getUserLogin(); //Buscar informacoes do usuario
     }
 
-    function criarContainerAgendamentos(){
-        const divinfousu     = document.createElement("div");
-        divinfousu.className = "container-infousu";
+    function criarContainerFav(){
+        const divinfousu       = document.createElement("div");
+        divinfousu.className   = "container-infousu";
+        divinfousu.style.width = "50%";
         
         const divinfundousu     = document.createElement("div");
         divinfundousu.className = "fundo-titulo dmf";
 
-        const imagemAgenda        = document.createElement("img");
-        imagemAgenda.src          = "/icons/agenda_icon.png";
-        imagemAgenda.style.height = "30px";
+        const imagemFav        = document.createElement("img");
+        imagemFav.src          = "/icons/fav_icon2.png";
+        imagemFav.style.height = "30px";
 
-        const labelAgenda     = document.createElement("label");
-        labelAgenda.className = "label-perfil";
-        labelAgenda.innerText = "Agenda";
+        const labelFav     = document.createElement("label");
+        labelFav.className = "label-perfil";
+        labelFav.innerText = "Favoritos";
 
-        divinfundousu.appendChild(imagemAgenda);
-        divinfundousu.appendChild(labelAgenda);
+        divinfundousu.appendChild(imagemFav);
+        divinfundousu.appendChild(labelFav);
         divinfousu.appendChild(divinfundousu);
 
-        const divinformacoes = document.createElement("div");
-
-        divinformacoes.appendChild(criarDivInfoPerfil("ID:","cab_codusu"));
-        divinformacoes.appendChild(criarDivInfoPerfil("Ideusu:","cab_ideusu"));
-        divinformacoes.appendChild(criarDivInfoPerfil("Nome:","cab_nomeusu"));
-        divinformacoes.appendChild(criarDivInfoPerfil("Cargo:","cab_cargo"));
-        divinformacoes.appendChild(criarDivInfoPerfil("Setor:","cab_setor"));
+        const divinformacoes     = document.createElement("div");
+        divinformacoes.className = "divbuttonaplfav"
+        divinformacoes.id        = "cab_listaplfav";
 
         divinfousu.appendChild(divinformacoes);
         $("ddivexpandido").appendChild(divinfousu);
 
-        getUserLogin(); //Buscar informacoes do usuario
+        criarContainerPrefusu();
+
+        buscarAplicacoesFav();
+    }
+
+    function criarDivInfoAplFav(codmodulo,descmod,codapl,descapl){
+        const div       = document.createElement("div");
+        div.className   = "aplicacao-fav";
+
+        const labelInfo     = document.createElement("label");
+        labelInfo.innerText = codmodulo + ":" + descmod + " - " + codapl + ":" + descapl;
+
+        div.appendChild(labelInfo);
+
+        div.addEventListener("click", ()=>{window.open("/buscarPath/" + codapl + "?idmodulo=" + codmodulo + "&idapl=" + codapl, "_blank", "noopener")});
+
+        return div;
     }
 
     function criarDivInfoPerfil(label, idlabelinfo){
@@ -422,5 +514,138 @@ window.addEventListener("load", () => {
         div.appendChild(divlista);
 
         return div;
+    }
+
+    function criarContainerPrefusu(){
+        const divcontainerinfopref = document.createElement("div");
+        divcontainerinfopref.style.width = "100%";
+        divcontainerinfopref.className   = "container-infousu";
+
+        const divtitulo       = document.createElement("div");
+        divtitulo.className   = "dmf fundo-titulo";
+        
+        const imgagenda        = document.createElement("img");
+        imgagenda.style.height = "30px";
+        imgagenda.src          = "/icons/preferencias_icon.png";
+
+        const labelperfil     = document.createElement("div");
+        labelperfil.className = "label-perfil";
+        labelperfil.innerText = "Preferencias";
+
+        divtitulo.appendChild(imgagenda);
+        divtitulo.appendChild(labelperfil);
+        divcontainerinfopref.appendChild(divtitulo);
+
+        const divdescricao         = document.createElement("div");
+        divdescricao.style.height  = "119px";
+        divdescricao.style.padding = "5px 0px";
+        divdescricao.style.display = "flex";
+        divdescricao.style.gap     = "10px";
+
+        const divprefeusu     = document.createElement("div");
+        divprefeusu.id        = "dcabpreferenusu";
+        divprefeusu.className = "container-prefusu";
+
+        //Tema do Menu
+        const divtemamenu     = document.createElement("div");
+        divtemamenu.className = "dmf";
+
+        const labeltema       = document.createElement("label");
+        labeltema.style.width = "135px";
+        labeltema.innerText   = "Tema do Menu:";
+        
+        const inputRadioClaro = document.createElement("input");
+        inputRadioClaro.type  = "radio";
+        inputRadioClaro.value = "claro";
+        inputRadioClaro.name  = "rtemamenu";
+        inputRadioClaro.id    = "rclaro";
+
+        const labelradioclaro           = document.createElement("label");
+        labelradioclaro.style.textAlign = "left";
+        labelradioclaro.style.width     = "65px";
+        labelradioclaro.innerText       = "Claro";
+        labelradioclaro.setAttribute('for', 'rclaro');
+
+        const inputRadioEscuro = document.createElement("input");
+        inputRadioEscuro.type  = "radio";
+        inputRadioEscuro.value = "escuro";
+        inputRadioEscuro.name  = "rtemamenu";
+        inputRadioEscuro.id    = "rescuro";
+
+        const labelradioescuro           = document.createElement("label");
+        labelradioescuro.style.textAlign = "left";
+        labelradioescuro.style.width     = "65px";
+        labelradioescuro.innerText       = "Escuro";
+        labelradioescuro.setAttribute('for', 'rescuro');
+
+        divtemamenu.appendChild(labeltema);
+        divtemamenu.appendChild(inputRadioClaro);
+        divtemamenu.appendChild(labelradioclaro);
+        divtemamenu.appendChild(inputRadioEscuro);
+        divtemamenu.appendChild(labelradioescuro);
+        divprefeusu.appendChild(divtemamenu);
+
+        //Tamanho da fonte
+        const divfont     = document.createElement("div");
+        divfont.className = "dmf";
+
+        const labelfont       = document.createElement("label");
+        labelfont.style.width = "135px";
+        labelfont.innerText   = "Tamanho da fonte:";
+        
+        const inputRadioPequena = document.createElement("input");
+        inputRadioPequena.type  = "radio";
+        inputRadioPequena.value = "pequena";
+        inputRadioPequena.name  = "rfont";
+        inputRadioPequena.id    = "rfontpequena";
+
+        const labelradioPequena           = document.createElement("label");
+        labelradioPequena.style.textAlign = "left";
+        labelradioPequena.style.width     = "65px";
+        labelradioPequena.innerText       = "Pequena";
+        labelradioPequena.setAttribute('for', 'rfontpequena');
+
+        const inputRadioNormal = document.createElement("input");
+        inputRadioNormal.type  = "radio";
+        inputRadioNormal.value = "normal";
+        inputRadioNormal.name  = "rfont";
+        inputRadioNormal.id    = "rfontnormal";
+
+        const labelradionormal           = document.createElement("label");
+        labelradionormal.style.textAlign = "left";
+        labelradionormal.style.width     = "65px";
+        labelradionormal.innerText       = "Normal";
+        labelradionormal.setAttribute('for', 'rfontnormal');
+
+        const inputRadioGrande = document.createElement("input");
+        inputRadioGrande.type  = "radio";
+        inputRadioGrande.value = "grande";
+        inputRadioGrande.name  = "rfont";
+        inputRadioGrande.id    = "rfontgrande";
+
+        const labelradiogrande           = document.createElement("label");
+        labelradiogrande.style.textAlign = "left";
+        labelradiogrande.style.width     = "65px";
+        labelradiogrande.innerText       = "Grande";
+        labelradiogrande.setAttribute('for', 'rfontgrande');
+
+        divfont.appendChild(labelfont);
+        divfont.appendChild(inputRadioPequena);
+        divfont.appendChild(labelradioPequena);
+        divfont.appendChild(inputRadioNormal);
+        divfont.appendChild(labelradionormal);
+        divfont.appendChild(inputRadioGrande);
+        divfont.appendChild(labelradiogrande);
+        divprefeusu.appendChild(divfont);
+
+        divdescricao.appendChild(divprefeusu);
+        divcontainerinfopref.appendChild(divdescricao);
+        $("ddivexpandido").appendChild(divcontainerinfopref);
+
+        event_click("rclaro");
+        event_click("rescuro");
+        event_click("rfontpequena");
+        event_click("rfontnormal");
+        event_click("rfontgrande");
     }
 });

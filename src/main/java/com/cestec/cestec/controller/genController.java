@@ -39,6 +39,18 @@ public class genController {
         }
     }
 
+    @GetMapping("/getProgInicial")
+    public ResponseEntity<?> getProgInicial(@RequestParam(value = "codapl", required = false) Integer codapl){
+        try {
+            return ResponseEntity.ok(gen.getProgInicial(codapl));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/getNomeByIdeusu")
     public ResponseEntity<?> getNomeByIdeusu(@RequestParam(value = "ideusu", required = false) String ideusu){
         try {

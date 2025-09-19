@@ -143,11 +143,18 @@ public class genService {
         return modulo.getDescricao();
     } 
 
-    public String getDescricaoAplicacao(Integer codmodulo){
-        sp_aplicacoes aplicacao = aplicacoesRepository.findByCodApl(codmodulo);
-        if(aplicacao == null) throw new RuntimeException("Código do modulo [" + codmodulo + "] não encontrado!");
+    public String getDescricaoAplicacao(Integer codapl){
+        sp_aplicacoes aplicacao = aplicacoesRepository.findByCodApl(codapl);
+        if(aplicacao == null) throw new RuntimeException("Código da aplicacão [" + codapl + "] não encontrado!");
 
         return aplicacao.getDescricao();
+    }
+
+    public String getProgInicial(Integer codapl){
+        sp_aplicacoes aplicacao = aplicacoesRepository.findByCodApl(codapl);
+        if(aplicacao == null) throw new RuntimeException("Código da aplicacão [" + codapl + "] não encontrado!");
+
+        return aplicacao.getArquivo_inic();
     }
 
     public String getNomeProp(Integer codProprietario) {
