@@ -92,6 +92,8 @@ C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\spf
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\spf\sp_bloqueia_acess_usu.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\spf\sp_bloqueia_acess_usuId.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\spf\sp_notificacao_usu.java
+C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\spf\sp_usu_aplfav.java
+C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\spf\sp_usu_aplfavId.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\model\spf\sp_usu_preferencia.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\cargoRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\corretorRepository.java
@@ -128,6 +130,7 @@ C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repositor
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\spf\bloqueioAcessRespRepo.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\spf\bloqueioAcessUsuRepo.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\spf\notificacaoUsuRepository.java
+C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\spf\usuAplicacoesFavRepo.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\spf\usuPreferenciaRepo.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\userRepository.java
 C:\CESTec\CESTEC Imobiliaria SB\cestec\src\main\java\com\cestec\cestec\repository\zoomRepository.java

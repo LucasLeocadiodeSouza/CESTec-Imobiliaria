@@ -231,7 +231,7 @@ function criarBotaoExterno(divpai,botoes){
                 }else{
                     salvarHistoricoApl(botao.codmodulo, botaoint.codapl);
                     salvarCookieAplicacao("/buscarPath/" + botaoint.codapl, botao.codmodulo, botaoint.codapl);
-                    window.open("/buscarPath/" + botaoint.codapl + "?idmodulo=" + botao.codmodulo + "&idapl=" + botaoint.codapl + "&prog=" + botaoint.prog_ini, "_blank", "noopener");
+                    window.open("/buscarPath/" + botaoint.codapl + "?idmodulo=" + botao.codmodulo + "&idapl=" + botaoint.codapl, "_blank", "noopener");
                     //window.location.href = "/buscarPath/" + botaoint.codapl;
                 }
             });

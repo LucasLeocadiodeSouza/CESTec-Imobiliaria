@@ -32,4 +32,10 @@ public class sp_usu_preferencia {
 
     @Column(columnDefinition = "TINYINT(1)")
     private Boolean mini_cab;
+
+    @Column(length = 7)
+    private String fonte_texto;
+
+    @Column(length = 6)
+    private String tema_menu;
 }
