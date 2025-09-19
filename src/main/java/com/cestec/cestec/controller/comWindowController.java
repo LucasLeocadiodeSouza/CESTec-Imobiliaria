@@ -16,11 +16,10 @@ import com.cestec.cestec.infra.security.tokenService;
 import com.cestec.cestec.model.historicoAcessoAplDTO;
 import com.cestec.cestec.model.sp_aplicacoes;
 import com.cestec.cestec.model.opr.agendamentoDTO;
-import com.cestec.cestec.model.spf.sp_notificacao_usu;
+import com.cestec.cestec.model.spf.sp_usu_aplfav;
 import com.cestec.cestec.service.comWindowService;
 import com.cestec.cestec.service.genService;
 import com.cestec.cestec.service.sp_userService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 
@@ -69,7 +68,32 @@ public class comWindowController {
     public List<agendamentoDTO> buscarAgendamentosFunc(String ideusu){
         return comWindowService.buscarAgendamentosFunc(ideusu);
     }
-    
+
+    @GetMapping("/buscarAplicacoesFav")
+    public List<sp_usu_aplfav> buscarAplicacoesFav(HttpServletRequest request){
+        return comWindowService.buscarAplicacoesFav(getUserName(request));
+    }
+
+    @GetMapping("/ehAplicacaoFavUsu")
+    public Boolean ehAplicacaoFavUsu(HttpServletRequest request, @RequestParam(value = "codapl", required = false) Integer codapl){
+        return comWindowService.ehAplicacaoFavUsu(getUserName(request),codapl);
+    }
+
+    @PostMapping("/inserirDeletarAplicacaoFav")
+    public ResponseEntity<?> inserirDeletarAplicacaoFav(HttpServletRequest request, @RequestParam(value = "codapl", required = false) Integer codapl){
+        try {
+            String ideusu = gen.getUserName(request);
+
+            comWindowService.inserirDeletarAplicacaoFav(ideusu, codapl);
+            return ResponseEntity.ok("OK");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/getPeriodoMeta")
     public String getPeriodoMeta(HttpServletRequest request) {
         return comWindowService.findMesMetaByIdeusu(getUserName(request));

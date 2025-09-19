@@ -20,6 +20,8 @@ import com.cestec.cestec.model.cri.corretorDTO;
 import com.cestec.cestec.model.opr.agendamentoDTO;
 import com.cestec.cestec.model.opr.opr_agendamentos_func;
 import com.cestec.cestec.model.spf.sp_notificacao_usu;
+import com.cestec.cestec.model.spf.sp_usu_aplfav;
+import com.cestec.cestec.model.spf.sp_usu_aplfavId;
 import com.cestec.cestec.repository.histAcessAplRepo;
 import com.cestec.cestec.repository.metaRepository;
 import com.cestec.cestec.repository.cri.contratoRepository;
@@ -28,9 +30,9 @@ import com.cestec.cestec.repository.generico.funcionarioRepository;
 import com.cestec.cestec.repository.generico.modulosRepository;
 import com.cestec.cestec.repository.opr.agendamentosFuncRepo;
 import com.cestec.cestec.repository.spf.notificacaoUsuRepository;
+import com.cestec.cestec.repository.spf.usuAplicacoesFavRepo;
 import com.cestec.cestec.service.opr.opr001s;
 import com.cestec.cestec.util.utilForm;
-
 import jakarta.transaction.Transactional;
 
 @Service
@@ -61,6 +63,12 @@ public class comWindowService {
 
     @Autowired
     private histAcessAplRepo historicoAcessoAplRepo;
+
+    @Autowired
+    private usuAplicacoesFavRepo usuAplicacoesFavRepo;
+
+    @Autowired
+    private genService gen;
 
     public String getCorMotivo(Integer codmotivo){
         switch (codmotivo) {
@@ -105,6 +113,50 @@ public class comWindowService {
         return historicoAcessoAplRepo.findAllHistAcessAplByIdeusu(ideusu);
     }
 
+    public List<sp_usu_aplfav> buscarAplicacoesFav(String ideusu){
+        Integer codfunc = gen.getCodFuncByIdeusu(ideusu);
+
+        List<sp_usu_aplfav> aplicacoesFav = usuAplicacoesFavRepo.findAllAplFavsByUsu(codfunc);
+        if(aplicacoesFav == null) return null;
+
+        return aplicacoesFav;
+    }
+
+    public Boolean ehAplicacaoFavUsu(String ideusu, Integer codapl){
+        Integer codfunc = gen.getCodFuncByIdeusu(ideusu);
+
+        sp_usu_aplfav aplicacoesFav = usuAplicacoesFavRepo.findAplFavById(codfunc,codapl);
+        return (aplicacoesFav != null);
+    }
+
+    @Transactional
+    public void inserirDeletarAplicacaoFav(String ideusu, Integer codapl){
+        if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
+        Integer codusu = gen.getCodFuncByIdeusu(ideusu);
+
+        sp_usu_aplfav aplFavorita = usuAplicacoesFavRepo.findAplFavById(codusu, codapl);
+
+        if(aplFavorita == null){
+            aplFavorita = new sp_usu_aplfav();
+
+            sp_aplicacoes apl = aplicacoesRepository.findByIdApl(codapl);
+            if(apl == null) throw new RuntimeException("Código da aplicacão [" + codapl + "] não encontrado!");
+
+            funcionario func = funcionarioRepository.findFuncByIdeusu(ideusu);
+            if(func == null) throw new RuntimeException("Não encontrado nenhum funcionario com o código informado!");
+
+            aplFavorita.setAplicacoes(apl);
+            aplFavorita.setFuncionario(func);
+            aplFavorita.setDatregistro(LocalDate.now());
+            aplFavorita.setIdeusu(ideusu);
+            aplFavorita.setId(new sp_usu_aplfavId(func.getCodfuncionario(), apl.getId()));
+
+            usuAplicacoesFavRepo.save(aplFavorita);
+        }else{
+            usuAplicacoesFavRepo.delete(aplFavorita);
+        }
+    }
+
     @Transactional
     public ResponseEntity<?> salvarHistoricoApl(String ideusu, Integer codmod, Integer codapl){
         try {
@@ -123,7 +175,6 @@ public class comWindowService {
                 histAnalise.setIdmodulos(modulo);
                 histAnalise.setIdaplicacao(apl);
                 histAnalise.setIdfunc(funcionario);
-                histAnalise.getDatregistro();
                 histAnalise.setDatregistro(LocalDate.now());
                 histAnalise.setIdeusu(ideusu);
             }
