@@ -709,13 +709,13 @@ window.addEventListener("load", () => {
 
             case  "claro": document.documentElement.style.setProperty('--fundo-primario', '#f5f5f5');
                            document.documentElement.style.setProperty('--color-lb-gen', '#444');
-                           document.documentElement.style.setProperty('--bg-mw', '#fcfcfc');
-                           document.documentElement.style.setProperty('--color-border', '#686868'); 
+                           document.documentElement.style.setProperty('--bg-mw', '#fdfdfd');
+                           document.documentElement.style.setProperty('--color-border', '#dddddd'); 
                            document.documentElement.style.setProperty('--filter-aba', 'invert(0%)');
                            document.documentElement.style.setProperty('--filter-aba-invert', 'invert(90%)');
                            document.documentElement.style.setProperty('--color-lb-aba', '#3d3d3d');
                            document.documentElement.style.setProperty('--color-label-destaba', '#272727');
-                           document.documentElement.style.setProperty('--color-bg-th', '#e1e1e1');
+                           document.documentElement.style.setProperty('--color-bg-th', '#e6e6e6');
                            document.documentElement.style.setProperty('--color-bg-input', '#a3ada22b');
                            document.documentElement.style.setProperty('--color-bg-titulo', '#b2c6e79e');
                            document.documentElement.style.setProperty('--color-h2-titulo', '#274d8cd6');
