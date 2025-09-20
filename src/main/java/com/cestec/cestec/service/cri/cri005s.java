@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cestec.cestec.model.cri.contratoDTO;
 import com.cestec.cestec.model.cri.pcp_contrato;
+import com.cestec.cestec.model.cri.pcp_imovel;
 import com.cestec.cestec.repository.cri.contratoRepository;
+import com.cestec.cestec.repository.cri.imovelRepository;
 import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
 import com.cestec.cestec.service.sp_userService;
 import com.cestec.cestec.util.utilForm;
@@ -21,6 +23,9 @@ public class cri005s {
 
     @Autowired
     private prjContratosCustomRepository contratosCustomRepository;
+
+    @Autowired
+    private imovelRepository imovelRepository;
 
     @Autowired
     private sp_userService sp_user;
@@ -132,6 +137,13 @@ public class cri005s {
         if(contrato == null) throw new RuntimeException("Contrato não encontrato com o código do contrato informado '" + codcontrato + "'");
 
         if(contrato.getSituacao() != 2 && contrato.getSituacao() != 4) throw new RuntimeException("Contrato não está em situacão de ser aprovado/reprovado!");
+
+        if(codsituacao == 3){
+            pcp_imovel imovel = imovelRepository.findByCodimovel(contrato.getPcp_imovel().getCodimovel());
+            if(imovel.getStatus() != 1) throw new RuntimeException("O imovel está com status de '" + getDescStatus(imovel.getStatus()) + "' e não pode ser aprovado para o contrato!");
+
+            imovel.setStatus(2);
+        }
 
         contrato.setSituacao(codsituacao);
         contrato.setObservacao(observacao);
