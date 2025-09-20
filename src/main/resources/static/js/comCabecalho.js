@@ -88,14 +88,14 @@ window.addEventListener("load", () => {
                 case       "rescuro": setTemaMenu();
                                       break;
 
-                case      "rpequena": setFontTextMenu();
-                                      break;
+                case "rfontpequena": setFontTextMenu();
+                                     break;
 
-                case       "rnormal": setFontTextMenu();
-                                      break;
+                case  "rfontnormal": setFontTextMenu();
+                                     break;
 
-                case       "rgrande": setFontTextMenu();
-                                      break;
+                case  "rfontgrande": setFontTextMenu();
+                                     break;
             }
         });
     }
@@ -164,11 +164,19 @@ window.addEventListener("load", () => {
         CONSULTAR.consultar("ehAplicacaoFavUsu",`/home/ehAplicacaoFavUsu`,['codapl='+aplicacao],'','',{},true);
     }
 
-    function getTemaUsuPref() {
+    function getTemaUsuPref(acao) {
+        ACAOCONSULTAR.getTemaUsuPref = {
+            busca: acao
+        }
+
         CONSULTAR.consultar("getTemaUsuPref",`/user/getTemaUsuPref`,[],"",{},[],true);
     }
 
-    function getFonteTextoUsuPref() {
+    function getFonteTextoUsuPref(acao) {
+        ACAOCONSULTAR.getFonteTextoUsuPref = {
+            busca: acao
+        }
+
         CONSULTAR.consultar("getFonteTextoUsuPref",`/user/getFonteTextoUsuPref`,[],"",{},[],true);
     }
 
@@ -177,7 +185,7 @@ window.addEventListener("load", () => {
     }
 
     function setFontTextMenu() {
-        CONSULTAR.consultar("getFonteTextoUsuPref",`/user/getFonteTextoUsuPref`,["tamanho=" + getRadioValue("rfont")],"POST",{},[],true);
+        CONSULTAR.consultar("setFontTextMenu",`/user/setFontTextMenu`,["tamanho=" + getRadioValue("rfont")],"POST",{},[],true);
     }
 
     function filaFetchInit(){
@@ -263,20 +271,26 @@ window.addEventListener("load", () => {
                                                 if($("ddivexpandido").classList.contains("cabecalhoexpandido")) $("ddivexpandido").classList.remove("cabecalhoexpandido");
                                                 $("ddivexpandido").innerHTML = "";
                                              }
+
+                                             getTemaUsuPref("inicio");
                                              break;
 
             case "inserirDeletarAplicacaoFav": ehAplicacaoFavUsu();
                                                break;
 
             case      "buscarAplicacoesFav": retorno.forEach(aplfav => {$("cab_listaplfav").appendChild(criarDivInfoAplFav(aplfav.aplicacoes.modulo.id, aplfav.aplicacoes.modulo.descricao, aplfav.aplicacoes.id, aplfav.aplicacoes.descricao)) });
-                                             getTemaUsuPref();
+                                             getTemaUsuPref("buscarAplicacoesFav");
                                              break;
 
-            case           "getTemaUsuPref": setRadioValue("rtemamenu", retorno);
-                                             getFonteTextoUsuPref();
+            case           "getTemaUsuPref": if(ACAOCONSULTAR.getTemaUsuPref.busca == "buscarAplicacoesFav") setRadioValue("rtemamenu", retorno);
+                                             getFonteTextoUsuPref(ACAOCONSULTAR.getTemaUsuPref.busca);
                                              break;
 
-            case     "getFonteTextoUsuPref": setRadioValue("rfont", retorno);
+            case     "getFonteTextoUsuPref": if(ACAOCONSULTAR.getFonteTextoUsuPref.busca == "buscarAplicacoesFav") setRadioValue("rfont", retorno);
+                                             tamanhoLabel(retorno);
+                                             break;
+
+            case          "setFontTextMenu": getFonteTextoUsuPref();
                                              break;
 
             case       "buscarAgendamentos":const divcontainerinfoagenda       = document.createElement("div");
@@ -647,5 +661,18 @@ window.addEventListener("load", () => {
         event_click("rfontpequena");
         event_click("rfontnormal");
         event_click("rfontgrande");
+    }
+
+    function tamanhoLabel(tamanho){
+        switch (tamanho) {
+            case "pequena": document.documentElement.style.setProperty('--font-size-label', '13px');
+                           break;
+
+            case  "normal": document.documentElement.style.setProperty('--font-size-label', '15px');
+                            break;
+
+            case "grande": document.documentElement.style.setProperty('--font-size-label', '18px');
+                           break;
+        }
     }
 });

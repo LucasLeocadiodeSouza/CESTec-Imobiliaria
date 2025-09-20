@@ -120,7 +120,7 @@
 
     .div-descagen {height: 28px; width: 100%; position: relative; overflow-x: hidden;}
 
-    .div-descagen label {color: #FFF; font-size: 13px;}
+    .div-descagen label {color: #FFF; font-size: calc(var(--font-size-label,15px) - 2px);}
 
     .container-descagendamento {overflow-y: auto; height: 100%; width: 90%;}
 
@@ -360,7 +360,7 @@
 
     .titulo-descagendamento {display: flex; flex-direction: column; align-items: center; justify-content: center;}
 
-    .titulo-descagendamento label {color: #FFF; font-size: 15px;}
+    .titulo-descagendamento label {color: #FFF; font-size: var(--font-size-label,15px);}
 
     .container-esquerda {width: 100%; height: calc(100% - 50px); display: flex; justify-content: flex-end;}
 
@@ -393,7 +393,7 @@
                 margin-bottom:     10px;
                 padding-inline:    25px;}
 
-    .labelbotaoapl {font-size:  20px; color: white !important; font-weight: 500; display: flex !important; font-family: 'Lato', sans-serif !important; cursor: pointer;}
+    .labelbotaoapl {font-size:  calc(var(--font-size-label,15px) + 5px); color: white !important; font-weight: 500; display: flex !important; font-family: 'Lato', sans-serif !important; cursor: pointer;}
 
     .container-label-bim {width: calc(100% - 80px); display: flex; justify-content: center;}
 
