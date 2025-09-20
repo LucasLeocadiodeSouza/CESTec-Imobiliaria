@@ -129,7 +129,7 @@ function addScript(prog){
 // }
 
 function addScriptsHead(progs){
-    const programasPadrao = '/js/modules/gridForm.js,/js/modules/dmfForm.js,/js/modules/abaForm.js,/js/modules/consulForm.js,/js/modules/elementsForm.js,/js/modules/utils.js,/js/modules/zoomForm.js';
+    const programasPadrao = '/js/modules/gridForm.js,/js/modules/dmfForm.js,/js/modules/abaForm.js,/js/modules/consulForm.js,/js/modules/elementsForm.js,/js/modules/utils.js,/js/modules/legendaForm.js,/js/modules/zoomForm.js';
     const programasHead   = programasPadrao + "," + progs;
 
     programasHead.split(",").forEach(prog => {
