@@ -21,9 +21,9 @@ function iniciarEventos() {
     CONTRATOS_GRID               = new GridForm_init();
     CONTRATOS_GRID.id            = "tabela_aprovacao";
     CONTRATOS_GRID.columnName    = "codcontrato,codimovel,tipo,codproprietario,nomeProp,codcliente,nomeCliente,codcorretor,nomeCorretor,periodo,preco,valor,_vlrcondominio,_area,_quartos,_documento,_endereco,_vlrliber,_observacao,_ehpessoafisica,_banheiros";
-    CONTRATOS_GRID.columnLabel   = "Cód. Contrato,Cód. Imovel,Tipo Imovel,Código Prop,Proprietario,Código Cliente,Cliente,Código Corretor,Corretor,Periodo,Preço (R$),Valor negoc. (R$)";
-    CONTRATOS_GRID.columnWidth   = "7,6,9,6,11,6,11,6,11,11,8,8";
-    CONTRATOS_GRID.columnAlign   = "c,c,e,c,e,c,e,c,e,c,d,d";
+    CONTRATOS_GRID.columnLabel   = "Contrato,Situação,Cód. Imovel,Tipo Imovel,Código Prop,Proprietario,Código Cliente,Cliente,Código Corretor,Corretor,Periodo,Preço (R$),Valor negoc. (R$)";
+    CONTRATOS_GRID.columnWidth   = "5,5,6,9,6,11,6,11,6,10,10,7,8";
+    CONTRATOS_GRID.columnAlign   = "c,c,c,e,c,e,c,e,c,e,c,d,d";
     CONTRATOS_GRID.mousehouve    = true;
     CONTRATOS_GRID.destacarclick = true;
     CONTRATOS_GRID.gridWidth     = "2200px";
@@ -100,8 +100,8 @@ function event_click_table(obj,row){
                          puxarFichaContrato(valoresLinha);
         
                          form("hcodcorretor").value = valoresLinha[0];
-                         form('mvlrlib').value      = valoresLinha[17];
-                         form('mobs').value         = valoresLinha[18];
+                         form('mvlrlib').value      = valoresLinha[18];
+                         form('mobs').value         = valoresLinha[19];
 
                          DMFDiv.fullScream = true;
                          DMFDiv.openModal("dmodalf_aprovacao");
@@ -193,32 +193,32 @@ function ehManutencao(){
 }
 
 function puxarFichaContrato(valoresLinha){
-    form('codimovel').innerText       = valoresLinha[1];
-    form('tpimovel').innerText        = valoresLinha[2];
-    form("codprop").innerText         = valoresLinha[3];
-    form("nomeprop").innerText        = valoresLinha[4];
-    form('vlrimovel').innerText       = valoresLinha[10];
-    form('vlrcondominio').innerText   = valoresLinha[12];
-    form('areatotal').innerText       = valoresLinha[13];
-    form('numquartos').innerText      = valoresLinha[14];
-    form('numbanheiros').innerText    = valoresLinha[20];
-    form('endereco').innerText        = valoresLinha[16];
+    form('codimovel').innerText       = valoresLinha[2];
+    form('tpimovel').innerText        = valoresLinha[3];
+    form("codprop").innerText         = valoresLinha[4];
+    form("nomeprop").innerText        = valoresLinha[5];
+    form('vlrimovel').innerText       = valoresLinha[11];
+    form('vlrcondominio').innerText   = valoresLinha[13];
+    form('areatotal').innerText       = valoresLinha[14];
+    form('numquartos').innerText      = valoresLinha[15];
+    form('numbanheiros').innerText    = valoresLinha[21];
+    form('endereco').innerText        = valoresLinha[17];
     form('codcontrato').innerText     = valoresLinha[0];
-    form('tpcontrato').innerText      = valoresLinha[1];
-    form('vlrcontrato').innerText     = valoresLinha[11];
-    form('periodocontrato').innerText = valoresLinha[9];
-    form('corretor').innerText        = valoresLinha[7] + " - " + valoresLinha[8];
-    form('codnegociante').innerText   = valoresLinha[5];
-    form('nomecliente').innerText     = valoresLinha[6];
-    form('cpfcliente').innerText      = valoresLinha[15];
-    form('ehpf').innerText            = valoresLinha[19];
+    form('tpcontrato').innerText      = valoresLinha[2];
+    form('vlrcontrato').innerText     = valoresLinha[12];
+    form('periodocontrato').innerText = valoresLinha[10];
+    form('corretor').innerText        = valoresLinha[8] + " - " + valoresLinha[9];
+    form('codnegociante').innerText   = valoresLinha[6];
+    form('nomecliente').innerText     = valoresLinha[7];
+    form('cpfcliente').innerText      = valoresLinha[16];
+    form('ehpf').innerText            = valoresLinha[20];
 
-    const dadosmarcador = {tipo:     valoresLinha[2],
-                           price:    valoresLinha[10],
-                           endereco: valoresLinha[16],
-                           quarto:   valoresLinha[14],
-                           banheiro: valoresLinha[20],
-                           tamanho:  valoresLinha[13]};
+    const dadosmarcador = {tipo:     valoresLinha[3],
+                           price:    valoresLinha[11],
+                           endereco: valoresLinha[17],
+                           quarto:   valoresLinha[15],
+                           banheiro: valoresLinha[21],
+                           tamanho:  valoresLinha[14]};
 
     criarMarcadorImovel(map.center, dadosmarcador);
 }

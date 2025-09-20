@@ -236,13 +236,13 @@ function controlaTela(opc){
         desabilitaCampo('mvendedor',     ehConsulta() || (!ehSituacaoAberta() && ehAlterando()));
         desabilitaCampo('mperiodoini',   ehConsulta() || (!ehSituacaoAberta() && ehAlterando()));
         desabilitaCampo('mperiodofin',   ehConsulta() || (!ehSituacaoAberta() && ehAlterando()));
-        desabilitaCampo('bcadastro',     ehConsulta() || !ehAlterando() || (!ehSituacaoAberta() && !ehSituacaoReprovada()));
+        desabilitaCampo('bcadastro',     ehConsulta() || (ehAlterando() && (!ehSituacaoAberta() && !ehSituacaoReprovada())));
         desabilitaCampo('bcancela',      ehConsulta() || !ehAlterando() || (!ehSituacaoAberta() && !ehSituacaoReprovada()));
         desabilitaCampo('benviaaprov',   ehConsulta() || !ehAlterando() || (!ehSituacaoAberta() && !ehSituacaoReprovada()));
 
         setDisplay("dmcontrato",  ehInserindo()?"none":"block");
         setDisplay("dmsituacao",  ehInserindo()?"none":"block");
-        setDisplay("bcadastro",   ehManutencao() && ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada())?"flex":"none");
+        setDisplay("bcadastro",   ehManutencao() && ((ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada()) || ehInserindo()))?"flex":"none");
         setDisplay("bcancela",    ehManutencao() && ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada())?"flex":"none");
         setDisplay("benviaaprov", ehManutencao() && ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada())?"flex":"none");
     }
