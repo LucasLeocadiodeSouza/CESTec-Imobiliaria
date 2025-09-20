@@ -102,7 +102,8 @@ public class prjContratosCustomRepository {
                        "con.pcp_imovel.endereco_rua," +
                        "con.valorliberado, " + 
                        "con.observacao, " + 
-                       "con.pcp_cliente.pessoa_fisica) " +
+                       "con.pcp_cliente.pessoa_fisica, " +
+                       "con.situacao) " + 
                        "FROM pcp_contrato con ";
 
         boolean temand = false;
