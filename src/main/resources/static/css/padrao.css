@@ -68,8 +68,8 @@ body .gen {padding: 10px}
            
 .button:hover {background-color: #1a2e6f;
                box-shadow: 0 0 0 1px #5151525f;
-               .buttonfe {color: #FFF}
-               .buttonfe img{filter: invert(100%)}}
+               .buttonfe {color: #FFF !important}
+               .buttonfe img{filter: invert(100%) !important}}
 
 .buttonfe {width: 100%; 
            display: flex; 
@@ -431,6 +431,11 @@ table {
 .container-minimodalrow p     {font-size: 13px; color: #2c2c2c; margin-block: 0px;}
 .container-minimodalrow div   {display: flex; align-items: center; margin-top: 0px; gap: 3px;}
 
+/* estilo Legenda */
+.gridlegenda {display: flex; justify-content: center; width: calc(100% - 10px);}
+.legendaform {display: flex; flex-direction: row; align-items: center; margin-right: 10px; gap: 5px;}
+.lgde {padding: 1px; border: 1px solid gray; border-radius: 3px;}
+.lgdi {border-radius: 3px; width: 14px; height: 14px;}
 
 ::-webkit-scrollbar {
   width: 12px;

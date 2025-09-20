@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cestec.cestec.model.cri.contratoDTO;
 import com.cestec.cestec.model.cri.pcp_contrato;
+import com.cestec.cestec.model.cri.pcp_imovel;
 import com.cestec.cestec.repository.cri.contratoRepository;
+import com.cestec.cestec.repository.cri.imovelRepository;
 import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
 import com.cestec.cestec.service.sp_userService;
 import com.cestec.cestec.util.utilForm;
@@ -21,6 +23,9 @@ public class cri005s {
 
     @Autowired
     private prjContratosCustomRepository contratosCustomRepository;
+
+    @Autowired
+    private imovelRepository imovelRepository;
 
     @Autowired
     private sp_userService sp_user;
@@ -59,6 +64,17 @@ public class cri005s {
         return "Descricão não encontrada";
     }
 
+    public String getSituacaoContrato(Integer codsit) {
+        switch (codsit) {
+            case 0: return "<div title='Cancelada' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#ff0000;'></div></div></div>";
+            case 1: return "<div title='Aberta' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#5a7cd0;'></div></div></div>";
+            case 2: return "<div title='Aguardando aprovação' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#ffeb00;'></div></div></div>";
+            case 3: return "<div title='Aprovada' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#035e00;'></div></div></div>";
+            case 4: return "<div title='Reprovada' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#ff8100;'></div></div></div>";
+        }
+        return "";
+    }
+
     public List<?> buscarContratoAprovacao(Integer codprop, Integer codcliente, Integer codcorretor, Integer tipimovel, Integer acao){
         List<contratoDTO> contratos = contratosCustomRepository.buscarContratoAprovacaoGrid(codprop, codcliente, codcorretor, tipimovel, acao);
 
@@ -77,6 +93,7 @@ public class cri005s {
 
             utilForm.criarRow();
             utilForm.criarColuna(contratos.get(i).getCodcontrato().toString());
+            utilForm.criarColuna(getSituacaoContrato(contratos.get(i).getSituacao()));
             utilForm.criarColuna(contratos.get(i).getCodimovel().toString());
             utilForm.criarColuna(getTipoImovel(contratos.get(i).getTipo()));
             utilForm.criarColuna(contratos.get(i).getCodproprietario().toString());
@@ -120,6 +137,13 @@ public class cri005s {
         if(contrato == null) throw new RuntimeException("Contrato não encontrato com o código do contrato informado '" + codcontrato + "'");
 
         if(contrato.getSituacao() != 2 && contrato.getSituacao() != 4) throw new RuntimeException("Contrato não está em situacão de ser aprovado/reprovado!");
+
+        if(codsituacao == 3){
+            pcp_imovel imovel = imovelRepository.findByCodimovel(contrato.getPcp_imovel().getCodimovel());
+            if(imovel.getStatus() != 1) throw new RuntimeException("O imovel está com status de '" + getDescStatus(imovel.getStatus()) + "' e não pode ser aprovado para o contrato!");
+
+            imovel.setStatus(2);
+        }
 
         contrato.setSituacao(codsituacao);
         contrato.setObservacao(observacao);

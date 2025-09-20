@@ -68,7 +68,8 @@ public interface contratoRepository extends JpaRepository<pcp_contrato, Integer>
             "con.pcp_imovel.endereco_rua," +
             "con.valorliberado, " + 
             "con.observacao, " + 
-            "con.pcp_cliente.pessoa_fisica) " +
+            "con.pcp_cliente.pessoa_fisica, " +
+            "con.situacao) " +
             "FROM pcp_contrato con ")
     List<contratoDTO> buscarContratoAprovacao(@Param("acao") Integer acao);
 

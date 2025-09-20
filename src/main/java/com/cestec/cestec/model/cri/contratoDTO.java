@@ -141,7 +141,8 @@ public class contratoDTO {
                        String     endereco_logradouro,
                        BigDecimal valorliberado, 
                        String     observacao, 
-                       Boolean    pessoa_fisica) {
+                       Boolean    pessoa_fisica,
+                       Integer    situacao) {
 
         this.codcontrato         = codcontrato;
         this.codimovel           = codimovel;
@@ -171,6 +172,7 @@ public class contratoDTO {
         this.valorliberado       = valorliberado;
         this.observacao          = observacao;
         this.pessoa_fisica       = pessoa_fisica;
+        this.situacao            = situacao;
     }
 
     public contratoDTO(Integer codcontrato, Integer codcliente, Integer codimovel, Integer codproprietario, Date datfinal, Date datinicio, Integer tipo, Integer negociacao, BigDecimal  preco) {
