@@ -32,7 +32,7 @@ function abaForm_init(){
 
     this.createAba = ()=>{
         const divaba = document.getElementById(this.id);
-        if(!divaba) throw new Error("Div " + this.id + " não encontrada");;
+        if(!divaba) throw new Error("Div " + this.id + " não encontrada");
 
         const abas  = this.name.split(",");
         const icons = this.icon.split(",");
