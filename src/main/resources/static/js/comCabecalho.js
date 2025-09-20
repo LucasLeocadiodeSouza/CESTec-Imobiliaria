@@ -88,14 +88,14 @@ window.addEventListener("load", () => {
                 case       "rescuro": setTemaMenu();
                                       break;
 
-                case      "rpequena": setFontTextMenu();
-                                      break;
+                case "rfontpequena": setFontTextMenu();
+                                     break;
 
-                case       "rnormal": setFontTextMenu();
-                                      break;
+                case  "rfontnormal": setFontTextMenu();
+                                     break;
 
-                case       "rgrande": setFontTextMenu();
-                                      break;
+                case  "rfontgrande": setFontTextMenu();
+                                     break;
             }
         });
     }
@@ -164,11 +164,19 @@ window.addEventListener("load", () => {
         CONSULTAR.consultar("ehAplicacaoFavUsu",`/home/ehAplicacaoFavUsu`,['codapl='+aplicacao],'','',{},true);
     }
 
-    function getTemaUsuPref() {
+    function getTemaUsuPref(acao) {
+        ACAOCONSULTAR.getTemaUsuPref = {
+            busca: acao
+        }
+
         CONSULTAR.consultar("getTemaUsuPref",`/user/getTemaUsuPref`,[],"",{},[],true);
     }
 
-    function getFonteTextoUsuPref() {
+    function getFonteTextoUsuPref(acao) {
+        ACAOCONSULTAR.getFonteTextoUsuPref = {
+            busca: acao
+        }
+
         CONSULTAR.consultar("getFonteTextoUsuPref",`/user/getFonteTextoUsuPref`,[],"",{},[],true);
     }
 
@@ -177,7 +185,7 @@ window.addEventListener("load", () => {
     }
 
     function setFontTextMenu() {
-        CONSULTAR.consultar("getFonteTextoUsuPref",`/user/getFonteTextoUsuPref`,["tamanho=" + getRadioValue("rfont")],"POST",{},[],true);
+        CONSULTAR.consultar("setFontTextMenu",`/user/setFontTextMenu`,["tamanho=" + getRadioValue("rfont")],"POST",{},[],true);
     }
 
     function filaFetchInit(){
@@ -263,20 +271,30 @@ window.addEventListener("load", () => {
                                                 if($("ddivexpandido").classList.contains("cabecalhoexpandido")) $("ddivexpandido").classList.remove("cabecalhoexpandido");
                                                 $("ddivexpandido").innerHTML = "";
                                              }
+
+                                             getTemaUsuPref("inicio");
                                              break;
 
             case "inserirDeletarAplicacaoFav": ehAplicacaoFavUsu();
                                                break;
 
             case      "buscarAplicacoesFav": retorno.forEach(aplfav => {$("cab_listaplfav").appendChild(criarDivInfoAplFav(aplfav.aplicacoes.modulo.id, aplfav.aplicacoes.modulo.descricao, aplfav.aplicacoes.id, aplfav.aplicacoes.descricao)) });
-                                             getTemaUsuPref();
+                                             getTemaUsuPref("buscarAplicacoesFav");
                                              break;
 
-            case           "getTemaUsuPref": setRadioValue("rtemamenu", retorno);
-                                             getFonteTextoUsuPref();
+            case           "getTemaUsuPref": if(ACAOCONSULTAR.getTemaUsuPref.busca == "buscarAplicacoesFav") setRadioValue("rtemamenu", retorno);
+                                             alterarTema(retorno);
+                                             getFonteTextoUsuPref(ACAOCONSULTAR.getTemaUsuPref.busca);
                                              break;
 
-            case     "getFonteTextoUsuPref": setRadioValue("rfont", retorno);
+            case             "setTemaMenu":  getTemaUsuPref();
+                                             break;
+
+            case     "getFonteTextoUsuPref": if(ACAOCONSULTAR.getFonteTextoUsuPref.busca == "buscarAplicacoesFav") setRadioValue("rfont", retorno);
+                                             tamanhoLabel(retorno);
+                                             break;
+
+            case          "setFontTextMenu": getFonteTextoUsuPref();
                                              break;
 
             case       "buscarAgendamentos":const divcontainerinfoagenda       = document.createElement("div");
@@ -305,7 +323,7 @@ window.addEventListener("load", () => {
 
                                             const divdescagend     = document.createElement("div");
                                             divdescagend.id        = "ddescagendamentos";
-                                            divdescagend.className = "container-descagendamento";
+                                            divdescagend.className = "container-descagendamento gen";
                                             
                                             divcontainerinfoagenda.appendChild(divtitulo);
 
@@ -394,7 +412,7 @@ window.addEventListener("load", () => {
         divinfousu.appendChild(divinfundousu);
 
         const divinformacoes     = document.createElement("div");
-        divinformacoes.className = "divbuttonaplfav"
+        divinformacoes.className = "divbuttonaplfav gen"
         divinformacoes.id        = "cab_listaplfav";
 
         divinfousu.appendChild(divinformacoes);
@@ -487,8 +505,7 @@ window.addEventListener("load", () => {
         divtitulo.appendChild(labeltitulo);
 
         const divlista           = document.createElement("div");
-        divlista.style.padding   = "5px";
-        divlista.style.overflowY = "auto";
+        divlista.className = "listalegenda gen"
 
         legendas.forEach(leg =>{
             const divlegenda            = document.createElement("div");
@@ -647,5 +664,74 @@ window.addEventListener("load", () => {
         event_click("rfontpequena");
         event_click("rfontnormal");
         event_click("rfontgrande");
+    }
+
+    function tamanhoLabel(tamanho){
+        switch (tamanho) {
+            case "pequena": document.documentElement.style.setProperty('--font-size-label', '13px');
+                           break;
+
+            case  "normal": document.documentElement.style.setProperty('--font-size-label', '15px');
+                            break;
+
+            case "grande": document.documentElement.style.setProperty('--font-size-label', '18px');
+                           break;
+        }
+    }
+
+    function alterarTema(tema){
+        switch (tema) {
+            case "escuro": document.documentElement.style.setProperty('--fundo-primario', '#272727');
+                           document.documentElement.style.setProperty('--color-lb-gen', '#dddddd');
+                           document.documentElement.style.setProperty('--bg-mw', '#373737');
+                           document.documentElement.style.setProperty('--color-border', '#515151');
+                           document.documentElement.style.setProperty('--filter-aba', 'invert(90%)');
+                           document.documentElement.style.setProperty('--filter-aba-invert', 'invert(0%)');
+                           document.documentElement.style.setProperty('--color-lb-aba', '#dbdbdb');
+                           document.documentElement.style.setProperty('--color-label-destaba', '#cdcdcd');
+                           document.documentElement.style.setProperty('--color-bg-th', '#555555');
+                           document.documentElement.style.setProperty('--color-bg-input', '#ffffffcc');
+                           document.documentElement.style.setProperty('--color-bg-titulo', '#758eb79e');
+                           document.documentElement.style.setProperty('--color-h2-titulo', '#0e254bd6');
+                           document.documentElement.style.setProperty('--fundo-terciaria', '#636363');
+                           document.documentElement.style.setProperty('--color-input-disab', '#999999');
+                           document.documentElement.style.setProperty('--color-box-tema1', '#0e1b33');
+                           document.documentElement.style.setProperty('--fundo-secundario', '#4f4f4f');
+                           document.documentElement.style.setProperty('--color-cabecalho', '#002e4f');
+                           document.documentElement.style.setProperty('--color-apl-fav', '#3764b53b'); 
+                           document.documentElement.style.setProperty('--color-body', '#131b2b');
+                           //document.documentElement.style.setProperty('--color-primary', '#334970');
+                           //document.documentElement.style.setProperty('--color-secundaria', '#23334e');
+                           //document.documentElement.style.setProperty('--color-terciaria', '#2e4266');
+                           //document.documentElement.style.setProperty('--color-lb-claro', '#f5f5f5');
+                           //document.documentElement.style.setProperty('--color-btt-primary', '#7192e1');
+                           break;
+
+            case  "claro": document.documentElement.style.setProperty('--fundo-primario', '#f5f5f5');
+                           document.documentElement.style.setProperty('--color-lb-gen', '#444');
+                           document.documentElement.style.setProperty('--bg-mw', '#fcfcfc');
+                           document.documentElement.style.setProperty('--color-border', '#686868'); 
+                           document.documentElement.style.setProperty('--filter-aba', 'invert(0%)');
+                           document.documentElement.style.setProperty('--filter-aba-invert', 'invert(90%)');
+                           document.documentElement.style.setProperty('--color-lb-aba', '#3d3d3d');
+                           document.documentElement.style.setProperty('--color-label-destaba', '#272727');
+                           document.documentElement.style.setProperty('--color-bg-th', '#e1e1e1');
+                           document.documentElement.style.setProperty('--color-bg-input', '#a3ada22b');
+                           document.documentElement.style.setProperty('--color-bg-titulo', '#b2c6e79e');
+                           document.documentElement.style.setProperty('--color-h2-titulo', '#274d8cd6');
+                           document.documentElement.style.setProperty('--fundo-terciaria', '#d7d7d7');
+                           document.documentElement.style.setProperty('--color-input-disab', '#6b6b6b');
+                           document.documentElement.style.setProperty('--color-box-tema1', '#1d3561');
+                           document.documentElement.style.setProperty('--fundo-secundario', '#dedede');
+                           document.documentElement.style.setProperty('--color-cabecalho', '#004577');
+                           document.documentElement.style.setProperty('--color-apl-fav', '#1d35613b');
+                           document.documentElement.style.setProperty('--color-body', '#1d3561');
+                           //document.documentElement.style.setProperty('--color-primary', '#334970');
+                           //document.documentElement.style.setProperty('--color-secundaria', '#23334e');
+                           //document.documentElement.style.setProperty('--color-terciaria', '#2e4266');
+                           //document.documentElement.style.setProperty('--color-lb-claro', '#f5f5f5');
+                           //document.documentElement.style.setProperty('--color-btt-primary', '#7192e1');
+                           break;
+        }
     }
 });
