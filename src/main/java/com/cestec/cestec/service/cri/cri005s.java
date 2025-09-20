@@ -59,6 +59,17 @@ public class cri005s {
         return "Descricão não encontrada";
     }
 
+    public String getSituacaoContrato(Integer codsit) {
+        switch (codsit) {
+            case 0: return "<div title='Cancelada' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#ff0000;'></div></div></div>";
+            case 1: return "<div title='Aberta' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#5a7cd0;'></div></div></div>";
+            case 2: return "<div title='Aguardando aprovação' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#ffeb00;'></div></div></div>";
+            case 3: return "<div title='Aprovada' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#035e00;'></div></div></div>";
+            case 4: return "<div title='Reprovada' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#ff8100;'></div></div></div>";
+        }
+        return "";
+    }
+
     public List<?> buscarContratoAprovacao(Integer codprop, Integer codcliente, Integer codcorretor, Integer tipimovel, Integer acao){
         List<contratoDTO> contratos = contratosCustomRepository.buscarContratoAprovacaoGrid(codprop, codcliente, codcorretor, tipimovel, acao);
 
@@ -77,6 +88,7 @@ public class cri005s {
 
             utilForm.criarRow();
             utilForm.criarColuna(contratos.get(i).getCodcontrato().toString());
+            utilForm.criarColuna(getSituacaoContrato(contratos.get(i).getSituacao()));
             utilForm.criarColuna(contratos.get(i).getCodimovel().toString());
             utilForm.criarColuna(getTipoImovel(contratos.get(i).getTipo()));
             utilForm.criarColuna(contratos.get(i).getCodproprietario().toString());
