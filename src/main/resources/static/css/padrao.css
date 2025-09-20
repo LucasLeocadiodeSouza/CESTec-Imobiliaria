@@ -433,6 +433,7 @@ table {
 
 /* estilo Legenda */
 .gridlegenda {display: flex; justify-content: center; width: calc(100% - 10px);}
+.legendaform {display: flex; flex-direction: row; align-items: center; margin-right: 10px; gap: 5px;}
 .lgde {padding: 1px; border: 1px solid gray; border-radius: 3px;}
 .lgdi {border-radius: 3px; width: 14px; height: 14px;}
 

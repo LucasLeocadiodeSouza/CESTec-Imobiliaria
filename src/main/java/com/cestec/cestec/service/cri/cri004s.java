@@ -74,11 +74,22 @@ public class cri004s {
         return "Descricão não encontrada";
     }
 
+    public String getSituacaoContratoColor(Integer codsit) {
+        switch (codsit) {
+            case 0: return "<div title='Cancelada' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#ff0000;'></div></div></div>";
+            case 1: return "<div title='Aberta' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#5a7cd0;'></div></div></div>";
+            case 2: return "<div title='Aguardando aprovação' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#ffeb00;'></div></div></div>";
+            case 3: return "<div title='Aprovada' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#035e00;'></div></div></div>";
+            case 4: return "<div title='Reprovada' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#ff8100;'></div></div></div>";
+        }
+        return "";
+    }
+
     public String getSituacaoContrato(Integer codsit) {
         switch (codsit) {
-            case 0: return "Cancelado";
+            case 0: return "Cancelada";
             case 1: return "Aberta";
-            case 2: return "Aguardando aprovação";
+            case 2: return "Aguardando";
             case 3: return "Aprovada";
             case 4: return "Reprovada";
         }
@@ -235,7 +246,7 @@ public class cri004s {
         for (int i = 0; i < contratos.size(); i++) {
             utilForm.criarRow();
             utilForm.criarColuna(contratos.get(i).getCodcontrato().toString());
-            utilForm.criarColuna(getSituacaoContrato(contratos.get(i).getSituacao()));
+            utilForm.criarColuna(getSituacaoContratoColor(contratos.get(i).getSituacao()));
             utilForm.criarColuna(contratos.get(i).getCodcliente().toString());
             utilForm.criarColuna(contratos.get(i).getNomeCliente());
             utilForm.criarColuna(contratos.get(i).getCodproprietario().toString());
@@ -252,6 +263,7 @@ public class cri004s {
             utilForm.criarColuna(contratos.get(i).getTipo().toString());
             utilForm.criarColuna(gen.getNomeCorretorById(contratos.get(i).getCodcorretor()));
             utilForm.criarColuna(contratos.get(i).getSituacao().toString());
+            utilForm.criarColuna(getSituacaoContrato(contratos.get(i).getSituacao()));
         }
 
         return utilForm.criarGrid();

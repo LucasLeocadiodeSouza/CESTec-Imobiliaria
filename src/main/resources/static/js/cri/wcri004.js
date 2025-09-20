@@ -16,7 +16,7 @@ function iniciarEventos() {
 
     CONTRATOS_GRID               = new GridForm_init();
     CONTRATOS_GRID.id            = "tabela_contrato";
-    CONTRATOS_GRID.columnName    = "codcontrato,situacao,codcliente,nomeCliente,codproprietario,nomeProp,codimovel,tipo,negociacao,preco,_datinicio,_datfinal,_valor,_endereco_bairro,_codcorretor,_codtipo,_nomevendedor,_situacao";
+    CONTRATOS_GRID.columnName    = "codcontrato,situacao,codcliente,nomeCliente,codproprietario,nomeProp,codimovel,tipo,negociacao,preco,_datinicio,_datfinal,_valor,_endereco_bairro,_codcorretor,_codtipo,_nomevendedor,_situacao,_descsit";
     CONTRATOS_GRID.columnLabel   = "Contrato,Situação,Cod. Cli.,Nome Cli.,Cod. Prop.,Nome Pro.,Cod. Imov.,Tipo,Contrato,Valor (R$)";
     CONTRATOS_GRID.columnWidth   = "9,8,9,15,9,15,9,11,10,10";
     CONTRATOS_GRID.columnAlign   = "c,c,c,eoe,c,eoe,c,c,c,d";
@@ -29,6 +29,12 @@ function iniciarEventos() {
     ABA.name = "Consulta,Manutenção";
     ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
     ABA.createAba();
+
+    LEGENDA       = new legendaForm_init();
+    LEGENDA.id    = 'dlegenda';
+    LEGENDA.name  = 'Aberta,Aguardando aprovação,Aprovada,Reprovada,Cancelada';
+    LEGENDA.color = '#5a7cd0, #ffeb00, #035e00, #ff8100, #ff0000';
+    LEGENDA.createLegenda();
 
     DMFDiv              = new DMFForm_init();
     DMFDiv.divs         = "dmodalf_contrato";
@@ -309,7 +315,7 @@ function preencherModal(valoresLinha){
     
     form("mcodcontrato").value  = valoresLinha[0];
     form("hmcodcontrato").value = valoresLinha[0];
-    form("msituacao").value     = valoresLinha[1];
+    form("msituacao").value     = valoresLinha[18];
     form('mcodcliente').value   = valoresLinha[2];
     form('mdesccliente').value  = valoresLinha[3];
     form('mdescprop').value     = valoresLinha[5];

@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
     buscarUserName();
 });
 
-var ABA,DMFDiv,CONSUL,CONTRATOS_GRID;
+var ABA,DMFDiv,CONSUL,CONTRATOS_GRID,LEGENDA;
 
 let map;
 var marcadorElementImovel;
@@ -20,7 +20,7 @@ function iniciarEventos() {
 
     CONTRATOS_GRID               = new GridForm_init();
     CONTRATOS_GRID.id            = "tabela_aprovacao";
-    CONTRATOS_GRID.columnName    = "codcontrato,codimovel,tipo,codproprietario,nomeProp,codcliente,nomeCliente,codcorretor,nomeCorretor,periodo,preco,valor,_vlrcondominio,_area,_quartos,_documento,_endereco,_vlrliber,_observacao,_ehpessoafisica,_banheiros";
+    CONTRATOS_GRID.columnName    = "codcontrato,situacao,codimovel,tipo,codproprietario,nomeProp,codcliente,nomeCliente,codcorretor,nomeCorretor,periodo,preco,valor,_vlrcondominio,_area,_quartos,_documento,_endereco,_vlrliber,_observacao,_ehpessoafisica,_banheiro";
     CONTRATOS_GRID.columnLabel   = "Contrato,Situação,Cód. Imovel,Tipo Imovel,Código Prop,Proprietario,Código Cliente,Cliente,Código Corretor,Corretor,Periodo,Preço (R$),Valor negoc. (R$)";
     CONTRATOS_GRID.columnWidth   = "5,5,6,9,6,11,6,11,6,10,10,7,8";
     CONTRATOS_GRID.columnAlign   = "c,c,c,e,c,e,c,e,c,e,c,d,d";
@@ -30,6 +30,12 @@ function iniciarEventos() {
     CONTRATOS_GRID.miniModalOver = true;
     CONTRATOS_GRID.colsModalOver = "1,2,3";
     CONTRATOS_GRID.createGrid();
+
+    LEGENDA       = new legendaForm_init();
+    LEGENDA.id    = 'dlegenda';
+    LEGENDA.name  = 'Aberta,Aguardando aprovação,Aprovada,Reprovada';
+    LEGENDA.color = '#5a7cd0, #ffeb00, #035e00, #ff8100';
+    LEGENDA.createLegenda();
 
     ABA      = new abaForm_init();
     ABA.id   = "abas";
