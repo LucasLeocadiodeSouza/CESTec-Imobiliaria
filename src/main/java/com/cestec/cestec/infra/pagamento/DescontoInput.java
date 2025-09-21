@@ -12,8 +12,8 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DescontoInput {
 
-    private Integer tipo;
-    private String dataExpiracao;
-    private Long porcentagem;
+    private Integer    tipo;
+    private String     dataExpiracao;
+    private Long       porcentagem;
     private BigDecimal valor;
 }

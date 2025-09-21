@@ -7,19 +7,24 @@ import com.cestec.cestec.model.funcionario;
 import com.cestec.cestec.model.sp_aplicacoes;
 import com.cestec.cestec.model.sp_modulos;
 import com.cestec.cestec.model.cri.pcp_cliente;
+import com.cestec.cestec.model.cri.pcp_contrato;
 import com.cestec.cestec.model.cri.pcp_corretor;
 import com.cestec.cestec.model.cri.pcp_imovel;
 import com.cestec.cestec.model.cri.pcp_proprietario;
 import com.cestec.cestec.model.spf.sp_bloqueia_acess;
 import com.cestec.cestec.repository.corretorRepository;
 import com.cestec.cestec.repository.cri.clienteRepository;
+import com.cestec.cestec.repository.cri.contratoRepository;
 import com.cestec.cestec.repository.cri.imovelRepository;
 import com.cestec.cestec.repository.cri.proprietarioRepository;
 import com.cestec.cestec.repository.generico.aplicacoesRepository;
 import com.cestec.cestec.repository.generico.funcionarioRepository;
 import com.cestec.cestec.repository.generico.modulosRepository;
+import com.cestec.cestec.repository.pagamento.contaRepository;
 import com.cestec.cestec.repository.spf.bloqueioAcessRepo;
 import com.cestec.cestec.repository.spf.bloqueioAcessUsuRepo;
+import com.cestec.cestec.util.utilForm;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -54,6 +59,9 @@ public class genService {
 
     @Autowired
     private corretorRepository corretorRepository;
+
+    @Autowired
+    private contratoRepository contratoRepository;
 
     public String getUserName(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
@@ -171,11 +179,35 @@ public class genService {
         return cliente.getNome();
     }
 
+    public String getDocumentoCliente(Integer codcliente) {
+        pcp_cliente cliente = clienteRepository.findByCodcliente(codcliente);
+        if(cliente == null) throw new RuntimeException("Código do Cliente [" + codcliente + "] não encontrado!");
+
+        if(cliente.getDocumento().length() == 14) return utilForm.formatDocToCnpj(cliente.getDocumento());
+        if(cliente.getDocumento().length() == 11) return utilForm.formatDocToCpf(cliente.getDocumento());
+
+        return "";
+    }
+
     public String getEnderecoImovel(Integer codimovel) {
         pcp_imovel imovel = imovelRepository.findByCodimovel(codimovel);
         if(imovel == null) throw new RuntimeException("Código do Imovel [" + codimovel + "] não encontrado!");
 
         return imovel.getEndereco_rua() + ", " + imovel.getEndereco_numero() + " - " + imovel.getEndereco_bairro() + ", " + imovel.getEndereco_cidade() + " - " + imovel.getEndereco_estado() + "," + imovel.getEndereco_postal();
+    }
+
+    public Integer findCodClienteByContrato(Integer codcontrato){
+        pcp_contrato contrato = contratoRepository.findByCodContrato(codcontrato);
+        if(contrato == null) throw new RuntimeException("Código do Contrato [" + codcontrato + "] não encontrado!");
+
+        return contrato.getPcp_cliente().getCodcliente();
+    }
+
+    public Integer findCodImovelByContrato(Integer codcontrato){
+        pcp_contrato contrato = contratoRepository.findByCodContrato(codcontrato);
+        if(contrato == null) throw new RuntimeException("Código do Contrato [" + codcontrato + "] não encontrado!");
+
+        return contrato.getPcp_imovel().getCodimovel();
     }
 
     public Boolean usuarioTemAcessoAplicacao(Integer idmodulo, Integer idaplicacao, String ideusu){

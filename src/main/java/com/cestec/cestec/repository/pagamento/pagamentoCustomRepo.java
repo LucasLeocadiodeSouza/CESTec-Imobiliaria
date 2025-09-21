@@ -15,11 +15,8 @@ public class pagamentoCustomRepo {
     
     public List<faturamentoDTO> buscarFaturaCliente(){
         String query = "SELECT new com.cestec.cestec.model.contasAPagar.faturamentoDTO( "
-                     + "cliente.codcliente,cliente.nome,cliente.documento,contrato.codcontrato,fat.id,fat.valor,fat.data_vencimento,fat.tipoPagamento,fat.situacao,fat.numeroDocumento,conta.id)"
-                     + "FROM Fatura fat "
-                     + "JOIN fat.pcp_cliente cliente "
-                     + "JOIN cliente.pcp_contrato contrato "
-                     + "JOIN fat.conta conta ";
+                     + "fat.pcp_cliente.codcliente,fat.pcp_cliente.nome,fat.pcp_cliente.documento,fat.pcp_contrato.id,fat.pcp_contrato.pcp_imovel.codimovel,fat.id,fat.valor,fat.data_vencimento,fat.tipoPagamento,fat.situacao,fat.numeroDocumento,fat.conta.id)"
+                     + "FROM Fatura fat ";
         
         var q = em.createQuery(query, faturamentoDTO.class);
         
