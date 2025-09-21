@@ -244,6 +244,13 @@ public class cri004s {
 
         utilForm.initGrid();
         for (int i = 0; i < contratos.size(); i++) {
+            pcp_contrato contrato = contratoRepository.findByCodContrato(contratos.get(i).getCodcontrato());
+            
+            String valorlib;
+            if(contrato.getValorliberado() == null) valorlib = "0.00";
+            else valorlib = contrato.getValorliberado().toString();
+
+
             utilForm.criarRow();
             utilForm.criarColuna(contratos.get(i).getCodcontrato().toString());
             utilForm.criarColuna(getSituacaoContratoColor(contratos.get(i).getSituacao()));
@@ -264,6 +271,7 @@ public class cri004s {
             utilForm.criarColuna(gen.getNomeCorretorById(contratos.get(i).getCodcorretor()));
             utilForm.criarColuna(contratos.get(i).getSituacao().toString());
             utilForm.criarColuna(getSituacaoContrato(contratos.get(i).getSituacao()));
+            utilForm.criarColuna(valorlib);
         }
 
         return utilForm.criarGrid();

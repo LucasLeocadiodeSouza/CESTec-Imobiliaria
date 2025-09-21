@@ -8,5 +8,5 @@ import lombok.Setter;
 public class AccessTokenBB {
     private String access_token;
     private String type_token;
-    private int expires_in;
+    private int    expires_in;
 }

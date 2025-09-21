@@ -10,4 +10,6 @@ import com.cestec.cestec.model.contasAPagar.Fatura;
 public interface faturaRepository extends JpaRepository<Fatura, Long>{
     @Query("SELECT fat FROM Fatura fat WHERE id = :id")
     Fatura findFaturaById(@Param("id") Long id);
+
+    Fatura findTopByOrderByIdDesc();
 }
