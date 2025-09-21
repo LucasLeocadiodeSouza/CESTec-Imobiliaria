@@ -16,6 +16,7 @@ public class faturamentoDTO {
     private String        nomecliente;
     private String        documento;
     private Integer       codcontrato;
+    private Integer       codimovel;
     private Long          codfatura;
     private BigDecimal    valor;
     private LocalDate     vencimento;

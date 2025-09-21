@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.cestec.cestec.model.cri.pcp_cliente;
+import com.cestec.cestec.model.cri.pcp_contrato;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -68,4 +69,8 @@ public class Fatura {
     @ManyToOne
     @JoinColumn(name="pessoa_id")
     private pcp_cliente pcp_cliente;
+
+    @ManyToOne
+    @JoinColumn(name="contrato_id")
+    private pcp_contrato pcp_contrato;
 }

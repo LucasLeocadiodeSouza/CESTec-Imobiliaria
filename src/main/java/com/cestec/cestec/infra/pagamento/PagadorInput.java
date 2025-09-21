@@ -12,12 +12,12 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PagadorInput {
     private Integer tipoInscricao;
-    private String numeroInscricao;
-    private String nome;
-    private String endereco;
-    private Long cep;
-    private String cidade;
-    private String bairro;
-    private String uf;
-    private String telefone;
+    private String  numeroInscricao;
+    private String  nome;
+    private String  endereco;
+    private Long    cep;
+    private String  cidade;
+    private String  bairro;
+    private String  uf;
+    private String  telefone;
 }

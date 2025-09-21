@@ -319,7 +319,7 @@ div.grid {display: flex;
           justify-content: center;
           align-items: flex-start;}
        
-.div_table_init {display: flex; flex-direction: column; height: 100%; margin-block: 20px; border: 1px solid var(--color-bg-th, #e1e1e1); overflow: hidden;}
+.div_table_init {display: flex; flex-direction: column; height: 100%; margin-bottom: 20px; margin-top: 5px; border: 1px solid var(--color-bg-th, #e1e1e1); overflow: hidden;}
 
 tr {font-size: calc(var(--font-size-label,15px) + 1px);}
 

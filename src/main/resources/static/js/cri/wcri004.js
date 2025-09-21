@@ -16,7 +16,7 @@ function iniciarEventos() {
 
     CONTRATOS_GRID               = new GridForm_init();
     CONTRATOS_GRID.id            = "tabela_contrato";
-    CONTRATOS_GRID.columnName    = "codcontrato,situacao,codcliente,nomeCliente,codproprietario,nomeProp,codimovel,tipo,negociacao,preco,_datinicio,_datfinal,_valor,_endereco_bairro,_codcorretor,_codtipo,_nomevendedor,_situacao,_descsit";
+    CONTRATOS_GRID.columnName    = "codcontrato,situacao,codcliente,nomeCliente,codproprietario,nomeProp,codimovel,tipo,negociacao,preco,_datinicio,_datfinal,_valor,_endereco_bairro,_codcorretor,_codtipo,_nomevendedor,_situacao,_descsit,_vlrlib";
     CONTRATOS_GRID.columnLabel   = "Contrato,Situação,Cod. Cli.,Nome Cli.,Cod. Prop.,Nome Pro.,Cod. Imov.,Tipo,Contrato,Valor (R$)";
     CONTRATOS_GRID.columnWidth   = "9,8,9,15,9,15,9,11,10,10";
     CONTRATOS_GRID.columnAlign   = "c,c,c,eoe,c,eoe,c,c,c,d";
@@ -246,11 +246,12 @@ function controlaTela(opc){
         desabilitaCampo('bcancela',      ehConsulta() || !ehAlterando() || (!ehSituacaoAberta() && !ehSituacaoReprovada()));
         desabilitaCampo('benviaaprov',   ehConsulta() || !ehAlterando() || (!ehSituacaoAberta() && !ehSituacaoReprovada()));
 
-        setDisplay("dmcontrato",  ehInserindo()?"none":"block");
-        setDisplay("dmsituacao",  ehInserindo()?"none":"block");
-        setDisplay("bcadastro",   ehManutencao() && ((ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada()) || ehInserindo()))?"flex":"none");
-        setDisplay("bcancela",    ehManutencao() && ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada())?"flex":"none");
-        setDisplay("benviaaprov", ehManutencao() && ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada())?"flex":"none");
+        setDisplay("dmcontrato",     ehInserindo()?"none":"block");
+        setDisplay("dmsituacao",     ehInserindo()?"none":"block");
+        setDisplay("dvalorliberado", ehSituacaoAprovada()?"block":"none");
+        setDisplay("bcadastro",      ehManutencao() && ((ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada()) || ehInserindo()))?"flex":"none");
+        setDisplay("bcancela",       ehManutencao() && ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada())?"flex":"none");
+        setDisplay("benviaaprov",    ehManutencao() && ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada())?"flex":"none");
     }
 }
 
@@ -310,6 +311,10 @@ function ehSituacaoReprovada(){
     return form("hmsitcontrato").value == "4";
 }
 
+function ehSituacaoAprovada(){
+    return form("hmsitcontrato").value == "3";
+}
+
 function preencherModal(valoresLinha){                
     form('mcodprop').value      = valoresLinha[4];
     
@@ -328,6 +333,7 @@ function preencherModal(valoresLinha){
     form("mperiodofin").value   = valoresLinha[11];
     form("mvendedor").value     = valoresLinha[14];
     form("mnome").value         = valoresLinha[16];
+    form("mvlrlib").value       = valoresLinha[19];
     
     getOptionsImovel("0", valoresLinha[6]);
 }
@@ -391,7 +397,7 @@ function getOptionsImovel(codprop, valorInicial){
         valorInicial:   valorInicial
     };
 
-    CONSUL.consultar("getOptionsImovel",`/cri004/getOptionsImovel`,["codprop=" + codprop]);
+    CONSUL.consultar("getOptionsImovel",`/cri004/getOptionsImovel`,["codprop=" + codprop]); //validar se é todos ou somente disponiveis
 }
 
 function buscarUserName(){

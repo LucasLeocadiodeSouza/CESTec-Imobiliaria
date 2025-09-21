@@ -12,7 +12,7 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JurosMoraInput {
 
-    private Integer tipo;
+    private Integer    tipo;
     private BigDecimal porcentagem;
     private BigDecimal valor;
 }

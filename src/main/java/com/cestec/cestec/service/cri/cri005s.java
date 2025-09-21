@@ -142,6 +142,8 @@ public class cri005s {
             pcp_imovel imovel = imovelRepository.findByCodimovel(contrato.getPcp_imovel().getCodimovel());
             if(imovel.getStatus() != 1) throw new RuntimeException("O imovel está com status de '" + getDescStatus(imovel.getStatus()) + "' e não pode ser aprovado para o contrato!");
 
+            if(imovel.getPreco().compareTo(valorliberado) < 0) throw new RuntimeException("O valor liberado do imovel não pode ser maior que o valor do preco do imovel!");
+
             imovel.setStatus(2);
         }
 
