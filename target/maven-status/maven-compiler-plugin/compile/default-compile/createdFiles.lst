@@ -21,7 +21,6 @@ com\cestec\cestec\service\comWindowService.class
 com\cestec\cestec\infra\pagamento\JurosMoraInput$JurosMoraInputBuilder.class
 com\cestec\cestec\repository\pagamento\pagamentoCustomRepo.class
 com\cestec\cestec\infra\pagamento\JurosMoraInput.class
-com\cestec\cestec\controller\pga\pag001c.class
 com\cestec\cestec\infra\pagamento\CobrancaInput$CobrancaInputBuilder.class
 com\cestec\cestec\model\contasAPagar\BoletoRegistrado.class
 com\cestec\cestec\repository\metaRepository.class
@@ -76,7 +75,6 @@ com\cestec\cestec\service\pagamento\faturaService.class
 com\cestec\cestec\controller\pagamento\CobrancaController.class
 com\cestec\cestec\model\contasAPagar\FaturaRegistrada.class
 com\cestec\cestec\model\email.class
-com\cestec\cestec\service\pagamento\pga001s.class
 com\cestec\cestec\infra\pagamento\PagadorInput.class
 com\cestec\cestec\infra\pagamento\PagadorInput$PagadorInputBuilder.class
 com\cestec\cestec\model\funcionario.class
