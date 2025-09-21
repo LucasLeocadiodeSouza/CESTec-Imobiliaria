@@ -20,6 +20,7 @@ import com.cestec.cestec.model.cri.pcp_cliente;
 import com.cestec.cestec.repository.pagamento.faturaRegistradaRepository;
 import com.cestec.cestec.repository.pagamento.faturaRepository;
 import com.cestec.cestec.util.Normalizador;
+import jakarta.transaction.Transactional;
 
 @Service
 public class faturaService {
@@ -45,7 +46,7 @@ public class faturaService {
         return geradorboleto.gerar(fatura, cobranca);
     }
 
-  
+  @Transactional
     public BoletoRegistrado registrarBoleto(Long faturaId){
         String appkey       = ("16ca2cda2585435613a5d2d8475432f4");
         String clientClient = ("eyJpZCI6IjM5MyIsImNvZGlnb1B1YmxpY2Fkb3IiOjAsImNvZGlnb1NvZnR3YXJlIjoxMjk4OTUsInNlcXVlbmNpYWxJbnN0YWxhY2FvIjoxfQ");
@@ -55,9 +56,7 @@ public class faturaService {
         
         var fatura = faturaRepository.findFaturaById(faturaId);
 
-        var boletoRegistrado = cobrancacontroller.register(transformarFaturaEmCobranca(faturaId),token,appkey);        
-
-        //System.out.println(Long.valueOf(boletoRegistrado.getNumero()).toString());
+        var boletoRegistrado = cobrancacontroller.register(transformarFaturaEmCobranca(faturaId),token,appkey);
 
         fatura.setNossoNumero(Long.valueOf(boletoRegistrado.getNumero()).toString());
         faturaRepository.save(fatura);
@@ -69,12 +68,14 @@ public class faturaService {
         return boletoRegistrado;
     }
     
+
 	public CobrancaInput transformarFaturaEmCobranca(Long faturaId) {
 		var fatura = faturaRepository.findFaturaById(faturaId);
 		
 		return criarFatura(fatura);
 	}
 
+    @Transactional
     public CobrancaInput criarFatura(Fatura fatura){
         
         var desconto = DescontoInput.builder()
@@ -110,8 +111,6 @@ public class faturaService {
                                     .endereco(criarEnderecoCompleto(pessoa,40)) //o endereco deve ter 40 caracteres por causa da api do banco do brasil
                                     .build();
 
-        System.out.println("aaaa " + criarNossoNumero(fatura));
-
         return CobrancaInput.builder()
                             .numeroConvenio(Long.valueOf(fatura.getConvenio().getNumeroContrato()))
                             .numeroCarteira(Integer.valueOf(fatura.getConvenio().getCarteira()))
@@ -138,11 +137,26 @@ public class faturaService {
 		return data.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 	}
 
+    //Para producao...
 	private String criarNossoNumero(Fatura fatura) {
-		// regra: "000" + numero contrato convenio + 10 algarismos com zeros a esquerda
-		// utilizar como 10 algarismos o numero documento
-
-		return String.format("%010d", Long.valueOf(fatura.getConvenio().getNumeroContrato())).concat(String.format("%010d", Long.valueOf(fatura.getNumeroDocumento())));
+		try {
+            String numeroContrato = String.format("%010d", Long.valueOf(fatura.getConvenio().getNumeroContrato()));
+            
+            String numeroDoc = fatura.getNumeroDocumento();
+            
+            numeroDoc = numeroDoc.replaceAll("\\D", "");
+            
+            if (numeroDoc.length() > 10) {
+                numeroDoc = numeroDoc.substring(0, 10);
+            }
+            
+            numeroDoc = String.format("%010d", Long.valueOf(numeroDoc));
+            
+            return numeroContrato.concat(numeroDoc);
+            
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Erro ao formatar nosso número: " + e.getMessage());
+        }
 	}
 
     private String criarEnderecoCompleto(pcp_cliente pessoa, int tamanhoMaximoEndereco) {

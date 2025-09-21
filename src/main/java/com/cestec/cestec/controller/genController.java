@@ -171,10 +171,47 @@ public class genController {
         }
     }
 
+    @GetMapping("/getDocumentoCliente")
+    public ResponseEntity<?> getDocumentoCliente(@RequestParam(value = "codcliente", required = false) Integer codcliente){
+        try {
+            return ResponseEntity.ok(gen.getDocumentoCliente(codcliente));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/getEnderecoImovel")
     public ResponseEntity<?> getEnderecoImovel(@RequestParam(value = "codimovel", required = false) Integer codimovel){
         try {
             return ResponseEntity.ok(gen.getEnderecoImovel(codimovel));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage());
+        }
+    }
+
+    
+    @GetMapping("/findCodClienteByContrato")
+    public ResponseEntity<?> findCodClienteByContrato(@RequestParam(value = "codcontrato", required = false) Integer codcontrato){
+        try {
+            return ResponseEntity.ok(gen.findCodClienteByContrato(codcontrato));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage());
+        }
+    }
+    
+    @GetMapping("/findCodImovelByContrato")
+    public ResponseEntity<?> findCodImovelByContrato(@RequestParam(value = "codcontrato", required = false) Integer codcontrato){
+        try {
+            return ResponseEntity.ok(gen.findCodImovelByContrato(codcontrato));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
             

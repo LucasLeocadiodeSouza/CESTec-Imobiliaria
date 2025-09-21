@@ -10,12 +10,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/padrao.css">
-    <title>Consultar Cobranças</title>
+    <title>Geração de Crédito</title>
     <script src="/js/modules/adicionaScripts.js"></script>
     <script>
         adicionarHeadLinks();
         adicionaHeader();
-        addScriptsHead("/js/pga/wpga001.js");
+        addScriptsHead("/js/pga/wpga002.js");
     </script>
 <style>
     .ppp         {width: 32px;}
@@ -27,10 +27,6 @@
     .extralarge  {width: 300px;}
 
     th {padding: 9px !important;}
-
-    #bsalvar     {background-size: 20px 20px !important;}
-
-    #benviaboleto {background-size: 17px 17px !important; width: 125px;}
 
     .labelfiltro {font-weight: 600;
                   width: 160px;
@@ -47,17 +43,16 @@
     #dfatura {grid-column: 2; text-align: left;}
 
     .dado {display: flex; flex-direction: row;}
-    .dado p{margin-block: 5px;}
+    .dado p{margin-block: 5px; margin-top: 0;}
 
     #tabela_boletos {overflow-x: auto;}
 
-    #dmodalf_geracaoboleto {width:   750px; /* Subtrai 150px de cada lado */
-                            opacity: 1;
-                            display: flex;
-                            flex-direction: column;
-                            margin-inline:  150px;  /* Margem de 150px nas laterais */
-                            margin-block:   50px;
-                            padding-bottom: 20px;}
+    #dmodalf_geracaoboleto {width: 650px; opacity: 1; padding: 6px; padding-top: 0;}
+
+    .buttonsmodal {display: flex; justify-content: center; align-items: center; margin-top: 10px;}
+
+    #boletolink img {height: 20px; width: 20px; margin: 0; cursor: pointer;}
+
 </style>
 </head>
 <body>
@@ -81,19 +76,20 @@
 
             <div class='if'>
                 <label class="labelfiltro">CPF/CNPJ: </label>
-                <input type="text" id="codcliente"  name="codcliente"  class="medium">            
+                <input type="text" id="documento"  name="documento"  class="medium">            
             </div>           
 
             <div  class='if' style="display: flex; height: auto;">
                 <label class="labelfiltro"></label>                
                 <div id="bbuscar"    name="bbuscar"    class="button" value="Buscar"      data-icon="/icons/buscar.png"></div>
-                <div id="bnovabusca" name="bnovabusca" class="button" value="Nova Busca"  data-icon="/icons/novaPesquisa.png"></div>
+                <div id="bnovabusca" name="bnovabusca" class="button" value="Nova Busca"  data-icon="/icons/novaPesquisa.png"></div> 
                 <div id="blimpar"    name="blimpar"    class="button" value="Limpar"      data-icon="/icons/limparIcon.png"></div>
             </div>
         </fieldset>
         
         <div class='if' style="display: flex; margin-left: 5px;">                            
             <div id="bimprimir" name="bimprimir" class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
+            <div id="bgerarbol" name="bgerarbol" class="button" value="Gerar Boleto" data-icon="/icons/incluir.png"></div>
         </div>
 
         <div id='tabela_boletos'></div>
@@ -111,25 +107,25 @@
                 <legend id="mdescpagamento"></legend>
 
                 <div class="dado">
-                    <p id="mfatura" class="labelmodal">Fatura: </p>&nbsp;
+                    <label id="mfatura" class="labelmodal">Fatura: </label>&nbsp;
                     <p id="mdescfatura"></p>
                 </div>
 
                 <div class="dado">
-                    <p id="msituacao" class="labelmodal">Situação:</p>&nbsp;
+                    <label id="msituacao" class="labelmodal">Situação:</label>&nbsp;
                     <p id="mdescsituacao"></p>
                 </div>
 
                 <div id="dfatura" class="dado">
-                    <label class="labelmodal"></label>
-                    <label><a id="boletolink">Consultar Boleto</a></label>
+                    <label class="labelmodal">Baixar Boleto:</label>
+                    <div id="boletolink"><img src="/icons/pdf_download.png"></div>
                 </div>
             </fieldset>
 
-            <div class='dmf container'>
+            <div class='container'>
                 <div class='dmf'>
                     <label class="labelmodal">Código do Contrato: </label>
-                    <input type="text" id="mcodcontrato"  name="mcodcontrato"  class="p" disabled>
+                    <input type="text" id="mcodcontrato"  name="mcodcontrato"  class="p">
                 </div>
 
                 <div class='dmf'>
@@ -143,6 +139,11 @@
                     <input type="text" id="mdocumento"  name="mdocumento"  class="medium" disabled>
                 </div>
 
+                <div class='dmf'>
+                    <label class="labelmodal">Código do Imóvel: </label>
+                    <input type="text" id="mcodimovel"  name="mcodimovel"  class="p" disabled>
+                </div>
+
                 <div id="dnmrboleto" class='dmf'>
                     <label class="labelmodal">Número do Boleto: </label>
                     <input type="text" id="mnmrboleto"  name="mnmrboleto"  class="medium" disabled>
@@ -150,12 +151,21 @@
 
                 <div class='dmf'>
                     <label class="labelmodal">Valor (R$): </label>
-                    <input type="text" id="mvlr"  name="mvlr"  class="medium" disabled>&nbsp;&nbsp;&nbsp;&nbsp;                        
+                    <input type="text" id="mvlr"  name="mvlr"  class="medium" disabled>                   
+                </div>
+
+                <div class='dmf'>
+                    <label class="labelmodal">Desconto ofertado (R$): </label>
+                    <input type="text" id="mdesconto"  name="mdesconto"  class="medium" disabled>                     
                 </div>
 
                 <div class='dmf'>
                     <label class="labelmodal">Data do Vencimento: </label>
                     <input type="date" id="mdatavenc"  name="mdatavenc" disabled>
+                </div>
+
+                <div class=' buttonsmodal'>                            
+                    <div id="bgerar"  name="bgerar"  class="button" value="Gerar"></div>
                 </div>
             </div>
         </div>
