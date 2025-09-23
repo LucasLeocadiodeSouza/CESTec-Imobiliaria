@@ -41,6 +41,17 @@
     #dmodalf_contrato {width: 700px;
                        padding-bottom: 20px;
                        opacity: 1;}
+
+    #divisao_images {height: 385px; width: 100%;}
+
+    #container-miniimages {display: flex;height: 80px; gap: 2px; overflow-x: auto; overflow-y: hidden;}
+    .mini-images {height: calc(100% - 10px) !important; width: 60px !important; cursor: pointer;}
+
+    #image-principal {width: 100%; height: calc(100% - 10px); display: flex; align-items: center; justify-content: center; padding-top: 10px;}
+
+    .container-images {width: calc(100% - 20px); padding-inline: 10px;}
+
+    .image-focus {height: 235px !important; width: 310px !important;}
 </style>
 </head>
 <body>
@@ -101,81 +112,101 @@
                 <span     id="sacao"   name="sacao" style="display: none"></span>
             </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Proprietario: </label>
-                <input type="text" id="mcodproprietario"  name="mcodproprietario"  class="ppp">
-                <input type="text" id="mdescproprietario" name="mdescproprietario" class="large" disabled>
-            </div>                
+            <div id="containermodais">
+                <div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Proprietario: </label>
+                        <input type="text" id="mcodproprietario"  name="mcodproprietario"  class="ppp">
+                        <input type="text" id="mdescproprietario" name="mdescproprietario" class="large" disabled>
+                    </div>                
 
-            <div class='dmf'>
-                <label class="labelmodal">Tipo de Imovel: </label>
-                <select id="mstpimovel" name="mstpimovel" class="Intermedium"></select>
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Tipo de Imovel: </label>
+                        <select id="mstpimovel" name="mstpimovel" class="Intermedium"></select>
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Tipo de Contrato: </label>
-                <select id="mstpcontrato" name="mstpcontrato" class="Intermedium"></select>
-            </div>
-            
-            <div class='dmf'>
-                <label class="labelmodal">Area Total(M²): </label>
-                <input type="text" id="mmetrosquad" name="mmetrosquad" class="p">
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Tipo de Contrato: </label>
+                        <select id="mstpcontrato" name="mstpcontrato" class="Intermedium"></select>
+                    </div>
+                    
+                    <div class='dmf'>
+                        <label class="labelmodal">Area Total(M²): </label>
+                        <input type="text" id="mmetrosquad" name="mmetrosquad" class="p">
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Quartos: </label>
-                <input type="text" id="mquartos" name="mquartos" class="ppp">
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Quartos: </label>
+                        <input type="text" id="mquartos" name="mquartos" class="ppp">
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Banheiros: </label>
-                <input type="text" id="mbanheiro" name="mbanheiro" class="ppp">
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Banheiros: </label>
+                        <input type="text" id="mbanheiro" name="mbanheiro" class="ppp">
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Condomínio(R$): </label>
-                <input type="text" id="mcondominio" name="mcondominio" class="p">
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Condomínio(R$): </label>
+                        <input type="text" id="mcondominio" name="mcondominio" class="p">
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Bairro: </label>
-                <input type="text" id="mbairro"  name="mbairro"  class="large">&nbsp;&nbsp;
+                    <div class='dmf'>
+                        <label class="labelmodal">Bairro: </label>
+                        <input type="text" id="mbairro"  name="mbairro"  class="large">&nbsp;&nbsp;
 
-                <label class="labelmodal" style="width: auto !important;">Número: </label>
-                <input type="text" id="mnmr"  name="mnmr"  class="ppp">
-            </div>
-            
-            <div class='dmf'>
-                <label class="labelmodal">Rua: </label>
-                <input type="text" id="mrua"  name="mrua"  class="large">&nbsp;&nbsp;
+                        <label class="labelmodal" style="width: auto !important;">Número: </label>
+                        <input type="text" id="mnmr"  name="mnmr"  class="ppp">
+                    </div>
+                    
+                    <div class='dmf'>
+                        <label class="labelmodal">Rua: </label>
+                        <input type="text" id="mrua"  name="mrua"  class="large">&nbsp;&nbsp;
 
-                <label class="labelmodal" style="width: auto !important;">CEP: </label>
-                <input type="text" id="mcepini"    name="mcepini" maxlength="5" class="p">
-                <label class="labelmodal" style="width: auto !important;">-</label>
-                <input type="text" id="mcepdigito" name="mcepdigito" maxlength="3" class="ppp">
-            </div>
+                        <label class="labelmodal" style="width: auto !important;">CEP: </label>
+                        <input type="text" id="mcepini"    name="mcepini" maxlength="5" class="p">
+                        <label class="labelmodal" style="width: auto !important;">-</label>
+                        <input type="text" id="mcepdigito" name="mcepdigito" maxlength="3" class="ppp">
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Cidade: </label>
-                <input type="text" id="mcidade"  name="mcidade"  class="medium"> &nbsp;
-            
-                <label class="labelmodal" style="width: auto !important;">UF:</label>
-                <input type="text" id="muf"  name="muf"  class="ppp" maxlength="3">
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Cidade: </label>
+                        <input type="text" id="mcidade"  name="mcidade"  class="medium"> &nbsp;
+                    
+                        <label class="labelmodal" style="width: auto !important;">UF:</label>
+                        <input type="text" id="muf"  name="muf"  class="ppp" maxlength="3">
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Valor (R$): </label>
-                <input type="text" id="mvlr" name="mvlr" class="medium">
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Valor (R$): </label>
+                        <input type="text" id="mvlr" name="mvlr" class="medium">
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Inicio do Contrato: </label>
-                <input type="date" id="mperiodoini" name="mperiodoini" class="medium">
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Inicio do Contrato: </label>
+                        <input type="date" id="mperiodoini" name="mperiodoini" class="medium">
+                    </div>
 
-            <div class='dmf buttoncenter'>                            
-                <div id="bcadastro" name="bcadastro" class="button"         value="Cadastrar" data-icon="/icons/cadastro.png"></div>
-                <div id="bcancela"  name="bcancela"  class="button negacao" value="Cancelar"  data-icon="/icons/cancel.png"></div>
+                    <div class='dmf buttoncenter'>                            
+                        <div id="bcadastro" name="bcadastro" class="button"         value="Cadastrar" data-icon="/icons/cadastro.png"></div>
+                        <div id="bcancela"  name="bcancela"  class="button negacao" value="Cancelar"  data-icon="/icons/cancel.png"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div id="divisao_images">
+                        <div class="container-images">
+                            <div class="dmf">
+                                <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
+                                <div id="baddimg" name="baddimg" class="button" value="Add. Img" data-icon="/icons/plus_icon.png"></div>
+                            </div>
+
+                            <div id="dviewimages">
+                                <div id="image-principal"></div>
+                                <div id="container-miniimages"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
