@@ -1,11 +1,17 @@
 package com.cestec.cestec.service.cri;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.cestec.cestec.controller.cri.cri001c;
 import com.cestec.cestec.model.ImovelProprietarioDTO;
 import com.cestec.cestec.model.imagemDTO;
 import com.cestec.cestec.model.modelUtilForm;
@@ -110,7 +116,7 @@ public class cri001s {
         List<imagemDTO> pathSrcs = new ArrayList<>();
 
         for (pcp_imovel_img pcp_imovel_img : imagens) {
-            pathSrcs.add(new imagemDTO(codimovel, pcp_imovel_img.getImgpath()));
+            pathSrcs.add(new imagemDTO(pcp_imovel_img.getId().getSeq(), pcp_imovel_img.getImgpath()));
         }
 
         return pathSrcs;
@@ -198,6 +204,22 @@ public class cri001s {
         imagemimovel.setId(new pcp_imovel_imgId(seqimg + 1, codimovel));
 
         imovelImgRepo.save(imagemimovel);
+    }
+
+    @Transactional
+    public void removerImagemImovel(Integer seq, Integer codimovel, String ideusu) throws IOException{
+        if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
+
+        pcp_imovel imovelAnalise = imovelRepository.findByCodimovel(codimovel);
+        if(imovelAnalise == null) throw new RuntimeException("O codigo do imovel informado '" + codimovel + "' é invalido!");
+
+        pcp_imovel_img imovelImg = imovelImgRepo.findImgById(seq, codimovel);
+        if(imovelImg == null) throw new RuntimeException("Não encontrado uma imagem referente ao imovel de código '" + codimovel + "' com a sequencia informada '" + seq + "'!");
+
+        Path imagePath = Paths.get(cri001c.uploadDirectory, imovelImg.getImgpath());
+        Files.deleteIfExists(imagePath);
+
+        imovelImgRepo.delete(imovelImg);
     }
 
     /* ***************** */ 
