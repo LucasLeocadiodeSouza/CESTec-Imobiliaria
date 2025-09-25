@@ -1,14 +1,25 @@
 package com.cestec.cestec.service.cri;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.cestec.cestec.controller.cri.cri001c;
 import com.cestec.cestec.model.ImovelProprietarioDTO;
+import com.cestec.cestec.model.imagemDTO;
 import com.cestec.cestec.model.modelUtilForm;
 import com.cestec.cestec.model.cri.pcp_imovel;
+import com.cestec.cestec.model.cri.pcp_imovel_img;
+import com.cestec.cestec.model.cri.pcp_imovel_imgId;
 import com.cestec.cestec.model.cri.pcp_proprietario;
+import com.cestec.cestec.repository.cri.imovelImgRepo;
 import com.cestec.cestec.repository.cri.imovelRepository;
 import com.cestec.cestec.repository.cri.proprietarioRepository;
 import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
@@ -23,6 +34,9 @@ public class cri001s {
 
     @Autowired
     private imovelRepository imovelRepository;
+
+    @Autowired
+    private imovelImgRepo imovelImgRepo;
 
     @Autowired
     private prjContratosCustomRepository contratosCustomRepo;
@@ -96,6 +110,18 @@ public class cri001s {
 
     /* ***************** */ 
 
+    public List<imagemDTO> buscarImagensImovel(Integer codimovel){
+        List<pcp_imovel_img> imagens = imovelImgRepo.findAllImgByCodimovel(codimovel);
+
+        List<imagemDTO> pathSrcs = new ArrayList<>();
+
+        for (pcp_imovel_img pcp_imovel_img : imagens) {
+            pathSrcs.add(new imagemDTO(pcp_imovel_img.getId().getSeq(), pcp_imovel_img.getImgpath()));
+        }
+
+        return pathSrcs;
+    }
+
     /* ******** Salvar ********* */ 
     @Transactional
     public void salvarImovel(pcp_imovel imovel, Integer codproprietario, String ideusu) {
@@ -158,6 +184,42 @@ public class cri001s {
         imovelAnalise.setStatus(3);
 
         imovelRepository.save(imovelAnalise);
+    }
+
+    @Transactional
+    public void adicionarImagemImovel(String image, Integer codimovel, String ideusu){
+        if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
+
+        pcp_imovel imovelAnalise = imovelRepository.findByCodimovel(codimovel);
+        if(imovelAnalise == null) throw new RuntimeException("O codigo do imovel informado '" + codimovel + "' é invalido!");
+
+        Integer seqimg = imovelImgRepo.findMaxSeqByCodimovel(codimovel);
+        if(seqimg == null) seqimg = 0;
+
+        pcp_imovel_img imagemimovel = new pcp_imovel_img();
+        imagemimovel.setCriado_em(LocalDate.now());
+        imagemimovel.setIdeusu(ideusu);
+        imagemimovel.setPcp_imovel(imovelAnalise);
+        imagemimovel.setImgpath(image);
+        imagemimovel.setId(new pcp_imovel_imgId(seqimg + 1, codimovel));
+
+        imovelImgRepo.save(imagemimovel);
+    }
+
+    @Transactional
+    public void removerImagemImovel(Integer seq, Integer codimovel, String ideusu) throws IOException{
+        if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
+
+        pcp_imovel imovelAnalise = imovelRepository.findByCodimovel(codimovel);
+        if(imovelAnalise == null) throw new RuntimeException("O codigo do imovel informado '" + codimovel + "' é invalido!");
+
+        pcp_imovel_img imovelImg = imovelImgRepo.findImgById(seq, codimovel);
+        if(imovelImg == null) throw new RuntimeException("Não encontrado uma imagem referente ao imovel de código '" + codimovel + "' com a sequencia informada '" + seq + "'!");
+
+        Path imagePath = Paths.get(cri001c.uploadDirectory, imovelImg.getImgpath());
+        Files.deleteIfExists(imagePath);
+
+        imovelImgRepo.delete(imovelImg);
     }
 
     /* ***************** */ 

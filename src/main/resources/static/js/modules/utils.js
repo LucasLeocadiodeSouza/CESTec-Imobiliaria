@@ -80,7 +80,7 @@ function fillSelect(id,options,selectedFirst){
        select.appendChild(option_ele);
     });
 
-    if(selectedFirst) select.value = options[0].id;
+    if(selectedFirst && options.length != 0) select.value = options[0].id;
 }
 
 function getRadioValue(opc){
