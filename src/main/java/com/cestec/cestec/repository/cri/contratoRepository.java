@@ -16,6 +16,9 @@ public interface contratoRepository extends JpaRepository<pcp_contrato, Integer>
     @Query("SELECT contr FROM pcp_contrato contr WHERE contr.id = :codcontr")
     pcp_contrato findByCodContrato(@Param("codcontr") Integer codcontr);
 
+    @Query("SELECT contr FROM pcp_contrato contr WHERE contr.pcp_imovel.codimovel = :codimovel AND contr.ativo = TRUE")
+    pcp_contrato findContratoAtivoByCodImovel(@Param("codimovel") Integer codimovel);
+
     @Query("SELECT new com.cestec.cestec.model.cri.contratoDTO( " +
             "con.id, " + 
             "con.pcp_cliente.codcliente, " + 
