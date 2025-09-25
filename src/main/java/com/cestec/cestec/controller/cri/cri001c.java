@@ -78,6 +78,22 @@ public class cri001c {
         }
     }
 
+    @PostMapping("/removerImagemImovel")
+    public ResponseEntity<?> removerImagemImovel(@RequestParam(value = "seq", required = false) Integer seq,
+                                                 @RequestParam(value = "codimovel", required = false) Integer codimovel,
+                                                 HttpServletRequest request){
+        try {
+            cri001s.removerImagemImovel(seq, codimovel, gen.getUserName(request));
+
+            return ResponseEntity.ok("OK");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro interno ao inativar imovel: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/buscarImagensImovel")
     public ResponseEntity<?> buscarImagensImovel(@RequestParam(value = "codimovel", required = false) Integer codimovel){
         try {

@@ -61,6 +61,7 @@ function iniciarEventos() {
     event_click("bcadastro");
     event_click("bcancela");
     event_click("baddimg");
+    event_click("bexclimg");
 
     CONSUL.filterChange('codproprietario','',`/gen/getNomeProp`,['codprop:codproprietario'],'descproprietario');
     CONSUL.filterChange('mcodproprietario','',`/gen/getNomeProp`,['codprop:mcodproprietario'],'mdescproprietario');
@@ -127,6 +128,9 @@ function event_click(obj) {
                                 if(ImagemSelecionada) adicionarImagemImovel(ImagemSelecionada);
                             });
                             break;
+
+            case "bexclimg": removerImagemImovel(form("image-principal").childNodes[0].id);
+                             break;
         }
     });
 }
@@ -158,6 +162,11 @@ function filaFetchInit(){
                                           DMFDiv.closeModal();
                                           break;
 
+        case       "removerImagemImovel": alert("Sucesso!", "Imóvel Removido com sucesso!", 4);
+
+                                          carregaGridImoveis();
+                                          break;
+
         case            "inativarImovel": alert("Sucesso!", "Imóvel desativado com sucesso!", 4);
 
                                           carregaGridImoveis();
@@ -182,8 +191,8 @@ function filaFetchInit(){
 
                                           if(arrayImages.lenght != 0){
                                               arrayImages.forEach((imagem,index) => {
-                                                if(index == 0) form("image-principal").innerHTML = `<img src="${"/imoveisImages/" + imagem.src}" class="image-focus">`;
-                                                criarContainersImagens(imagem.src);
+                                                if(index == 0) form("image-principal").innerHTML = `<img src="${"/imoveisImages/" + imagem.src}" id="${imagem.id}" class="image-focus">`;
+                                                criarContainersImagens(imagem.id, imagem.src);
                                               });
                                           }
                                           break;
@@ -235,10 +244,12 @@ function controlaTela(opc){
         desabilitaCampo('bcadastro',       (!ehImovelAtivo() && !ehInserindo()) || ehConsulta());
         desabilitaCampo('bcancela',        (!ehImovelAtivo() && !ehInserindo()) ||  ehConsulta());
         desabilitaCampo("baddimg",          !ehAlterando());
+        desabilitaCampo("bexclimg",         !ehAlterando());
 
         setDisplay("bcadastro", (ehImovelAtivo() && !ehConsulta()) || ehInserindo()?"flex":"none");
         setDisplay("bcancela",  ehImovelAtivo() && !ehConsulta()?"flex":"none");
         setDisplay("baddimg",   ehAlterando()?"flex":"none");
+        setDisplay("bexclimg",  ehAlterando()?"flex":"none");
 
         CARROSSEL.setPositionInicial(0);
     }
@@ -357,6 +368,10 @@ function setOptionImovelContrato(origem, valorImovel, valorContrato) {
     CONSUL.consultar("getOptionsTpImovel",`/cri001/getOptionsTpImovel`);
 }
 
+function removerImagemImovel(seqImg){
+    CONSUL.consultar("removerImagemImovel",`/cri001/removerImagemImovel`,["seq=" + seqImg, "codimovel:mcodimovel"],"POST");
+}
+
 function adicionarImagemImovel(src){
     const formData = new FormData();
 
@@ -416,17 +431,18 @@ function ehImovelAtivo(){
     return form("msituacao").value == "1";
 }
 
-function criarContainersImagens(src){
+function criarContainersImagens(seqimg, src){
     const container = form("container-miniimages");
 
     const div = document.createElement("div");
 
     const img = document.createElement("img");
     img.src   = "/imoveisImages/" +  src;
+    img.id    = seqimg; //Para o metodo de excluir a imagem do banco
     img.classList.add("mini-images");
 
     div.addEventListener("click", ()=>{
-        form("image-principal").innerHTML = `<img src="${"/imoveisImages/" + src}" class="image-focus">`
+        form("image-principal").innerHTML = `<img src="${"/imoveisImages/" + src}" id="${seqimg}" class="image-focus">`
     });
 
     div.appendChild(img);
