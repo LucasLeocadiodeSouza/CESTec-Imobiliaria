@@ -38,6 +38,7 @@ function elementsForm_init(){
         divlabel.style.display        = "flex";
         divlabel.style.justifyContent = "flex-start";
         divlabel.style.alignItems     = "center";
+        divlabel.style.marginRight    = "4px";
 
         const inputlabel     = document.createElement("input");
         inputlabel.type      = "button";
