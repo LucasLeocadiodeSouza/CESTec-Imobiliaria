@@ -42,6 +42,10 @@ function iniciarEventos() {
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
 
+    CARROSSEL           = new carrosselform_init();
+    CARROSSEL.container = "containermodais";
+    CARROSSEL.createCarrossel();
+
     CONSUL = new consulForm_init();
     filaFetchInit();
 
@@ -172,6 +176,8 @@ function filaFetchInit(){
         case          "getOptionsImovel": fillSelect("msimovel",retorno,true);
                                           form('msimovel').childNodes[0].disabled = true;
                                           form('msimovel').value  = ACAOBUSCA.getOptionsImovel.valorInicial;
+
+                                          buscarImagensImovel();
                                           break;
 
         case             "getTipoImovel": form("mtpimovel").value = retorno;
@@ -208,6 +214,16 @@ function filaFetchInit(){
 
                                           buscarContratoGrid();
                                           DMFDiv.closeModal();
+                                          break;
+
+        case       "buscarImagensImovel": const arrayImages = retorno;
+
+                                          if(arrayImages.lenght != 0){
+                                              arrayImages.forEach((imagem,index) => {
+                                                if(index == 0) form("image-principal").innerHTML = `<img src="${"/imoveisImages/" + imagem.src}" id="${imagem.id}" class="image-focus">`;
+                                                criarContainersImagens(imagem.id, imagem.src);
+                                              });
+                                          }
                                           break;
         }
     }
@@ -252,6 +268,8 @@ function controlaTela(opc){
         setDisplay("bcadastro",      ehManutencao() && ((ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada()) || ehInserindo()))?"flex":"none");
         setDisplay("bcancela",       ehManutencao() && ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada())?"flex":"none");
         setDisplay("benviaaprov",    ehManutencao() && ehAlterando() && (ehSituacaoAberta() || ehSituacaoReprovada())?"flex":"none");
+
+        CARROSSEL.setPositionInicial(0);
     }
 }
 
@@ -284,6 +302,8 @@ function limparTela(opc){
         form('mnome').value         = "";
         form("mperiodoini").value   = "";
         form("mperiodofin").value   = "";
+
+        deletarContainersImagens();
     }
 } 
 
@@ -392,14 +412,41 @@ function getNomePropModal(){
     CONSUL.consultar("getNomePropModal",`/gen/getNomeProp`,['codprop:mcodprop']);
 }
 
+function buscarImagensImovel(){
+    CONSUL.consultar("buscarImagensImovel",`/cri004/buscarImagensImovel`,['codimovel:msimovel']);
+}
+
 function getOptionsImovel(codprop, valorInicial){
     ACAOBUSCA.getOptionsImovel = {
         valorInicial:   valorInicial
     };
 
-    CONSUL.consultar("getOptionsImovel",`/cri004/getOptionsImovel`,["codprop=" + codprop]); //validar se é todos ou somente disponiveis
+    CONSUL.consultar("getOptionsImovel",`/cri004/getOptionsImovel`,["codprop=" + codprop, "somenteativos=" + (ehInserindo() || ehSituacaoAberta() || ehSituacaoReprovada())]);
 }
 
 function buscarUserName(){
     CONSUL.consultar("buscarUserName",`/home/userlogin`);
+}
+
+function criarContainersImagens(seqimg, src){
+    const container = form("container-miniimages");
+
+    const div = document.createElement("div");
+
+    const img = document.createElement("img");
+    img.src   = "/imoveisImages/" +  src;
+    img.id    = seqimg; //Para o metodo de excluir a imagem do banco
+    img.classList.add("mini-images");
+
+    div.addEventListener("click", ()=>{
+        form("image-principal").innerHTML = `<img src="${"/imoveisImages/" + src}" id="${seqimg}" class="image-focus">`
+    });
+
+    div.appendChild(img);
+    container.appendChild(div);
+}
+
+function deletarContainersImagens(){
+    form("container-miniimages").innerHTML = "";
+    form("image-principal").innerHTML      = ""
 }

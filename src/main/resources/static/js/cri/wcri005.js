@@ -43,6 +43,10 @@ function iniciarEventos() {
     ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
     ABA.createAba();
 
+    CARROSSEL           = new carrosselform_init();
+    CARROSSEL.container = "containermodais";
+    CARROSSEL.createCarrossel();
+
     DMFDiv              = new DMFForm_init();
     DMFDiv.divs         = "dmodalf_aprovacao";
     DMFDiv.tema         = 1;
@@ -140,6 +144,16 @@ function filaFetchInit(){
                                            form("bnovabusca").click();
                                            form("bbuscar").click();
                                            break;
+
+        case       "buscarImagensImovel": const arrayImages = retorno;
+
+                                          if(arrayImages.lenght != 0){
+                                              arrayImages.forEach((imagem,index) => {
+                                                if(index == 0) form("image-principal").innerHTML = `<img src="${"/imoveisImages/" + imagem.src}" id="${imagem.id}" class="image-focus">`;
+                                                criarContainersImagens(imagem.id, imagem.src);
+                                              });
+                                          }
+                                          break;
         }
     }
 }
@@ -166,6 +180,8 @@ function controlaTela(opc){
 
         setDisplay("baprovar",  ehManutencao()?"flex":"none");
         setDisplay("breprovar", ehManutencao()?"flex":"none");
+
+        CARROSSEL.setPositionInicial(0);
     }
 }
 
@@ -187,6 +203,7 @@ function limparTela(opc){
         form("hcodcorretor").value = "";
         form('mvlrlib').value      = "0.00";
         form('mobs').value         = "";
+        deletarContainersImagens();
     }
 } 
 
@@ -226,7 +243,13 @@ function puxarFichaContrato(valoresLinha){
                            banheiro: valoresLinha[21],
                            tamanho:  valoresLinha[14]};
 
+    buscarImagensImovel(valoresLinha[2]);
+
     criarMarcadorImovel(map.center, dadosmarcador);
+}
+
+function buscarImagensImovel(codimovel){
+    CONSUL.consultar("buscarImagensImovel",`/cri004/buscarImagensImovel`,['codimovel=' + codimovel]);
 }
 
 function buscarContratoAprovacao(){
@@ -342,4 +365,27 @@ async function initMap() {
       mapId: "map",
       mapTypeId: 'roadmap'
     });
+}
+
+function criarContainersImagens(seqimg, src){
+    const container = form("container-miniimages");
+
+    const div = document.createElement("div");
+
+    const img = document.createElement("img");
+    img.src   = "/imoveisImages/" +  src;
+    img.id    = seqimg; //Para o metodo de excluir a imagem do banco
+    img.classList.add("mini-images");
+
+    div.addEventListener("click", ()=>{
+        form("image-principal").innerHTML = `<img src="${"/imoveisImages/" + src}" id="${seqimg}" class="image-focus">`
+    });
+
+    div.appendChild(img);
+    container.appendChild(div);
+}
+
+function deletarContainersImagens(){
+    form("container-miniimages").innerHTML = "";
+    form("image-principal").innerHTML      = ""
 }
