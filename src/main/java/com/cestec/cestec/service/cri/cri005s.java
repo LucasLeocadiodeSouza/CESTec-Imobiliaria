@@ -1,13 +1,18 @@
 package com.cestec.cestec.service.cri;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.cestec.cestec.model.imagemDTO;
 import com.cestec.cestec.model.cri.contratoDTO;
 import com.cestec.cestec.model.cri.pcp_contrato;
 import com.cestec.cestec.model.cri.pcp_imovel;
+import com.cestec.cestec.model.cri.pcp_imovel_img;
 import com.cestec.cestec.repository.cri.contratoRepository;
+import com.cestec.cestec.repository.cri.imovelImgRepo;
 import com.cestec.cestec.repository.cri.imovelRepository;
 import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
 import com.cestec.cestec.service.sp_userService;
@@ -26,6 +31,9 @@ public class cri005s {
 
     @Autowired
     private imovelRepository imovelRepository;
+
+    @Autowired
+    private imovelImgRepo imovelImgRepo;
 
     @Autowired
     private sp_userService sp_user;
@@ -117,6 +125,18 @@ public class cri005s {
         }
 
         return utilForm.criarGrid();
+    }
+
+        public List<imagemDTO> buscarImagensImovel(Integer codimovel){
+        List<pcp_imovel_img> imagens = imovelImgRepo.findAllImgByCodimovel(codimovel);
+
+        List<imagemDTO> pathSrcs = new ArrayList<>();
+
+        for (pcp_imovel_img pcp_imovel_img : imagens) {
+            pathSrcs.add(new imagemDTO(pcp_imovel_img.getId().getSeq(), pcp_imovel_img.getImgpath()));
+        }
+
+        return pathSrcs;
     }
 
     @Transactional

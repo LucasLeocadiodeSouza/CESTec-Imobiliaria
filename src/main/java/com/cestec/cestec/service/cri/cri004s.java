@@ -3,20 +3,24 @@ package com.cestec.cestec.service.cri;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cestec.cestec.model.imagemDTO;
 import com.cestec.cestec.model.modelUtilForm;
 import com.cestec.cestec.model.cri.contratoDTO;
 import com.cestec.cestec.model.cri.pcp_cliente;
 import com.cestec.cestec.model.cri.pcp_contrato;
 import com.cestec.cestec.model.cri.pcp_corretor;
 import com.cestec.cestec.model.cri.pcp_imovel;
+import com.cestec.cestec.model.cri.pcp_imovel_img;
 import com.cestec.cestec.model.cri.pcp_proprietario;
 import com.cestec.cestec.repository.corretorRepository;
 import com.cestec.cestec.repository.cri.clienteRepository;
 import com.cestec.cestec.repository.cri.contratoRepository;
+import com.cestec.cestec.repository.cri.imovelImgRepo;
 import com.cestec.cestec.repository.cri.imovelRepository;
 import com.cestec.cestec.repository.cri.proprietarioRepository;
 import com.cestec.cestec.repository.custom.prjContratosCustomRepository;
@@ -48,9 +52,13 @@ public class cri004s {
     private prjContratosCustomRepository contratosCustomRepository;
 
     @Autowired
+    private imovelImgRepo imovelImgRepo;
+
+    @Autowired
     private sp_userService sp_user;
 
-    @Autowired genService gen;
+    @Autowired 
+    private genService gen;
 
     public String getTipoImovel(Integer codImovel) {
         switch (codImovel) {
@@ -124,13 +132,19 @@ public class cri004s {
         return imovel.getPcp_proprietario().getCodproprietario();
     }
 
-    public List<modelUtilForm> getOptionsImovel(Integer codpropr){
+    public List<modelUtilForm> getOptionsImovel(Integer codpropr, Boolean somenteativos){
         List<modelUtilForm> listaOpt = new java.util.ArrayList<>();
         int i = 0;
 
         List<pcp_imovel> imoveis = new java.util.ArrayList<>();
-        if(codpropr == null || codpropr == 0) imoveis = imovelRepository.findAtivos();
-        else imoveis = imovelRepository.findAtivosByProprietario(codpropr);
+        if(codpropr == null || codpropr == 0) {
+            if(somenteativos) imoveis = imovelRepository.findAtivos(); 
+            else imoveis = imovelRepository.findAll();
+        }
+        else {
+            if(somenteativos) imoveis = imovelRepository.findAtivosByProprietario(codpropr);
+            else imoveis = imovelRepository.findByProprietario(codpropr);
+        }
 
         listaOpt.add(new modelUtilForm(0, "Selecione um Imovel"));
 
@@ -146,6 +160,17 @@ public class cri004s {
         return listaOpt;
     }
 
+    public List<imagemDTO> buscarImagensImovel(Integer codimovel){
+        List<pcp_imovel_img> imagens = imovelImgRepo.findAllImgByCodimovel(codimovel);
+
+        List<imagemDTO> pathSrcs = new ArrayList<>();
+
+        for (pcp_imovel_img pcp_imovel_img : imagens) {
+            pathSrcs.add(new imagemDTO(pcp_imovel_img.getId().getSeq(), pcp_imovel_img.getImgpath()));
+        }
+
+        return pathSrcs;
+    }
 
     /******** Salvar *********/
     @Transactional
@@ -176,6 +201,8 @@ public class cri004s {
 
         pcp_corretor corretor = corretorRepository.findCorretorByIdeusu(ideusucorretor);
         if(corretor == null) throw new RuntimeException("Corretor não encontrado com o ideusu informado '" + ideusucorretor + "'!");
+
+        if(contratoRepository.findContratoAtivoByCodImovel(codimovel) != null) throw new RuntimeException("Já existe um contrato ativo para o imovel com código informado '" + codimovel + "'!");
 
         pcp_contrato contratoAnalise = contratoRepository.findByCodContrato(codcontrato);
 
