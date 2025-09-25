@@ -46,6 +46,16 @@
                        padding-bottom: 20px;
                        opacity: 1;}
 
+    #divisao_images {height: 385px; width: 100%;}
+
+    #container-miniimages {display: flex;height: 80px; gap: 2px; overflow-x: auto; overflow-y: hidden;}
+    .mini-images {height: calc(100% - 10px) !important; width: 60px !important; cursor: pointer;}
+
+    #image-principal {width: 100%; height: calc(100% - 10px); display: flex; align-items: center; justify-content: center; padding-top: 10px;}
+
+    .container-images {width: calc(100% - 20px); padding-inline: 10px;}
+
+    .image-focus {height: 235px !important; width: 310px !important;}
 </style>
 </head>
 <body>
@@ -113,81 +123,95 @@
                 <span     id="sacao"   name="sacao" style="display: none"></span>
             </div>
 
-            <div id="dmcontrato" class='dmf'>
-                <label class="labelmodal">Contrato: </label>
-                <input type="text" id="mcodcontrato" name="mcodcontrato" class="ppp" disabled>
-            </div>
+            <div id="containermodais">
+                <div>
+                    <div id="dmcontrato" class='dmf'>
+                        <label class="labelmodal">Contrato: </label>
+                        <input type="text" id="mcodcontrato" name="mcodcontrato" class="ppp" disabled>
+                    </div>
 
-            <div id="dmsituacao" class='dmf'>
-                <label class="labelmodal">Situação: </label>
-                <input type="text" id="msituacao" name="msituacao" class="medium" disabled>
-            </div>
+                    <div id="dmsituacao" class='dmf'>
+                        <label class="labelmodal">Situação: </label>
+                        <input type="text" id="msituacao" name="msituacao" class="medium" disabled>
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Negociante: </label>
-                <input type="text" id="mcodcliente"   name="mcodcliente"   class="ppp">
-                <input type="text" id="mdesccliente"  name="mdesccliente"  class="large" disabled>
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Negociante: </label>
+                        <input type="text" id="mcodcliente"   name="mcodcliente"   class="ppp">
+                        <input type="text" id="mdesccliente"  name="mdesccliente"  class="large" disabled>
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Proprietario: </label>
-                <input type="text" id="mcodprop"   name="mcodprop"   class="ppp">
-                <input type="text" id="mdescprop"  name="mdescprop"  class="large" disabled>
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Proprietario: </label>
+                        <input type="text" id="mcodprop"   name="mcodprop"   class="ppp">
+                        <input type="text" id="mdescprop"  name="mdescprop"  class="large" disabled>
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Imovel: </label>
-                <select id="msimovel" name="msimovel" class="large">
-                    <option value="0" disabled>Selecione um imovel</option>
-                </select>
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Imovel: </label>
+                        <select id="msimovel" name="msimovel" class="large">
+                            <option value="0" disabled>Selecione um imovel</option>
+                        </select>
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Tipo de Imovel: </label>
-                <input type="text" id="mtpimovel"  name="mtpimovel"  class="Intermedium" disabled>
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Tipo de Imovel: </label>
+                        <input type="text" id="mtpimovel"  name="mtpimovel"  class="Intermedium" disabled>
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Endereço: </label>
-                <input type="text" id="mloc"  name="mloc"  class="large" disabled>
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Endereço: </label>
+                        <input type="text" id="mloc"  name="mloc"  class="large" disabled>
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Tipo Contrato: </label>
-                <input type="text" id="mtpcontrato"  name="mtpcontrato"  class="medium" disabled>
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Tipo Contrato: </label>
+                        <input type="text" id="mtpcontrato"  name="mtpcontrato"  class="medium" disabled>
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Valor do Imovel (R$): </label>
-                <input type="text" id="mvlrimovel"  name="mvlrimovel"  class="medium" disabled>
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Valor do Imovel (R$): </label>
+                        <input type="text" id="mvlrimovel"  name="mvlrimovel"  class="medium" disabled>
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Valor negociado (R$): </label>
-                <input type="text" id="mvlrnegociado"  name="mvlrnegociado"  class="medium">
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Valor negociado (R$): </label>
+                        <input type="text" id="mvlrnegociado"  name="mvlrnegociado"  class="medium">
+                    </div>
 
-            <div id="dvalorliberado" class='dmf'>
-                <label class="labelmodal">Valor liberado (R$): </label>
-                <input type="text" id="mvlrlib"  name="mvlrlib"  class="medium" disabled>
-            </div>
+                    <div id="dvalorliberado" class='dmf'>
+                        <label class="labelmodal">Valor liberado (R$): </label>
+                        <input type="text" id="mvlrlib"  name="mvlrlib"  class="medium" disabled>
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Vendedor: </label>
-                <input type="text" id="mvendedor" name="mvendedor" class="small">
-                <input type="text" id="mnome"     name="mnome"     class="large" disabled>
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Vendedor: </label>
+                        <input type="text" id="mvendedor" name="mvendedor" class="small">
+                        <input type="text" id="mnome"     name="mnome"     class="large" disabled>
+                    </div>
 
-            <div class='dmf'>
-                <label class="labelmodal">Inicio do Contrato: </label>
-                <input type="date" id="mperiodoini" name="mperiodoini" class="medium">
-                <input type="date" id="mperiodofin" name="mperiodofin" class="medium">
-            </div>
+                    <div class='dmf'>
+                        <label class="labelmodal">Inicio do Contrato: </label>
+                        <input type="date" id="mperiodoini" name="mperiodoini" class="medium">
+                        <input type="date" id="mperiodofin" name="mperiodofin" class="medium">
+                    </div>
 
-            <div class='dmf buttoncenter'>                            
-                <div id="bcadastro"   name="bcadastro"   class="button"           value="Cadastrar"              data-icon="/icons/cadastro.png"></div>
-                <div id="bcancela"    name="bcancela"    class="button negacao"   value="Cancelar"               data-icon="/icons/cancel.png"></div>
-                <div id="benviaaprov" name="benviaaprov" class="button aceitacao" value="Enviar para Aprovação"  data-icon="/icons/contrato_check_icon.png"></div>
+                    <div class='dmf buttoncenter'>                            
+                        <div id="bcadastro"   name="bcadastro"   class="button"           value="Cadastrar"              data-icon="/icons/cadastro.png"></div>
+                        <div id="bcancela"    name="bcancela"    class="button negacao"   value="Cancelar"               data-icon="/icons/cancel.png"></div>
+                        <div id="benviaaprov" name="benviaaprov" class="button aceitacao" value="Enviar para Aprovação"  data-icon="/icons/contrato_check_icon.png"></div>
+                    </div>
+                </div>
+                <div>
+                    <div id="divisao_images">
+                        <div class="container-images">
+                            <div id="dviewimages">
+                                <div id="image-principal"></div>
+                                <div id="container-miniimages"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

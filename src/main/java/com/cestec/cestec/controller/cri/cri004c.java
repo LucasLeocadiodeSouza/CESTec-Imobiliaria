@@ -35,8 +35,9 @@ public class cri004c {
     }
 
     @GetMapping("/getOptionsImovel")
-    public List<modelUtilForm> getOptionsImovel(@RequestParam(value = "codprop", required = false) Integer codprop){
-        return cri004s.getOptionsImovel(codprop);
+    public List<modelUtilForm> getOptionsImovel(@RequestParam(value = "codprop", required = false) Integer codprop,
+                                                @RequestParam(value = "somenteativos" ,required = false) Boolean somenteativos){
+        return cri004s.getOptionsImovel(codprop, somenteativos);
     }
 
     @GetMapping("/getValorImovel")
@@ -57,6 +58,18 @@ public class cri004c {
     @GetMapping("/getProprietarioByImovel")
     public Integer getProprietarioByImovel(@RequestParam(value = "codimovel", required = false) Integer codimovel) {
         return cri004s.getProprietarioByImovel(codimovel);
+    }
+
+    @GetMapping("/buscarImagensImovel")
+    public ResponseEntity<?> buscarImagensImovel(@RequestParam(value = "codimovel", required = false) Integer codimovel){
+        try {
+            return ResponseEntity.ok(cri004s.buscarImagensImovel(codimovel));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro interno ao inativar imovel: " + e.getMessage());
+        }
     }
 
     @PostMapping("/inserirAlterarContrato")

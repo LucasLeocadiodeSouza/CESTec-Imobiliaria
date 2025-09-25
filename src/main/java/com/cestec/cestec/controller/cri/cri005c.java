@@ -26,6 +26,18 @@ public class cri005c {
     @Autowired
     private genService gen;
 
+    @GetMapping("/buscarImagensImovel")
+    public ResponseEntity<?> buscarImagensImovel(@RequestParam(value = "codimovel", required = false) Integer codimovel){
+        try {
+            return ResponseEntity.ok(wcr005s.buscarImagensImovel(codimovel));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro interno ao inativar imovel: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/buscarContratoAprovacao")
     public List<?> buscarContratoAprovacao(@RequestParam(value=  "codprop", required = false)     Integer codprop,
                                            @RequestParam(value = "codcliente", required = false)  Integer codcliente,
