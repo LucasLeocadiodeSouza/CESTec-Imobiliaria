@@ -125,8 +125,6 @@
 
     .container-descagendamento {overflow-y: auto; height: 100%; width: 90%;}
 
-    .titulo-descagendamento {background-color: var(--color-secundaria, #23334e); width: 100%; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; height: 35px;}
-
     .titulo-container {font-size:  18px !important; color: var(--color-lb-claro, #334970) !important; font-weight: normal !important;}
 
     #ddescagendabutton {padding-left: 0px; padding-right: 0px; width: 315px; height: 15px; background-color: var(--color-primary, #334970);}
@@ -180,7 +178,7 @@
     .grafico-concluidas {background: #449d5f}
     .grafico-todas      {background: #5060af} */
 
-    #charttarefas {width: 80%;}
+    #charttarefas {width: 100%;}
 
     #icon_notif {position: absolute;
                  right:    2px;
@@ -372,9 +370,12 @@
                    padding:          5px;
                    display:          flex;}
 
-    .titulo-descagendamento {display: flex; flex-direction: column; align-items: center; justify-content: center;}
-
+    .titulo-descagendamento {background-color: var(--color-secundaria, #23334e); width: 100%; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; height: 35px; display: flex; flex-direction: column; align-items: center; justify-content: center;}
     .titulo-descagendamento label {color: #FFF; font-size: var(--font-size-label,15px);}
+
+    .icon-point {height: 5px; width: 5px; border-radius: 5px; position: absolute; transform: translate(50%, 50%); top: 0px;}
+    .desc-point {margin-left: 15px; gap: 5px; display: flex; overflow: hidden;}
+    .titulo-point {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
 
     .container-esquerda {width: 100%; height: calc(100% - 50px); display: flex; justify-content: flex-end;}
 
@@ -579,7 +580,34 @@
                             <div class="tarefa">
                                 <div id="charttarefas"></div>
                             </div>
-                            <div id="ddesccontratoslegenda" class="ddescagenda"></div>
+                            <div id="ddesccontratoslegenda" class="ddescagenda">
+                                <div class="titulo-descagendamento">
+                                    <label>Descrição</label>
+                                </div>
+                                <div class="div-descagen" style="margin-top: 10px;">
+                                    <div class="icon-point" style=" background-color: #5060af;"></div>
+                                    <div class="desc-point">
+                                        <label>Iniciadas:</label>
+                                        <label id="tarefas-inic"></label>
+                                    </div>
+                                </div>
+
+                                <div class="div-descagen">
+                                    <div class="icon-point" style=" background-color: #9d4444;"></div>
+                                    <div class="desc-point">
+                                        <label>Direcionadas:</label>
+                                        <label id="tarefas-direc"></label>
+                                    </div>
+                                </div>
+
+                                <div class="div-descagen">
+                                    <div class="icon-point" style=" background-color: #449d5f;"></div>
+                                    <div class="desc-point">
+                                        <label>Concluidas:</label>
+                                        <label id="tarefas-concl"></label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>

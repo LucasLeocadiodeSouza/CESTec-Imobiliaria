@@ -52,7 +52,6 @@ function iniciarEventos() {
     
     getBotoesAplMenu();
     controlaTela("inicio");
-    criarGraficoTarefas();
 }
 
 function event_click(obj) {
@@ -287,13 +286,8 @@ function filaFetchInit(){
                                    form("lid").textContent = retorno;
                                    break;
 
-        case "buscarAgendamentos": AGENDSJSON = retorno;
-                                   carregaMes();
-                                   break;
-
-        case 'buscarHistoricoAcessoApl': retornoBuscarHistoricoAcesso(retorno);
-                                         buscarAgendamentos();
-                                         break;
+        case 'inativarNotificacao': carregarNotificacoes();
+                                    break;
 
         case         "getBotoesAplMenu": let botoes = [];
                                          for(const idModulo in retorno) {
@@ -310,8 +304,28 @@ function filaFetchInit(){
                                           criarBotaoExterno("dintensint",botoes);
                                           break;
 
-        case      'inativarNotificacao': carregarNotificacoes();
+        case 'buscarHistoricoAcessoApl': retornoBuscarHistoricoAcesso(retorno);
+                                         buscarAgendamentos();
                                          break;
+
+        case "buscarAgendamentos": AGENDSJSON = retorno;
+                                   carregaMes();
+                                   findAllChamadosByIdeusu();
+                                   break;
+
+        case "findAllChamadosByIdeusu": const chamados   = retorno;
+                                        var direcionadas = 0;
+                                        var iniciadas    = 0;
+                                        var concluidas   = 0;
+
+                                        chamados.forEach(chamado =>{
+                                            if(chamado.estado == 1) direcionadas ++;
+                                            else if(chamado.estado == 2) iniciadas ++;
+                                            else if(chamado.estado == 3) concluidas ++;
+                                        })
+                                          
+                                        criarGraficoTarefas(direcionadas, concluidas, iniciadas);
+                                        break;
         }
     }
 }
@@ -338,20 +352,11 @@ function criarDescricaoData(mesanalise){
         if(index == 0) divagend.style.marginTop = "10px";
 
         const div                 = document.createElement("div");
-        div.style.height          = "5px";
-        div.style.width           = "5px";
-        div.style.borderRadius    = "5px";
-        div.style.position        = "absolute";
-        div.style.transform       = "translate(50%, 50%)";
-        div.style.top             = "0";
+        div.className             = "icon-point";
         div.style.backgroundColor = agend.corAgend;
 
-        const div2                = document.createElement("div");
-        div2.style.marginLeft     = "15px";
-        div2.style.gap            = "5px";
-        div2.style.display        = "flex";
-        div2.style.overflow       = "hidden";
-        div2.style.textColor      = "#FFF";
+        const div2     = document.createElement("div");
+        div2.className = "desc-point";
 
         const datagend          = document.createElement("label");
         const dataFormatada     = `${dia}/${mes}/${ano}`;
@@ -360,11 +365,9 @@ function criarDescricaoData(mesanalise){
         const separador         = document.createElement("label");
         separador.innerText     = " - ";
 
-        const titulo              = document.createElement("label");
-        titulo.innerText          = agend.titulo;
-        titulo.style.whiteSpace   = "nowrap";
-        titulo.style.overflow     = "hidden";
-        titulo.style.textOverflow = "ellipsis";
+        const titulo     = document.createElement("label");
+        titulo.innerText = agend.titulo;
+        titulo.className = "titulo-point";
 
         div2.appendChild(datagend);
         div2.appendChild(separador);
@@ -522,6 +525,10 @@ function salvarCookieAplicacao(caminho, idmodulo, idaplicacao){
                                                               "POST")
 }
 
+function findAllChamadosByIdeusu(){
+    CONSUL.consultar("findAllChamadosByIdeusu",`/home/findAllChamadosByIdeusu`,[]);
+}
+
 function valorMetaMensal(){
     fetch("/home/userlogin", {
         method: "GET",
@@ -645,6 +652,8 @@ function carregarNotificacoes(){
 function temNotificacaoPendente(){
     const rows = NOTIFY_GRID.getTableNode();
 
+    if(!rows) return;
+    
     form("icon_notif").style.display = "none";
 
     rows.forEach(row =>{
@@ -654,10 +663,14 @@ function temNotificacaoPendente(){
     });
 }
 
-function criarGraficoTarefas(data){
+function criarGraficoTarefas(direcionadas, concluidas, iniciadas){
     const chartDom = form('charttarefas');
 
     var chart = echarts.init(chartDom);
+
+    form("tarefas-inic").innerText  = iniciadas;
+    form("tarefas-direc").innerText = direcionadas;
+    form("tarefas-concl").innerText = concluidas;
 
     const option = {
         tooltip: {
@@ -669,23 +682,27 @@ function criarGraficoTarefas(data){
             '#5060af'
         ],
         label: {
-           fontSize: 13
+            show: true,
+            color: '#f5f5f5',
+            fontSize: 12
+        },
+        labelLine: {
+          show: true,
+          length: 20,
+          length2: 30
         },
         series: [{
             name: 'Tarefas',
             type: 'pie',
             radius: ['40%', '70%'],
-            data: /* data */ [
-                { value: 10,  name: 'Pendentes' },
-                { value: 20,  name: 'Concluidas' },
-                { value: 5,   name: 'Todas' },
+            data: [
+                { value: direcionadas, name: 'Direcionadas' },
+                { value: concluidas,   name: 'Concluidas' },
+                { value: iniciadas,    name: 'Iniciadas' },
             ],
             itemStyle: {
                 borderWidth: 1,
                 borderColor: '#fff'
-            },
-            label: {
-                color: '#f5f5f5',
             }
         }]
     };
