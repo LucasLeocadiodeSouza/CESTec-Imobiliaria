@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/padrao.css">
     <title>Comercial Home</title>
     <script src="/js/modules/adicionaScripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
     <script>
         adicionarHeadLinks();
         addScriptsHead("/js/comWindow.js");
@@ -155,7 +156,7 @@
     .ident-usuario {display: flex; flex-direction: column; width: calc(100% - 50px); overflow: hidden; text-overflow: ellipsis;}
 
     .container-direita-1 {display: flex; flex-direction: row; width: 100%; gap: 5px;}
-    .container-direita-2 {display: flex; flex-direction: row; width: 100%; gap: 5px; justify-content: space-around; margin-block: 10px;}
+    .container-direita-2 {display: flex; flex-direction: row; width: 100%; gap: 20px; justify-content: space-around; margin-block: 10px;}
     .container-direita-3 {display: flex; flex-direction: row; width: 100%; justify-content: center;}
 
     #ddescgraficometa {background-color: var(--color-primary, #334970); display: inline-block; width:100%; height: 81%; border-radius: 10px; justify-content: center;}
@@ -165,7 +166,21 @@
     #container-acessosint {display: flex; justify-content: center; height: 67%;}
     #dacessosint          {display: flex; flex-direction: column; height: 100%; overflow-y: auto; width: 98%; background-color: #495d8130;}
 
-    #ddesctri {width: 100%;}
+    #ddesctri {width: 100%; display: flex; flex-direction: column;}
+
+    .container-tarefas {height: calc(100% - 45px); display: flex; flex-direction: row; gap: 15px;}
+    .tarefa            {height: 100%; width: calc(100% - 235px); display: flex; justify-content: center;}
+    /* .container-grafico {display: flex; height: 89%; align-items: center; justify-content: center;}
+    .grafico           {width: 50px; height: 130px; background: azure; border-radius: 5px; display: flex; flex-direction: column-reverse;}
+    .conteudo-grafico  {border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;}
+    .desc-grafico      {padding-left: 15px; display: flex;}
+    .desc-grafico label{color: #FFF; font-size: 13px;}
+
+    .grafico-pendentes  {background: #9d4444}
+    .grafico-concluidas {background: #449d5f}
+    .grafico-todas      {background: #5060af} */
+
+    #charttarefas {width: 80%;}
 
     #icon_notif {position: absolute;
                  right:    2px;
@@ -186,11 +201,10 @@
 
     div#dcontratos {float:            left;
                     background-color: var(--fundo-secundario, #dedede);
-                    height:           250px;
-                    width:             calc(100% - 650px);
+                    height:           270px;
+                    width:            calc(100% - 570px);
                     border-radius:    8px;
-                    margin-top:       20px;
-                    margin-left:      30px;
+                    /* margin-top:       20px; */
                     box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);}    
 
     div#dacessos { background-color: var(--fundo-secundario, #dedede);
@@ -427,7 +441,7 @@
     <input id ='ideusu'   name='ideusu'   type="hidden">
     <input id ='wcodfunc' name='wcodfunc' type="hidden">
 
-    <div style="width: 100dvw; height: 97dvh; gap: 1%; position: fixed; display: flex; flex-direction: row;">
+    <div style="width: 100dvw; height: 97dvh; gap: 1%; position: fixed; display: flex; flex-direction: row; min-width: 1270px; min-height: 580px;">
         <div id="dbarramenulateral">
             <div id="didentificacao">
                 <div class="ddescdiv" style="height: 100px; width: auto; display: flex;">
@@ -530,9 +544,10 @@
 
                 <div id="dvendatri" class="gen">
                     <div id="ddesctri" class="ddescdiv">
-                        <div class="dhdiv">
-                            <label class="titulo-container">Trimestre</label>
+                        <div class="dhdiv" style="width: 85px;">
+                            <label class="titulo-container"></label>
                         </div>
+                        <div class=""></div>
                     </div>
                 </div>
 
@@ -555,12 +570,18 @@
 
             <div class="container-direita-2">
                 <div id="dcontratos" class="gen">
-                    <div id="ddesccontrato" class="ddescdiv" style="height: 90%; width: 97%;">
-                        <div class="dhdiv">
-                            <label class="titulo-container">Contratos</label>
+                    <div id="ddesccontrato" class="ddescdiv" style="height: calc(100% - 20px); width: calc(100% - 20px); display: flex; flex-direction: column;">
+                        <div class="dhdiv" style="width: 85px;">
+                            <label class="titulo-container">Tarefas</label>
                         </div>
 
-                        <div id="ddesccontratoslegenda" class="ddescagenda"></div>
+                        <div class="container-tarefas">
+                            <div class="tarefa">
+                                <div id="charttarefas"></div>
+                            </div>
+                            <div id="ddesccontratoslegenda" class="ddescagenda"></div>
+                        </div>
+
                     </div>
                 </div>
                 

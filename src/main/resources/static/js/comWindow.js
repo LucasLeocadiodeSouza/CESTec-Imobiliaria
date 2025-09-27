@@ -13,6 +13,7 @@ let date = new Date();
 let mes  = date.getMonth();
 let ano  = date.getFullYear();
 var CONSUL,NOTIFY_GRID,AGENDSJSON;
+var chart;
 
 function iniciarEventos() {
     CONSUL = new consulForm_init();
@@ -33,7 +34,7 @@ function iniciarEventos() {
     NOTIFY_GRID.createGrid();
 
     valorMetaMensal();
-    setGraficoMeta();
+    //setGraficoMeta();
     getVlrEfetivadoCorretor();
     getCargoIdeusu();
     //getPeriodoMeta();
@@ -51,6 +52,7 @@ function iniciarEventos() {
     
     getBotoesAplMenu();
     controlaTela("inicio");
+    criarGraficoTarefas();
 }
 
 function event_click(obj) {
@@ -650,4 +652,43 @@ function temNotificacaoPendente(){
 
         if(colunas[2].innerText == "true") form("icon_notif").style.display = "block";
     });
+}
+
+function criarGraficoTarefas(data){
+    const chartDom = form('charttarefas');
+
+    var chart = echarts.init(chartDom);
+
+    const option = {
+        tooltip: {
+            trigger: 'item'
+        },
+        color: [
+            '#9d4444',
+            '#449d5f',
+            '#5060af'
+        ],
+        label: {
+           fontSize: 13
+        },
+        series: [{
+            name: 'Tarefas',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            data: /* data */ [
+                { value: 10,  name: 'Pendentes' },
+                { value: 20,  name: 'Concluidas' },
+                { value: 5,   name: 'Todas' },
+            ],
+            itemStyle: {
+                borderWidth: 1,
+                borderColor: '#fff'
+            },
+            label: {
+                color: '#f5f5f5',
+            }
+        }]
+    };
+
+    option && chart.setOption(option);
 }
