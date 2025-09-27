@@ -19,6 +19,7 @@ import com.cestec.cestec.model.sp_modulos;
 import com.cestec.cestec.model.cri.corretorDTO;
 import com.cestec.cestec.model.opr.agendamentoDTO;
 import com.cestec.cestec.model.opr.opr_agendamentos_func;
+import com.cestec.cestec.model.opr.opr_chamados_solic;
 import com.cestec.cestec.model.spf.sp_notificacao_usu;
 import com.cestec.cestec.model.spf.sp_usu_aplfav;
 import com.cestec.cestec.model.spf.sp_usu_aplfavId;
@@ -29,6 +30,7 @@ import com.cestec.cestec.repository.generico.aplicacoesRepository;
 import com.cestec.cestec.repository.generico.funcionarioRepository;
 import com.cestec.cestec.repository.generico.modulosRepository;
 import com.cestec.cestec.repository.opr.agendamentosFuncRepo;
+import com.cestec.cestec.repository.opr.opr002Repo;
 import com.cestec.cestec.repository.spf.notificacaoUsuRepository;
 import com.cestec.cestec.repository.spf.usuAplicacoesFavRepo;
 import com.cestec.cestec.service.opr.opr001s;
@@ -66,6 +68,9 @@ public class comWindowService {
 
     @Autowired
     private usuAplicacoesFavRepo usuAplicacoesFavRepo;
+
+    @Autowired
+    private opr002Repo opr002repo;
 
     @Autowired
     private genService gen;
@@ -158,36 +163,31 @@ public class comWindowService {
     }
 
     @Transactional
-    public ResponseEntity<?> salvarHistoricoApl(String ideusu, Integer codmod, Integer codapl){
-        try {
-            if(sp_user.loadUserByUsername(ideusu) == null) return ResponseEntity.badRequest().body("Usuário não encontrado no sistema!");
+    public void salvarHistoricoApl(String ideusu, Integer codmod, Integer codapl){
+        if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
 
-            sp_histacessapl histAnalise = historicoAcessoAplRepo.findByAplicacao(ideusu, codmod, codapl);
-            if (histAnalise == null) histAnalise = new sp_histacessapl();
+        sp_histacessapl histAnalise = historicoAcessoAplRepo.findByAplicacao(ideusu, codmod, codapl);
+        if (histAnalise == null) histAnalise = new sp_histacessapl();
 
-            if(histAnalise.getId() == null || histAnalise.getId() == 0){
-                sp_modulos modulo = modulosRepository.findByIdModulos(codmod);
-                sp_aplicacoes apl = aplicacoesRepository.findByIdApl(codapl);
+        if(histAnalise.getId() == null || histAnalise.getId() == 0){
+            sp_modulos modulo = modulosRepository.findByIdModulos(codmod);
+            sp_aplicacoes apl = aplicacoesRepository.findByIdApl(codapl);
 
-                Integer codfunc = funcionarioRepository.findCodFuncByIdeusu(ideusu);
-                funcionario funcionario = funcionarioRepository.findFuncBycodfunc(codfunc);
+            Integer codfunc = funcionarioRepository.findCodFuncByIdeusu(ideusu);
+            funcionario funcionario = funcionarioRepository.findFuncBycodfunc(codfunc);
 
-                histAnalise.setIdmodulos(modulo);
-                histAnalise.setIdaplicacao(apl);
-                histAnalise.setIdfunc(funcionario);
-                histAnalise.setDatregistro(LocalDate.now());
-                histAnalise.setIdeusu(ideusu);
-            }
-
-            Integer numacess = histAnalise.getNumacess() == null?0:histAnalise.getNumacess();
-            histAnalise.setNumacess(numacess + 1);
-            histAnalise.setAtualizado_em(LocalDate.now());
-
-            historicoAcessoAplRepo.save(histAnalise);
-            return ResponseEntity.ok("OK");
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro ao salvar cliente: " + e.getMessage()); 
+            histAnalise.setIdmodulos(modulo);
+            histAnalise.setIdaplicacao(apl);
+            histAnalise.setIdfunc(funcionario);
+            histAnalise.setDatregistro(LocalDate.now());
+            histAnalise.setIdeusu(ideusu);
         }
+
+        Integer numacess = histAnalise.getNumacess() == null?0:histAnalise.getNumacess();
+        histAnalise.setNumacess(numacess + 1);
+        histAnalise.setAtualizado_em(LocalDate.now());
+
+        historicoAcessoAplRepo.save(histAnalise);
     }
 
     public String getCargoFuncionario(String ideusu){
@@ -251,23 +251,22 @@ public class comWindowService {
     }
 
     @Transactional
-    public ResponseEntity<?> inativarNotificacao(String ideusu, Integer idnotifi){
-        try {
-            if(sp_user.loadUserByUsername(ideusu) == null) return ResponseEntity.badRequest().body("Usuário não encontrado no sistema!");
+    public void inativarNotificacao(String ideusu, Integer idnotifi){
+        if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
 
-            sp_notificacao_usu notificacao = notificRepository.findById(idnotifi).orElseThrow(() -> new RuntimeException("Notificação não encontrada 1"));
-            if(notificacao.getId() == null || notificacao.getId() == 0){
-                return ResponseEntity.badRequest().body("Notificação não encontrada 2");
-            }
+        sp_notificacao_usu notificacao = notificRepository.findById(idnotifi).orElseThrow(() -> new RuntimeException("Notificação não encontrada 1"));
+        if(notificacao.getId() == null || notificacao.getId() == 0) throw new RuntimeException("Notificação não encontrada 2");
 
-            if(!notificacao.isAtivo()) return ResponseEntity.ok("OK");
+        if(!notificacao.isAtivo()) return;
 
-            notificacao.setAtivo(false);
+        notificacao.setAtivo(false);
 
-            notificRepository.save(notificacao);
-            return ResponseEntity.ok("OK");
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro ao desmarcar a notificação: " + e.getMessage()); 
-        }
+        notificRepository.save(notificacao);
+    }
+
+    public List<opr_chamados_solic> findAllChamadosByIdeusu(String ideusu){
+        List<opr_chamados_solic> chamados = opr002repo.findAllChamadosByIdeusu(ideusu);
+
+        return chamados;
     }
 }

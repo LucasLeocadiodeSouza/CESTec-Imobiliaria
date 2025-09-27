@@ -116,7 +116,15 @@ public class comWindowController {
 
     @PostMapping("/salvarHistoricoApl")
     public ResponseEntity<?> salvarHistoricoApl(HttpServletRequest request, @RequestParam(value = "codmod", required = false) Integer codmod, @RequestParam(value = "codapl", required = false) Integer codapl) {
-        return comWindowService.salvarHistoricoApl(getUserName(request), codmod, codapl);
+        try {
+            comWindowService.salvarHistoricoApl(getUserName(request), codmod, codapl);
+            return ResponseEntity.ok("OK");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao buscar chamados cadastrados: " + e.getMessage());
+        }
     } 
 
     @GetMapping("/buscarNotificacoesGrid")
@@ -126,6 +134,28 @@ public class comWindowController {
 
     @PostMapping("/inativarNotificacao")
     public ResponseEntity<?> inativarNotificacao(HttpServletRequest request, @RequestParam(value = "idnotific", required = false) Integer idnotific) {
-        return comWindowService.inativarNotificacao(getUserName(request), idnotific);
+        try {
+            comWindowService.inativarNotificacao(getUserName(request), idnotific);
+            return ResponseEntity.ok("OK");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao buscar chamados cadastrados: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/findAllChamadosByIdeusu")
+    public ResponseEntity<?> findAllChamadosByIdeusu(HttpServletRequest request){
+        try {
+            String ideusu = gen.getUserName(request);
+
+            return ResponseEntity.ok().body(comWindowService.findAllChamadosByIdeusu(ideusu));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao buscar chamados cadastrados: " + e.getMessage());
+        }
     }
 }
