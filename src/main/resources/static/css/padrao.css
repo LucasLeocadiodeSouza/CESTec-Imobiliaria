@@ -301,11 +301,13 @@ textarea:disabled {border-color: rgba(118, 118, 118, 0.3); color: #8a8a8a; backg
                height: 100%;
                background-color: #00000096;
                position:         absolute;
+               /* backdrop-filter: blur(2.3px); */
                top: 0;
                left: 0;
                display: flex;
                justify-content: center;
                align-items: center;
+               /* -webkit-backdrop-filter: blur(2.3px); */
                z-index: 99999;}
 
 .DMF_tema1     {border-radius: 10px;

@@ -27,8 +27,12 @@ public class mrb001c {
     }
 
     @PostMapping("/cadastrarAplicacao")
-    public ResponseEntity<?> cadastrarAplicacao(@RequestBody aplicacaoDTO aplicacao) {
-        return mrb001s.cadastrarAplicacao(aplicacao);
+    public ResponseEntity<?> cadastrarAplicacao(@RequestParam(value="indcadastro", required = false)  Boolean indcadastro,
+                                                @RequestParam(value="indliberacao", required = false) Boolean indliberacao,
+                                                @RequestParam(value="indanalise", required = false)   Boolean indanalise,
+                                                @RequestParam(value="indgestao", required = false)    Boolean indgestao,
+                                                @RequestBody aplicacaoDTO aplicacao) {
+        return mrb001s.cadastrarAplicacao(aplicacao, indcadastro, indliberacao, indanalise, indgestao);
     }
 
     @GetMapping("/getDescricaoModulo")

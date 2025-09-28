@@ -576,6 +576,10 @@ function GridForm_init(){
     //
     //retornos grid
     this.getTableNode = ()=>{
+        if(document.getElementById(this.id).childNodes[0].childNodes.length != 2) {
+            console.error("Não encontrado resultado para a table informadas");
+            return;
+        }
         return document.getElementById(this.id).childNodes[0].childNodes[1].childNodes[0].childNodes[1].childNodes;
     }
 

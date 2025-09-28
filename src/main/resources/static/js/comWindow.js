@@ -13,6 +13,7 @@ let date = new Date();
 let mes  = date.getMonth();
 let ano  = date.getFullYear();
 var CONSUL,NOTIFY_GRID,AGENDSJSON;
+var chart;
 
 function iniciarEventos() {
     CONSUL = new consulForm_init();
@@ -33,7 +34,7 @@ function iniciarEventos() {
     NOTIFY_GRID.createGrid();
 
     valorMetaMensal();
-    setGraficoMeta();
+    //setGraficoMeta();
     getVlrEfetivadoCorretor();
     getCargoIdeusu();
     //getPeriodoMeta();
@@ -285,13 +286,8 @@ function filaFetchInit(){
                                    form("lid").textContent = retorno;
                                    break;
 
-        case "buscarAgendamentos": AGENDSJSON = retorno;
-                                   carregaMes();
-                                   break;
-
-        case 'buscarHistoricoAcessoApl': retornoBuscarHistoricoAcesso(retorno);
-                                         buscarAgendamentos();
-                                         break;
+        case 'inativarNotificacao': carregarNotificacoes();
+                                    break;
 
         case         "getBotoesAplMenu": let botoes = [];
                                          for(const idModulo in retorno) {
@@ -308,8 +304,28 @@ function filaFetchInit(){
                                           criarBotaoExterno("dintensint",botoes);
                                           break;
 
-        case      'inativarNotificacao': carregarNotificacoes();
+        case 'buscarHistoricoAcessoApl': retornoBuscarHistoricoAcesso(retorno);
+                                         buscarAgendamentos();
                                          break;
+
+        case "buscarAgendamentos": AGENDSJSON = retorno;
+                                   carregaMes();
+                                   findAllChamadosByIdeusu();
+                                   break;
+
+        case "findAllChamadosByIdeusu": const chamados   = retorno;
+                                        var direcionadas = 0;
+                                        var iniciadas    = 0;
+                                        var concluidas   = 0;
+
+                                        chamados.forEach(chamado =>{
+                                            if(chamado.estado == 1) direcionadas ++;
+                                            else if(chamado.estado == 2) iniciadas ++;
+                                            else if(chamado.estado == 3) concluidas ++;
+                                        })
+                                          
+                                        criarGraficoTarefas(direcionadas, concluidas, iniciadas);
+                                        break;
         }
     }
 }
@@ -336,20 +352,11 @@ function criarDescricaoData(mesanalise){
         if(index == 0) divagend.style.marginTop = "10px";
 
         const div                 = document.createElement("div");
-        div.style.height          = "5px";
-        div.style.width           = "5px";
-        div.style.borderRadius    = "5px";
-        div.style.position        = "absolute";
-        div.style.transform       = "translate(50%, 50%)";
-        div.style.top             = "0";
+        div.className             = "icon-point";
         div.style.backgroundColor = agend.corAgend;
 
-        const div2                = document.createElement("div");
-        div2.style.marginLeft     = "15px";
-        div2.style.gap            = "5px";
-        div2.style.display        = "flex";
-        div2.style.overflow       = "hidden";
-        div2.style.textColor      = "#FFF";
+        const div2     = document.createElement("div");
+        div2.className = "desc-point";
 
         const datagend          = document.createElement("label");
         const dataFormatada     = `${dia}/${mes}/${ano}`;
@@ -358,11 +365,9 @@ function criarDescricaoData(mesanalise){
         const separador         = document.createElement("label");
         separador.innerText     = " - ";
 
-        const titulo              = document.createElement("label");
-        titulo.innerText          = agend.titulo;
-        titulo.style.whiteSpace   = "nowrap";
-        titulo.style.overflow     = "hidden";
-        titulo.style.textOverflow = "ellipsis";
+        const titulo     = document.createElement("label");
+        titulo.innerText = agend.titulo;
+        titulo.className = "titulo-point";
 
         div2.appendChild(datagend);
         div2.appendChild(separador);
@@ -459,46 +464,90 @@ function inativarNotificacao(idnotific){
     CONSUL.consultar("inativarNotificacao",`/home/inativarNotificacao`,["idnotific="+idnotific],"POST",'',{},true);
 }
 
-function adicionarListaHistoricoAcesso(li, codapl, codmodulo, nomemodulo, nomeapl, numacesso){
-
+function adicionarRowHistoricoAcesso(div, text){
     const divprinc = document.createElement("div");
-    divprinc.style.width = "100%";
+    divprinc.style.width     = "100%";
+    divprinc.style.height    = "30px";
+    divprinc.style.display   = "flex";
+    divprinc.style.overflowX = "hidden";
 
-    const labelcodapl = document.createElement("label");
-    labelcodapl.className = "";
-    
-    const linkcodapl = document.createElement("a");
-    linkcodapl.innerText = codmodulo + " [" + nomemodulo + "] " + " - " + codapl + " - " + nomeapl + " | Aplicacão acessada " + numacesso + (numacesso > 1?" vezes":" vez");
-    linkcodapl.href = "/buscarPath/" + codapl;
-    labelcodapl.appendChild(linkcodapl);
+    const labelcodapl     = document.createElement("label");
+    labelcodapl.className = "titulo-point";
+    labelcodapl.innerText = text;
 
     divprinc.appendChild(labelcodapl);
-    li.appendChild(divprinc);
+    div.appendChild(divprinc);
 }
 
 function retornoBuscarHistoricoAcesso(historico){
-    const divpai = form("dacessosint");
-    divpai.innerHTML = "";
+    const h1_cadastro  = form("h1qtde-cadas");
+    const h1_liberacao = form("h1qtde-lib");
+    const h1_analise   = form("h1qtde-analise");
+    const h1_gestao    = form("h1qtde-gestao");
+    
 
-    if(historico.length == 0){
-        divpai.style.alignItems     = "center";
-        divpai.style.justifyContent = "center";
+    const coluna_descapls = form("rows-descapls");
+    const coluna_descmods = form("rows-descmods");
+    const coluna_inds     = form("rows-inds");
+    const coluna_codapls  = form("rows-codapls");
+    const coluna_codmods  = form("rows-codmods");
+    const coluna_qtdacess = form("rows-qtdeacess");
 
-        const emptyLabel          = document.createElement("label");
-        emptyLabel.style.color    = "#FFF";
-        emptyLabel.style.fontSize = "larger";
-        emptyLabel.innerText      = "Vazio";
+    h1_cadastro.innerHTML     = "";
+    h1_liberacao.innerHTML    = "";
+    h1_analise.innerHTML      = "";
+    h1_gestao.innerHTML       = "";
+    coluna_descapls.innerHTML = "";
+    coluna_descmods.innerHTML = "";
+    coluna_inds.innerHTML     = "";
+    coluna_codapls.innerHTML  = "";
+    coluna_codmods.innerHTML  = "";
+    coluna_qtdacess.innerHTML = "";
 
-        divpai.appendChild(emptyLabel);
-    }
 
-    historico.forEach(hist => {
-        const liinterna = document.createElement("li");
-        liinterna.classList.add("liacessos");
-        adicionarListaHistoricoAcesso(liinterna, hist.idaplicacao, hist.idmodulos, hist.descmodulo, hist.descapl, hist.numacess)
-        
-        divpai.appendChild(liinterna);
+    var indcadastro  = 0;
+    var indliberacao = 0;
+    var indanalise   = 0;
+    var indgestao    = 0;
+
+    historico.forEach((hist,index) => {
+        if(hist.indcadastro)  indcadastro ++;
+        if(hist.indliberacao) indliberacao ++;
+        if(hist.indanalise)   indanalise ++;
+        if(hist.indgestao)    indgestao ++;
+
+        var indicador = "";
+        var temvirg   = false;
+        if(hist.indcadastro) {
+            indicador = (temvirg? indicador + ",":"") + " Cadastro";
+            temvirg   = true;
+        }
+        if(hist.indliberacao) {
+            indicador = (temvirg? indicador + ",":"") + " Liberação";
+            temvirg   = true;
+        }
+        if(hist.indanalise) {
+            indicador = (temvirg? indicador + ",":"") + " Análise";
+            temvirg   = true;
+        }
+        if(hist.indgestao) {
+            indicador = (temvirg? indicador + ",":"") + " Gestão";
+            temvirg   = true;
+        }
+        if(!temvirg) indicador = "-";
+
+        adicionarRowHistoricoAcesso(coluna_descapls, hist.descapl);
+        adicionarRowHistoricoAcesso(coluna_descmods, hist.descmodulo);
+        adicionarRowHistoricoAcesso(coluna_inds, indicador);
+        adicionarRowHistoricoAcesso(coluna_codapls, hist.idaplicacao);
+        adicionarRowHistoricoAcesso(coluna_codmods, hist.idmodulos);
+        adicionarRowHistoricoAcesso(coluna_qtdacess, hist.numacess);
     });
+
+    h1_cadastro.innerText  = indcadastro;
+    h1_liberacao.innerText = indliberacao;
+    h1_analise.innerText   = indanalise;
+    h1_gestao.innerText    = indgestao;
 }
 
 function buscarHistoricoAcessoApl(){
@@ -518,6 +567,10 @@ function salvarCookieAplicacao(caminho, idmodulo, idaplicacao){
                                                               "codmod="+idmodulo,
                                                               "codapl="+idaplicacao],
                                                               "POST")
+}
+
+function findAllChamadosByIdeusu(){
+    CONSUL.consultar("findAllChamadosByIdeusu",`/home/findAllChamadosByIdeusu`,[]);
 }
 
 function valorMetaMensal(){
@@ -643,6 +696,8 @@ function carregarNotificacoes(){
 function temNotificacaoPendente(){
     const rows = NOTIFY_GRID.getTableNode();
 
+    if(!rows) return;
+    
     form("icon_notif").style.display = "none";
 
     rows.forEach(row =>{
@@ -650,4 +705,51 @@ function temNotificacaoPendente(){
 
         if(colunas[2].innerText == "true") form("icon_notif").style.display = "block";
     });
+}
+
+function criarGraficoTarefas(direcionadas, concluidas, iniciadas){
+    const chartDom = form('charttarefas');
+
+    var chart = echarts.init(chartDom);
+
+    form("tarefas-inic").innerText  = iniciadas;
+    form("tarefas-direc").innerText = direcionadas;
+    form("tarefas-concl").innerText = concluidas;
+
+    const option = {
+        tooltip: {
+            trigger: 'item'
+        },
+        color: [
+            '#9d4444',
+            '#449d5f',
+            '#5060af'
+        ],
+        label: {
+            show: true,
+            color: '#f5f5f5',
+            fontSize: 12
+        },
+        labelLine: {
+          show: true,
+          length: 20,
+          length2: 30
+        },
+        series: [{
+            name: 'Tarefas',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            data: [
+                { value: direcionadas, name: 'Direcionadas' },
+                { value: concluidas,   name: 'Concluidas' },
+                { value: iniciadas,    name: 'Iniciadas' },
+            ],
+            itemStyle: {
+                borderWidth: 1,
+                borderColor: '#fff'
+            }
+        }]
+    };
+
+    option && chart.setOption(option);
 }
