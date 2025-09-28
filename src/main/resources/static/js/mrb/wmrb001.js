@@ -26,7 +26,7 @@ function wmrb001_init(){
 
     CADAPL_GRID               = new GridForm_init();
     CADAPL_GRID.id            = "tabela_APL";
-    CADAPL_GRID.columnName    = "usuario,mcodmod,mdescmod,codapl,descapl,data,_role,_arqu_inic";
+    CADAPL_GRID.columnName    = "usuario,mcodmod,mdescmod,codapl,descapl,data,_role,_arqu_inic,_indcadastro,_indliberacao,_indanalise,_indgestao";
     CADAPL_GRID.columnLabel   = "Usuário,Código Mod.,Módulo Referente,Código Aplicação,Aplicação,Data";
     CADAPL_GRID.columnWidth   = "12,12,17,17,30,12";
     CADAPL_GRID.columnAlign   = "e,c,c,c,e,c";
@@ -248,6 +248,10 @@ function limparTela(opc){
         form('mdescmod').value   = "";
         form('mrestrole').value  = "0";
         form("marqinit").value   = "";
+        setRadioValue("rindcadas", "false");
+        setRadioValue("rindlib",   "false");
+        setRadioValue("rindanali", "false");
+        setRadioValue("rindgest",  "false");
     }
 }
 
@@ -262,6 +266,11 @@ function preencherDadosModalCadasApl(valores){
     form("mmodulo").value   = valores[1];
     form("mdescmod").value  = valores[2];
     form("marqinit").value  = valores[7];
+    
+    setRadioValue("rindcadas", valores[8]);
+    setRadioValue("rindlib",   valores[9]);
+    setRadioValue("rindanali", valores[10]);
+    setRadioValue("rindgest",  valores[11]);
 }
 
 function ehLiberacaoDeAcesso(){
@@ -280,7 +289,13 @@ function adicionarAplicacao() {
                         arquivo_inic:  form('marqinit').value,
                         ideusu:        form('ideusu').value};
 
-    CONSUL.consultar("adicionarAplicacao",`/mrb001/cadastrarAplicacao`,[],"POST","",{body: aplicacao});
+    CONSUL.consultar("adicionarAplicacao",`/mrb001/cadastrarAplicacao`,["indcadastro=" + getRadioValue("rindcadas"),
+                                                                        "indliberacao=" + getRadioValue("rindlib"),
+                                                                        "indanalise=" + getRadioValue("rindanali"),
+                                                                        "indgestao=" + getRadioValue("rindgest")],
+                                                                        "POST",
+                                                                        "",
+                                                                        {body: aplicacao});
 }
 
 function buscarRoleAcess(valorinicial){
