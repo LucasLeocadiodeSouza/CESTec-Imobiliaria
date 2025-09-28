@@ -33,11 +33,22 @@ public class sp_aplicacoes {
     @JoinColumn(name="role", nullable = false)
     private sp_roleacess role;
     
-    private String  descricao;
+    @Column(columnDefinition = "TINYINT(1)")
+    private Boolean indcadastro;
+
+    @Column(columnDefinition = "TINYINT(1)")
+    private Boolean indliberacao;
+
+    @Column(columnDefinition = "TINYINT(1)")
+    private Boolean indanalise;
+
+    @Column(columnDefinition = "TINYINT(1)")
+    private Boolean indgestao;
 
     @Column(length = 45)
     private String  arquivo_inic;
-
+    
+    private String    descricao;
     private LocalDate datregistro;
     private String    ideusu;
 }

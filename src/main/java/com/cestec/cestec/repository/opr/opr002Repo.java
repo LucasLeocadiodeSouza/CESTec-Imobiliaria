@@ -3,6 +3,7 @@ package com.cestec.cestec.repository.opr;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 import com.cestec.cestec.model.opr.chamadoSolicDTO;
+import com.cestec.cestec.model.opr.opr_chamados_solic;
 import com.cestec.cestec.model.opr.opr_versionamento;
 import com.cestec.cestec.model.opr.opr_versionamentoId;
 
@@ -69,6 +70,21 @@ public class opr002Repo {
         }
 
         var q = em.createQuery(query, chamadoSolicDTO.class);
+
+        if(ideusu != null){
+            q.setParameter("ideusu", ideusu);
+        }
+
+        return q.getResultList();
+    }
+
+    public List<opr_chamados_solic> findAllChamadosByIdeusu(String ideusu){
+        String query   = "SELECT chamados FROM opr_chamados_solic chamados" +
+                         " JOIN chamados.codfuncfila funcfila" +
+                         " JOIN funcfila.sp_user user" +
+                         " WHERE user.login LIKE :ideusu AND chamados.estado != 4";
+
+        var q = em.createQuery(query, opr_chamados_solic.class);
 
         if(ideusu != null){
             q.setParameter("ideusu", ideusu);
