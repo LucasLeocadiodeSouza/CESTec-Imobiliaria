@@ -14,7 +14,7 @@ public interface histAcessAplRepo extends JpaRepository<sp_histacessapl, Integer
     sp_histacessapl findHistAcessAplById(@Param("cod") Integer cod);
 
     @Query("SELECT new com.cestec.cestec.model.historicoAcessoAplDTO ( "
-        + " histacess.id, histacess.idmodulos.id, histacess.idaplicacao.id, histacess.idfunc.codfuncionario, histacess.idaplicacao.descricao, histacess.idmodulos.descricao, histacess.numacess) "
+        + " histacess.id, histacess.idmodulos.id, histacess.idaplicacao.id, histacess.idfunc.codfuncionario, histacess.idaplicacao.descricao, histacess.idmodulos.descricao, histacess.numacess, histacess.idaplicacao.indcadastro, histacess.idaplicacao.indliberacao, histacess.idaplicacao.indanalise, histacess.idaplicacao.indgestao) "
         + " FROM sp_histacessapl histacess "
         + " JOIN histacess.idfunc.sp_user sp "
         + " WHERE sp.login = :ideusu")

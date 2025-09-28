@@ -464,46 +464,90 @@ function inativarNotificacao(idnotific){
     CONSUL.consultar("inativarNotificacao",`/home/inativarNotificacao`,["idnotific="+idnotific],"POST",'',{},true);
 }
 
-function adicionarListaHistoricoAcesso(li, codapl, codmodulo, nomemodulo, nomeapl, numacesso){
-
+function adicionarRowHistoricoAcesso(div, text){
     const divprinc = document.createElement("div");
-    divprinc.style.width = "100%";
+    divprinc.style.width     = "100%";
+    divprinc.style.height    = "30px";
+    divprinc.style.display   = "flex";
+    divprinc.style.overflowX = "hidden";
 
-    const labelcodapl = document.createElement("label");
-    labelcodapl.className = "";
-    
-    const linkcodapl = document.createElement("a");
-    linkcodapl.innerText = codmodulo + " [" + nomemodulo + "] " + " - " + codapl + " - " + nomeapl + " | Aplicacão acessada " + numacesso + (numacesso > 1?" vezes":" vez");
-    linkcodapl.href = "/buscarPath/" + codapl;
-    labelcodapl.appendChild(linkcodapl);
+    const labelcodapl     = document.createElement("label");
+    labelcodapl.className = "titulo-point";
+    labelcodapl.innerText = text;
 
     divprinc.appendChild(labelcodapl);
-    li.appendChild(divprinc);
+    div.appendChild(divprinc);
 }
 
 function retornoBuscarHistoricoAcesso(historico){
-    const divpai = form("dacessosint");
-    divpai.innerHTML = "";
+    const h1_cadastro  = form("h1qtde-cadas");
+    const h1_liberacao = form("h1qtde-lib");
+    const h1_analise   = form("h1qtde-analise");
+    const h1_gestao    = form("h1qtde-gestao");
+    
 
-    if(historico.length == 0){
-        divpai.style.alignItems     = "center";
-        divpai.style.justifyContent = "center";
+    const coluna_descapls = form("rows-descapls");
+    const coluna_descmods = form("rows-descmods");
+    const coluna_inds     = form("rows-inds");
+    const coluna_codapls  = form("rows-codapls");
+    const coluna_codmods  = form("rows-codmods");
+    const coluna_qtdacess = form("rows-qtdeacess");
 
-        const emptyLabel          = document.createElement("label");
-        emptyLabel.style.color    = "#FFF";
-        emptyLabel.style.fontSize = "larger";
-        emptyLabel.innerText      = "Vazio";
+    h1_cadastro.innerHTML     = "";
+    h1_liberacao.innerHTML    = "";
+    h1_analise.innerHTML      = "";
+    h1_gestao.innerHTML       = "";
+    coluna_descapls.innerHTML = "";
+    coluna_descmods.innerHTML = "";
+    coluna_inds.innerHTML     = "";
+    coluna_codapls.innerHTML  = "";
+    coluna_codmods.innerHTML  = "";
+    coluna_qtdacess.innerHTML = "";
 
-        divpai.appendChild(emptyLabel);
-    }
 
-    historico.forEach(hist => {
-        const liinterna = document.createElement("li");
-        liinterna.classList.add("liacessos");
-        adicionarListaHistoricoAcesso(liinterna, hist.idaplicacao, hist.idmodulos, hist.descmodulo, hist.descapl, hist.numacess)
-        
-        divpai.appendChild(liinterna);
+    var indcadastro  = 0;
+    var indliberacao = 0;
+    var indanalise   = 0;
+    var indgestao    = 0;
+
+    historico.forEach((hist,index) => {
+        if(hist.indcadastro)  indcadastro ++;
+        if(hist.indliberacao) indliberacao ++;
+        if(hist.indanalise)   indanalise ++;
+        if(hist.indgestao)    indgestao ++;
+
+        var indicador = "";
+        var temvirg   = false;
+        if(hist.indcadastro) {
+            indicador = (temvirg? indicador + ",":"") + " Cadastro";
+            temvirg   = true;
+        }
+        if(hist.indliberacao) {
+            indicador = (temvirg? indicador + ",":"") + " Liberação";
+            temvirg   = true;
+        }
+        if(hist.indanalise) {
+            indicador = (temvirg? indicador + ",":"") + " Análise";
+            temvirg   = true;
+        }
+        if(hist.indgestao) {
+            indicador = (temvirg? indicador + ",":"") + " Gestão";
+            temvirg   = true;
+        }
+        if(!temvirg) indicador = "-";
+
+        adicionarRowHistoricoAcesso(coluna_descapls, hist.descapl);
+        adicionarRowHistoricoAcesso(coluna_descmods, hist.descmodulo);
+        adicionarRowHistoricoAcesso(coluna_inds, indicador);
+        adicionarRowHistoricoAcesso(coluna_codapls, hist.idaplicacao);
+        adicionarRowHistoricoAcesso(coluna_codmods, hist.idmodulos);
+        adicionarRowHistoricoAcesso(coluna_qtdacess, hist.numacess);
     });
+
+    h1_cadastro.innerText  = indcadastro;
+    h1_liberacao.innerText = indliberacao;
+    h1_analise.innerText   = indanalise;
+    h1_gestao.innerText    = indgestao;
 }
 
 function buscarHistoricoAcessoApl(){

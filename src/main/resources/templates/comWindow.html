@@ -159,10 +159,27 @@
 
     #ddescgraficometa {background-color: var(--color-primary, #334970); display: inline-block; width:100%; height: 81%; border-radius: 10px; justify-content: center;}
 
-    #ddescacesso {height: 250px; display: flex; flex-direction: column; gap: 10px;}
+    #ddescacesso {height: 400px; display: flex; flex-direction: column; gap: 10px;}
 
-    #container-acessosint {display: flex; justify-content: center; height: 67%;}
+    #container-acessosint {display: flex; justify-content: center; height: calc(100% - 80px);}
     #dacessosint          {display: flex; flex-direction: column; height: 100%; overflow-y: auto; width: 98%; background-color: #495d8130;}
+
+    .container-infoacess {width: 100%; height: 100px; display: flex;}
+    
+    .container-qtdind {width: calc(100% / 4); height: 100%; display: flex; align-items: center; justify-content: center;}
+    .coluns-gridacess {display: flex; margin-bottom: 5px;}
+    .qtedindicador    {width: 100px; height: 80px; background: var(--fundo-primario, #f5f5f5);}
+    .titulo-ind       {height: 30px; background: var(--color-secundaria, #23334e); display: flex; align-items: center; justify-content: center;}
+    .titulo-ind label {font-weight: 800; font-family: 'Raleway'; color: var(--color-lb-claro, #f5f5f5);}
+    .qtde-ind     h1  {margin: 0;text-align: center;font-family: 'Inter';color: var(--color-secundaria, #23334e);}
+
+    .container-gridacess   {height: calc(100% - 120px); width: calc(100% - 10px); background: #26334975; margin-top: 5px; border-radius: 5px; padding: 5px;}
+    .gridacess             {height: calc(100% - 40px); display: flex; overflow-y: auto;}
+    .titulo-colacess       {height: 40px; background: var(--color-secundaria, #23334e); border-right: 1px solid rgb(107, 107, 107); display: flex; justify-content: center; align-items: center;}
+    .titulo-colacess label {font-size: 16px; color: var(--fundo-primario, #f5f5f5);}
+
+    .labels-clear       {margin-top: 5px;}
+    .labels-clear label {color: var(--fundo-primario, #f5f5f5);}
 
     #ddesctri {width: 100%; display: flex; flex-direction: column;}
 
@@ -692,7 +709,104 @@
                             </div>
                         </div>
                         <div id="container-acessosint">
-                            <div id="dacessosint" class="ddescdiv"></div>
+                            <!-- <div id="dacessosint" class="ddescdiv"></div> -->
+                             <div id="dacessosint" class="ddescdiv">
+                                <div class="container-infoacess">
+                                    <div class="container-qtdind">
+                                        <div class="qtedindicador">
+                                            <div class="titulo-ind">
+                                                <label>Cadastro</label>
+                                            </div>
+                                            <div class="qtde-ind">
+                                                <h1 id="h1qtde-cadas">0</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="container-qtdind">
+                                        <div class="qtedindicador">
+                                            <div class="titulo-ind">
+                                                <label>Liberação</label>
+                                            </div>
+                                            <div class="qtde-ind">
+                                                <h1 id="h1qtde-lib">0</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="container-qtdind">
+                                        <div class="qtedindicador">
+                                            <div class="titulo-ind">
+                                                <label>Análise</label>
+                                            </div>
+                                            <div class="qtde-ind">
+                                                <h1 id="h1qtde-analise">0</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="container-qtdind">
+                                        <div class="qtedindicador">
+                                            <div class="titulo-ind">
+                                                <label>Gestão</label>
+                                            </div>
+                                            <div class="qtde-ind">
+                                                <h1 id="h1qtde-gestao">0</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container-gridacess">
+                                    <div class="coluns-gridacess">
+                                        <div class="titulo-colacess" style="width: calc((100%/6) + 140px);">
+                                            <label>Aplicação</label>
+                                        </div>
+                                        <div class="titulo-colacess" style=" width: calc((100%/6) + 80px);">
+                                            <label>Modulo</label>
+                                        </div>
+                                        <div class="titulo-colacess" style=" width: calc((100%/6) - 50px);">
+                                            <label>Indicador</label>
+                                        </div>
+                                        <div class="titulo-colacess" style="width: calc((100%/6) - 50px);">
+                                            <label>Cod. aplicação</label>
+                                        </div>
+                                        <div class="titulo-colacess" style="width: calc((100%/6) - 70px);">
+                                            <label>Cod. Modulo</label>
+                                        </div>
+                                        <div class="titulo-colacess" style="width: calc((100% / 6) - 50px);">
+                                            <label>Qtde. Acesso</label>
+                                        </div>
+                                    </div>
+                                    <div class="gridacess">
+                                        <!-- Coluna 1 - Aplicação -->
+                                        <div style="height: 100%;width: calc((100%/6) + 140px);">
+                                            <div class="labels-clear" id="rows-descapls"></div>
+                                        </div>
+
+                                        <!-- Coluna 2 - Modulos -->
+                                        <div style="height: 100%; width: calc((100%/6) + 80px);">
+                                            <div class="labels-clear" id="rows-descmods"></div>
+                                        </div>
+
+                                        <!-- Coluna 3 - Indicadores -->
+                                        <div style="height: 100%; width: calc((100%/6) - 50px);">
+                                            <div class="labels-clear" id="rows-inds"></div>
+                                        </div>
+
+                                        <!-- Coluna 4 - Cod. Aplicação -->
+                                        <div style="height: 100%;width: calc((100%/6) - 50px);">
+                                            <div class="labels-clear" id="rows-codapls"></div>
+                                        </div>
+
+                                        <!-- Coluna 5 - Cod. Modulo -->
+                                        <div style="height: 100%;width: calc((100%/6) - 70px);">
+                                            <div class="labels-clear" id="rows-codmods"></div>
+                                        </div>
+
+                                        <!-- Coluna 6 - Qtde. Acesso -->
+                                        <div style="height: 100%;width: calc((100% / 6) - 50px);">
+                                            <div class="labels-clear" id="rows-qtdeacess"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
