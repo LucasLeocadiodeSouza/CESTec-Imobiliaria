@@ -49,6 +49,10 @@ public class mrb001s {
             utilForm.criarColuna(aplicacao.get(i).getDatregistro().toString());
             utilForm.criarColuna(aplicacao.get(i).getRole().getId().toString());
             utilForm.criarColuna(aplicacao.get(i).getArquivo_inic());
+            utilForm.criarColuna(String.valueOf(aplicacao.get(i).getIndcadastro()));
+            utilForm.criarColuna(String.valueOf(aplicacao.get(i).getIndliberacao()));
+            utilForm.criarColuna(String.valueOf(aplicacao.get(i).getIndanalise()));
+            utilForm.criarColuna(String.valueOf(aplicacao.get(i).getIndgestao()));
         }
 
         return utilForm.criarGrid();
@@ -63,7 +67,7 @@ public class mrb001s {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public ResponseEntity<?> cadastrarAplicacao(aplicacaoDTO aplicacao){
+    public ResponseEntity<?> cadastrarAplicacao(aplicacaoDTO aplicacao, Boolean indcadastro, Boolean indliberacao, Boolean indanalise, Boolean indgestao){
         try{
             if(sp_user.loadUserByUsername(aplicacao.getIdeusu()) == null) return ResponseEntity.ok("Usuário não encontrado no sistema!");
 
@@ -84,6 +88,11 @@ public class mrb001s {
             if(!roleacess.existsById(aplicacao.getRole())) return ResponseEntity.badRequest().body("Role da aplicacão não encontrado!");
             sp_roleacess role = roleacess.findByCodRole(aplicacao.getRole());
             aplicacaoAnalise.setRole(role);
+
+            aplicacaoAnalise.setIndcadastro(indcadastro);
+            aplicacaoAnalise.setIndliberacao(indliberacao);
+            aplicacaoAnalise.setIndanalise(indanalise);
+            aplicacaoAnalise.setIndgestao(indgestao);
 
             if(aplicacao.getId() == null || aplicacao.getId() == 0){
                 aplicacaoAnalise.setDatregistro(LocalDate.now());
