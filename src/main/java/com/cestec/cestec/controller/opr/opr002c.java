@@ -64,6 +64,12 @@ public class opr002c {
         return opr002s.finalizarSolicitacao(ideusu, obs, idsolic);
     }
 
+    @PostMapping("/iniciarSolicitacao")
+    public ResponseEntity<?> iniciarSolicitacao(@RequestParam(value = "ideusu", required = false) String ideusu,
+                                                @RequestParam(value = "idsolic", required = false) Integer idsolic){
+        return opr002s.iniciarSolicitacao(ideusu, idsolic);
+    }
+
     @GetMapping("/carregarGridChamSolicitados")
     public List<?> carregarGridChamSolicitados(@RequestParam(value = "ideusu", required = false) String ideusu, @RequestParam(value = "somenteAtivo", required = false) Integer somenteAtivo){
         return opr002s.carregarGridChamSolicitados(ideusu, somenteAtivo);

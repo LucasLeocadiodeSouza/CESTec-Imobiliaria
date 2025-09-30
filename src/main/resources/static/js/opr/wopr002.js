@@ -37,7 +37,7 @@ function wopr002_init(){
     SOLICDIR_GRID               = new GridForm_init();
     SOLICDIR_GRID.id            = "tabela_solicdir";
     SOLICDIR_GRID.columnName    = "codchamado,titulo,datimpl,prioridade,ideusu,_desc,_priorivalue";
-    SOLICDIR_GRID.columnLabel   = "N. Chamado,Titulo,Data Solic.,Prioridade,Usuário";
+    SOLICDIR_GRID.columnLabel   = "N. Chamado,Titulo,Data Solic.,Estado,Prioridade";
     SOLICDIR_GRID.columnWidth   = "10,60,10,10,10";
     SOLICDIR_GRID.columnAlign   = "c,e,c,c,c";
     SOLICDIR_GRID.mousehouve    = true;
@@ -70,6 +70,7 @@ function iniciarEventos() {
     event_click("bbuscar");
     event_click("binserir");
     event_click("bprograma");
+    event_click("biniciar");
     event_click("bincluirver");
     event_click("bsalvarsolic");
     event_click("bsolicitar");
@@ -145,6 +146,9 @@ function event_click(obj) {
                              
                              getOptionsPrioridade("0");
                              DMFDiv.openModal("dmodalf_cadastrar");
+                             break;
+
+            case "biniciar": iniciarSolicitacao();
                              break;
 
             case "bprograma": form("stituloprog").innerText = "Controle de Versionamento";
@@ -271,6 +275,10 @@ function filaFetchInit(){
                                      carregarGridChamados();
                                      DMFDiv.closeModal();
                                      break;
+
+        case   "iniciarSolicitacao": carregarGridChamados();
+                                     DMFDiv.closeModal();
+                                     break;
         }
     }
 }
@@ -293,6 +301,7 @@ function controlaTela(opc){
     if(opc == "modalsolic"){
         desabilitaCampo('mobssolic',   !podeAlterarSolic());
         desabilitaCampo('bfinalizar',  !podeAlterarSolic());
+        desabilitaCampo('biniciar',    !podeAlterarSolic() || !podeIniciarSolic());
         desabilitaCampo('bcancelar',   !podeAlterarSolic());
     }
     if(opc === "modalprog"){
@@ -306,6 +315,7 @@ function controlaTela(opc){
         desabilitaCampo('bsalvarsolic', !ehInserindoSolic() && !ehAlterandoSolic());
         desabilitaCampo('bsolicitar',   !ehAlterandoSolic());
         desabilitaCampo('bcancelsol',   !ehAlterandoSolic());
+        desabilitaCampo('biniciar',     !podeIniciarSolic());
 
         setDisplay("bsalvarsolic",   !ehConsultandoSolic()?"flex":"none");
         setDisplay("bsolicitar",      ehAlterandoSolic()?"flex":"none");
@@ -398,6 +408,10 @@ function enviarSolicitacao(){
     CONSUL.consultar("enviarSolicitacao",`/opr002/enviarSolicitacao`,["ideusu:ideusu","idsolic:mmnmrsolic"],"POST");
 }
 
+function iniciarSolicitacao(){
+    CONSUL.consultar("iniciarSolicitacao",`/opr002/iniciarSolicitacao`,["ideusu:ideusu","idsolic:nmrservpainel"],"POST");
+}
+
 function finalizarSolicitacao(){
     CONSUL.consultar("finalizarSolicitacao",`/opr002/finalizarSolicitacao`,["ideusu:ideusu",
                                                                             "idsolic:nmrservpainel",
@@ -447,6 +461,10 @@ function podeAlterarSolic(){
     return form("mpodealterar").value == "true";
 }
 
+function podeIniciarSolic(){
+    return form('mhestadosolic').value == "1";
+}
+
 function ehAbaPainel(){
     return ABA.getIndex() === 0;
 }
@@ -478,6 +496,7 @@ function preencherModalCham(valoresLinha){
     form("stitulopainel").innerText = "Solicitação de chamado  " + valoresLinha[0];
     form("nmrservpainel").value     = valoresLinha[0];
     form("mpodealterar").value      = valoresLinha[20];
+    form('mhestadosolic').value     = valoresLinha[10];
 
     controlaTela("modalsolic");
     
@@ -500,7 +519,7 @@ function preencherModalCham(valoresLinha){
 function criarProgramasGrid(){
     form("tabela_programas").innerHTML = "";
 
-    PROGRAMAS_GRID              = new GridForm_init();
+    PROGRAMAS_GRID               = new GridForm_init();
     PROGRAMAS_GRID.id            = "tabela_programas";
     PROGRAMAS_GRID.columnName    = "merge,branch,programas,data,ideusu";
     PROGRAMAS_GRID.columnLabel   = "N. Merge,Branch name,Programas,Data,Usuário";
@@ -528,5 +547,5 @@ function carregarGridChamadosParaVinc(){
 }
 
 function carregarGridversionamento(){
-    PROGRAMAS_GRID.carregaGrid(`/opr002/carregarGridversionamento`,["idsolic=nmrservpainel"]);
+    PROGRAMAS_GRID.carregaGrid(`/opr002/carregarGridversionamento`,["idsolic:nmrservpainel"]);
 } 
