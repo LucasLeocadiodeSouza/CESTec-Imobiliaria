@@ -230,6 +230,23 @@ public class opr002s {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseEntity<?> iniciarSolicitacao(String ideusu, Integer idsolic){
+        try{
+            if(sp_user.loadUserByUsername(ideusu) == null) return ResponseEntity.badRequest().body("Usuário não encontrado no sistema!");
+
+            opr_chamados_solic solicanalise = chamadosSolicRepo.findByIdSolic(idsolic);
+            if (solicanalise == null) return ResponseEntity.badRequest().body("Não encontrado a Solicitação com o codigo '" + idsolic + "'");
+            
+            solicanalise.setEstado(2);
+
+            chamadosSolicRepo.save(solicanalise);
+            return ResponseEntity.ok("OK");
+        }catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao Finalizar a solicitação: " + e.getMessage());    
+        }
+    }
+
     /* ********** GRIDS ********** */
 
     public List<?> carregarGridChamados(String ideusu, Integer somenteAtivo, String acao){
