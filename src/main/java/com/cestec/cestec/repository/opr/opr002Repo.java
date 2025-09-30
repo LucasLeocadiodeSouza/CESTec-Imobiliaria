@@ -57,7 +57,7 @@ public class opr002Repo {
                          " FROM opr_chamados_solic solic " +
                          " JOIN solic.codfuncfila funcfila" +
                          " JOIN funcfila.sp_user user" +
-                         (!somenteAtivo?" WHERE solic.estado != 0 ":" WHERE solic.estado = 1 ");
+                         (!somenteAtivo?" WHERE solic.estado != 0 ":" WHERE solic.estado = 1 OR solic.estado = 2 ");
         boolean temand = false;
 
         if(ideusu != null){
