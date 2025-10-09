@@ -28,10 +28,9 @@ public class config {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
                 .authorizeHttpRequests(authorize -> authorize
                                                      .requestMatchers(HttpMethod.GET, "/login").permitAll()
-                                                     .requestMatchers(HttpMethod.GET, "/resouces/static/icons/favicon.png", "/css/**", "/js/**").permitAll()
-                                                     .requestMatchers(HttpMethod.GET, "/resouces/static/icons/loader_icon.png", "/css/**", "/js/**").permitAll()
                                                      .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                                                      .requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN")
+                                                     .requestMatchers(HttpMethod.GET, "/icons/**", "/css/**", "/js/**").permitAll()
                                                      .requestMatchers(HttpMethod.GET,"/contratosCadastroPropri","/contratosCadastroClientes").hasRole("ADMIN")
                                                      .requestMatchers(HttpMethod.GET, "/contratosCadastro","/contratosCadastroContrato").hasRole("SALER")
                                                      .anyRequest().hasAnyRole("USER") 

@@ -3,7 +3,6 @@ package com.cestec.cestec.controller;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,9 +30,6 @@ public class comWindowController {
     private genService gen;
 
     @Autowired
-    private sp_userService sp_userService;
-
-    @Autowired
     private tokenService tokenService;
 
     @Autowired
@@ -51,7 +47,7 @@ public class comWindowController {
 
     @GetMapping("/userid")
     public Integer getUserId(HttpServletRequest request) {
-        return sp_userService.getIdByUserName(getUserName(request));        
+        return gen.getCodFuncByIdeusu(getUserName(request));        
     }
 
     @GetMapping("/{ideusu}/valorMetaMensal")

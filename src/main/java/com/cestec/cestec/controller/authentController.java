@@ -45,7 +45,7 @@ public class authentController {
     private genService gen;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data, HttpServletResponse response) {
+    public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDTO data, HttpServletResponse response) {
         var userNamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.passkey());
         var auth = this.authenticationManager.authenticate(userNamePassword);
         var token = tokenService.generatedToken((sp_user) auth.getPrincipal());
@@ -58,6 +58,18 @@ public class authentController {
         response.addCookie(cookie);
 
         return ResponseEntity.ok(new loginResponseDTO(token));
+    }   
+
+    @PostMapping("/logout")
+    public ResponseEntity logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("authToken", "");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0); //expira imaediatamente
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok("OK");
     }   
 
     @PostMapping("/register")
