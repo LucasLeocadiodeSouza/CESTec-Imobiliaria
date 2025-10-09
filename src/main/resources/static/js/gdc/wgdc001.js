@@ -15,7 +15,7 @@ function iniciarEventos() {
 
     METAS_GRID               = new GridForm_init();
     METAS_GRID.id            = "tabela_metas";
-    METAS_GRID.columnName    = "codmeta,codcorretor,nome,vlrmeta,periodo,situacao,datiniciometa,datfinalmeta";
+    METAS_GRID.columnName    = "codmeta,codcorretor,nome,vlrmeta,periodo,situacao,datiniciometa,datfinalmeta,_ideusucorr";
     METAS_GRID.columnLabel   = "Cód. Meta,Cód. Corretor,Nome,Meta (R$),Periodo,Situação";
     METAS_GRID.columnWidth   = "10,10,35,10,20,15";
     METAS_GRID.columnAlign   = "c,c,e,d,c,c";
@@ -25,8 +25,8 @@ function iniciarEventos() {
 
     ABA      = new abaForm_init();
     ABA.id   = "abas";
-    ABA.name = "Consulta,Manutenção";
-    ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
+    ABA.name = "Consulta";
+    ABA.icon = "/icons/consultaLupa.png";
     ABA.createAba();
 
     DMFDiv              = new DMFForm_init();
@@ -43,11 +43,12 @@ function iniciarEventos() {
     event_click("binserir");
     event_click("blimpar");
     event_click("bcadastro");
-    
-    event_change("codcorretor");
-    event_change("mcodcorretor");
 
     event_selected_init("codcorretor");
+
+    CONSUL.filterChange('codcorretor','',`/gen/getNomeCorretorByIdeusu`,['ideusu:codcorretor'],'desccorretor');
+    CONSUL.filterChange('mcodcorretor','',`/gen/getNomeCorretorByIdeusu`,['ideusu:mcodcorretor'],'mdesccorretor');
+    //CONSUL.filterChange('mcodproprietario','',`/gen/getNomeProp`,['codprop:mcodproprietario'],'mdescproprietario');
 
     controlaTela("inicia");
 }
@@ -68,56 +69,35 @@ function event_click_table(obj,row){
 
 function event_click_aba(){
     switch (ABA.getIndex()) {
-    case 0: 
-    case 1: controlaTela("inicia");
+    case 0: controlaTela("inicia");
             break;
     }
 }
 
 function event_click(obj) {
-    if(obj == "bnovabusca"){
-        form(obj).addEventListener("click", function () {
-            controlaTela("novabusca");
-        });
-    }
-    if(obj == "bbuscar"){
-        form(obj).addEventListener("click", function () {
-            controlaTela("buscar");
-            buscarMetasCorretoresGrid();
-        });        
-    }
-    if(obj == 'binserir'){
-        form(obj).addEventListener("click", function () {
-            form("sacao").innerText   = "Inserindo";
-            form("stitulo").innerText = "Cadastro de Meta - " + form("sacao").innerText;
-                        
-            controlaTela("modal");
-            DMFDiv.openModal("dmodalf_meta");
-        });
-    }
-    if(obj == 'blimpar'){
-        form(obj).addEventListener("click", function () {
-            controlaTela("inicia");
-        });
-    }
-    if(obj == 'bcadastro'){
-        form(obj).addEventListener("click", function () {
-            salvarMetaCorretor();
-        });
-    }
-}
+    form(obj).addEventListener("click", function () {
+        switch (obj) {
+            case "bnovabusca": controlaTela("novabusca");
+                               break;
 
-function event_change(obj){
-    if(obj == "mcodcorretor"){
-        form(obj).addEventListener("change", function(){
-            getDescCorretor(form('mcodcorretor').value, "mdesccorretor");           
-        });
-    }
-    if(obj == "codcorretor"){
-        form(obj).addEventListener("change", function(){
-            getDescCorretor(form('codcorretor').value, "desccorretor");           
-        });
-    }
+            case    "bbuscar": controlaTela("buscar");
+                               buscarMetasCorretoresGrid();
+                               break;
+
+            case   "binserir": form("sacao").innerText   = "Inserindo";
+                               form("stitulo").innerText = "Cadastro de Meta - " + form("sacao").innerText;
+                                           
+                               controlaTela("modal");
+                               DMFDiv.openModal("dmodalf_meta");
+                               break;
+
+            case    "blimpar": controlaTela("inicia");
+                               break;
+
+            case "bcadastro": salvarMetaCorretor();
+                              break;
+        }
+    });
 }
 
 function filaFetchInit(){
@@ -128,7 +108,7 @@ function filaFetchInit(){
                                       break;
 
         case    "salvarMetaCorretor": if(retorno != "OK") return alert(retorno);
-                                      alert("Meta adicionada com sucesso!");
+                                      alert("Sucesso","Meta adicionada com sucesso!",4);
 
                                       DMFDiv.closeModal();
                                       break;
@@ -144,8 +124,6 @@ function controlaTela(opc){
         desabilitaCampo('codcorretor',   false);
         desabilitaCampo('periodoini',    false);
         desabilitaCampo('periodofin',    false);
-
-        setDisplay("binserir", ehConsulta()?"none":"flex");
     }
     if(opc === "inicia" || opc === "novabusca"){
         METAS_GRID.clearGrid();
@@ -158,12 +136,12 @@ function controlaTela(opc){
         desabilitaCampo('periodofin',    true);
     }
     if(opc == "modal"){
-        desabilitaCampo('mvlrmeta',      ehConsulta());
-        desabilitaCampo('mcodcorretor',  ehConsulta());
+        desabilitaCampo('mvlrmeta',      !ehInserindo());
+        desabilitaCampo('mcodcorretor',  !ehInserindo());
         desabilitaCampo('mdesccorretor', true);
-        desabilitaCampo('mperiodoini',   ehConsulta());
-        desabilitaCampo('mperiodofin',   ehConsulta());
-        desabilitaCampo('bcadastro',     ehConsulta());
+        desabilitaCampo('mperiodoini',   !ehInserindo());
+        desabilitaCampo('mperiodofin',   !ehInserindo());
+        desabilitaCampo('bcadastro',     !ehInserindo());
     }
 }
 
@@ -189,12 +167,12 @@ function ehConsulta(){
     return ABA.getIndex() === 0;
 }
 
-function ehManutencao(){
-    return ABA.getIndex() === 1;
+function ehInserindo(){
+    return form("sacao").innerText == "Inserindo";
 }
 
 function preencherModal(valoresLinha){
-    form("mcodcorretor").value  = valoresLinha[1];
+    form("mcodcorretor").value  = valoresLinha[8];
     form("mdesccorretor").value = valoresLinha[2];
     form("mvlrmeta").value      = valoresLinha[3];
     form("mperiodoini").value   = valoresLinha[6];
@@ -209,22 +187,15 @@ function preencherModal(valoresLinha){
 }
 
 function buscarMetasCorretoresGrid(){
-    METAS_GRID.carregaGrid("/wcr005/buscarMetasCorretoresGrid","","");
-}
-
-function getDescCorretor(idCorretor, retorno){
-    CONSUL.consultar("getDescCorretor", `/contrato/${idCorretor}/getNomeByIdeusu`)
-    .then(data =>{ form(retorno).value = data});
+    METAS_GRID.carregaGrid("/cri006/buscarMetasCorretoresGrid","","");
 }
 
 function salvarMetaCorretor(){
-    const meta = { idlogin:       form("mcodcorretor").value,
-                   vlrmeta:       form("mvlrmeta").value,
-                   datiniciometa: form("mperiodoini").value,
-                   datfinalmeta:  form("mperiodofin").value,
-                   nome:          form("ideusu").value};
-
-    CONSUL.consultar("salvarMetaCorretor",`/wcr005/salvarMetaCorretor`,"POST","",{body: meta});
+    CONSUL.consultar("salvarMetaCorretor",`/cri006/salvarMetaCorretor`,["ideusucoor:mcodcorretor",
+                                                                        "datini:mperiodoini",
+                                                                        "datfim:mperiodofin",
+                                                                        "vlrmeta:mvlrmeta"],
+                                                                        "POST");
 }
 
 function buscarUserName(){

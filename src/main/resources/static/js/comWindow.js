@@ -566,7 +566,7 @@ function salvarCookieAplicacao(caminho, idmodulo, idaplicacao){
     CONSUL.consultar("pathAplication",`/auth/pathAplication`,["path="+caminho,
                                                               "codmod="+idmodulo,
                                                               "codapl="+idaplicacao],
-                                                              "POST")
+                                                              "POST");
 }
 
 function findAllChamadosByIdeusu(){

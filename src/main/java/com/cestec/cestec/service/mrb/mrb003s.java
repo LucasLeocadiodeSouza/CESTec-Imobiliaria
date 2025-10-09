@@ -20,6 +20,7 @@ import com.cestec.cestec.repository.setorRepository;
 import com.cestec.cestec.repository.userRepository;
 import com.cestec.cestec.repository.custom.prjControleDeUsuarioRepository;
 import com.cestec.cestec.repository.generico.funcionarioRepository;
+import com.cestec.cestec.service.genService;
 import com.cestec.cestec.service.sp_userService;
 import com.cestec.cestec.util.utilForm;
 
@@ -42,6 +43,9 @@ public class mrb003s {
 
     @Autowired
     private cargoRepository cargoRepository;
+
+    @Autowired
+    private genService gen;
 
     public String buscarNomeCargo(Integer codcargo){
         cargo cargoAnalise = cargoRepository.findCargoByCodCargo(codcargo);
@@ -142,7 +146,8 @@ public class mrb003s {
         
         utilForm.initGrid();
         for (int i = 0; i < func.size(); i++) {
-            Date dataCriacao = Date.valueOf(func.get(i).getCriado_em());
+            Date dataCriacao  = Date.valueOf(func.get(i).getCriado_em());
+            String ideusufunc = gen.getIdeusuByCodFunc(func.get(i).getCodfunc());
 
             utilForm.criarRow();
             utilForm.criarColuna(func.get(i).getCodfunc().toString());
@@ -157,6 +162,7 @@ public class mrb003s {
             utilForm.criarColuna(func.get(i).getEndereco());
             utilForm.criarColuna(String.valueOf(func.get(i).getSalario()));
             utilForm.criarColuna(func.get(i).getCriado_em().toString());
+            utilForm.criarColuna(ideusufunc);
         }
 
         return utilForm.criarGrid();

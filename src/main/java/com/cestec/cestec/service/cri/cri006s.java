@@ -1,9 +1,9 @@
 package com.cestec.cestec.service.cri;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,6 +13,7 @@ import com.cestec.cestec.model.cri.corretorDTO;
 import com.cestec.cestec.model.cri.pcp_corretor;
 import com.cestec.cestec.repository.corretorRepository;
 import com.cestec.cestec.repository.metaRepository;
+import com.cestec.cestec.service.genService;
 import com.cestec.cestec.util.utilForm;
 
 import jakarta.transaction.Transactional;
@@ -22,6 +23,9 @@ public class cri006s {
     
     @Autowired
     private metaRepository metaRepository;
+
+    @Autowired
+    private genService gen;
 
     @Autowired
     private corretorRepository corretorRepository;
@@ -50,35 +54,38 @@ public class cri006s {
             utilForm.criarColuna(getDescSituacao(metas.get(i).getSituacao()));
             utilForm.criarColuna(metas.get(i).getDatiniciometa().toString());
             utilForm.criarColuna(metas.get(i).getDatfinalmeta().toString());
+            utilForm.criarColuna(gen.getIdeusuCorretorById(metas.get(i).getCodcorretor()));
         }
 
         return utilForm.criarGrid();
     }
 
-    // @Transactional
-    // public ResponseEntity<?> salvarMetaCorretor(corretorDTO meta) {
-    //     pcp_corretor corretor = corretorRepository.findCorretorById(meta.getIdlogin());
+    @Transactional
+    public void salvarMetaCorretor(String ideusucoor, String ideusu, Date datini, Date datfim, BigDecimal vlrmeta) {
+        pcp_corretor corretor = corretorRepository.findCorretorByIdeusu(ideusucoor);
 
-    //     if (corretor == null) return ResponseEntity.ok("Deve ser informado um Corretor para registrar a meta!");
-    //     if (meta.getVlrmeta() == 0) return ResponseEntity.ok("Deve ser informado um valor para a Meta!");
-    //     if (meta.getDatiniciometa() == null || meta.getDatfinalmeta() == null) return ResponseEntity.ok("Deve ser informado um periodo para o comprimento da meta!");
-    //     if (meta.getDatiniciometa().after(meta.getDatfinalmeta())) return ResponseEntity.ok("Data inicio da meta não pode ser superior a data final do comprimento da meta!");
+        if (corretor == null) throw new RuntimeException("Deve ser informado um Corretor para registrar a meta!");
+        if (vlrmeta == BigDecimal.ZERO) throw new RuntimeException("Deve ser informado um valor para a Meta!");
+        if (datini == null || datfim == null) throw new RuntimeException("Deve ser informado um periodo para o comprimento da meta!");
+        if (datini.after(datfim)) throw new RuntimeException("Data inicio da meta não pode ser superior a data final do comprimento da meta!");
 
-    //     try{
-    //         pcp_meta metaCorretor = new pcp_meta(corretor,
-    //                                              meta.getVlrmeta(),
-    //                                              meta.getDatiniciometa(),
-    //                                              meta.getDatfinalmeta(),
-    //                                              1,
-    //                                              Date.valueOf(LocalDate.now()),
-    //                                              meta.getNome()); //vou usar o nome para salvar o ideusu de quem adicionou ele
-    //         metaRepository.save(metaCorretor);
+        // pcp_meta metaCorretor = new pcp_meta(corretor,
+        //                                      meta.getVlrmeta(),
+        //                                      meta.getDatiniciometa(),
+        //                                      meta.getDatfinalmeta(),
+        //                                      1,
+        //                                      Date.valueOf(LocalDate.now()),
+        //                                      meta.getNome()); //vou usar o nome para salvar o ideusu de quem adicionou ele
 
-    //         return ResponseEntity.ok("OK"); 
-    //     }
-    //     catch (Exception e) {
-    //         return ResponseEntity.internalServerError().body("Erro ao salvar Meta: " + e.getMessage());    
-    //     }
-    // }
+        pcp_meta metaCorretor = new pcp_meta();
+        metaCorretor.setDatinicio(datini);
+        metaCorretor.setDatfinal(datfim);
+        metaCorretor.setDatregistro(Date.valueOf(LocalDate.now()));
+        metaCorretor.setIdeusu(ideusu);
+        metaCorretor.setPcp_corretor(corretor);
+        metaCorretor.setSituacao(1);
+        metaCorretor.setValor_meta(vlrmeta);
 
+        metaRepository.save(metaCorretor);
+    }
 }

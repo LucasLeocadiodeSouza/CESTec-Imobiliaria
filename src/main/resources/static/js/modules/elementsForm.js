@@ -106,8 +106,21 @@ function alert(titulo, message, timeout){
     const divcontinertitulo     = document.createElement("div");
     divcontinertitulo.className = "title_info";
 
+    const divcontinerlabeltitulo              = document.createElement("div");
+    divcontinerlabeltitulo.style.width        = "calc(100% - 30px)";
+    divcontinerlabeltitulo.style.overflowX    = "hidden";
+    divcontinerlabeltitulo.style.textOverflow = "ellipsis";
+
     const divcontinermessage     = document.createElement("div");
     divcontinermessage.className = "message_info";
+
+    const divimgclose = document.createElement("div");
+
+    const imgclose = document.createElement("img");
+    imgclose.src   = "/icons/close-button-fine.png";
+    imgclose.style.width  = "20px";
+    imgclose.style.height = "20px";
+    imgclose.style.cursor = "pointer";
 
     const labeltitle     = document.createElement("label");
     labeltitle.innerText = titulo;
@@ -115,7 +128,10 @@ function alert(titulo, message, timeout){
     const labelmessage     = document.createElement("label");
     labelmessage.innerText = message;
 
-    divcontinertitulo.appendChild(labeltitle);
+    divcontinerlabeltitulo.appendChild(labeltitle);
+    divimgclose.appendChild(imgclose);
+    divcontinertitulo.appendChild(divcontinerlabeltitulo);
+    divcontinertitulo.appendChild(divimgclose);
     divcontinermessage.appendChild(labelmessage);
     divalertmess.appendChild(divcontinertitulo);
     divalertmess.appendChild(divcontinermessage);
@@ -147,6 +163,10 @@ function alert(titulo, message, timeout){
             }
         }, 1000);
     }
+
+    divimgclose.addEventListener("click", ()=>{
+        divimgclose.parentNode.parentNode.remove();
+    });
 
     timeoutId = setTimeout(removeAlert, timeout * 1000);
 

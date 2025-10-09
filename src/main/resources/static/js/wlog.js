@@ -4,15 +4,29 @@
     IM: 00015
 */
 
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+        realizarLogout = true;
+    }
+});
+
 window.addEventListener("load", function () {
     iniciarEventos();
 });
 
+window.addEventListener("beforeunload", function (event) { //Evento ao sair do menu
+    if(realizarLogout) CONSUL.consultar("logout", `/auth/logout`, [], "POST");
+    
+    realizarLogout = true;
+});
+
+let realizarLogout;
 var CONSUL;
 
 function iniciarEventos() {
     CONSUL = new consulForm_init();
     filaFetchInit();
+    elementsForm_init();
 
     //controlaTela("inicia");
     event_click("blogin");
@@ -37,7 +51,8 @@ function filaFetchInit(){
         }
 
         switch (CONSUL.obj) {
-        case    "buscarLogin": window.location.href = "/home";
+        case    "buscarLogin": realizarLogout = false;
+                               window.location.href = "/home";
                                break;
         }
     }

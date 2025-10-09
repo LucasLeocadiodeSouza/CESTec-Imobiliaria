@@ -15,7 +15,7 @@ function wmrb001_init(){
 
     USUARIO_GRID               = new GridForm_init();
     USUARIO_GRID.id            = "tabela_user";
-    USUARIO_GRID.columnName    = "codfunc,nome,codsetor,nomesetor,codcargo,nomecargo,criadoem,nasc,cpf,endereco,salario,_criadoemSQL";
+    USUARIO_GRID.columnName    = "codfunc,nome,codsetor,nomesetor,codcargo,nomecargo,criadoem,nasc,cpf,endereco,salario,_criadoemSQL,_ideusufunc";
     USUARIO_GRID.columnLabel   = "Código Func.,Funcionario,Código Setor,Setor,Código Cargo,Cargo,Data inclusão";
     USUARIO_GRID.columnWidth   = "10,22,11,17,11,17,12";
     USUARIO_GRID.columnAlign   = "c,e,c,e,c,e,c";
@@ -155,6 +155,7 @@ function controlaTela(opc){
     }
     if(opc == "modal"){
         desabilitaCampo('musuario',   ehConsulta());
+        desabilitaCampo('mideusu',    true);
         desabilitaCampo('mcpf',       ehConsulta());
         desabilitaCampo('mendereco',  ehConsulta());
         desabilitaCampo('mdatnasc',   ehConsulta());
@@ -166,6 +167,7 @@ function controlaTela(opc){
 
         setDisplay("dcriadoem",        !ehConsulta()?"none":"block");
         setDisplay("container-button", !ehConsulta()?"flex":"none");
+        setDisplay("dmideusu",         !ehInserindo()?"flex":"none");
     }
 }
 
@@ -180,6 +182,7 @@ function limparTela(opc){
     if(opc === "modal"){
         form('hmodal_codfunc').value = "";
         form('musuario').value       = "";
+        form('mideusu').value        = "";
         form('mcpf').value           = "";
         form('mendereco').value      = "";
         form('mdatnasc').value       = "";
@@ -207,6 +210,7 @@ function preencherDadosModal(valores){
     form('mdesccargo').value     = valores[5];
     form('msalario').value       = valores[10];
     form('mdatcriado').value     = valores[11];
+    form('mideusu').value        = valores[12];
 }
 
 function ehConsulta(){
@@ -215,6 +219,10 @@ function ehConsulta(){
 
 function ehManutencao(){
     return ABA.getIndex() === 1;
+}
+
+function ehInserindo(){
+    return form("sacao").innerText == "Inserindo";
 }
 
 function buscarUserName(){
