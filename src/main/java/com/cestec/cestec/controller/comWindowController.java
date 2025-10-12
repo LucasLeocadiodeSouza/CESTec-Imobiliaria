@@ -50,9 +50,9 @@ public class comWindowController {
         return gen.getCodFuncByIdeusu(getUserName(request));        
     }
 
-    @GetMapping("/{ideusu}/valorMetaMensal")
-    public BigDecimal valorMetaMensal(@PathVariable String ideusu) {
-        return comWindowService.getMetaCorretorMensal(ideusu);
+    @GetMapping("/valorMetaMensal")
+    public BigDecimal valorMetaMensal(HttpServletRequest request) {
+        return comWindowService.getMetaCorretorMensal(getUserName(request));
     }
     
     @GetMapping("/getVlrEfetivadoCorretor")

@@ -33,11 +33,6 @@ function iniciarEventos() {
     NOTIFY_GRID.tema          = '2';
     NOTIFY_GRID.createGrid();
 
-    valorMetaMensal();
-    //setGraficoMeta();
-    getVlrEfetivadoCorretor();
-    getCargoIdeusu();
-    //getPeriodoMeta();
     carregarNotificacoes();
 
     event_click("dbackagenda");
@@ -279,19 +274,38 @@ function filaFetchGridInit(){
 function filaFetchInit(){
     CONSUL.filaFetch = (retorno)=>{
         switch (CONSUL.obj) {
-        case 'inativarNotificacao': carregarNotificacoes();
-                                    break;
+        case      'inativarNotificacao': carregarNotificacoes();
+                                         break;
 
-        case       "buscarUserId": form("wcodfunc").value  = retorno;
-                                   form("lid").textContent = retorno;
+        case             "buscarUserId": form("wcodfunc").value  = retorno;
+                                         form("lid").textContent = retorno;
+                                         buscarUserName();
+                                         break;
 
-                                   buscarUserName();
-                                   break;
+        case           "buscarUserName": form("ideusu").value      = retorno;
+                                         form("huser").textContent = retorno;
+                                         getCargoIdeusu();
+                                         break;
 
-        case  "buscarUserName": form("ideusu").value      = retorno;
-                                form("huser").textContent = retorno;
-                                getBotoesAplMenu();
-                                break;
+        case           "getCargoIdeusu": form("lcargo").innerText = retorno;
+                                         valorMetaMensal();
+                                         break;
+
+        case          "valorMetaMensal": form("vlrmeta").innerText = retorno;
+                                         setGraficoMeta();
+                                         break;
+
+        case           "setGraficoMeta": form("dgraficointerno").style.width = retorno + "%"
+                                         getVlrEfetivadoCorretor();
+                                         break;
+
+        case "getVlrEfetivadoCorretor" : form("vlrefetivadometa").innerText = retorno;
+                                         getPeriodoMeta();
+                                         break;
+
+        case           "getPeriodoMeta": form("datperiodometa").innerText = retorno;
+                                         getBotoesAplMenu();
+                                         break;
 
         case         "getBotoesAplMenu": let botoes = [];
                                          for(const idModulo in retorno) {
@@ -598,71 +612,23 @@ function findAllChamadosByIdeusu(){
 }
 
 function valorMetaMensal(){
-    fetch("/home/userlogin", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response =>{return response.text()})
-    .then(data => {fetch(`/home/${data}/valorMetaMensal`, {
-                       method: "GET",
-                       headers: {
-                           "Content-Type":"application/json"
-                       }
-                   })
-                   .then(response => {return response.text()})
-                   .then(data     => { form("vlrmeta").innerText = data })
-                   .catch(error   => alert("Erro ao buscar meta mensal: " + error.message))
-    })
+    CONSUL.consultar("valorMetaMensal",`/home/valorMetaMensal`);
 }
 
 function setGraficoMeta(){
-    fetch("/home/getPercentMetaMes", {
-        method: "GET",
-        headers: {
-            "Content-Type":"application/json"
-        }
-    })
-    .then(response => {return response.text()})
-    .then(data     => { form("dgraficointerno").style.width = data + "%" })
-    .catch(error   => alert("Erro ao Mudar as dimensoes do grafico de metas: " + error.message))
+    CONSUL.consultar("setGraficoMeta",`/home/getPercentMetaMes`);
 }
 
 function getVlrEfetivadoCorretor(){
-    fetch("/home/getVlrEfetivadoCorretor", {
-        method: "GET",
-        headers: {
-            "Content-Type":"application/json"
-        }
-    })
-    .then(response => {return response.text()})
-    .then(data     => { form("vlrefetivadometa").innerText = data })
-    .catch(error   => alert("Erro ao buscar Valor Efetivado: " + error.message))
+    CONSUL.consultar("getVlrEfetivadoCorretor",`/home/getVlrEfetivadoCorretor`);
 }
 
 function getCargoIdeusu(){
-    fetch("/home/getCargoIdeusu", {
-        method: "GET",
-        headers: {
-            "Content-Type":"application/json"
-        }
-    })
-    .then(response => {return response.text()})
-    .then(data     => { form("lcargo").innerText = data })
-    .catch(error   => alert("Erro ao buscar Cargo: " + error.message))
+    CONSUL.consultar("getCargoIdeusu",`/home/getCargoIdeusu`);
 }
 
 function getPeriodoMeta(){
-    fetch("/home/getPeriodoMeta", {
-        method: "GET",
-        headers: {
-            "Content-Type":"application/json"
-        }
-    })
-    .then(response => {return response.text()})
-    .then(data => {form("datperiodometa").innerText = data})
-    .catch(error => alert("Erro ao buscar Período da meta: " + error.message))
+    CONSUL.consultar("getPeriodoMeta",`/home/getPeriodoMeta`);
 }
 
 function carregaMes(){ //IM: 00004 - montar calendario/agenda
