@@ -48,9 +48,7 @@ function iniciarEventos() {
     filaFetchGridInit();
 
     buscarUserId("wcodfunc");
-    buscarUserName();
-    
-    getBotoesAplMenu();
+
     controlaTela("inicio");
 }
 
@@ -223,7 +221,9 @@ function criarBotaoExterno(divpai,botoes){
             divcontainerbutton.className = "container-botoes-int";
 
             const divbuttonint = document.createElement("div");
-            divbuttonint.id = "bim" + botaoint.descricao.replace(/\s+/g, '').toLowerCase()  + "int";
+
+            divbuttonint.id = "bim" + botao.codmodulo + "&" + botaoint.codapl + "int";
+            //divbuttonint.id = "bim" + botaoint.descricao.replace(/\s+/g, '').toLowerCase()  + "int";
             divbuttonint.className = "botoesinternosapl bimmenu botaointerno";
 
             divbuttonint.addEventListener("click", ()=>{
@@ -235,6 +235,8 @@ function criarBotaoExterno(divpai,botoes){
                     window.open("/buscarPath/" + botaoint.codapl + "?idmodulo=" + botao.codmodulo + "&idapl=" + botaoint.codapl, "_blank", "noopener");
                     //window.location.href = "/buscarPath/" + botaoint.codapl;
                 }
+
+                location.reload();
             });
 
             const labelint = document.createElement("label");
@@ -277,17 +279,19 @@ function filaFetchGridInit(){
 function filaFetchInit(){
     CONSUL.filaFetch = (retorno)=>{
         switch (CONSUL.obj) {
-        case  "buscarUserName": form("ideusu").value      = retorno;
-                                form("huser").textContent = retorno;
-                                buscarHistoricoAcessoApl();
-                                break;
+        case 'inativarNotificacao': carregarNotificacoes();
+                                    break;
 
         case       "buscarUserId": form("wcodfunc").value  = retorno;
                                    form("lid").textContent = retorno;
+
+                                   buscarUserName();
                                    break;
 
-        case 'inativarNotificacao': carregarNotificacoes();
-                                    break;
+        case  "buscarUserName": form("ideusu").value      = retorno;
+                                form("huser").textContent = retorno;
+                                getBotoesAplMenu();
+                                break;
 
         case         "getBotoesAplMenu": let botoes = [];
                                          for(const idModulo in retorno) {
@@ -302,16 +306,18 @@ function filaFetchInit(){
                                           };
 
                                           criarBotaoExterno("dintensint",botoes);
+
+                                          buscarHistoricoAcessoApl();
                                           break;
 
         case 'buscarHistoricoAcessoApl': retornoBuscarHistoricoAcesso(retorno);
                                          buscarAgendamentos();
                                          break;
 
-        case "buscarAgendamentos": AGENDSJSON = retorno;
-                                   carregaMes();
-                                   findAllChamadosByIdeusu();
-                                   break;
+        case       "buscarAgendamentos": AGENDSJSON = retorno;
+                                         carregaMes();
+                                         findAllChamadosByIdeusu();
+                                         break;
 
         case "findAllChamadosByIdeusu": const chamados   = retorno;
                                         var direcionadas = 0;
@@ -325,7 +331,25 @@ function filaFetchInit(){
                                         })
                                           
                                         criarGraficoTarefas(direcionadas, concluidas, iniciadas);
+                                        
+                                        buscarAplicacoesFav();
                                         break;
+
+        case    "buscarAplicacoesFav": var divcontainer_fr = document.getElementById("aplicacoes_favoritas");
+        
+                                       if(!divcontainer_fr) {
+                                            document.getElementById("container-descaplfav").innerHTML = '<div id="aplicacoes_favoritas"></div>';
+                                            divcontainer_fr = document.getElementById("aplicacoes_favoritas");
+                                       }
+
+                                       divcontainer_fr.innerHTML = "";
+                                       retorno.forEach(aplfav => { criarContainerFrameFav(aplfav.aplicacoes.modulo.id, aplfav.aplicacoes.modulo.descricao, aplfav.aplicacoes.id, aplfav.aplicacoes.descricao) });
+
+                                       if(retorno.length == 0){
+                                          divcontainer_fr.parentNode.innerHTML = "<div style='width: 100%; height: 100%; display: flex; justify-content: center;align-items: center;'><label style='color: var(--color-lb-claro, #f5f5f5)'>Nenhuma Aplicação Favoritada</label></div>";
+                                       } 
+
+                                       break;
         }
     }
 }
@@ -705,6 +729,39 @@ function temNotificacaoPendente(){
 
         if(colunas[2].innerText == "true") form("icon_notif").style.display = "block";
     });
+}
+
+function buscarAplicacoesFav(){
+    CONSUL.consultar("buscarAplicacoesFav",`/home/buscarAplicacoesFav`,[],'','',{},true);
+}
+
+function criarContainerFrameFav(codmodulo, descmodulo, codapl, descapl){
+    const divfrfav = document.createElement("div");
+    divfrfav.classList.add("fr-fav");
+
+    const divtitulofrfav = document.createElement("div");
+    divtitulofrfav.classList.add("titulo-fr-fav");
+    
+    const labeltitulo = document.createElement("label");
+    labeltitulo.innerText = codmodulo + " - " + descmodulo;
+
+    const divdescfrfav = document.createElement("div");
+    divdescfrfav.classList.add("desc-fr-fav");
+
+    const labeldec = document.createElement("label");
+    labeldec.innerText = codapl + " - " + descapl;
+
+    divtitulofrfav.appendChild(labeltitulo);
+    divdescfrfav.appendChild(labeldec);
+    divfrfav.appendChild(divtitulofrfav);
+    divfrfav.appendChild(divdescfrfav);
+
+    divfrfav.addEventListener("click", ()=>{
+        const botaoapl = document.getElementById("bim" + codmodulo + "&" + codapl + "int");
+        botaoapl.click();
+    });
+
+    document.getElementById("aplicacoes_favoritas").appendChild(divfrfav);
 }
 
 function criarGraficoTarefas(direcionadas, concluidas, iniciadas){
