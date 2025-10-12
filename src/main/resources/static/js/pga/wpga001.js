@@ -47,6 +47,12 @@ function iniciarEventos() {
     event_selected_init("mvlr,mdesconto,mcodcontrato,codconvenio,codboleto,documento");
     inputOnlyNumber('mvlr,mdesconto,mcodcontrato,codconvenio,codboleto,documento');
 
+    event_change("mcodcontrato");
+
+    event_blur_init("mvlr,mdesconto");
+    event_selected_init("mvlr,mdesconto,mcodcontrato,codconvenio,codboleto,documento");
+    inputOnlyNumber('mvlr,mdesconto,mcodcontrato,codconvenio,codboleto,documento');
+
     controlaTela("inicia");
 }
 
