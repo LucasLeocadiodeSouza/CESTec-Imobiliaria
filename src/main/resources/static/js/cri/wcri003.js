@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
     iniciarEventos();
 });
 
-var ABA,DMFDiv,CONSUL,CLIENTES_GRID;
+var ABA,DMFDiv,CONSUL,CLIENTES_GRID, IMPRIMIR;
 
 function iniciarEventos() {
     elementsForm_init();
@@ -35,6 +35,8 @@ function iniciarEventos() {
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
 
+    IMPRIMIR = new imprimirForm_init();
+
     CONSUL = new consulForm_init();
     filaFetchInit();
 
@@ -45,6 +47,7 @@ function iniciarEventos() {
     event_click("binserir");
     event_click("blimpar");
     event_click("bcadastro");
+    event_click("bimprimir");
 
     event_selected_init("codcliente,mddd,mtelefone,mnmr,mcepini,mcepdigito,mcidade,muf,mbairro,memail,mcpf,mnome,mlogradouro");
     inputOnlyNumber('codcliente,mddd,mtelefone,mnmr,mcepini,mcepdigito');
@@ -62,6 +65,9 @@ function event_click(obj) {
 
             case    "bbuscar": controlaTela("buscar");
                                buscarDadosTable(); 
+                               break;
+
+            case  "bimprimir": IMPRIMIR.imprimirGrid(form(CLIENTES_GRID.id).innerHTML, "Clientes Cadastrados", "Clientes cadastrados no sistema");
                                break;
 
             case   "binserir": form("sacao").innerText   = "Inserindo";

@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
     buscarUserName();
 });
 
-var ABA,DMFDiv,CONSUL,METAS_GRID;
+var ABA,DMFDiv,CONSUL,METAS_GRID, IMPRIMIR;
 
 function iniciarEventos() {
     elementsForm_init();
@@ -35,6 +35,8 @@ function iniciarEventos() {
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
 
+    IMPRIMIR = new imprimirForm_init();
+
     CONSUL = new consulForm_init();
     filaFetchInit();
 
@@ -42,6 +44,7 @@ function iniciarEventos() {
     event_click("bbuscar");
     event_click("binserir");
     event_click("blimpar");
+    event_click("bimprimir");
     event_click("bcadastro");
 
     event_selected_init("codcorretor");
@@ -91,6 +94,9 @@ function event_click(obj) {
                                DMFDiv.openModal("dmodalf_meta");
                                break;
 
+            case  "bimprimir": IMPRIMIR.imprimirGrid(form(METAS_GRID.id).innerHTML, "Metas Corretores", "Metas cadastrados no sistema para os corretores");
+                               break;
+                               
             case    "blimpar": controlaTela("inicia");
                                break;
 

@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
     iniciarEventos();
 });
 
-var ABA,DMFDiv,CONSUL,CORRETOR_GRID;
+var ABA,DMFDiv,CONSUL,CORRETOR_GRID, IMPRIMIR;
 
 function iniciarEventos() {
     elementsForm_init();
@@ -35,6 +35,8 @@ function iniciarEventos() {
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
 
+    IMPRIMIR = new imprimirForm_init();
+
     CONSUL = new consulForm_init();
 
     filaFetchInit();
@@ -46,6 +48,7 @@ function iniciarEventos() {
     event_click("binserir");
     event_click("blimpar");
     event_click("bcadastro");
+    event_click("bimprimir");
 
     event_selected_init("codcliente");
 
@@ -81,6 +84,11 @@ function event_click(obj) {
     if(obj == 'bcadastro'){
         form(obj).addEventListener("click", function () {
             adicionarCliente();
+        });
+    }
+    if(obj == 'bimprimir'){
+        form(obj).addEventListener("click", function () {
+            IMPRIMIR.imprimirGrid(form(CORRETOR_GRID.id).innerHTML, "Corretores Cadastrados", "Corretores cadastrados no sistema");
         });
     }
 }

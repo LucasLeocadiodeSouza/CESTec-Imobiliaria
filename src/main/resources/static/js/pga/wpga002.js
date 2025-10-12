@@ -7,7 +7,7 @@ window.addEventListener("load", function () {
     iniciarEventos();
 });
 
-var DMFDiv,CONSUL,PGA_GRID;
+var DMFDiv,CONSUL,PGA_GRID, IMPRIMIR;
 
 function iniciarEventos() {
     elementsForm_init();
@@ -28,6 +28,8 @@ function iniciarEventos() {
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
 
+    IMPRIMIR = new imprimirForm_init();
+
     CONSUL = new consulForm_init();
     filaFetchInit();
 
@@ -39,6 +41,7 @@ function iniciarEventos() {
     event_click("boletolink");
     event_click("bgerarbol");
     event_click("bgerar");
+    event_click("bimprimir");
 
     event_change("mcodcontrato");
 
@@ -54,6 +57,9 @@ function event_click(obj) {
     form(obj).addEventListener("click", function () {
         switch (obj) {
             case "bnovabusca": controlaTela("novabusca");
+                               break;
+
+            case  "bimprimir": IMPRIMIR.imprimirGrid(form(PGA_GRID.id).innerHTML, "Pagamentos Cadastrados", "Pagamentos cadastrados no sistema");
                                break;
 
             case  "bgerarbol": form("sacao").innerText   = "Gerando";

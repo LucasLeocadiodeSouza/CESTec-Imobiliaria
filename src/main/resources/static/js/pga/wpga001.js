@@ -7,7 +7,7 @@ window.addEventListener("load", function () {
     iniciarEventos();
 });
 
-var DMFDiv,CONSUL,PGA_GRID;
+var DMFDiv,CONSUL,PGA_GRID, IMPRIMIR;
 
 function iniciarEventos() {
     elementsForm_init();
@@ -28,6 +28,8 @@ function iniciarEventos() {
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
 
+    IMPRIMIR = new imprimirForm_init();
+
     CONSUL = new consulForm_init();
     filaFetchInit();
 
@@ -37,6 +39,13 @@ function iniciarEventos() {
     event_click("bbuscar");
     event_click("blimpar");
     event_click("boletolink");
+    event_click("bimprimir");
+
+    event_change("mcodcontrato");
+
+    event_blur_init("mvlr,mdesconto");
+    event_selected_init("mvlr,mdesconto,mcodcontrato,codconvenio,codboleto,documento");
+    inputOnlyNumber('mvlr,mdesconto,mcodcontrato,codconvenio,codboleto,documento');
 
     event_change("mcodcontrato");
 
@@ -56,6 +65,9 @@ function event_click(obj) {
 
             case    "blimpar": controlaTela("inicia");
                                break;
+
+            case "bimprimir": IMPRIMIR.imprimirGrid(form(PGA_GRID.id).innerHTML, "Pagamentos Cadastrados", "Pagamentos cadastrados no sistema");
+                              break;
 
             case    "bbuscar": controlaTela("buscar");
                                carregaGrid();

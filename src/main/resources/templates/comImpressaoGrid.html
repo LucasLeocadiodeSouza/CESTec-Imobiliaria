@@ -1,0 +1,78 @@
+<!-- 
+    Dev: Lucas Leocadio de Souza
+    Data: 15/06/25
+    IM: 00021
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/padrao.css">
+    <title>Cadastro de Aplicação</title>
+    <script src="/js/modules/adicionaScripts.js"></script>
+    <script>
+        adicionarHeadLinks();
+        addScriptsHead("/js/comImpressaoGrid.js");
+    </script>
+<style>
+    .labelimprimir {font-size: 17px; font-weight: 700; width: 100px; text-align: right;}
+    .labelcab      {margin-left: 100px;}
+    .container-table-imp {display: flex; justify-content: center; align-items: center; margin-top: 15px;}
+
+    .princbody {height: auto !important; min-height: var(--body-heigth, 100vh);}
+
+    @media print {
+    #bimptable {
+            display: none !important;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="gen princbody">
+        <fieldset class="fieldset gen" style="display: flex;">
+            <div style="width: 100%;">
+                <div class='if' style="width: 100%;">
+                    <div style="display: flex; justify-content: space-between; width: 100%;">
+                        <div>
+                            <label class="labelcab">CEStec Sistemas e consultoria</label>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                            <label id="ldataatual" class="labelcab"></label>
+                            <label id="lhoraatual" class="labelcab"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex;">
+                    <div style="display: flex; align-items: center;">
+                        <img src="/icons/iconLogoEmpresa.png" alt="Carregando" style="width: 60px; height: 60px;">
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <div class='if'>
+                            <label class="labelimprimir">Titulo:</label>
+                            <label id="ltitulo"></label>
+                        </div>
+    
+                        <div class='if'>
+                            <label class="labelimprimir">Subtitulo: </label>
+                            <label id="lsubtitulo"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class='if' style="display: flex; margin-left: 5px;">
+            <div id="bimptable"  name="bimptable"  class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
+        </div>
+
+        <div class="container-table-imp">
+            <div id="table_impressao_form"></div>
+        </div>
+    </div>
+</body>
+</html>
