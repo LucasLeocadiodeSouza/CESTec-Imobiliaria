@@ -58,13 +58,23 @@ window.addEventListener("load", () => {
                                    $("ddivexpandido").className = "container-expandido";
                                    break;
             
-                case "dopcoescab": if($("ddivexpandido").classList.contains("cabecalhoexpandido")) {
+                case "dopcoescab": if($("ddivexpandido").classList.contains("cabecalhoexpandido") && $("cablastbuttonclick").value == "dopcoescab") {
                                         $("ddivexpandido").innerHTML = "";
                                         $("ddivexpandido").classList.remove("cabecalhoexpandido");
                                         if($("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '45px');
                                    } else expandirCabecalhoPerfil("preferencias");
+
+                                   $("cablastbuttonclick").value = "dopcoescab";
                                    break;
 
+                case "dperfilcab": if($("ddivexpandido").classList.contains("cabecalhoexpandido") && $("cablastbuttonclick").value == "dperfilcab") {
+                                       $("ddivexpandido").innerHTML = "";
+                                       $("ddivexpandido").classList.remove("cabecalhoexpandido");
+                                       if($("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '45px');
+                                   } else expandirCabecalhoPerfil("perfil");
+
+                                   $("cablastbuttonclick").value = "dperfilcab";
+                                   break;
                 
                 case "cabecalhominim": setMinimizarCabecalho('false');
                                        $("cabecalhominim").style.display = "none";
@@ -73,13 +83,6 @@ window.addEventListener("load", () => {
                                        $("dfecharcab").disabled = true;
                                        $("cabecalhoextendido").style.display = "flex";
                                        if($("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '45px');
-                                       break;
-
-                case     "dperfilcab": if($("ddivexpandido").classList.contains("cabecalhoexpandido")) {
-                                           $("ddivexpandido").innerHTML = "";
-                                           $("ddivexpandido").classList.remove("cabecalhoexpandido");
-                                           if($("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '45px');
-                                       } else expandirCabecalhoPerfil("perfil");
                                        break;
 
                 case        "rclaro": setTemaMenu();

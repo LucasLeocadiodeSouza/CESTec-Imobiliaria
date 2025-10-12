@@ -210,14 +210,17 @@ public class comWindowService {
         BigDecimal meta = getMetaCorretorMensal(ideusu);        
         BigDecimal vlrEfetivado = getVlrEfetivadoCorretor(ideusu);
 
-        return ((meta.divide(vlrEfetivado)).multiply(BigDecimal.valueOf(100)));
+        if(meta.compareTo(BigDecimal.ZERO) == 0) return BigDecimal.ZERO;
+
+        return ((vlrEfetivado.multiply(BigDecimal.valueOf(100))).divide(meta));
     }
 
     public String findMesMetaByIdeusu(String ideusu){
         pcp_meta meta  = metaRepository.findMesMetaByIdeusu(ideusu);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-        String periodo = sdf.format(meta.getDatinicio()).toString() + " - " + sdf.format(meta.getDatfinal()).toString();
+        if(meta == null) return "";
+
+        String periodo = utilForm.formatarDataBrasil(meta.getDatinicio()) + " - " + utilForm.formatarDataBrasil(meta.getDatfinal());
 
         return periodo;
     }
