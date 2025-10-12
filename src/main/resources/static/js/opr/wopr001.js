@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
 });
 
 var AGEN_GRID, FUNC_GRID, CARGO_GRID, SETOR_GRID;
-var DMFDiv, ABA, ABAFILTRO, CONSUL;
+var DMFDiv, ABA, ABAFILTRO, CONSUL, IMPRIMIR;
 var ACAOBUSCA = {};
 
 function wopr001_init(){
@@ -46,6 +46,8 @@ function wopr001_init(){
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
 
+    IMPRIMIR = new imprimirForm_init();
+
     CONSUL = new consulForm_init();
     filaFetchInit();
 
@@ -63,7 +65,8 @@ function iniciarEventos() {
     event_click("blimpar");
     event_click("binserir");
     event_click("bagendar");
-    
+    event_click("bimprimir");
+
     event_change("codfunc");
     event_change("codcargo");
     event_change("codsetor");
@@ -149,7 +152,12 @@ function event_click(obj) {
             criarListaFunc();
             DMFDiv.closeModal();
         });
-    } 
+    }
+    if(obj == 'bimprimir'){
+        form(obj).addEventListener("click", function () {
+            IMPRIMIR.imprimirGrid(form(AGEN_GRID.id).innerHTML, "Agendamentos Cadastrados", "Agendamentos cadastrados para funcionarios no sistema");
+        });
+    }
 }
 
 function event_change(obj){

@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
     buscarUserName();
 });
 
-var ABA,DMFDiv,CONSUL,CONTRATOS_GRID;
+var ABA,DMFDiv,CONSUL,CONTRATOS_GRID, IMPRIMIR;
 const ACAOBUSCA = {};
 
 function iniciarEventos() {
@@ -42,6 +42,8 @@ function iniciarEventos() {
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
 
+    IMPRIMIR = new imprimirForm_init();
+
     CARROSSEL           = new carrosselform_init();
     CARROSSEL.container = "containermodais";
     CARROSSEL.createCarrossel();
@@ -63,6 +65,7 @@ function iniciarEventos() {
     event_click("bcadastro");
     event_click("bcancela");
     event_click("benviaaprov");
+    event_click("bimprimir");
     
     event_change("msimovel");
 
@@ -120,6 +123,9 @@ function event_click(obj) {
                                break;
 
             case "benviaaprov": enviarContratoAprovacao();
+                                break;
+
+            case  "bimprimir" : IMPRIMIR.imprimirGrid(form(CONTRATOS_GRID.id).innerHTML, "Contratos Cadastrados", "Contratos cadastrados no sistema");
                                 break;
         }
     });

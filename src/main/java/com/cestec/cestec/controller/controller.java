@@ -46,4 +46,9 @@ public class controller {
     public String cabecalho() {
         return "comCabecalho";
     }
+
+    @GetMapping("/impressao") 
+    public String impressao() {
+        return "comimpressaoGrid";
+    }
 }

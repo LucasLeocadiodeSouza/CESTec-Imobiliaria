@@ -7,7 +7,7 @@ window.addEventListener("load", function () {
     wopr002_init();
 });
 
-var CHAMADOS_GRID,SOLIC_GRID,SOLICDIR_GRID,PROGRAMAS_GRID;
+var CHAMADOS_GRID,SOLIC_GRID,SOLICDIR_GRID,PROGRAMAS_GRID, IMPRIMIR;
 var DMFDiv, ABA, CONSUL;
 const ACAOBUSCA = {};
 
@@ -56,6 +56,8 @@ function wopr002_init(){
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
 
+    IMPRIMIR = new imprimirForm_init();
+
     CONSUL = new consulForm_init();
     filaFetchInit();
 
@@ -77,6 +79,7 @@ function iniciarEventos() {
     event_click("bdireciona");
     event_click("bsalvarprogmod");
     event_click("bfinalizar");
+    event_click("bimprimir");
 
     event_change("mideusuvinc");
 
@@ -138,6 +141,9 @@ function event_click(obj) {
                              if(ehAbaRegistros())carregarGridChamSolicitados();
                              if(ehAbaVincular())carregarGridChamadosParaVinc();
                              break;
+                             
+            case "bimprimir": IMPRIMIR.imprimirGrid(form(CHAMADOS_GRID.id).innerHTML, "Chamados Cadastrados", "Chamados cadastrados no sistema");
+                              break;
 
             case "binserir": form("sacaocadas").innerText   = "Inserindo";
                              form("stitulocadas").innerText = "Solicitação de Chamado - " + form("sacaocadas").innerText;

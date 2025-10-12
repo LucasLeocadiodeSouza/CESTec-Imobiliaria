@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
     buscarUserName();
 });
 
-var ABA,DMFDiv,CONSUL,CONTRATOS_GRID,LEGENDA;
+var ABA,DMFDiv,CONSUL,CONTRATOS_GRID,LEGENDA, IMPRIMIR;
 
 let map;
 var marcadorElementImovel;
@@ -43,6 +43,8 @@ function iniciarEventos() {
     ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
     ABA.createAba();
 
+    IMPRIMIR = new imprimirForm_init();
+
     CARROSSEL           = new carrosselform_init();
     CARROSSEL.container = "containermodais";
     CARROSSEL.createCarrossel();
@@ -63,6 +65,7 @@ function iniciarEventos() {
     event_click("blimpar");
     event_click("baprovar");
     event_click("breprovar");
+    event_click("bimprimir");
     
     event_blur_init("mvlrlib");
     event_selected_init("mvlrlib,mobs,codproprietario,codcliente,codcorretor");
@@ -95,6 +98,9 @@ function event_click(obj) {
 
             case  "breprovar": if(!confirm("Deseja mesmo Reprovar esse contrato?")) return;
                                aprovarReprovarContrato("reprovar");
+                               break;
+
+            case  "bimprimir": IMPRIMIR.imprimirGrid(form(CONTRATOS_GRID.id).innerHTML, "Contratos Cadastrados", "Contratos cadastrados no sistema");
                                break;
         }
     });

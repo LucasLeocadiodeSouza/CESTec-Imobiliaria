@@ -10,6 +10,7 @@ window.addEventListener("load", function () {
 });
 
 var ABA,DMFDiv,CONSUL,PROPRI_GRID;
+var IMPRIMIR;
 
 function iniciarEventos() {
     elementsForm_init();
@@ -36,6 +37,8 @@ function iniciarEventos() {
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
 
+    IMPRIMIR = new imprimirForm_init();
+
     CONSUL = new consulForm_init();
     filaFetchInit()
 
@@ -44,6 +47,7 @@ function iniciarEventos() {
     event_click("binserir");
     event_click("blimpar");
     event_click("bcadastro");
+    event_click("bimprimir");
 
     event_selected_init("codproprietario");
     inputOnlyNumber('codproprietario,mnmr');
@@ -75,7 +79,9 @@ function event_click(obj) {
 
             case  "bcadastro": adicionarProprietario();
                                break;
-        
+
+            case "bimprimir": IMPRIMIR.imprimirGrid(form(PROPRI_GRID.id).innerHTML, "Proprietarios Cadastrados", "Proprietarios cadastrados no sistema");
+                              break;
         }
     });
 }

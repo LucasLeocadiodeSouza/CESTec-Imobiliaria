@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
 });
 
 var LIBACESS_GRID,CADAPL_GRID;
-var DMFDiv, ABA, CONSUL;
+var DMFDiv, ABA, CONSUL, IMPRIMIR;
 var ACAOBUSCA = {};
 
 function wmrb001_init(){
@@ -47,6 +47,8 @@ function wmrb001_init(){
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
 
+    IMPRIMIR = new imprimirForm_init();
+
     CONSUL = new consulForm_init();
     filaFetchInit();
 
@@ -65,6 +67,7 @@ function iniciarEventos() {
     event_click("bcadastrar");
     event_click("blimpar");
     event_click("bcadastroapl");
+    event_click("bimprimir");
     
     event_change("mmodulo");
 }
@@ -138,6 +141,11 @@ function event_click(obj) {
             if(!confirm("Deseja mesmo adicionar essa aplicação?")) return;
 
             adicionarAplicacao();
+        });
+    }
+    if(obj == "bimprimir"){
+        form(obj).addEventListener("click", function () {
+            IMPRIMIR.imprimirGrid(form(CADAPL_GRID.id).innerHTML, "Aplicacoes Cadastradas", "Aplicacoes Cadastradas no Sistema até o da ");
         });
     }
 }
