@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
 });
 
 var USUARIO_GRID;
-var DMFDiv, ABA, CONSUL;
+var DMFDiv, ABA, CONSUL, IMPRIMIR;
 
 function wmrb001_init(){
     elementsForm_init();
@@ -38,6 +38,8 @@ function wmrb001_init(){
     CONSUL = new consulForm_init();
     filaFetchInit();
     
+    IMPRIMIR = new imprimirForm_init();
+
     iniciarEventos();
     buscarUserName();
 }
@@ -54,6 +56,7 @@ function iniciarEventos() {
     event_click("bcadastrar");
     event_click("blimpar");
     event_click("bsalvar");
+    event_click("bimprimir");
 
     CONSUL.filterChange('mcodcargo','',`/mrb003/buscarNomeCargo`,['codcargo:mcodcargo'],'mdesccargo');
     CONSUL.filterChange('mcodsetor','',`/mrb003/buscarNomeSetor`,['codsetor:mcodsetor'],'mdescsetor');
@@ -103,6 +106,11 @@ function event_click(obj) {
             if(!confirm("Deseja mesmo cadastrar o usuário?")) return;
 
             cadastrarUsuario();
+        });
+    }
+    if(obj == "bimprimir"){
+        form(obj).addEventListener("click", function () {
+            IMPRIMIR.imprimirGrid(form(USUARIO_GRID.id).innerHTML, "Usuários Cadastrados", "Usuários cadastrados no Sistema");
         });
     }
 }

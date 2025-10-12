@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
 });
 
 var IMOVEIS_GRID;
-var DMFDiv, ABA, CONSUL, CARROSSEL;
+var DMFDiv, ABA, CONSUL, CARROSSEL, IMPRIMIR;
 //var GEOCODER;
 
 const ACAOBUSCA = {};
@@ -42,6 +42,8 @@ function wcri001_init(){
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
 
+    IMPRIMIR = new imprimirForm_init();
+
     CONSUL = new consulForm_init();
     filaFetchInit();
 
@@ -62,6 +64,7 @@ function iniciarEventos() {
     event_click("bcancela");
     event_click("baddimg");
     event_click("bexclimg");
+    event_click("bimprimir");
 
     CONSUL.filterChange('codproprietario','',`/gen/getNomeProp`,['codprop:codproprietario'],'descproprietario');
     CONSUL.filterChange('mcodproprietario','',`/gen/getNomeProp`,['codprop:mcodproprietario'],'mdescproprietario');
@@ -131,6 +134,10 @@ function event_click(obj) {
 
             case "bexclimg": removerImagemImovel(form("image-principal").childNodes[0].id);
                              break;
+
+            
+            case "bimprimir": IMPRIMIR.imprimirGrid(form(IMOVEIS_GRID.id).innerHTML, "Imoveis Cadastrados", "imoveis cadastrados no sistema");
+                              break;
         }
     });
 }

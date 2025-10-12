@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
 });
 
 var USUBLOQ_GRID,BLOQUE_GRID,RESPBLOQUE_GRID;
-var DMFDiv, ABA, CONSUL;
+var DMFDiv, ABA, CONSUL, IMPRIMIR;
 var ACAOBUSCA = {};
 
 function wmrb004_init(){
@@ -52,6 +52,8 @@ function wmrb004_init(){
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
 
+    IMPRIMIR = new imprimirForm_init();
+
     CONSUL = new consulForm_init();
     filaFetchInit();
 
@@ -74,6 +76,7 @@ function iniciarEventos() {
     event_click("bincluirresp");
     event_click("bincluirresp");
     event_click("bsalvarusu");
+    event_click("bimprimir");
 
     CONSUL.filterChange('codmodel','',`/gen/getDescricaoModulo`,['codmod:codmodel'],'descmodel');
     CONSUL.filterChange('mccodmod','',`/gen/getDescricaoModulo`,['codmod:mccodmod'],'mcnomemod');
@@ -144,6 +147,10 @@ function event_click(obj) {
 
             case   "bsalvarusu": form("sacaousu").innerText == "usuario"? cadastrarBloqueioUsuario():cadastrarBloqueioResponsavel();
                                  break;
+
+            case    "bimprimir": IMPRIMIR.imprimirGrid(form(BLOQUE_GRID.id).innerHTML, "Bloqueios Cadastrados", "Grupo de bloqueios cadastrados para aplicacões no sistema");
+                                 break;
+
         }
     });
 }
