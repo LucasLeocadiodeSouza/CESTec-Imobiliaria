@@ -394,10 +394,7 @@ function GridForm_init(){
                     }
 
                     row.addEventListener("mouseover", (e)=>{ criarChildModalOverCol(row, this.id + "tabcolumn", this.colsModalOver, e)});
-                    row.addEventListener("mouseout",  (e)=>{ 
-                        const bodyTemModal = document.body.contains(document.getElementById("dcontainer-minimodalrow"));
-                        if(bodyTemModal) setDisplay("dcontainer-minimodalrow", "none") 
-                    });
+                    row.addEventListener("mouseout",  (e)=>{ removerChildModalOverCol() });
                 } 
             });
         
@@ -556,10 +553,7 @@ function GridForm_init(){
                 }
 
                 row.addEventListener("mouseover", (e)=>{ criarChildModalOverCol(row, this.id + "tabcolumn", this.colsModalOver, e)});
-                row.addEventListener("mouseout",  (e)=>{ 
-                    const bodyTemModal = document.body.contains(document.getElementById("dcontainer-minimodalrow"));
-                    if(bodyTemModal) setDisplay("dcontainer-minimodalrow", "none") 
-                });
+                row.addEventListener("mouseout",  (e)=>{ removerChildModalOverCol() });
             } 
         
             table.appendChild(headerbody);
@@ -673,6 +667,11 @@ function criarChildModalOverCol(row, idTableHead, indexCols, event){
     modal.style.left = (event.screenX)   + "px";
 
     setDisplay(modal.id, "flex");
+}
+
+function removerChildModalOverCol(){
+    const miniModal = document.getElementById("dcontainer-minimodalrow");
+    if(document.body.contains(miniModal)) setDisplay("dcontainer-minimodalrow", "none");
 }
 
 function getColTextHead(idtableHead, posicao){

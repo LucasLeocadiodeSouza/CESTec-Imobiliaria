@@ -50,8 +50,11 @@
     #funcionarios_grid {display: flex; justify-content: center;}
 
     #dmodalf_agenda {opacity: 1;}
+    #dmodalf_descagend {padding-bottom: 20px; width: 600px;}
 
-    body {background-color: #1d3561;}
+    .buttonclass {display: flex; justify-content: center; align-items: center;}
+
+    #listafunc {width: 250px; height: 100px; overflow-y: auto; margin-block: 0px; list-style-type: disc; border: 1px solid gray; border-radius: 5px;}
 </style>
 </head>
 <body>
@@ -165,7 +168,43 @@
                 </div>
             </div>
         </div>
+        <div id="dmodalf_descagend">
+            <div class='titulo' style="margin-left: 6px; margin-bottom: 20px;">
+                <h2><span id="stitulodescagen" name="stitulodescagen"></span></h2>
+                <span     id="sacaodescagen"   name="sacaodescagen" style="display: none"></span>
+            </div>
 
+            <div class='dmf'>
+                <label class="labelmodal">Título: </label>
+                <input type="text" id="mtituloda"  name="mtituloda"  class="extralarge" disabled>
+            </div>
+
+            <div class='dmf'>
+                <label class="labelmodal">Data: </label>
+                <input type="date" id="mdataagenda"  name="mdataagenda"  class="medium" disabled>
+                <label class="labelmodal2">Horário: </label>
+                <input type="time" id="mhoraagenda"  name="mhoraagenda"  class="p" disabled>
+            </div>
+
+            <div class='dmf'>
+                <label class="labelmodal">Motivo: </label>
+                <input type="text" id="mmotivoda"  name="mmotivoda"  class="large" disabled>
+            </div>
+
+            <div class='dmf'>
+                <label class="labelmodal textup">Descrição: </label>
+                <textarea type="text" id="mdescagenda"  name="mdescagenda"  class="extralarge" disabled></textarea>
+            </div>
+
+            <div class='dmf'>
+                <label class="labelmodal">Funcionarios: </label>
+                <ol id="listafunc"></ol>
+            </div>
+
+            <div class="dmf buttonclass">
+                <div id="bcancel" name="bcancel" class="button negacao" value="Cancelar"></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

@@ -16,7 +16,7 @@ function wopr001_init(){
 
     AGEN_GRID               = new GridForm_init();
     AGEN_GRID.id            = "tabela_agend";
-    AGEN_GRID.columnName    = "codagen,titulo,descricao,motivo,datagen,horagen,ideusu,_motivos";
+    AGEN_GRID.columnName    = "codagen,titulo,descricao,motivo,datagen,horagen,ideusu,_motivos,_listfunc";
     AGEN_GRID.columnLabel   = "Código,Título,Descrição,Motivo,Data,Hora,Usuário";
     AGEN_GRID.columnWidth   = "8,15,30,15,12,9,11";
     AGEN_GRID.columnAlign   = "c,e,e,e,c,c,e";
@@ -41,7 +41,7 @@ function wopr001_init(){
     ABAFILTRO.createAba();
 
     DMFDiv              = new DMFForm_init();
-    DMFDiv.divs         = "dmodalf_agenda";
+    DMFDiv.divs         = "dmodalf_agenda,dmodalf_descagend";
     DMFDiv.tema         = 1;
     DMFDiv.cortinaclose = true;
     DMFDiv.formModal();
@@ -83,11 +83,7 @@ function event_click_table(obj,row){
 
                     preencherDadosModal(valoresLinha);
 
-                    carregaGridFuncionarios();
-
-                    DMFDiv.fullScream = true;
-                    DMFDiv.openModal("dmodalf_agenda");
-                    DMFDiv.fullScream = false;
+                    DMFDiv.openModal("dmodalf_descagend");
     };
 
     //PAra mmelhorar vou ter que alterar e fazer um switch pelo obj.id da table e alterar no form
@@ -262,6 +258,14 @@ function controlaTela(opc){
         setDisplay("dmfiltrocargo", ehAbaCargo()?"block":"none");
         setDisplay("bagendar",      ehManutencao()?"flex":"none");
     }
+    if(opc == "ativacancelar"){
+        desabilitaCampo('bcancel', !ehManutencao());
+        setDisplay("bcancel", ehManutencao()?"flex":"none");
+    }
+    if(opc == "desativacancelar"){
+        desabilitaCampo('bcancel', true);
+        setDisplay("bcancel", "none");
+    }
 }
 
 function limparTela(opc){
@@ -292,17 +296,39 @@ function limparTela(opc){
 }
 
 function preencherDadosModal(valores){
-    form("sacao").innerText   = ehConsulta()?"Consultando":"Alterando";
-    form("stitulo").innerText = "Cadastrar Agendamento - " + form("sacao").innerText;
-
-    //buscarRoleAcess(valores[6]);
+    form("sacaodescagen").innerText   = ehConsulta()?"Consultando":"Alterando";
+    form("stitulodescagen").innerText = "Agendamento - " + form("sacaodescagen").innerText;
     
     form("hcodagen").value    = valores[0];
-    form("mtituloagen").value = valores[1];
-    form("mdescagen").value   = valores[2];
-    form("mdataagen").value   = valores[4];
-    form("mhoraagen").value   = valores[5];
-    getOptionsMotivo(valores[7]);
+    form("mtituloda").value   = valores[1];
+    form("mdescagenda").value = valores[2];
+    form("mdataagenda").value = valores[4];
+    form("mhoraagenda").value = valores[5];
+    form("mmotivoda").value   = valores[7];
+
+    form("listafunc").innerHTML = "";
+
+    const listaFunc = valores[8].split("|");
+    listaFunc.forEach(li =>{
+        const ideusu   = capitalizarCadaPalavra(li.split(",")[0]);
+        const nomefunc = capitalizarCadaPalavra(li.split(",")[1]);
+
+        adicionarFuncionarioLista(ideusu, nomefunc);
+    })
+
+    const dataAtual = new Date();
+
+    if(converterDataString(valores[4] + " - " + valores[5]).getTime() < dataAtual.getTime()){
+        controlaTela("desativacancelar");
+    }else controlaTela("ativacancelar");
+}
+
+function converterDataString(dataString) {
+    const [dataParte, horaParte] = dataString.split(' - ');
+    const [ano, mes, dia] = dataParte.split('-');
+    const [hora, minuto] = horaParte.split(':');
+
+    return new Date(ano, mes - 1, dia, hora, minuto);
 }
 
 function criarGridFunc(){
@@ -417,7 +443,7 @@ function cadastrarAgendamento(listafunc) {
                           horagen:    form('mhoraagen').value,
                           ideusu:     form('ideusu').value};
 
-    CONSUL.consultar("cadastrarAgendamento",`/opr001/cadastrarAgendamento`,"POST","",{body: agendamento});
+    CONSUL.consultar("cadastrarAgendamento",`/opr001/cadastrarAgendamento`,[],"POST","",{body: agendamento});
 }
 
 function vincularAgendamentoFunc(listafunc) {
@@ -428,7 +454,7 @@ function vincularAgendamentoFunc(listafunc) {
                             titulo:    form("mtituloagen").value,
                             ideusu:    form('ideusu').value};
 
-        CONSUL.consultar("vincularAgendamentoFunc",`/opr001/vincularAgendamentoFunc`,"POST","",{body: agendfunc})
+        CONSUL.consultar("vincularAgendamentoFunc",`/opr001/vincularAgendamentoFunc`,[],"POST","",{body: agendfunc})
         .then(data =>{
             error = data != "OK";
         });
@@ -469,4 +495,15 @@ function carregaGridCargo(){
 
 function carregarGridAgendamentos(){
     AGEN_GRID.carregaGrid(`/opr001/carregarGridAgendamentos?codfunc=${form("codfunc").value}&codcargo=${form("codcargo").value}&codsetor=${form("codsetor").value}`,"","");
+}
+
+function adicionarFuncionarioLista(ideusu, nomefunc){
+    if(ideusu == "") return;
+
+    const lista = form("listafunc");
+
+    const linha = document.createElement("li");
+    linha.innerText = ideusu + " - " + nomefunc;
+
+    lista.appendChild(linha);
 }

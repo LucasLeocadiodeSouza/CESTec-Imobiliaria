@@ -139,6 +139,18 @@ public class opr001s {
 
         utilForm.initGrid();
         for (int i = 0; i < agenda.size(); i++) {
+            String listafuncstring = "";
+            List<opr_agendamentos_func> listafunc = agendFuncRepo.findAllByCodAgend(agenda.get(i).getCodagenda());
+
+            for(int j = 0; j < listafunc.size(); j++){
+                String ideusu   = listafunc.get(j).getCodfunc().getSp_user().getLogin();
+                String nomefunc = listafunc.get(j).getCodfunc().getNome();
+
+                listafuncstring += (listafuncstring == ""?"":"|") + ideusu + "," + nomefunc;
+
+                System.out.println(ideusu + "," + nomefunc);
+            }
+
             utilForm.criarRow();
             utilForm.criarColuna(agenda.get(i).getCodagenda().toString());
             utilForm.criarColuna(agenda.get(i).getTitulo());
@@ -148,7 +160,7 @@ public class opr001s {
             utilForm.criarColuna(agenda.get(i).getHoragen2().toString());
             utilForm.criarColuna(agenda.get(i).getIdeusu());
             utilForm.criarColuna(agenda.get(i).getMotivo().toString());
-            utilForm.criarColuna(agendFuncRepo.findAllByCodAgend(agenda.get(i).getCodagenda()).toString());
+            utilForm.criarColuna(listafuncstring);
         }
 
         return utilForm.criarGrid();

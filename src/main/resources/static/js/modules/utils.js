@@ -124,3 +124,11 @@ function formatarData(data, mesant) {
     dataAjustada.setMonth(dataAjustada.getMonth() - mesant);
     return dataAjustada.toISOString().split('T')[0];
 }
+
+function capitalizarCadaPalavra(texto) {
+  if (!texto) return "";
+  return texto
+    .split(" ")
+    .map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase())
+    .join(" ");
+}

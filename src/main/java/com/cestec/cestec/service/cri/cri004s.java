@@ -84,11 +84,11 @@ public class cri004s {
 
     public String getSituacaoContratoColor(Integer codsit) {
         switch (codsit) {
-            case 0: return "<div title='Cancelada' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#ff0000;'></div></div></div>";
-            case 1: return "<div title='Aberta' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#5a7cd0;'></div></div></div>";
-            case 2: return "<div title='Aguardando aprovação' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#ffeb00;'></div></div></div>";
-            case 3: return "<div title='Aprovada' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#035e00;'></div></div></div>";
-            case 4: return "<div title='Reprovada' class='gridlegenda'><div class='lgde'><div class='lgdi' style='background:#ff8100;'></div></div></div>";
+            case 0: return "<span class='legenprint'>Cancelada</span><div title='Cancelada' class='gridlegenda noprint'><div class='lgde'><div class='lgdi' style='background:#ff0000;'></div></div></div>";
+            case 1: return "<span class='legenprint'>Aberta</span><div title='Aberta' class='gridlegenda noprint'><div class='lgde'><div class='lgdi' style='background:#5a7cd0;'></div></div></div>";
+            case 2: return "<span class='legenprint'>Aguardando aprovação</span><div title='Aguardando aprovação' class='gridlegenda noprint'><div class='lgde'><div class='lgdi' style='background:#ffeb00;'></div></div></div>";
+            case 3: return "<span class='legenprint'>Aprovada</span><div title='Aprovada' class='gridlegenda noprint'><div class='lgde'><div class='lgdi' style='background:#035e00;'></div></div></div>";
+            case 4: return "<span class='legenprint'>Reprovada</span><div title='Reprovada' class='gridlegenda noprint'><div class='lgde'><div class='lgdi' style='background:#ff8100;'></div></div></div>";
         }
         return "";
     }

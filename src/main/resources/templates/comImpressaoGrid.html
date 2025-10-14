@@ -24,9 +24,13 @@
     .princbody {height: auto !important; min-height: var(--body-heigth, 100vh);}
 
     @media print {
-    #bimptable {
+    .noprint {
             display: none !important;
         }
+
+    .legenprint {
+        display: block !important;
+    }
     }
 </style>
 </head>
@@ -67,7 +71,7 @@
         </fieldset>
 
         <div class='if' style="display: flex; margin-left: 5px;">
-            <div id="bimptable"  name="bimptable"  class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
+            <div id="bimptable"  name="bimptable"  class="button noprint" value="Imprimir" data-icon="/icons/printer.png"></div>
         </div>
 
         <div class="container-table-imp">
