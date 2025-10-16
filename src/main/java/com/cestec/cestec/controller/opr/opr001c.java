@@ -10,15 +10,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cestec.cestec.model.cargo;
 import com.cestec.cestec.model.modelUtilForm;
+import com.cestec.cestec.model.pcp_setor;
 import com.cestec.cestec.model.opr.agendamentoDTO;
+import com.cestec.cestec.service.genService;
 import com.cestec.cestec.service.opr.opr001s;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/opr001")
 public class opr001c {
     @Autowired
     private opr001s opr001s;
+
+    @Autowired
+    private genService gen;
+
 
     @GetMapping("/carregarGridFucnionarios")
     public List<?> carregarGridFucnionarios(@RequestParam(value = "codagend", required = false) Integer codagend, @RequestParam(value = "nomefunc", required = false) String nomefunc, @RequestParam(value = "acao", required = false) String acao){
@@ -48,6 +57,34 @@ public class opr001c {
     @PostMapping("/vincularAgendamentoFunc")
     public ResponseEntity<?> vincularAgendamentoFunc(@RequestBody agendamentoDTO agendamento){
         return opr001s.vincularAgendamentoFunc(agendamento);
+    }
+
+    @PostMapping("/vincularAgendamentoFuncSetor")
+    public ResponseEntity<?> vincularAgendamentoFuncSetor(@RequestBody pcp_setor setor, @RequestParam(value = "codagend", required = false) Integer codagend, HttpServletRequest request){
+        try {
+            opr001s.vincularAgendamentoFuncSetor(setor, codagend, gen.getUserName(request));
+
+            return ResponseEntity.ok("OK");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro interno ao inativar imovel: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/vincularAgendamentoFuncCargo")
+    public ResponseEntity<?> vincularAgendamentoFuncCargo(@RequestBody cargo cargo, @RequestParam(value = "codagend", required = false) Integer codagend, HttpServletRequest request){
+        try {
+            opr001s.vincularAgendamentoFuncCargo(cargo, codagend, gen.getUserName(request));
+
+            return ResponseEntity.ok("OK");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+            
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro interno ao inativar imovel: " + e.getMessage());
+        }
     }
 
     @GetMapping("/getOptionsMotivo")

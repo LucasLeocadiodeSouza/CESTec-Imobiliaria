@@ -284,10 +284,12 @@ function filaFetchInit(){
 
         case           "buscarUserName": form("ideusu").value      = retorno;
                                          form("huser").textContent = retorno;
+                                         form("huser").title       = retorno;
                                          getCargoIdeusu();
                                          break;
 
         case           "getCargoIdeusu": form("lcargo").innerText = retorno;
+                                         form("lcargo").title     = retorno;
                                          valorMetaMensal();
                                          break;
 

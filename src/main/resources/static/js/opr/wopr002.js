@@ -80,6 +80,7 @@ function iniciarEventos() {
     event_click("bsalvarprogmod");
     event_click("bfinalizar");
     event_click("bimprimir");
+    event_click("bcancelar");
 
     event_change("mideusuvinc");
 
@@ -142,7 +143,9 @@ function event_click(obj) {
                              if(ehAbaVincular())carregarGridChamadosParaVinc();
                              break;
                              
-            case "bimprimir": IMPRIMIR.imprimirGrid(form(CHAMADOS_GRID.id).innerHTML, "Chamados Cadastrados", "Chamados cadastrados no sistema");
+            case "bimprimir": if(ehAbaPainel()) IMPRIMIR.imprimirGrid(form(CHAMADOS_GRID.id).innerHTML, "Chamados Direcionados", "Chamados direcionados para o usuario");
+                              if(ehAbaRegistros()) IMPRIMIR.imprimirGrid(form(SOLIC_GRID.id).innerHTML, "Chamados Registrados", "Chamados registrados no sistema pelo usuario");
+                              if(ehAbaVincular()) IMPRIMIR.imprimirGrid(form(SOLICDIR_GRID.id).innerHTML, "Chamados pendentes para direcionamento", "Chamados aguardando o direcionamento para um usuario");
                               break;
 
             case "binserir": form("sacaocadas").innerText   = "Inserindo";
@@ -153,6 +156,9 @@ function event_click(obj) {
                              getOptionsPrioridade("0");
                              DMFDiv.openModal("dmodalf_cadastrar");
                              break;
+
+            case "bcancelar": cancelarSolicitacao();
+                              break;
 
             case "biniciar": iniciarSolicitacao();
                              break;
@@ -299,6 +305,8 @@ function controlaTela(opc){
         setDisplay("tabela_chamados", ehAbaPainel()?"block":"none");
         setDisplay("tabela_solic",    ehAbaRegistros()?"block":"none");
         setDisplay("tabela_solicdir", ehAbaVincular()?"block":"none");
+
+        setDisplay("davisoacesso",   ehAbaVincular()?"block":"none");
     }
     if(opc == "buscar"){
         desabilitaCampo('nmrsolic',   true);
@@ -416,6 +424,10 @@ function enviarSolicitacao(){
 
 function iniciarSolicitacao(){
     CONSUL.consultar("iniciarSolicitacao",`/opr002/iniciarSolicitacao`,["ideusu:ideusu","idsolic:nmrservpainel"],"POST");
+}
+
+function cancelarSolicitacao(){
+    CONSUL.consultar("cancelarSolicitacao",`/opr002/cancelarSolicitacao`,["ideusu:ideusu","idsolic:nmrservpainel"],"POST");
 }
 
 function finalizarSolicitacao(){

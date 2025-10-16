@@ -1,5 +1,6 @@
 package com.cestec.cestec.controller.opr;
 
+import java.net.http.HttpRequest;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,13 +11,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.cestec.cestec.model.opr.chamadoSolicDTO;
+import com.cestec.cestec.service.genService;
 import com.cestec.cestec.service.opr.opr002s;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/opr002")
 public class opr002c {
     @Autowired
     private opr002s opr002s;
+
+    @Autowired
+    private genService gen;
 
     @GetMapping("/getNomeUsuario")
     public String getNomeUsuario(@RequestParam(value = "ideusu", required = false) String ideusu){
@@ -44,7 +51,9 @@ public class opr002c {
     }
 
     @PostMapping("/direcionarSolic")
-    public ResponseEntity<?> direcionarSolic(@RequestParam(value = "ideusu", required = false) String ideusu, @RequestParam(value = "ideusudirec", required = false) String ideusudirec, @RequestParam(value = "complex", required = false) Integer complex, @RequestParam(value = "idsolic", required = false) Integer idsolic){
+    public ResponseEntity<?> direcionarSolic(@RequestParam(value = "ideusu", required = false) String ideusu, @RequestParam(value = "ideusudirec", required = false) String ideusudirec, @RequestParam(value = "complex", required = false) Integer complex, @RequestParam(value = "idsolic", required = false) Integer idsolic, HttpServletRequest request){
+        if(gen.getUserName(request).equals("USUARIOT")) return ResponseEntity.badRequest().body("Usuário Teste não é permitido direcionar Solicitações!");
+
         return opr002s.direcionarSolic(ideusu,ideusudirec,complex,idsolic);
     }
 
@@ -68,6 +77,12 @@ public class opr002c {
     public ResponseEntity<?> iniciarSolicitacao(@RequestParam(value = "ideusu", required = false) String ideusu,
                                                 @RequestParam(value = "idsolic", required = false) Integer idsolic){
         return opr002s.iniciarSolicitacao(ideusu, idsolic);
+    }
+
+    @PostMapping("/cancelarSolicitacao")
+    public ResponseEntity<?> cancelarSolicitacao(@RequestParam(value = "ideusu", required = false) String ideusu,
+                                                 @RequestParam(value = "idsolic", required = false) Integer idsolic){
+        return opr002s.cancelarSolicitacao(ideusu, idsolic);
     }
 
     @GetMapping("/carregarGridChamSolicitados")

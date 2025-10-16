@@ -102,7 +102,7 @@ public class comWindowController {
     
     @GetMapping("/getCargoIdeusu")
     public String getCargoIdeusu(HttpServletRequest request) {
-        return comWindowService.getCargoFuncionario(getUserName(request));
+        return gen.findCargoByIdeusu(getUserName(request));
     }
 
     @GetMapping("/buscarHistoricoAcessoApl")

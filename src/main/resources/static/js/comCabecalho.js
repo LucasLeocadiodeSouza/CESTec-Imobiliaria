@@ -237,9 +237,10 @@ window.addEventListener("load", () => {
 
             case        "ehAplicacaoFavUsu": if($("dfavaplcab")) $("dfavaplcab").remove();
 
-                                             const div = document.createElement("div");
-                                             div.id = "dfavaplcab";
+                                             const div     = document.createElement("div");
+                                             div.id        = "dfavaplcab";
                                              div.className = "botao-cabecalho";
+                                             div.title     = "Favoritar a aplicação Atual";
             
                                              const img = document.createElement("img");
                                              img.src = retorno?"/icons/fav_icon2.png":"/icons/fav_icon.png";
@@ -550,7 +551,7 @@ window.addEventListener("load", () => {
 
         const labelperfil     = document.createElement("div");
         labelperfil.className = "label-perfil";
-        labelperfil.innerText = "Preferencias";
+        labelperfil.innerText = "Preferências";
 
         divtitulo.appendChild(imgagenda);
         divtitulo.appendChild(labelperfil);
@@ -573,6 +574,7 @@ window.addEventListener("load", () => {
         const labeltema       = document.createElement("label");
         labeltema.style.width = "135px";
         labeltema.innerText   = "Tema do Menu:";
+        labeltema.title       = "Personalizar tema do menu portal";
         
         const inputRadioClaro = document.createElement("input");
         inputRadioClaro.type  = "radio";
@@ -612,6 +614,7 @@ window.addEventListener("load", () => {
         const labelfont       = document.createElement("label");
         labelfont.style.width = "135px";
         labelfont.innerText   = "Tamanho da fonte:";
+        labelfont.title       = "Personalizar tamanho das letras para o menu portal";
         
         const inputRadioPequena = document.createElement("input");
         inputRadioPequena.type  = "radio";

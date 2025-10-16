@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
 });
 
 var AGEN_GRID, FUNC_GRID, CARGO_GRID, SETOR_GRID;
-var DMFDiv, ABA, ABAFILTRO, CONSUL, IMPRIMIR;
+var DMFDiv, ABAFILTRO, CONSUL, IMPRIMIR;
 var ACAOBUSCA = {};
 
 function wopr001_init(){
@@ -27,12 +27,6 @@ function wopr001_init(){
     criarGridSetor();
     criarGridCargo();
     criarGridFunc();
-
-    ABA      = new abaForm_init();
-    ABA.id   = "abas";
-    ABA.name = "Consulta,Manutenção";
-    ABA.icon = "/icons/consultaLupa.png,/icons/manutencaoIcon.png";
-    ABA.createAba();
 
     ABAFILTRO      = new abaForm_init();
     ABAFILTRO.id   = "abasfiltroagen";
@@ -78,34 +72,24 @@ function iniciarEventos() {
 
 function event_click_table(obj,row){
     switch (obj) {
-    case AGEN_GRID: const valoresLinha = AGEN_GRID.getRowNode(row);
-                    controlaTela("modal");
+    case  AGEN_GRID: const valoresLinha = AGEN_GRID.getRowNode(row);
+                     controlaTela("modal");
+                     preencherDadosModal(valoresLinha);
 
-                    preencherDadosModal(valoresLinha);
+                     DMFDiv.openModal("dmodalf_descagend");
+                     break;
 
-                    DMFDiv.openModal("dmodalf_descagend");
-    };
+    case  FUNC_GRID: const checkbox1 = event.target.closest('tr').childNodes[0].childNodes[0];
+                     checkbox1.checked = !checkbox1.checked;
+                     break;
+    case SETOR_GRID: const checkbox2 = event.target.closest('tr').childNodes[0].childNodes[0];
+                     checkbox2.checked = !checkbox2.checked;
+                     break;
+    case CARGO_GRID: const checkbox3 = event.target.closest('tr').childNodes[0].childNodes[0];
+                     checkbox3.checked = !checkbox3.checked;
+                     break;
 
-    //PAra mmelhorar vou ter que alterar e fazer um switch pelo obj.id da table e alterar no form
-    FUNC_GRID.click_table = ()=>{
-        const checkbox = event.target.closest('tr').childNodes[0].childNodes[0];
-
-        if(checkbox.checked) checkbox.checked = false;
-        else checkbox.checked = true;
-    };
-
-    SETOR_GRID.click_table = ()=>{
-        const checkbox = event.target.closest('tr').childNodes[0].childNodes[0];
-
-        if(checkbox.checked) checkbox.checked = false;
-        else checkbox.checked = true;
-    };
-
-    CARGO_GRID.click_table = ()=>{
-        const checkbox = event.target.closest('tr').childNodes[0].childNodes[0];
-
-        if(checkbox.checked) checkbox.checked = false;
-        else checkbox.checked = true;
+    
     };
 }
 
@@ -177,29 +161,18 @@ function event_change(obj){
 }
 
 function event_click_aba(obj){
-    if(obj.id === ABA.id){
-        switch (ABA.getIndex()) {
-        case 0: 
-        case 1: controlaTela("inicia");
-                break;
-        }
-    }    
-
     if(obj.id === "abasfiltroagen"){
         switch (ABAFILTRO.getIndex()) {
         case 0: criarGridFunc();
                 carregaGridFuncionarios();
-                controlaTela("modal");
                 break;
 
         case 1: criarGridSetor();
                 carregaGridSetores();
-                controlaTela("modal");
                 break;
 
         case 2: criarGridCargo();
                 carregaGridCargo();
-                controlaTela("modal");
                 break;
         };
     }
@@ -212,7 +185,10 @@ function filaFetchInit(){
                                          break;
 
         case     "cadastrarAgendamento": form("hcodagen").value = retorno;
-                                         vincularAgendamentoFunc(ACAOBUSCA.cadastrarAgendamento.listafunc);
+
+                                         if(ehAbaFunc())  vincularAgendamentoFunc(ACAOBUSCA.cadastrarAgendamento.listafunc);
+                                         if(ehAbaSetor()) vincularAgendamentoFuncSetor(ACAOBUSCA.cadastrarAgendamento.listafunc);
+                                         if(ehAbaCargo()) vincularAgendamentoFuncCargo(ACAOBUSCA.cadastrarAgendamento.listafunc);
                                          break;
 
         case  "vincularAgendamentoFunc": if(retorno != "OK") return alert(retorno);
@@ -233,8 +209,6 @@ function controlaTela(opc){
         desabilitaCampo('codsetor',        false);
         desabilitaCampo('bnovabusca',      true);
         desabilitaCampo('bbuscar',         false);
-
-        setDisplay("binserir",   ehManutencao()?"flex":"none");
     }
     if(opc == "buscar"){
         desabilitaCampo('codfunc',         true);
@@ -244,11 +218,6 @@ function controlaTela(opc){
         desabilitaCampo('bbuscar',         true);
     }
     if(opc == "modal"){
-        desabilitaCampo('mtituloagen',  !ehManutencao());
-        desabilitaCampo('mdataagen',    !ehManutencao());
-        desabilitaCampo('mhoraagen',    !ehManutencao());
-        desabilitaCampo('mdescagen',    !ehManutencao());
-        desabilitaCampo('mmotivo',      !ehManutencao());
         desabilitaCampo('mfuncionario', !ehAbaFunc());
         desabilitaCampo('msetor',       !ehAbaSetor());
         desabilitaCampo('mcargo',       !ehAbaCargo());
@@ -256,11 +225,12 @@ function controlaTela(opc){
         setDisplay("dmfiltrofunc",  ehAbaFunc()?"block":"none");
         setDisplay("dmfiltrosetor", ehAbaSetor()?"block":"none");
         setDisplay("dmfiltrocargo", ehAbaCargo()?"block":"none");
-        setDisplay("bagendar",      ehManutencao()?"flex":"none");
+
+        ABAFILTRO.setIndex(0);
     }
     if(opc == "ativacancelar"){
-        desabilitaCampo('bcancel', !ehManutencao());
-        setDisplay("bcancel", ehManutencao()?"flex":"none");
+        desabilitaCampo('bcancel', false);
+        setDisplay("bcancel", "flex");
     }
     if(opc == "desativacancelar"){
         desabilitaCampo('bcancel', true);
@@ -292,19 +262,21 @@ function limparTela(opc){
         form('mcargo').value       = "";
 
         FUNC_GRID.clearGrid();
+        SETOR_GRID.clearGrid();
+        CARGO_GRID.clearGrid();
     }
 }
 
 function preencherDadosModal(valores){
-    form("sacaodescagen").innerText   = ehConsulta()?"Consultando":"Alterando";
+    form("sacaodescagen").innerText   = "Consultando";
     form("stitulodescagen").innerText = "Agendamento - " + form("sacaodescagen").innerText;
     
     form("hcodagen").value    = valores[0];
     form("mtituloda").value   = valores[1];
     form("mdescagenda").value = valores[2];
+    form("mmotivoda").value   = valores[3];
     form("mdataagenda").value = valores[4];
     form("mhoraagenda").value = valores[5];
-    form("mmotivoda").value   = valores[7];
 
     form("listafunc").innerHTML = "";
 
@@ -394,14 +366,6 @@ function criarGridCargo(){
     setDisplay('cargo_grid', 'flex');
 }
 
-function ehConsulta(){
-    return ABA.getIndex() === 0;
-}
-
-function ehManutencao(){
-    return ABA.getIndex() === 1;
-}
-
 function ehAbaFunc(){
     return ABAFILTRO.getIndex() === 0;
 }
@@ -415,19 +379,24 @@ function ehAbaCargo(){
 }
 
 function criarListaFunc(){
-    let listafunc = [];
+    let lista = [];
 
-    for(var i = 0; i < FUNC_GRID.getTableNode().length; i++){
-        const checkbox = FUNC_GRID.getTableNode()[i].childNodes[0].childNodes[0];
+    var table;
+    if(ehAbaFunc())  table = FUNC_GRID.getTableNode();
+    if(ehAbaSetor()) table = SETOR_GRID.getTableNode();
+    if(ehAbaCargo()) table = CARGO_GRID.getTableNode();
+
+    for(var i = 0; i < table.length; i++){
+        const checkbox = table[i].childNodes[0].childNodes[0];
 
         if(!checkbox.checked) continue
 
-        const idfunc = FUNC_GRID.getTableNode()[i].childNodes[1].innerText;
+        const idfunc = table[i].childNodes[1].innerText;
 
-        listafunc.push({id: idfunc});
+        lista.push({id: idfunc});
     }
 
-    cadastrarAgendamento(listafunc);
+    cadastrarAgendamento(lista);
 }
 
 function cadastrarAgendamento(listafunc) {
@@ -455,6 +424,46 @@ function vincularAgendamentoFunc(listafunc) {
                             ideusu:    form('ideusu').value};
 
         CONSUL.consultar("vincularAgendamentoFunc",`/opr001/vincularAgendamentoFunc`,[],"POST","",{body: agendfunc})
+        .then(data =>{
+            error = data != "OK";
+        });
+    });
+
+    if(!error){
+        alert("Agendamento cadastrado com sucesso!");
+        form("bnovabusca").click();
+        form("bbuscar").click();
+
+        DMFDiv.closeModal();
+    }
+}
+
+function vincularAgendamentoFuncSetor(listasetores) {
+    var error = false;
+    listasetores.forEach(element => {
+        const agendsetores = { codsetor:   element.id};
+
+        CONSUL.consultar("vincularAgendamentoFuncSetor",`/opr001/vincularAgendamentoFuncSetor`,['codagend:hcodagen'],"POST","",{body: agendsetores})
+        .then(data =>{
+            error = data != "OK";
+        });
+    });
+
+    if(!error){
+        alert("Agendamento cadastrado com sucesso!");
+        form("bnovabusca").click();
+        form("bbuscar").click();
+
+        DMFDiv.closeModal();
+    }
+}
+
+function vincularAgendamentoFuncCargo(listaCargos) {
+    var error = false;
+    listaCargos.forEach(element => {
+        const agendcargos = { id:   element.id};
+
+        CONSUL.consultar("vincularAgendamentoFuncCargo",`/opr001/vincularAgendamentoFuncCargo`,['codagend:hcodagen'],"POST","",{body: agendcargos})
         .then(data =>{
             error = data != "OK";
         });

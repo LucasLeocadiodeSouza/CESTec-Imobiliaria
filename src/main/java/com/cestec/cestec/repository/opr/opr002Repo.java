@@ -57,23 +57,14 @@ public class opr002Repo {
                          " FROM opr_chamados_solic solic " +
                          " JOIN solic.codfuncfila funcfila" +
                          " JOIN funcfila.sp_user user" +
-                         (!somenteAtivo?" WHERE solic.estado != 0 ":" WHERE solic.estado = 1 OR solic.estado = 2 ");
-        boolean temand = false;
+                         (!somenteAtivo?" WHERE solic.estado != 0 ":" WHERE (solic.estado = 1 OR solic.estado = 2)");
 
-        if(ideusu != null){
-            query += " AND user.login LIKE :ideusu ";
-            temand = true;
-        }
-        if(acao.equals("direcionar")){
-            query += " AND  user.login LIKE 'FILA' ";
-            temand = true;
-        }
+        if(acao.equals("direcionar")) query += " AND funcfila.codfuncionario = 6";
+        else query += " AND user.login LIKE :ideusu ";
 
         var q = em.createQuery(query, chamadoSolicDTO.class);
 
-        if(ideusu != null){
-            q.setParameter("ideusu", ideusu);
-        }
+        if(!acao.equals("direcionar")) q.setParameter("ideusu", ideusu);
 
         return q.getResultList();
     }

@@ -17,6 +17,7 @@ import com.cestec.cestec.repository.generico.funcionarioRepository;
 import com.cestec.cestec.repository.opr.chamadosSolicRepo;
 import com.cestec.cestec.repository.opr.opr002Repo;
 import com.cestec.cestec.repository.opr.versionamentoRepo;
+import com.cestec.cestec.repository.pagamento.contaRepository;
 import com.cestec.cestec.service.genService;
 import com.cestec.cestec.service.sp_userService;
 import com.cestec.cestec.util.utilForm;
@@ -239,6 +240,25 @@ public class opr002s {
             if (solicanalise == null) return ResponseEntity.badRequest().body("Não encontrado a Solicitação com o codigo '" + idsolic + "'");
             
             solicanalise.setEstado(2);
+
+            chamadosSolicRepo.save(solicanalise);
+            return ResponseEntity.ok("OK");
+        }catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao Finalizar a solicitação: " + e.getMessage());    
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseEntity<?> cancelarSolicitacao(String ideusu, Integer idsolic){
+        try{
+            if(sp_user.loadUserByUsername(ideusu) == null) return ResponseEntity.badRequest().body("Usuário não encontrado no sistema!");
+
+            opr_chamados_solic solicanalise = chamadosSolicRepo.findByIdSolic(idsolic);
+            if (solicanalise == null) return ResponseEntity.badRequest().body("Não encontrado a Solicitação com o codigo '" + idsolic + "'");
+            
+            if(solicanalise.getEstado() != 1) return ResponseEntity.badRequest().body("Não é possível cancelar a Solicitação com o codigo '" + idsolic + "' pois a mesma não se encontra em uma estado que permita seu cancelamento ('" + getEstado(1) + "')");
+
+            solicanalise.setEstado(4);
 
             chamadosSolicRepo.save(solicanalise);
             return ResponseEntity.ok("OK");

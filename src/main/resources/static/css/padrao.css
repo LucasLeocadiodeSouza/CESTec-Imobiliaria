@@ -428,9 +428,10 @@ table {
                 background-color: #39527c;
                 box-shadow:       0 0 .4vw #1d3561;
                 border-radius:    10px;
-                transition:       opacity 0.3s ease-out;}
+                transition:       opacity 0.3s ease-out, transform 0.3s ease-out}
 
 .alert-message.entrada {
+    transform: translateY(-20px);
     opacity: 0;
 }
 
@@ -441,6 +442,7 @@ table {
 
 .alert-message.saida {
     opacity: 0;
+    transform: translateY(-20px);
 }
 
 .olalert    {margin: 0; padding: 0;}

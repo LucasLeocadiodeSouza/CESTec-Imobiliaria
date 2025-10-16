@@ -1,5 +1,7 @@
 package com.cestec.cestec.repository.generico;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,4 +36,10 @@ public interface funcionarioRepository extends JpaRepository<funcionario, Intege
 
     @Query("SELECT f.nome FROM funcionario f WHERE f.sp_user.login = :ideusu")
     String findNomeByIdeusu(@Param("ideusu") String ideusu);
+
+    @Query("SELECT f FROM funcionario f WHERE f.setor.codsetor = :codsetor")
+    List<funcionario> findAllBySetor(@Param("codsetor") Integer codsetor);
+
+    @Query("SELECT f FROM funcionario f WHERE f.cargo.id = :codcargo")
+    List<funcionario> findAllByCargo(@Param("codcargo") Integer codcargo);
 }

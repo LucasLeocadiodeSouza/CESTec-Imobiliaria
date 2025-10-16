@@ -27,7 +27,7 @@
     .inputform {font-size: x-large;
                 height: 40px;}
 
-    .titulo {background-color: #1d3561;;
+    .titulo {background-color: #1d3561;
              width: 413px;}
 
     #blogin {background: #3d5785;
@@ -39,16 +39,18 @@
              align-items: center;
              cursor: pointer;}
 
-    body {background-color: #1d3561;
-          overflow: hidden;}
+    .centralizar-div {display: flex; align-items: center; flex-direction: column;}
+
+    body {overflow: hidden;}
+
 </style>
 </head>
 <body>
-    <div style="background-color: #dedede; height: 100vh; display: flex; justify-content: center; padding: 15px;flex-direction: column;justify-content: flex-start;">
+    <div class="gen princbody" style="display: flex; justify-content: center; flex-direction: column;justify-content: flex-start;">
         
-        <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 50%;">
+        <div class="centralizar-div" style="height: 50%; justify-content: end;">
             <div class="titulo">
-                <h2 style="margin-inline: 20px; color: #FFF;">Portal </h2>
+                <h2 style="margin-inline: 20px; color: #FFF;">Portal</h2>
             </div>
             
             <fieldset>
@@ -68,6 +70,24 @@
 
                 <div style="display: flex; flex-direction: row-reverse;">
                     <div id="blogin"  name="blogin"  class="button" value="Entrar">Entrar</div>
+                </div>
+            </fieldset>
+        </div>
+            
+        <div class="centralizar-div" style="height: 50%;">
+            <fieldset>
+                <div class="dmf"> 
+                    <h4>Para acessar com um Usuario visitante, usar o registro na sequência:</h4>
+                </div>
+
+                <div class="if"> 
+                    <h4 class="hfield">Usuário:</h4>
+                    <p>USUARIOT</p>
+                </div>
+
+                <div class="if"> 
+                    <h4 class="hfield">Senha:</h4>
+                    <p>1234567</p>
                 </div>
             </fieldset>
         </div>

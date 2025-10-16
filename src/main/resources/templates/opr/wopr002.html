@@ -72,7 +72,8 @@
 
     .buttonclass {display: flex; justify-content: center; align-items: center;}
 
-    body {background-color: #1d3561;}
+    .sb {justify-content: space-between;}
+    
 </style>
 </head>
 <body>
@@ -106,9 +107,15 @@
             </div>
         </fieldset>
         
-        <div class='if buttoninline'>
-            <div id="bimprimir"  name="bimprimir"  class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
-            <div id="binserir"   name="binserir"   class="button" value="Inserir"  data-icon="/icons/incluir.png"></div>
+        <div class='if sb'>
+            <div class="buttoninline">
+                <div id="bimprimir"  name="bimprimir"  class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
+                <div id="binserir"   name="binserir"   class="button" value="Inserir"  data-icon="/icons/incluir.png"></div>
+            </div>
+
+            <div id="davisoacesso">
+                <label>O acesso da Aba é restrito apenas para Coordenadores. Porém, sua visualização é permitida tambem para Usuário Teste</label>
+            </div>
         </div>
 
         <div id="tabela_chamados"></div>

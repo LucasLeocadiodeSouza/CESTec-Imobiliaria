@@ -26,6 +26,7 @@ import com.cestec.cestec.repository.opr.agendamentosFuncRepo;
 import com.cestec.cestec.repository.opr.agendamentosRepo;
 import com.cestec.cestec.repository.opr.agendamentosSetorRepo;
 import com.cestec.cestec.repository.opr.opr001repo;
+import com.cestec.cestec.service.genService;
 import com.cestec.cestec.service.sp_notificacaoService;
 import com.cestec.cestec.service.sp_userService;
 import com.cestec.cestec.util.utilForm;
@@ -46,6 +47,9 @@ public class opr001s {
     
     @Autowired
     private roleacessRepository roleacess;
+
+    @Autowired
+    private genService gen;
 
     @Autowired
     private agendamentosRepo agendRepo;
@@ -147,8 +151,6 @@ public class opr001s {
                 String nomefunc = listafunc.get(j).getCodfunc().getNome();
 
                 listafuncstring += (listafuncstring == ""?"":"|") + ideusu + "," + nomefunc;
-
-                System.out.println(ideusu + "," + nomefunc);
             }
 
             utilForm.criarRow();
@@ -265,6 +267,60 @@ public class opr001s {
             return ResponseEntity.ok("OK");
         }catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,  "Erro ao vincular agendamento", e);  
+        }
+    }
+
+    
+    @Transactional(rollbackFor = Exception.class)
+    public void vincularAgendamentoFuncSetor(pcp_setor setor, Integer codagend, String ideusu){
+        if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
+
+        opr_agendamentos agendamento = agendRepo.findAgenByCodAgend(codagend);
+        
+        if(agendamento == null) throw new RuntimeException("Agendamento não encontrado para vincular o funcionario!");
+        System.out.println("aaaaaaaaa");
+
+        List<funcionario> funcs = funcionarioRepo.findAllBySetor(setor.getCodsetor());
+        for(int j = 0; j < funcs.size(); j++){
+            opr_agendamentos_func agendfuncanalise = new opr_agendamentos_func();
+            
+            opr_agendamentos agend = agendRepo.findAgenByCodAgend(codagend);
+            agendfuncanalise.setCodagenda(agend);
+
+            funcionario func = funcionarioRepo.findFuncBycodfunc(funcs.get(j).getCodfuncionario());
+            agendfuncanalise.setCodfunc(func);
+
+            agendfuncanalise.setDatiregistro(LocalDate.now());
+            agendfuncanalise.setIdeusu(ideusu);
+
+            notificaService.criarNotificacao(func.getSp_user().getLogin(), "Novo agendamento disponível! " + agendamento.getTitulo(), agendamento.getIdeusu());
+            agendFuncRepo.save(agendfuncanalise);
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void vincularAgendamentoFuncCargo(cargo vcargo, Integer codagend, String ideusu){
+        if(sp_user.loadUserByUsername(ideusu) == null) throw new RuntimeException("Usuário não encontrado no sistema!");
+
+        opr_agendamentos agendamento = agendRepo.findAgenByCodAgend(codagend);
+        
+        if(agendamento == null) throw new RuntimeException("Agendamento não encontrado para vincular o funcionario!");
+
+        List<funcionario> funcs = funcionarioRepo.findAllByCargo(vcargo.getId());
+        for(int j = 0; j < funcs.size(); j++){
+            opr_agendamentos_func agendfuncanalise = new opr_agendamentos_func();
+            
+            opr_agendamentos agend = agendRepo.findAgenByCodAgend(codagend);
+            agendfuncanalise.setCodagenda(agend);
+
+            funcionario func = funcionarioRepo.findFuncBycodfunc(funcs.get(j).getCodfuncionario());
+            agendfuncanalise.setCodfunc(func);
+
+            agendfuncanalise.setDatiregistro(LocalDate.now());
+            agendfuncanalise.setIdeusu(ideusu);
+
+            notificaService.criarNotificacao(func.getSp_user().getLogin(), "Novo agendamento disponível! " + agendamento.getTitulo(), agendamento.getIdeusu());
+            agendFuncRepo.save(agendfuncanalise);
         }
     }
 }

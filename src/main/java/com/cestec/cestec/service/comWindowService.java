@@ -189,12 +189,6 @@ public class comWindowService {
         historicoAcessoAplRepo.save(histAnalise);
     }
 
-    public String getCargoFuncionario(String ideusu){
-        Integer codfunc = funcionarioRepository.findCodFuncByIdeusu(ideusu);
-
-        return funcionarioRepository.findCargoIdByNome(codfunc);
-    }
-
     public BigDecimal getVlrEfetivadoCorretor(String ideusu){
         List<BigDecimal> valoresContrato = contratoRepository.buscarValoresContratoByIdeusu(ideusu);
         BigDecimal vlr = BigDecimal.ZERO;

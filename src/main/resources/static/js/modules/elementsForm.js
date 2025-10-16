@@ -94,9 +94,14 @@ function alert(titulo, message, timeout){
     if(alertAtivo){
         divcontainer = document.getElementById("container-alert-form");
     }
+    
+    var ol = document.getElementById("ol-alerts-messages");
+    if(!ol) {
+        ol           = document.createElement("ol");
+        ol.id        = "ol-alerts-messages";
+        ol.className = "olalert";
+    }
 
-    const ol         = document.createElement("ol");
-    ol.className     = "olalert";
 
     const li = document.createElement("li");
 
@@ -148,20 +153,20 @@ function alert(titulo, message, timeout){
 
         divcontainer.appendChild(ol);
         document.body.appendChild(divcontainer);
-    }else{
-        document.getElementById("container-alert-form").querySelector("ol").appendChild(li);
-    }
+    }else ol.appendChild(li);
 
     const removeAlert = ()=>{ 
         divalertmess.classList.add("saida");
         
         setTimeout(() => {
-            li.remove();
-        
-            if(ol.children.length === 0){
-                divcontainer.remove();
+            if(li) {
+                li.remove();
+
+                if(ol.children.length === 0){
+                    divcontainer.remove();
+                }
             }
-        }, 1000);
+        }, 300);
     }
 
     divimgclose.addEventListener("click", ()=>{
@@ -187,10 +192,20 @@ function alert(titulo, message, timeout){
 function includeBloquearApl(aviso){
     const body = document.body;
 
+    const cabecalho = document.getElementById("comcab_init");
+
     body.innerHTML = "";
     body.innerHTML = `
         <div style="position: absolute;background: #FFF;padding: 10px;border-radius: 5px;transform: translate(-50%, -50%); top: 15%; left: 50%;">
             <label>${aviso}</label>
         </div>
     `
+
+    if(cabecalho) body.appendChild(cabecalho)
+
+    const scripts = document.querySelectorAll("script");
+    scripts.forEach(sc => {
+        const search = sc.src;
+        if(!search.includes("/js/modules")) sc.remove();
+    });
 }
