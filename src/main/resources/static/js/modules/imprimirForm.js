@@ -10,6 +10,10 @@ function imprimirForm_init(){
 
             novaJanela.document.getElementById("ltitulo").innerHTML    = titulo;
             novaJanela.document.getElementById("lsubtitulo").innerHTML = subtitulo;
+
+            const title     = document.createElement("title");
+            title.innerText = titulo;
+            novaJanela.document.head.appendChild(title);
         };
     }
 }

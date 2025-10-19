@@ -125,6 +125,11 @@ function formatarData(data, mesant) {
     return dataAjustada.toISOString().split('T')[0];
 }
 
+function fmtData(data) {
+    const [ano, mes, dia] = data.split('-');
+    return `${dia}/${mes}/${ano}`;
+}
+
 function capitalizarCadaPalavra(texto) {
   if (!texto) return "";
   return texto

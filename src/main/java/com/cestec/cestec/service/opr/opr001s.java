@@ -18,13 +18,9 @@ import com.cestec.cestec.model.opr.agendamentoDTO;
 import com.cestec.cestec.model.opr.opr_agendamentos;
 import com.cestec.cestec.model.opr.opr_agendamentos_func;
 import com.cestec.cestec.repository.cargoRepository;
-import com.cestec.cestec.repository.setorRepository;
 import com.cestec.cestec.repository.generico.funcionarioRepository;
-import com.cestec.cestec.repository.generico.roleacessRepository;
-import com.cestec.cestec.repository.opr.agendamentosCargRepo;
 import com.cestec.cestec.repository.opr.agendamentosFuncRepo;
 import com.cestec.cestec.repository.opr.agendamentosRepo;
-import com.cestec.cestec.repository.opr.agendamentosSetorRepo;
 import com.cestec.cestec.repository.opr.opr001repo;
 import com.cestec.cestec.service.genService;
 import com.cestec.cestec.service.sp_notificacaoService;
@@ -37,16 +33,10 @@ public class opr001s {
     private sp_userService sp_user;
 
     @Autowired
-    private setorRepository setorRepository;
-
-    @Autowired
     private cargoRepository cargoRepository;
 
     @Autowired
     private opr001repo opr001repo;
-    
-    @Autowired
-    private roleacessRepository roleacess;
 
     @Autowired
     private genService gen;
@@ -59,12 +49,6 @@ public class opr001s {
 
     @Autowired
     private agendamentosFuncRepo agendFuncRepo;
-
-    @Autowired
-    private agendamentosCargRepo agendCargoRepo;
-
-    @Autowired
-    private agendamentosSetorRepo agendSetRepo;
 
     @Autowired
     private sp_notificacaoService notificaService;
@@ -87,11 +71,8 @@ public class opr001s {
 
         utilForm.initGrid();
         for (int i = 0; i < func.size(); i++) {
-            boolean marcar = false;
-            if(agendFuncRepo.findFuncInAgend(codagend, func.get(i).getCodfunc()) != null) marcar = true;
-
             utilForm.criarRow();
-            utilForm.criarColuna("<input type='checkbox' id='funcionario_" + i + "' name='funcionario_" + i + "'" + (marcar?"checked":"") + " "+ (acao.equals("Consultando")?"disabled":"") + ">");
+            utilForm.criarColuna("<input type='checkbox' id='funcionario_" + i + "' name='funcionario_" + i + "'>");
             utilForm.criarColuna(func.get(i).getCodfunc().toString());
             utilForm.criarColuna(func.get(i).getNomefunc());
             utilForm.criarColuna(func.get(i).getCodcargo().toString());
@@ -108,11 +89,8 @@ public class opr001s {
 
         utilForm.initGrid();
         for (int i = 0; i < setores.size(); i++) {
-            boolean marcar = false;
-            if(agendSetRepo.findSetorInAgend(codagend, setores.get(i).getCodsetor()) != null) marcar = true;
-
             utilForm.criarRow();
-            utilForm.criarColuna("<input type='checkbox' id='setor_" + i + "' name='setor_" + i + "'" + (marcar?"checked":"") + " "+ (acao.equals("Consultando")?"disabled":"") + ">");
+            utilForm.criarColuna("<input type='checkbox' id='setor_" + i + "' name='setor_" + i + "'>");
             utilForm.criarColuna(setores.get(i).getCodsetor().toString());
             utilForm.criarColuna(setores.get(i).getNome());
 
@@ -126,11 +104,8 @@ public class opr001s {
 
         utilForm.initGrid();
         for (int i = 0; i < cargos.size(); i++) {
-            boolean marcar = false;
-            if(agendCargoRepo.findCargoInAgend(codagend, cargos.get(i).getId()) != null) marcar = true;
-
             utilForm.criarRow();
-            utilForm.criarColuna("<input type='checkbox' id='cargo_" + i + "' name='cargo_" + i + "'" + (marcar?"checked":"") + " "+ (acao.equals("Consultando")?"disabled":"") + ">");
+            utilForm.criarColuna("<input type='checkbox' id='cargo_" + i + "' name='cargo_" + i + "'>");
             utilForm.criarColuna(cargos.get(i).getId().toString());
             utilForm.criarColuna(cargos.get(i).getNome());
         }

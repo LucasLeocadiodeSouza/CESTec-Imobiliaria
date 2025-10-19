@@ -230,20 +230,7 @@ public class comWindowService {
 
     public List<?> buscarNotificacoesGrid(String ideusu){
         List<sp_notificacao_usu> notificacoes = notificRepository.findAllByIdeusu(ideusu);
-
-        utilForm.initGrid();
-        for (int i = 0; i < notificacoes.size(); i++) {
-            String complemento = notificacoes.get(i).isAtivo()?"<span style='position: absolute; top: 4px; right:0; width: 10px; height: 10px; background-color: #cf0303; display: block; border-radius: 10px;'></span>":"";
-            Date dataReg       =  Date.valueOf(notificacoes.get(i).getDatregistro());
-
-            utilForm.criarRow();
-            utilForm.criarColuna(notificacoes.get(i).getDescricao());
-            utilForm.criarColuna("<div style='position: relative;'>" + utilForm.formatarDataBrasil(dataReg) + complemento + "</div>");
-            utilForm.criarColuna(String.valueOf(notificacoes.get(i).isAtivo()));
-            utilForm.criarColuna(notificacoes.get(i).getId().toString());
-        }
-
-        return utilForm.criarGrid();
+        return notificacoes;
     }
 
     @Transactional

@@ -387,7 +387,7 @@ table {
 
 .divtableres {height: calc(100% - 42px); overflow-y: auto;}
 
-.tablecolun {border: 1px solid #000000; border-collapse: collapse;}
+.tablecolun {border: 1px solid var(--color-border, #dddddd); border-collapse: collapse;}
 .tablecolun th {text-wrap: nowrap; color: var(--color-lb-gen,#444);}
 
 .tdalign-esq          {text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}

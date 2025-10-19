@@ -25,8 +25,7 @@ function iniciarEventos() {
 
     ABA      = new abaForm_init();
     ABA.id   = "abas";
-    ABA.name = "Consulta";
-    ABA.icon = "/icons/consultaLupa.png";
+    ABA.name = "Cadastro";
     ABA.createAba();
 
     DMFDiv              = new DMFForm_init();

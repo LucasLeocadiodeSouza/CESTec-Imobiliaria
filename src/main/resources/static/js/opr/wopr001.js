@@ -114,8 +114,8 @@ function event_click(obj) {
         form(obj).addEventListener("click", function () {
             form("sacao").innerText   = "Inserindo";
             form("stitulo").innerText = "Operar Agendamentos - " + form("sacao").innerText;
-            
             controlaTela("modal");
+            
 
             getOptionsMotivo("1");
             carregaGridFuncionarios();
@@ -228,14 +228,6 @@ function controlaTela(opc){
 
         ABAFILTRO.setIndex(0);
     }
-    if(opc == "ativacancelar"){
-        desabilitaCampo('bcancel', false);
-        setDisplay("bcancel", "flex");
-    }
-    if(opc == "desativacancelar"){
-        desabilitaCampo('bcancel', true);
-        setDisplay("bcancel", "none");
-    }
 }
 
 function limparTela(opc){
@@ -287,12 +279,6 @@ function preencherDadosModal(valores){
 
         adicionarFuncionarioLista(ideusu, nomefunc);
     })
-
-    const dataAtual = new Date();
-
-    if(converterDataString(valores[4] + " - " + valores[5]).getTime() < dataAtual.getTime()){
-        controlaTela("desativacancelar");
-    }else controlaTela("ativacancelar");
 }
 
 function converterDataString(dataString) {

@@ -481,9 +481,7 @@
              width: 100%;
              cursor: pointer;}
 
-    .fr-fav:hover {height: 80px;
-                   min-width: 175px;
-                   box-shadow: 0px 0px 4px #FFF;
+    .fr-fav:hover {box-shadow: 0px 0px 4px #FFF;
                    transition: all 0.2s ease}
 
     .titulo-fr-fav {width: calc(100% - 10px);
@@ -511,6 +509,17 @@
                         text-overflow: ellipsis;
                         white-space: normal;
                         cursor: pointer;}
+
+    .container-lista-notif {list-style-type: none; margin-block: 10px; padding-left: 10px;}
+    .lista-notif {border-block: 1px solid var(--fundo-secundario, #dedede); padding-block: 6px; position: relative; height: 30px; display: flex; align-items: center; cursor: pointer;}
+
+    .message-notif {display: flex;}
+    .message-notif label {color: var(--color-lb-claro, #f5f5f5); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; text-overflow: ellipsis; white-space: normal; cursor: pointer;}
+
+    .data-notif {position: absolute; top: -10px; right: 15px; background-color: #3e5680; padding-inline: 5px;}
+    .data-notif label {font-size: 12px;}
+
+
 
     ::-webkit-scrollbar {
         width: 1px;
@@ -646,14 +655,10 @@
                     <div id="ddescoutros" class="ddescdiv" style="width: 480px;">
                         <div class="dhdiv prelative">
                             <label class="titulo-container">Notificações</label>
-
-                            <div id="icon_notif" style="display: none;">
-                                <img src="/icons/notify_icon.png" alt="Carregando" style="width: 15px; height: 15px;">
-                            </div>
                         </div>
                         
-                        <div class="container-div">
-                            <div id="table_notif"></div>
+                        <div class="container-div" style="overflow-y: auto;">
+                            <div id="dnotificacoes"></div>
                         </div>
                     </div>
                 </div>

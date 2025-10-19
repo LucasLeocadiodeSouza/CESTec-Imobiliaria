@@ -255,6 +255,7 @@ function controlaTela(opc){
         desabilitaCampo('codcliente',      true);
         desabilitaCampo('raluguel',        true);
         desabilitaCampo('rvenda',          true);
+        desabilitaCampo('rambas',          true);
     }
     if(opc == "modal"){
         desabilitaCampo('mcodcliente',   ehAlterando() || ehConsulta());

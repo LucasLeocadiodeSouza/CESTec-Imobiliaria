@@ -12,35 +12,17 @@ const nomeMes = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","
 let date = new Date();
 let mes  = date.getMonth();
 let ano  = date.getFullYear();
-var CONSUL,NOTIFY_GRID,AGENDSJSON;
+var CONSUL,AGENDSJSON;
 var chart;
+const ACAOCONSULTA = {};
 
 function iniciarEventos() {
     CONSUL = new consulForm_init();
 
-    NOTIFY_GRID               = new GridForm_init();
-    NOTIFY_GRID.id            = "table_notif";
-    NOTIFY_GRID.columnName    = "descricao,data,_idnotifi,_ehativo";
-    NOTIFY_GRID.columnLabel   = "Descricao,Data";
-    NOTIFY_GRID.columnWidth   = "65,35";
-    NOTIFY_GRID.columnAlign   = "e,c";
-    NOTIFY_GRID.mousehouve    = true;
-    NOTIFY_GRID.ocultarhead   = true;
-    NOTIFY_GRID.fullParent    = true;
-    NOTIFY_GRID.destacarclick = false;
-    NOTIFY_GRID.miniModalOver = true;
-    NOTIFY_GRID.colsModalOver = "0,1";
-    NOTIFY_GRID.tema          = '2';
-    NOTIFY_GRID.createGrid();
-
-    carregarNotificacoes();
-
     event_click("dbackagenda");
     event_click("dnextagenda");
-    event_mouseover_table();
 
     filaFetchInit();
-    filaFetchGridInit();
 
     buscarUserId("wcodfunc");
 
@@ -82,13 +64,13 @@ function event_click(obj) {
     }
 }
 
-function event_mouseover_table(){
-    NOTIFY_GRID.mouseover_table = ()=>{
-        const valoresLinha = NOTIFY_GRID.getRowNode(event.target.closest('tr'));
-
-        inativarNotificacao(valoresLinha[3]);
-    };
-}
+//function event_mouseover_table(){
+//    NOTIFY_GRID.mouseover_table = ()=>{
+//        const valoresLinha = NOTIFY_GRID.getRowNode(event.target.closest('tr'));
+//
+//        inativarNotificacao(valoresLinha[3]);
+//    };
+//}
 
 function controlaTela(opc){
     if(opc == "inicio"){
@@ -166,7 +148,7 @@ function criarBotaoExterno(divpai,botoes){
 
         const labelprimi = document.createElement("label");
         labelprimi.className = "labelbotaoapl";
-        labelprimi.innerText = botao.menu;
+        labelprimi.innerText = botao.indmod + " - " + botao.menu;
 
         divlabel.appendChild(labelprimi);
 
@@ -236,7 +218,7 @@ function criarBotaoExterno(divpai,botoes){
 
             const labelint = document.createElement("label");
             labelint.className = "labelbotaoapl";
-            labelint.innerText = botaoint.descricao;
+            labelint.innerText = botaoint.codapl + " - " + botaoint.descricao;
             labelint.title     = botaoint.prog_ini;
 
             divbuttonint.appendChild(labelint);
@@ -265,16 +247,10 @@ function containerBotaoAtivo(obj){
     return condicao;
 }
 
-function filaFetchGridInit(){
-    NOTIFY_GRID.filaFetchGrid = ()=>{
-        temNotificacaoPendente();
-    }
-}
-
 function filaFetchInit(){
     CONSUL.filaFetch = (retorno)=>{
         switch (CONSUL.obj) {
-        case      'inativarNotificacao': carregarNotificacoes();
+        case      'inativarNotificacao': setTimeout(()=>{form("containeralerta&" + ACAOCONSULTA.inativarNotificacao.id).innerHTML = "";}, 5000) 
                                          break;
 
         case             "buscarUserId": form("wcodfunc").value  = retorno;
@@ -318,7 +294,7 @@ function filaFetchInit(){
                                                 botoesint.push({descricao:dado.descricao, codapl:dado.id, prog_ini: dado.arquivo_inic});
                                             });
 
-                                            botoes.push({menu:dados[0].modulo.descricao, codmodulo:dados[0].modulo.id, botoesinternos:botoesint});
+                                            botoes.push({menu:dados[0].modulo.descricao, codmodulo:dados[0].modulo.id, indmod: dados[0].modulo.ind.toUpperCase(), botoesinternos:botoesint});
                                           };
 
                                           criarBotaoExterno("dintensint",botoes);
@@ -365,7 +341,11 @@ function filaFetchInit(){
                                           divcontainer_fr.parentNode.innerHTML = "<div style='width: 100%; height: 100%; display: flex; justify-content: center;align-items: center;'><label style='color: var(--color-lb-claro, #f5f5f5)'>Nenhuma Aplicação Favoritada</label></div>";
                                        } 
 
+                                       carregarNotificacoes();
                                        break;
+                                      
+        case  "carregarNotificacoes": criarListaNotificacoes(retorno);
+                                      break;
         }
     }
 }
@@ -501,6 +481,10 @@ function salvarHistoricoApl(modulo, aplicacao){
 } 
  
 function inativarNotificacao(idnotific){
+    ACAOCONSULTA.inativarNotificacao = {
+        id: idnotific
+    }
+
     CONSUL.consultar("inativarNotificacao",`/home/inativarNotificacao`,["idnotific="+idnotific],"POST",'',{},true);
 }
 
@@ -682,21 +666,7 @@ function carregaMes(){ //IM: 00004 - montar calendario/agenda
 }
 
 function carregarNotificacoes(){
-    NOTIFY_GRID.carregaGrid("/home/buscarNotificacoesGrid",[],"","",true);
-}
-
-function temNotificacaoPendente(){
-    const rows = NOTIFY_GRID.getTableNode();
-
-    if(!rows) return;
-    
-    form("icon_notif").style.display = "none";
-
-    rows.forEach(row =>{
-        const colunas = row.childNodes;
-
-        if(colunas[2].innerText == "true") form("icon_notif").style.display = "block";
-    });
+    CONSUL.consultar("carregarNotificacoes","/home/buscarNotificacoesGrid",[],"","",true);
 }
 
 function buscarAplicacoesFav(){
@@ -777,4 +747,74 @@ function criarGraficoTarefas(direcionadas, concluidas, iniciadas){
     };
 
     option && chart.setOption(option);
+}
+
+function criarListaNotificacoes(notificacoes){
+    const divpai = document.getElementById("dnotificacoes");
+
+    divpai.innerHTML = "";
+    
+    if(notificacoes.length != 0){
+        const containerlista     = document.createElement("ol");
+        containerlista.className = "container-lista-notif";
+
+        notificacoes.forEach(not => {
+            const lista     = document.createElement("li");
+            lista.className = "lista-notif";
+    
+            const containermessage     = document.createElement("div");
+            containermessage.className = "message-notif";
+
+            const message = document.createElement("div");
+            message.style.display        = "flex";
+            message.style.justifyContent = "center";
+            message.style.alignItems     = "center";
+
+            const titulonot     = document.createElement("label");
+            titulonot.innerText = not.descricao;
+            titulonot.title     = "Notificação enviado dia: " + fmtData(not.datregistro);
+
+            if(not.ativo){
+                const containeralerta     = document.createElement("div");
+                containeralerta.id        = "containeralerta&" + not.id;
+                
+                const alertaNewNot        = document.createElement("img");
+                alertaNewNot.src          = "/icons/notify_icon.png";
+                alertaNewNot.style.height = "15px";
+                alertaNewNot.style.width  = "15px";
+
+                containeralerta.appendChild(alertaNewNot);
+                containermessage.appendChild(containeralerta);
+            }
+
+            const divdatanoti     = document.createElement("div");
+            divdatanoti.className = "data-notif";
+
+            const datanoti     = document.createElement("label");
+            datanoti.innerText = fmtData(not.datregistro);
+    
+            lista.addEventListener("mouseover", ()=>{
+                if(not.ativo) inativarNotificacao(not.id);
+            });
+
+            message.appendChild(titulonot);
+            divdatanoti.appendChild(datanoti);
+            containermessage.appendChild(message);
+            containermessage.appendChild(divdatanoti);
+            lista.appendChild(containermessage);
+            containerlista.appendChild(lista);
+        });
+        divpai.appendChild(containerlista);
+    }
+    else {
+        divpai.style.display        = "flex";
+        divpai.style.justifyContent = "center";
+        divpai.style.alignItems     = "center";
+
+        const labelsemnotif     = document.createElement("label");
+        labelsemnotif.className = "labelpainel";
+        labelsemnotif.innerHTML = "Sem notificação";
+        
+        divpai.appendChild(labelsemnotif);
+    }
 }
