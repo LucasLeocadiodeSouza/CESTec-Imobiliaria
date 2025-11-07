@@ -16,6 +16,11 @@ public class controller {
     @Autowired
     private modulosRepository modulosrepo;
 
+    @GetMapping("") 
+    public String auto() {
+        return "redirect:/login";
+    }
+
     @GetMapping("/home") 
     public String home() {
         return "comWindow";
