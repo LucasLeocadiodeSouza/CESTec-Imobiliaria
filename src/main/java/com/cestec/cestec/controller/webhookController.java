@@ -68,7 +68,7 @@ public class webhookController {
     private void rebuildAndRestart() {
         try {
             System.out.println("Recompilando e reiniciando aplicação...");
-            
+             
             File projectDir = new File("/home/cestec/CESTec-Imobiliaria");
             
             ProcessBuilder buildProcess = new ProcessBuilder("mvn", "clean", "package", "-DskipTests");
