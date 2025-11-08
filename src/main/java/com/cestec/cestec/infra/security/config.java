@@ -27,7 +27,7 @@ public class config {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
                 .authorizeHttpRequests(authorize -> authorize
-                                                     .requestMatchers("/webhook").permitAll()
+                                                     .requestMatchers(HttpMethod.POST, "/webhook").permitAll()
                                                      .requestMatchers(HttpMethod.GET, "/").permitAll()
                                                      .requestMatchers(HttpMethod.GET, "/login", "/impressao").permitAll()
                                                      .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()

@@ -29,13 +29,15 @@ public class SecurityFilter extends OncePerRequestFilter{
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)throws ServletException, IOException {        
         String path = request.getServletPath();
-        if (path.equals("/webhook") ||
-            path.equals("/auth/login") ||
-            path.equals("/login") ||
-            path.equals("/")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        String method = request.getMethod();
+        
+         if (path.equals("/webhook") && method.equals("POST") ||
+        path.equals("/auth/login") ||
+        path.equals("/login") ||
+        path.equals("/")) {
+        filterChain.doFilter(request, response);
+        return;
+    }
 
         var token = this.recoverToken(request);
 
