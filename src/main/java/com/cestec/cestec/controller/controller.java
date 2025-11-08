@@ -20,12 +20,6 @@ public class controller {
     @Autowired
     private modulosRepository modulosrepo;
 
-    @PostMapping("/webhook")
-    public ResponseEntity<String> handleWebhook(@RequestBody String payload) {
-        System.out.println("Webhook recebido: " + payload);
-        return ResponseEntity.ok("OK");
-    }
-
     @GetMapping("") 
     public String auto() {
         return "redirect:/login";
