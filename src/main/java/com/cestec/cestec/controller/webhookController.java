@@ -17,90 +17,46 @@ public class webhookController {
             @RequestBody String payload,
             @RequestHeader(value = "X-GitHub-Event", required = false) String event) {
         
-        System.out.println("Webhook recebido: " + event);
-        System.out.println("Payload: " + payload);
+        System.out.println("🎯 === WEBHOOK RECEBIDO ===");
+        System.out.println("📦 Evento: " + event);
         
         if ("push".equals(event) && payload.contains("refs/heads/main")) {
             try {
-                System.out.println("Executando git pull...");
+                System.out.println("🚀 === EXECUTANDO SCRIPT GIT PULL ===");
                 
-                File projectDir = new File("/home/cestec/CESTec-Imobiliaria");
+                // Execute o script externo
+                Process process = Runtime.getRuntime().exec("/home/cestec/webhook.sh");
                 
-                // Comando git pull
-                ProcessBuilder processBuilder = new ProcessBuilder("git", "pull", "origin", "main");
-                processBuilder.directory(projectDir);
-                processBuilder.redirectErrorStream(true);
-                
-                Process process = processBuilder.start();
-                
-                // Captura a saída do comando
+                // Capturar output do script
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 StringBuilder output = new StringBuilder();
                 String line;
                 
                 while ((line = reader.readLine()) != null) {
                     output.append(line).append("\n");
-                    System.out.println("Git: " + line);
+                    System.out.println("📤 SCRIPT: " + line);
                 }
                 
-                // Espera o processo terminar
                 int exitCode = process.waitFor();
-                System.out.println("Git pull finalizado com código: " + exitCode);
+                System.out.println("🏁 === SCRIPT FINALIZADO ===");
+                System.out.println("🔢 Exit code: " + exitCode);
+                System.out.println("📄 Output: " + output.toString());
                 
                 if (exitCode == 0) {
-                    // Se o pull foi bem-sucedido, rebuild e restart
-                    rebuildAndRestart();
-                    return ResponseEntity.ok("Git pull realizado com sucesso!\n" + output.toString());
+                    System.out.println("✅ SUCESSO - Script executado");
+                    return ResponseEntity.ok("SUCESSO: " + output.toString());
                 } else {
-                    return ResponseEntity.status(500).body("Erro no git pull. Código: " + exitCode + "\n" + output.toString());
+                    System.out.println("❌ ERRO - Script falhou");
+                    return ResponseEntity.status(500).body("ERRO: " + output.toString());
                 }
                 
             } catch (Exception e) {
-                System.out.println("Erro ao executar git pull: " + e.getMessage());
+                System.out.println("💥 === ERRO EXCEÇÃO ===");
                 e.printStackTrace();
-                return ResponseEntity.status(500).body("Erro: " + e.getMessage());
+                return ResponseEntity.status(500).body("EXCEÇÃO: " + e.getMessage());
             }
         }
         
         return ResponseEntity.ok("Webhook recebido - Evento: " + event);
-    }
-    
-    private void rebuildAndRestart() {
-        try {
-            System.out.println("Recompilando e reiniciando aplicação...");
-             
-            File projectDir = new File("/home/cestec/CESTec-Imobiliaria");
-            
-            ProcessBuilder buildProcess = new ProcessBuilder("mvn", "clean", "package", "-DskipTests");
-            buildProcess.directory(projectDir);
-            buildProcess.redirectErrorStream(true);
-              
-            Process build = buildProcess.start();
-            
-            // Ler output da compilação
-            BufferedReader buildReader = new BufferedReader(new InputStreamReader(build.getInputStream()));
-            String buildLine;
-            while ((buildLine = buildReader.readLine()) != null) {
-                System.out.println("Maven: " + buildLine);
-            }
-            
-            int buildExitCode = build.waitFor();
-            
-            if (buildExitCode == 0) {
-                System.out.println("Build realizado com sucesso! Reiniciando serviço...");
-                
-                // Reinicia o serviço systemd
-                Process restartProcess = Runtime.getRuntime().exec("systemctl restart cestec");
-                restartProcess.waitFor();
-                
-                System.out.println("Serviço reiniciado com sucesso!");
-            } else {
-                System.out.println("Erro no build. Código: " + buildExitCode);
-            }
-            
-        } catch (Exception e) {
-            System.out.println("Erro no rebuild: " + e.getMessage());
-            e.printStackTrace();
-        }
     }
 }
