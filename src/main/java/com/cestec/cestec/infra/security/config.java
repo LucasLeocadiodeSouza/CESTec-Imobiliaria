@@ -27,9 +27,9 @@ public class config {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
                 .authorizeHttpRequests(authorize -> authorize
+                                                     .requestMatchers("/webhook").permitAll()
                                                      .requestMatchers(HttpMethod.GET, "/").permitAll()
                                                      .requestMatchers(HttpMethod.GET, "/login", "/impressao").permitAll()
-                                                     .requestMatchers(HttpMethod.POST, "/webhook").permitAll()
                                                      .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                                                      .requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN")
                                                      .requestMatchers(HttpMethod.GET, "/icons/**", "/css/**", "/js/**").permitAll()
