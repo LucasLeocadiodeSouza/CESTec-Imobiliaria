@@ -30,10 +30,14 @@ public class SecurityFilter extends OncePerRequestFilter{
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)throws ServletException, IOException {        
         String path = request.getServletPath();
         String method = request.getMethod();
-        
+
          if (path.equals("/webhook") && method.equals("POST") ||
         path.equals("/auth/login") ||
         path.equals("/login") ||
+        path.equals("/impressao") ||
+        path.startsWith("/css/") ||     // Permite CSS
+        path.startsWith("/js/") ||      // Permite JavaScript
+        path.startsWith("/icons/") || 
         path.equals("/")) {
         filterChain.doFilter(request, response);
         return;
