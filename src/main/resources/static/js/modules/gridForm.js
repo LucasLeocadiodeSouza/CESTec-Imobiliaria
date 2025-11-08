@@ -248,9 +248,6 @@ function GridForm_init(){
             document.body.appendChild(loader);
 
             loader.style.display = 'block';
-            loaderTimeout    = setTimeout(() => {
-                loader.innerHTML += '<p>Carregando...</p>';
-            }, 1000);
         }
 
         var caminho = path;

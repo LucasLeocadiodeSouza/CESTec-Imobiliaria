@@ -91,9 +91,6 @@ function consulForm_init(){
             if(!document.body.contains(loader)) document.body.appendChild(loader);
 
             loader.style.display = 'block';
-            loaderTimeout = setTimeout(() => {
-                loader.innerHTML += '<p>Carregando...</p>';
-            }, 1000);
 
            const response = await fetch(caminho, {
                 method: method,
@@ -147,9 +144,6 @@ function consulForm_init(){
             if(!document.body.contains(loader)) document.body.appendChild(loader);
 
             loader.style.display = 'block';
-            loaderTimeout = setTimeout(() => {
-                loader.innerHTML += '<p>Carregando...</p>';
-            }, 1000); // Mensagem após 1 segundos
         }
 
         var caminho = path;
