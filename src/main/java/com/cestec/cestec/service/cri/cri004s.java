@@ -104,6 +104,13 @@ public class cri004s {
         return "";
     }
 
+    public Integer getLastIdContrato() {
+        pcp_contrato ultimoContrato = contratoRepository.findTopByOrderByIdDesc();
+        if(ultimoContrato == null) return 0;
+
+        return ultimoContrato.getId();
+    }
+
     public String getBuscaTipoImovel(Integer codimovel) {
         pcp_imovel imovel = imovelRepository.findByCodimovel(codimovel);
         if(imovel == null)  throw new RuntimeException("Código do Imovel [" + codimovel + "] não encontrado!");
@@ -145,10 +152,10 @@ public class cri004s {
             if(somenteativos) imoveis = imovelRepository.findAtivosByProprietario(codpropr);
             else imoveis = imovelRepository.findByProprietario(codpropr);
         }
-
+        
         listaOpt.add(new modelUtilForm(0, "Selecione um Imovel"));
-
-        if(imoveis == null) return listaOpt;
+        
+        if(imoveis.isEmpty()) return listaOpt;
 
         do{
             String text = imoveis.get(i).getCodimovel().toString() + " - " + getTipoImovel(imoveis.get(i).getTipo()) + " - " + getDescTipos(imoveis.get(i).getNegociacao());
@@ -190,8 +197,12 @@ public class cri004s {
         if(datini == null) throw new RuntimeException("É preciso informar uma data inicial do contrato do imovel!");
         if(datfim == null) throw new RuntimeException("É preciso informar uma data final do contrato do imovel!");
 
+        if(datfim.before(datini)) throw new RuntimeException("A data final não pode ser menor que a data inicial do contrato do imovel!");
+
         pcp_imovel imovel = imovelRepository.findByCodimovelAndCodprop(codimovel,codprop);
         if(imovel == null) throw new RuntimeException("Imovel não encontrado com o codigo informado '" + codimovel + "'!");
+
+        if(imovel.getPreco().compareTo(vlrnegoc) < 0) throw new RuntimeException("O valor negociado não pode ser maior que o valor do preco do imovel!");
 
         pcp_cliente cliente = clienteRepository.findByCodcliente(codcliente);
         if(cliente == null) throw new RuntimeException("Cliente não encontrado com o codigo informado '" + codcliente + "'!");
@@ -202,11 +213,18 @@ public class cri004s {
         pcp_corretor corretor = corretorRepository.findCorretorByIdeusu(ideusucorretor);
         if(corretor == null) throw new RuntimeException("Corretor não encontrado com o ideusu informado '" + ideusucorretor + "'!");
 
-        if(contratoRepository.findContratoAtivoByCodImovel(codimovel) != null) throw new RuntimeException("Já existe um contrato ativo para o imovel com código informado '" + codimovel + "'!");
-
         pcp_contrato contratoAnalise = contratoRepository.findByCodContrato(codcontrato);
+        
+        if(contratoAnalise == null && contratoRepository.findContratoAtivoByCodImovel(codimovel) != null) throw new RuntimeException("Já existe um contrato ativo para o imovel com código informado '" + codimovel + "'!");
 
-        if(contratoAnalise == null) contratoAnalise = new pcp_contrato();
+        if(contratoAnalise == null) {
+            contratoAnalise = new pcp_contrato();
+            contratoAnalise.setDatiregistro(LocalDate.now());
+            contratoAnalise.setIdeusu(ideusu);
+            contratoAnalise.setSituacao(1);
+            contratoAnalise.setAtivo(true);
+            contratoAnalise.setValorliberado(BigDecimal.ZERO);
+        } 
         else if(contratoAnalise.getSituacao() != 1) throw new RuntimeException("O contrato não esta em uma situacão que permita alteracão de informacões");
         
         //if(imovel.getPcp_proprietario() == cliente) throw new RuntimeException("O imovel selecionado para a abertura do contrato já é pertencente ao proprio proprietario!");
@@ -218,14 +236,9 @@ public class cri004s {
         contratoAnalise.setDatinicio(datini);
         contratoAnalise.setDatfinal(datfim);
         contratoAnalise.setValor(vlrnegoc);
-        
-        if(contratoAnalise.getId() == null){
-            contratoAnalise.setDatiregistro(LocalDate.now());
-            contratoAnalise.setIdeusu(ideusu);
-            contratoAnalise.setSituacao(1);
-            contratoAnalise.setAtivo(true);
-            contratoAnalise.setValorliberado(BigDecimal.ZERO);
-        }
+
+        imovel.setStatus(4);
+        imovelRepository.save(imovel);
 
         contratoRepository.save(contratoAnalise);
    }

@@ -52,6 +52,7 @@ public class FaturaController {
 	public ResponseEntity<?> registrarFatura(@RequestParam(value="codcontrato", required = true) Integer codcontrato) {
 		try {
             pcp_contrato contrato = contratoRepository.findByCodContrato(codcontrato);
+			if(contrato.getSituacao() != 3) throw new RuntimeException("O contrato informado não está em uma situacão que permita a cobranca ao cliente!");
 			
 			Fatura fatura = new Fatura();
 			var conta     = contarepository.findContaById( 1);
@@ -63,7 +64,7 @@ public class FaturaController {
 			Long sequenciaNmrDoc;
 			Fatura ultimafatura = faturaRepository.findTopByOrderByIdDesc();
 
-			if (ultimafatura == null) sequenciaNmrDoc = Long.valueOf("71909"); //Para desenvolvimento, Aparentemente a API do BB tem o numero 71900 de registros padroes
+			if (ultimafatura == null) sequenciaNmrDoc = Long.valueOf("71912" + 1L); //Para desenvolvimento, Aparentemente a API do BB tem o numero 71913 de registros padroes
 			else sequenciaNmrDoc = Long.valueOf(ultimafatura.getNumeroDocumento()) + 1L;
 
 			fatura.setNumeroDocumento(String.format("%08d", sequenciaNmrDoc));

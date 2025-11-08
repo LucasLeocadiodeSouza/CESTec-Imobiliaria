@@ -47,12 +47,13 @@
 
     #tabela_boletos {overflow-x: auto;}
 
-    #dmodalf_geracaoboleto {width: 650px; opacity: 1; padding: 6px; padding-top: 0;}
+    #dmodalf_geracaoboleto {min-width: 650px;; opacity: 1; padding: 6px; padding-top: 0;}
 
     .buttonsmodal {display: flex; justify-content: center; align-items: center; margin-top: 10px;}
 
     #boletolink img {height: 20px; width: 20px; margin: 0; cursor: pointer;}
 
+    #savisodatvenc {margin-left: 20px; color: brown;}
 </style>
 </head>
 <body>
@@ -162,6 +163,7 @@
                 <div class='dmf'>
                     <label class="labelmodal">Data do Vencimento: </label>
                     <input type="date" id="mdatavenc"  name="mdatavenc" disabled>
+                    <spam id="savisodatvenc">* Data de vencimento fixa em um período de 15 dias</spam>
                 </div>
 
                 <div class=' buttonsmodal'>                            

@@ -74,6 +74,8 @@ public class cri001s {
                 return "Ocupado";
             case 3:
                 return "Inativo";
+            case 4:
+                return "Aguardando";
         }
         return "";
     }

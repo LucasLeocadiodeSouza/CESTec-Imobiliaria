@@ -67,6 +67,17 @@ function event_click(obj) {
                                
                                controlaTela("modal");
 
+                               const data = new Date();
+                               data.setDate(data.getDate() + 15);
+
+                               const ano = data.getFullYear();
+                               const mes = String(data.getMonth() + 1).padStart(2, '0');
+                               const dia = String(data.getDate()).padStart(2, '0');
+
+                               form("mdatavenc").value  = `${ano}-${mes}-${dia}`;
+
+                               setDisplay("savisodatvenc", "block");
+
                                DMFDiv.openModal("dmodalf_geracaoboleto");
                                break;
 
@@ -205,6 +216,7 @@ function controlaTela(opc){
 
         setDisplay("fielddesc", ehConsultando()?"grid":"none");
         setDisplay("dnmrboleto", ehConsultando()?"flex":"none");
+        setDisplay("savisodatvenc", "none");
     }
 }
 
@@ -213,6 +225,8 @@ function limparTela(opc){
         form('codboleto').value    = "";
         form('codconvenio').value  = "";
         form('documento').value    = "";
+
+        PGA_GRID.clearGrid();
     }
     if(opc == "modal"){
         form("mdescfatura").innerText    = "";

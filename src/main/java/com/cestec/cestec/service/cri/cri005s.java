@@ -68,6 +68,8 @@ public class cri005s {
                 return "Ocupado";
             case 3:
                 return "Inativo";
+            case 4:
+                return "Aguardando";
         }
         return "Descricão não encontrada";
     }
@@ -156,11 +158,11 @@ public class cri005s {
         pcp_contrato contrato = contratoRepository.findByCodContrato(codcontrato);
         if(contrato == null) throw new RuntimeException("Contrato não encontrato com o código do contrato informado '" + codcontrato + "'");
 
-        if(contrato.getSituacao() != 2 && contrato.getSituacao() != 4) throw new RuntimeException("Contrato não está em situacão de ser aprovado/reprovado!");
+        if(contrato.getSituacao() != 2 && contrato.getSituacao() != 4 && contrato.getSituacao() != 2) throw new RuntimeException("Contrato não está em situacão de ser aprovado/reprovado!");
 
         if(codsituacao == 3){
             pcp_imovel imovel = imovelRepository.findByCodimovel(contrato.getPcp_imovel().getCodimovel());
-            if(imovel.getStatus() != 1) throw new RuntimeException("O imovel está com status de '" + getDescStatus(imovel.getStatus()) + "' e não pode ser aprovado para o contrato!");
+            if(imovel.getStatus() != 4) throw new RuntimeException("O imovel está com status de '" + getDescStatus(imovel.getStatus()) + "' e não pode ser aprovado para o contrato!");
 
             if(imovel.getPreco().compareTo(valorliberado) < 0) throw new RuntimeException("O valor liberado do imovel não pode ser maior que o valor do preco do imovel!");
 

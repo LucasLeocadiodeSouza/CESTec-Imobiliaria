@@ -111,7 +111,8 @@ function event_click(obj) {
                                form('hmsitcontrato').value = "";
                                controlaTela("modal");
 
-                               getOptionsImovel(form('mcodprop').value, '0');
+                               fillSelect("msimovel",[{id: 0, descricao: "Informe um proprietario"}],true);
+                               //getOptionsImovel(form('mcodprop').value, '0');
 
                                DMFDiv.openModal("dmodalf_contrato");
                                break;
@@ -428,7 +429,7 @@ function getOptionsImovel(codprop, valorInicial){
         valorInicial:   valorInicial
     };
 
-    CONSUL.consultar("getOptionsImovel",`/cri004/getOptionsImovel`,["codprop=" + codprop, "somenteativos=" + (ehInserindo() || ehSituacaoAberta() || ehSituacaoReprovada())]);
+    CONSUL.consultar("getOptionsImovel",`/cri004/getOptionsImovel`,["codprop=" + codprop, "somenteativos=" + ehInserindo()]);
 }
 
 function buscarUserName(){

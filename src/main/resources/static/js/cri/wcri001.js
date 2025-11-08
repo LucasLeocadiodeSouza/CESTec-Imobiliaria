@@ -110,7 +110,7 @@ function event_click(obj) {
                                
                                form("msituacao").value = "";
                                controlaTela("modal");
-                               //setOptionImovelContrato("controle", '0', '0');
+                               setOptionImovelContrato("controle", '0', '0');
                                DMFDiv.openModal("dmodalf_contrato");
                                break;
 
@@ -195,6 +195,7 @@ function filaFetchInit(){
                                           break;
 
         case       "buscarImagensImovel": const arrayImages = retorno;
+                                          deletarContainersImagens();
 
                                           if(arrayImages.lenght != 0){
                                               arrayImages.forEach((imagem,index) => {
