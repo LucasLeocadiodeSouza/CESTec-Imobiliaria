@@ -29,6 +29,7 @@ public class config {
                 .authorizeHttpRequests(authorize -> authorize
                                                      .requestMatchers(HttpMethod.GET, "/").permitAll()
                                                      .requestMatchers(HttpMethod.GET, "/login", "/impressao").permitAll()
+                                                     .requestMatchers(HttpMethod.POST, "/webhook").permitAll()
                                                      .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                                                      .requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN")
                                                      .requestMatchers(HttpMethod.GET, "/icons/**", "/css/**", "/js/**").permitAll()

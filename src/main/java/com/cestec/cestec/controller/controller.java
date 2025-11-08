@@ -1,9 +1,13 @@
 package com.cestec.cestec.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import com.cestec.cestec.repository.generico.aplicacoesRepository;
 import com.cestec.cestec.repository.generico.modulosRepository;
 
@@ -15,6 +19,12 @@ public class controller {
 
     @Autowired
     private modulosRepository modulosrepo;
+
+    @PostMapping("/webhook")
+    public ResponseEntity<String> handleWebhook(@RequestBody String payload) {
+        System.out.println("Webhook recebido: " + payload);
+        return ResponseEntity.ok("OK");
+    }
 
     @GetMapping("") 
     public String auto() {
