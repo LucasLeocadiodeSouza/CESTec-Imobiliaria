@@ -74,7 +74,7 @@ public class webhookController {
             ProcessBuilder buildProcess = new ProcessBuilder("mvn", "clean", "package", "-DskipTests");
             buildProcess.directory(projectDir);
             buildProcess.redirectErrorStream(true);
-            
+              
             Process build = buildProcess.start();
             
             // Ler output da compilação
