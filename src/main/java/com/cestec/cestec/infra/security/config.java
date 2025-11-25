@@ -46,9 +46,9 @@ public class config {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
                 .authorizeHttpRequests(authorize -> authorize
-                                                     .requestMatchers(HttpMethod.POST, "/webhook").permitAll()
-                                                     .requestMatchers(HttpMethod.GET, "/").permitAll()
-                                                     .requestMatchers(HttpMethod.GET, "/login", "/impressao").permitAll()
+                                                     .requestMatchers(HttpMethod.POST, "/webhook", "/impressao").permitAll()
+                                                     .requestMatchers(HttpMethod.GET, "/", "/impressao").permitAll()
+                                                     .requestMatchers(HttpMethod.GET, "/login").permitAll()
                                                      .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                                                      .requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN")
                                                      .requestMatchers(HttpMethod.GET, "/icons/**", "/css/**", "/js/**").permitAll()
