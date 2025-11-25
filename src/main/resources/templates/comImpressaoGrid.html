@@ -9,16 +9,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/padrao.css">
+    <script src="/js/modules/adicionaScripts.js"></script>
     <script>
+        adicionarHeadLinks();
+        addScriptsHead("/js/comImpressaoGrid.js");
     </script>
-    <script>
+    <script defer>
+        elementsForm_init();
+
         event_click("bimptable");
 
         document.getElementById("ldataatual").innerText = getDataAtual();
         document.getElementById("lhoraatual").innerText = getHoraAtual();
 
         function event_click(obj) {
-            document.getElementById(obj).addEventListener("click", function () {
+            form(obj).addEventListener("click", function () {
                 switch (obj) {
                     case "bimptable": 
                             window.print();
@@ -76,7 +82,7 @@
 
                 <div style="display: flex;">
                     <div style="display: flex; align-items: center;">
-                        <!-- <img src="/icons/iconLogoEmpresa.png" alt="Carregando" style="width: 60px; height: 60px;"> -->
+                        <img src="/icons/iconLogoEmpresa.png" alt="Carregando" style="width: 60px; height: 60px;">
                     </div>
                     <div style="display: flex; flex-direction: column;">
                         <div class='if'>
@@ -94,7 +100,7 @@
         </fieldset>
 
         <div class='if' style="display: flex; margin-left: 5px;">
-            <div id="bimptable"  name="bimptable"  class="button noprint" value="Imprimir"></div>
+            <div id="bimptable"  name="bimptable"  class="button noprint" value="Imprimir" data-icon="/icons/printer.png"></div>
         </div>
 
         <div class="container-table-imp">
