@@ -15,6 +15,36 @@
         adicionarHeadLinks();
         addScriptsHead("/js/comImpressaoGrid.js");
     </script>
+    <script defer>
+        elementsForm_init();
+
+        event_click("bimptable");
+
+        document.getElementById("ldataatual").innerText = getDataAtual();
+        document.getElementById("lhoraatual").innerText = getHoraAtual();
+
+        function event_click(obj) {
+            form(obj).addEventListener("click", function () {
+                switch (obj) {
+                    case "bimptable": 
+                            window.print();
+                            break;
+                }
+            })
+        }
+
+        function getHoraAtual(){
+            const data = new Date();
+
+            return data.toLocaleTimeString();
+        }
+
+        function getDataAtual(){
+            const data = new Date();
+
+            return data.toLocaleDateString();
+        }
+    </script>
 <style>
     .labelimprimir {font-size: 17px; font-weight: 700; width: 100px; text-align: right;}
     .labelcab      {margin-left: 100px;}
