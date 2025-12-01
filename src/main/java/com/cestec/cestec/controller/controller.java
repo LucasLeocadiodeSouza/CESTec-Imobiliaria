@@ -58,6 +58,6 @@ public class controller {
 
     @GetMapping("/impressao") 
     public String impressao() {
-        return "comimpressaoGrid";
+        return "comImpressaoGrid";
     }
 }

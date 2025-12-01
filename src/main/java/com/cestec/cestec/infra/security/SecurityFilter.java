@@ -34,10 +34,7 @@ public class SecurityFilter extends OncePerRequestFilter{
         if (path.equals("/webhook") && method.equals("POST") ||
             path.equals("/auth/login") ||
             path.equals("/login") ||
-            path.equals("/impressao") ||
-            path.startsWith("/css/**") ||
-            path.startsWith("/js/**") ||
-            path.startsWith("/icons/**") ||
+            path.startsWith("/impressao") ||
             path.equals("/")) {
             
             filterChain.doFilter(request, response);
