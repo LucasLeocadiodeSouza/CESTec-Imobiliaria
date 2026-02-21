@@ -741,3 +741,11 @@ window.addEventListener("load", () => {
         }
     }
 });
+
+window.addEventListener("scroll", ()=>{
+    const windowRect = window.scrollY;
+    if(windowRect > 0 && document.getElementById("ddivexpandido").classList.contains("cabecalhoexpandido")){
+        document.getElementById("ddivexpandido").classList.remove("cabecalhoexpandido");
+        if(document.getElementById("comcab_init")) document.documentElement.style.setProperty('--bd-mg-tp', '45px');
+    } 
+});
