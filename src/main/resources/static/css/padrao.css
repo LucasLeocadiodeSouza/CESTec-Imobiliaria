@@ -30,7 +30,7 @@
   --color-apl-fav: #3764b53b;
 }
 
-body      {background-color: var(--color-body, #1d3561); min-height: 600px; min-width: 1150px;}
+body      {background-color: var(--color-body, #1d3561); min-height: 100dvh; min-width: 0; overflow-x: hidden;}
 body .gen {padding: 10px}
 
 .princbody {margin-top: var(--bd-mg-tp, 0px); background-color: var(--fundo-primario, #f5f5f5); height: var(--body-heigth, 100vh); display: flex; justify-content: center; padding: 15px;flex-direction: column;justify-content: flex-start;}
@@ -318,95 +318,170 @@ textarea:disabled {border-color: rgba(118, 118, 118, 0.3); color: #8a8a8a; backg
             z-index: 999999;
             position: absolute;}
 
-div.grid {display: flex;
-          justify-content: center;
-          align-items: flex-start;}
-       
-.div_table_init {display: flex; flex-direction: column; height: 100%; margin-bottom: 20px; margin-top: 5px; border: 1px solid var(--color-bg-th, #e1e1e1); overflow: hidden;}
+/* =====================================================
+   TABELAS — Design System Moderno
+   Legível, clean e elegante para grids de dados.
+====================================================== */
 
-tr {font-size: calc(var(--font-size-label,15px) + 1px);}
-
-th {background-color: var(--color-bg-th, #e1e1e1);}
-
-td {border-bottom: 0;}
-
-th, td {padding: 8px;
-        box-sizing: border-box;}
-
-td {
-    white-space: nowrap;
+/* Wrapper da tabela com sombra e bordas arredondadas */
+.div_table_init {
+    display:       flex;
+    flex-direction: column;
+    height:        100%;
+    margin-bottom: 20px;
+    margin-top:    5px;
+    border-radius: 10px;
+    overflow:      hidden;
+    border:        1px solid var(--color-border, #e0e4ec);
+    box-shadow:    0 2px 12px rgba(29, 53, 97, 0.08);
+    background:    var(--fundo-primario, #f5f5f5);
 }
 
+/* Scroll suave nas linhas */
+.divtableres {
+    height:    calc(100% - 42px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #b0bec5 transparent;
+}
+.divtableres::-webkit-scrollbar { width: 5px; }
+.divtableres::-webkit-scrollbar-thumb { background: #b0bec5; border-radius: 4px; }
+.divtableres::-webkit-scrollbar-thumb:hover { background: #78909c; }
+
+/* Base da tabela */
 table {
-     font-size: calc(var(--font-size-label,15px) + 1px);
-     width: 100%;
-     border: 2px solid var(--color-border, #dddddd); /* #d4d4d4; */
-       th {
-         color:         var(--color-lb-gen,#444); /* #000 */
-         font-weight:   500;
-         border-bottom: solid 2px var(--color-border, #dddddd);
-         position:      sticky;
-         top:           0;
-         border:        1px solid #43434354;
-         font-family:   'Raleway', sans-serif;
-         font-size:     calc(var(--font-size-label,15px) + 1px);
-         cursor:        pointer;
-       }
-       td {
-         border:        solid 1px var(--color-border, #dddddd);
-         border-left:   0;
-         border-right:  0;
-         white-space:   nowrap;
-         overflow:      hidden;
-         text-overflow: ellipsis;
-         font-family:   'Raleway', Arial, Helvetica, sans-serif;
-         font-size:     var(--font-size-label,15px);
-         cursor:        pointer;
-         color:         var(--color-lb-gen,#444); /* #000 */;
-       }
-}
-
-.tablecolun, .tabledata2 {
-    table-layout: fixed;
-    width: 100%;
+    width:           100%;
     border-collapse: collapse;
-
+    font-size:       var(--font-size-label, 15px);
+    font-family:     'Inter', 'Raleway', Arial, sans-serif;
+    border:          none;
+    background:      transparent;
 }
 
-.h100 {height: 100%;}
+/* Cabeçalho — gradiente azul escuro premium */
+table th {
+    background:      linear-gradient(180deg, #2d4a7a 0%, #1d3561 100%);
+    color:           #e8eef8 !important;
+    font-weight:     600;
+    font-size:       calc(var(--font-size-label, 15px) - 1px);
+    font-family:     'Inter', 'Raleway', sans-serif;
+    letter-spacing:  0.4px;
+    text-transform:  uppercase;
+    padding:         11px 14px;
+    white-space:     nowrap;
+    position:        sticky;
+    top:             0;
+    z-index:         10;
+    border:          none;
+    border-right:    1px solid rgba(255,255,255,0.08);
+    cursor:          pointer;
+    user-select:     none;
+    transition:      background 0.2s;
+}
 
-.negacao {background: var(--red-negacao, #dd0000)}
-.negacao label, .negacao input {color: #161616 !important;}
-.negacao img {filter: invert(0%) !important;}
+table th:last-child { border-right: none; }
 
-.aceitacao {background: var(--green-aceitacao, #009f0d);}
-.aceitacao label, .aceitacao input {color: #161616 !important;}
-.aceitacao img {filter: invert(0%) !important;}
+table th:hover {
+    background: linear-gradient(180deg, #3a5c96 0%, #274576 100%);
+}
 
-.filter-invert img {filter: invert(100%);}
+/* Linha */
+tr {
+    font-size:  var(--font-size-label, 15px);
+    transition: background 0.15s ease;
+}
 
-.divtableres {height: calc(100% - 42px); overflow-y: auto;}
+/* Zebra striping suave */
+/* tbody tr:nth-child(even) {
+    background-color: rgba(29, 53, 97, 0.035);
+} */
 
-.tablecolun {border: 1px solid var(--color-border, #dddddd); border-collapse: collapse;}
-.tablecolun th {text-wrap: nowrap; color: var(--color-lb-gen,#444);}
+tbody tr:nth-child(odd) {
+    background-color: transparent;
+}
 
-.tdalign-esq          {text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
-.tdalign-cen          {text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
-.tdalign-dir          {text-align: right; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
-.tdalign-esqoverellip {text-align: left; }
+/* Células de dados */
+table td {
+    padding:        9px 14px;
+    border:         none;
+    border-bottom:  1px solid rgba(29, 53, 97, 0.08);
+    white-space:    nowrap;
+    overflow:       hidden;
+    text-overflow:  ellipsis;
+    font-family:    'Inter', 'Raleway', Arial, sans-serif;
+    font-size:      var(--font-size-label, 15px);
+    color:          var(--color-lb-gen, #374151);
+    cursor:         pointer;
+    line-height:    1.5;
+    box-sizing:     border-box;
+}
 
-.tabledata2 {overflow-y: scroll;}
-.tabledata2 tbody {border-top: hidden; overflow-y: auto; max-height: calc(100% - 40px);}
+/* Hover na linha */
+.mouseovercolor,
+tbody tr:hover td {
+    background-color: rgba(51, 73, 112, 0.1) !important;
+    filter:           none !important;
+}
 
-.mouseovercolor   {background-color: rgba(102, 146, 207, 0.55); filter: brightness(1.4);}
-.clicktableborder {border-block: solid #003462 !important;}
-.efeitorowclick td{font-weight: bold;}
+/* Linha clicada / selecionada */
+.clicktableborder {
+    border-block: 2px solid #1d3561 !important;
+    background-color: rgba(29, 53, 97, 0.08) !important;
+}
+.efeitorowclick td {
+    font-weight: 600;
+    color: #1d3561 !important;
+}
 
-.img-filtro-grid {display:     flex;
-                  align-items: center;
-                  justify-content: flex-end;}
+/* Layouts fixos e collapse */
+.tablecolun, .tabledata2 {
+    table-layout:    fixed;
+    width:           100%;
+    border-collapse: collapse;
+}
 
-.img-filtro-grid img {margin: 0px;}
+.tablecolun {
+    border:          none;
+}
+
+.tablecolun th {
+    white-space:  nowrap;
+}
+
+/* Scroll vertical no tbody */
+.tabledata2            { overflow-y: scroll; }
+.tabledata2 tbody      { border-top: hidden; overflow-y: auto; max-height: calc(100% - 40px); }
+
+/* Alinhamentos */
+.tdalign-esq          { text-align: left;   overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.tdalign-cen          { text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.tdalign-dir          { text-align: right;  overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.tdalign-esqoverellip { text-align: left; }
+
+/* Estados semânticos — mantém legibilidade no novo tema */
+.negacao                        { background: var(--red-negacao, #dd0000); }
+.negacao   label, .negacao   input { color: #fff !important; }
+.negacao   img                  { filter: invert(100%) !important; }
+
+.aceitacao                      { background: var(--green-aceitacao, #009f0d); }
+.aceitacao label, .aceitacao input { color: #fff !important; }
+.aceitacao img                  { filter: invert(100%) !important; }
+
+.filter-invert img { filter: invert(100%); }
+
+/* Grid container */
+div.grid {
+    display:         flex;
+    justify-content: center;
+    align-items:     flex-start;
+}
+
+/* Ícone de filtro */
+.img-filtro-grid     { display: flex; align-items: center; justify-content: flex-end; }
+.img-filtro-grid img { margin: 0px; }
+
+/* Utilitários */
+.h100 { height: 100%; }
 
 .itensint li, ul {list-style-type: none}
 .itensint ol{padding: 0;}
@@ -558,4 +633,117 @@ table {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #7ea4ff;
+}
+
+@media (max-width: 768px) {
+
+    .princbody {
+        height: auto !important;
+        min-height: 100dvh !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        padding: 10px !important;
+        box-sizing: border-box !important;
+    }
+
+    .titulo {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        height: auto !important;
+        min-height: 33px;
+        flex-wrap: wrap;
+    }
+
+    .if {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        height: auto !important;
+        gap: 6px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .dmf {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        height: auto !important;
+        gap: 6px !important;
+    }
+
+    .if > input, .if > select,
+    .dmf > input, .dmf > select {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        height: 44px !important;
+        font-size: 16px !important;
+    }
+
+    .if > input[type="radio"],
+    .dmf > input[type="radio"] {
+        width: auto !important;
+        height: auto !important;
+    }
+
+    .dabaexterna {
+        width: 100% !important;
+        overflow-x: auto !important;
+        flex-wrap: nowrap !important;
+        margin: 4px 0 !important;
+    }
+
+    /* Wrapper da grid: scroll horizontal quando não couber */
+    .div_table_init {
+        overflow-x: auto !important;
+        min-height: 200px !important;
+    }
+
+    /* Tabela com largura mínima legível — permite scroll se necessário */
+    .div_table_init table {
+        min-width: 420px;
+        font-size: 13px !important;
+    }
+
+    .div_table_init table th,
+    .div_table_init table td {
+        padding: 8px 8px !important;
+        font-size: 13px !important;
+    }
+
+    .fieldset {
+        margin: 4px 0 !important;
+        padding: 8px !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+    }
+
+    /* Botões: flex-wrap para não sair da margem */
+    .button {
+        height: 42px !important;
+        min-width: 90px !important;
+        padding: 0 12px !important;
+        flex: 1 1 auto !important;
+        max-width: 180px !important;
+    }
+
+    /* Linha de botões ganha wrap */
+    .buttoninline {
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+
+    .container-alert { right: 8px !important; }
+    .alert-message   { width: calc(100vw - 20px) !important; max-width: 340px; }
+}
+
+@media (max-width: 480px) {
+    .princbody { padding: 6px !important; }
+
+    .titulo h2 {
+        font-size: 16px !important;
+    }
+
+    .if > input, .if > select,
+    .dmf > input, .dmf > select {
+        height: 48px !important;
+    }
 }

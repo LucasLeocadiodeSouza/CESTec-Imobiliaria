@@ -2,13 +2,14 @@
     Dev: Lucas Leocadio de Souza
     Data: 02/03/25
     IM: 00015
+    Responsive: 09/05/26
 -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="stylesheet" href="/css/padrao.css">
     <title>login</title>
     <script src="/js/modules/adicionaScripts.js"></script>
@@ -17,80 +18,277 @@
         addScriptsHead("/js/wlog.js");
     </script>
 <style>
-    .extralarge  {width: 300px;}
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; }
 
-    fieldset {width: 384px;}
+    body {
+        margin: 0;
+        padding: 0;
+        min-height: 100dvh;
+        background: linear-gradient(135deg, #0f1e3a 0%, #1d3561 50%, #2a4a7f 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+        overflow-y: auto;
+    }
 
-    .hfield {width: 75px;
-             font-size: 19px;}
+    /* ===== CARD WRAPPER ===== */
+    .login-wrapper {
+        width: 100%;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px 16px;
+        gap: 20px;
+    }
 
-    .inputform {font-size: x-large;
-                height: 40px;}
+    /* ===== LOGO SECTION ===== */
+    .login-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 4px;
+    }
 
-    .titulo {background-color: #1d3561;
-             width: 413px;}
+    .login-brand h1 {
+        font-size: clamp(22px, 5vw, 32px);
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: 1px;
+        margin: 0;
+        text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    }
 
-    #blogin {background: #3d5785;
-             color: #FFF;
-             width: 75px;
-             height: 40px;
-             display: flex;
-             justify-content: center;
-             align-items: center;
-             cursor: pointer;}
+    .login-brand span {
+        font-size: 13px;
+        color: #94b4d8;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-weight: 500;
+    }
 
-    .centralizar-div {display: flex; align-items: center; flex-direction: column;}
+    /* ===== MAIN CARD ===== */
+    .login-card {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 20px;
+        padding: 32px 28px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.05);
+    }
 
-    body {height: calc(100vh - 16px);}
+    .card-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #e8f0fe;
+        margin: 0 0 24px 0;
+        text-align: center;
+        letter-spacing: 0.5px;
+    }
 
+    /* ===== FORM GROUPS ===== */
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #94b4d8;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .form-group input {
+        width: 100%;
+        height: 48px;
+        padding: 0 16px;
+        font-size: 16px; /* previne zoom no iOS */
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        outline: none;
+        transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+        box-shadow: none;
+    }
+
+    .form-group input:focus {
+        border-color: #5a8dee;
+        background: rgba(90, 141, 238, 0.12);
+        box-shadow: 0 0 0 3px rgba(90, 141, 238, 0.2);
+    }
+
+    .form-group input::placeholder {
+        color: rgba(255,255,255,0.3);
+    }
+
+    /* ===== BOTÃO LOGIN ===== */
+    #blogin {
+        width: 100%;
+        height: 50px;
+        margin-top: 8px;
+        background: linear-gradient(135deg, #3d6fc4, #5a8dee);
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+        box-shadow: 0 4px 20px rgba(58, 110, 196, 0.4);
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    #blogin:hover {
+        background: linear-gradient(135deg, #4a7fd6, #6b9ef8);
+        box-shadow: 0 6px 25px rgba(58, 110, 196, 0.55);
+        transform: translateY(-1px);
+    }
+
+    #blogin:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 10px rgba(58, 110, 196, 0.3);
+    }
+
+    /* ===== CARD VISITANTE ===== */
+    .visitante-card {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 20px 24px;
+    }
+
+    .visitante-card h4 {
+        font-size: 13px;
+        font-weight: 600;
+        color: #7a9bbf;
+        margin: 0 0 14px 0;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        text-align: center;
+    }
+
+    .visitante-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .visitante-row:last-child {
+        border-bottom: none;
+    }
+
+    .visitante-row .vk-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #6a8dae;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .visitante-row .vk-value {
+        font-size: 14px;
+        font-weight: 700;
+        color: #b8d0ed;
+        letter-spacing: 1px;
+        font-family: 'Courier New', monospace;
+        background: rgba(90, 141, 238, 0.12);
+        padding: 4px 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(90, 141, 238, 0.2);
+    }
+
+    /* ===== MEDIA QUERIES ===== */
+    @media (max-width: 480px) {
+        .login-card {
+            padding: 24px 20px;
+            border-radius: 16px;
+        }
+
+        .visitante-card {
+            padding: 16px 18px;
+        }
+
+        .form-group input {
+            height: 52px; /* maior toque em mobile */
+        }
+
+        #blogin {
+            height: 54px;
+        }
+    }
+
+    @media (max-height: 600px) and (orientation: landscape) {
+        .login-wrapper {
+            padding: 12px 16px;
+            gap: 12px;
+        }
+
+        .login-card {
+            padding: 20px 24px;
+        }
+    }
 </style>
 </head>
 <body>
-    <div class="gen princbody" style="display: flex; justify-content: center; flex-direction: column;justify-content: flex-start; min-height: 630px; min-width: 500px; overflow: auto;">
-        
-        <div class="centralizar-div" style="height: 50%; justify-content: end;">
-            <div class="titulo">
-                <h2 style="margin-inline: 20px; color: #FFF;">Portal</h2>
+    <div class="login-wrapper">
+
+        <!-- Marca / Logo -->
+        <div class="login-brand">
+            <h1>Portal CESTec</h1>
+            <span>Sistema Imobiliário</span>
+        </div>
+
+        <!-- Card de Login -->
+        <div class="login-card">
+            <p class="card-title">Acesso ao Sistema</p>
+
+            <div class="form-group">
+                <label for="login">Usuário</label>
+                <input type="text" id="login" name="login" placeholder="Digite seu usuário" autocomplete="username">
             </div>
-            
-            <fieldset>
-                <div style="display: flex; flex-direction: row-reverse;">
-                    <h3 style="margin-inline: 20px; margin-block: 10px; font-size: 23px;">Login</h3>
-                </div>
 
-                <div style="display: flex; margin-left: 5px; align-items: center;"> 
-                    <h4 class="hfield">Usuário: </h4>
-                    <input type="text" id="login" name="login" class="extralarge inputform">
-                </div>
+            <div class="form-group">
+                <label for="passkey">Senha</label>
+                <input type="password" id="passkey" name="passkey" placeholder="••••••••" autocomplete="current-password">
+            </div>
 
-                <div style="display: flex; margin-left: 5px; align-items: center;"> 
-                    <h4 class="hfield">Senha: </h4>
-                    <input type="password" id="passkey" name="passkey" class="extralarge inputform">
-                </div>
-
-                <div style="display: flex; flex-direction: row-reverse;">
-                    <div id="blogin"  name="blogin"  class="button" value="Entrar">Entrar</div>
-                </div>
-            </fieldset>
+            <div id="blogin" name="blogin" class="button" value="Entrar">Entrar</div>
         </div>
-            
-        <div class="centralizar-div" style="height: 50%;">
-            <fieldset>
-                <div class="dmf"> 
-                    <h4>Para acessar com um Usuario visitante, usar o registro na sequência:</h4>
-                </div>
 
-                <div class="if"> 
-                    <h4 class="hfield">Usuário:</h4>
-                    <p>USUARIOT</p>
-                </div>
-
-                <div class="if"> 
-                    <h4 class="hfield">Senha:</h4>
-                    <p>1234567</p>
-                </div>
-            </fieldset>
+        <!-- Card visitante -->
+        <div class="visitante-card">
+            <h4>Acesso de Visitante</h4>
+            <div class="visitante-row">
+                <span class="vk-label">Usuário</span>
+                <span class="vk-value">USUARIOT</span>
+            </div>
+            <div class="visitante-row">
+                <span class="vk-label">Senha</span>
+                <span class="vk-value">1234567</span>
+            </div>
         </div>
+
     </div>
 </body>
 </html>

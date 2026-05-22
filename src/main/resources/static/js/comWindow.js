@@ -62,6 +62,19 @@ function event_click(obj) {
             buscarAgendamentos();
         });
     }
+    if(obj == "btn-hamburger"){
+        var sidebar = document.getElementById('dbarramenulateral');
+        var btn     = document.getElementById('btn-hamburger');
+        var overlay = document.getElementById('overlay-menu');
+        sidebar.classList.toggle('menu-aberto');
+        btn.classList.toggle('aberto');
+        overlay.classList.toggle('ativo');
+    }
+    if(obj == "overlay-menu"){
+        document.getElementById('dbarramenulateral').classList.remove('menu-aberto');
+        document.getElementById('btn-hamburger').classList.remove('aberto');
+        document.getElementById('overlay-menu').classList.remove('ativo');
+    }
 }
 
 //function event_mouseover_table(){

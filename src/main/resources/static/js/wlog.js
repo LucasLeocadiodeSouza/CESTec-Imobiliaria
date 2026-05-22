@@ -96,9 +96,9 @@ function enviarEmail(){
 }
 */
 
-function controlaTela(opc){
-    limparTela(opc);
-}
+// function controlaTela(opc){
+//     limparTela(opc);
+// }
 
-function limparTela(opc){
-}
+// function limparTela(opc){
+// }

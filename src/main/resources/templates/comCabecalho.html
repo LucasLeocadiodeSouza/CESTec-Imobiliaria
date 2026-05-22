@@ -69,6 +69,48 @@
 
         .container-prefusu {width: calc(100% - 20px); padding: 5px; gap: 5px; display: flex; flex-direction: column;}
         .container-prefusu label {text-align: right;}
+
+        /* ===== CABEÇALHO RESPONSIVO ===== */
+        @media (max-width: 768px) {
+            .headRed { height: auto !important; min-height: 48px; }
+
+            #cabecalhoextendido {
+                padding: 6px 10px;
+                gap: 8px;
+            }
+
+            /* Esconde bloco central (logo da empresa) no mobile */
+            .container-central { display: none !important; }
+
+            /* Esquerda e direita dividem o espaço */
+            .container-esquerda,
+            .container-direita {
+                width: auto !important;
+            }
+            .container-esquerda { flex: 1; }
+            .container-direita  { flex: 0; }
+
+            /* Caminho da aplicação: trunca com ellipsis */
+            #dcaminhoapl label {
+                font-size: 13px !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 160px;
+            }
+
+            /* Botões do cabeçalho ligeiramente menores */
+            .botao-cabecalho { width: 32px; }
+            .botao-cabecalho img { width: 24px; height: 24px; }
+
+            /* Painel expandido: oculto no mobile (complexo demais) */
+            .container-expandido { display: none !important; }
+        }
+
+        @media (max-width: 480px) {
+            /* Logo icone menor */
+            .icon-cestec img { width: 28px !important; height: 28px !important; }
+        }
     </style>
 </head>
 

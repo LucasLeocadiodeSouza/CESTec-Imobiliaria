@@ -35,67 +35,124 @@
 
     body {background-color: #1d3561;}
 
-    div#dbarramenulateral {float: left;
-                           background-color: #CCCCCC;
-                           height: 98%;
-                           width:  16%;
-                           padding: 10px;
-                           border-top-right-radius:    8px;
-                           border-bottom-right-radius: 8px;
-                           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-                           display: flex;
-                           flex-direction: column;}
+    /* === HAMBURGER BUTTON (mobile only) === */
+    #btn-hamburger {
+        display: none;
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        z-index: 1000;
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background-color: #1d3561;
+        border: none;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+        padding: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        -webkit-tap-highlight-color: transparent;
+    }
+    #btn-hamburger span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: #fff;
+        border-radius: 2px;
+        transition: 0.3s;
+    }
+    #btn-hamburger.aberto span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    #btn-hamburger.aberto span:nth-child(2) { opacity: 0; }
+    #btn-hamburger.aberto span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    div#didentificacao {background-color: #D3D3D3;
-                        height:           120px;
-                        padding:          10px;
-                        border-top-right-radius: 8px;
-                        border-top-left-radius: 8px;
-                        box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.1);}
+    /* === OVERLAY (mobile) === */
+    #overlay-menu {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.55);
+        z-index: 998;
+        backdrop-filter: blur(2px);
+    }
+    #overlay-menu.ativo { display: block; }
 
-    div#ditens {background-color: #dedede;
-                height:           65%;
-                flex:             1;
-                min-height:       0;
-                overflow-y:       auto;
-                border-bottom-right-radius: 8px;
-                border-bottom-left-radius:  8px;
-                box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.1);}
+    div#dbarramenulateral {
+        background-color: #CCCCCC;
+        height: 98%;
+        width: 16%;
+        min-width: 200px;
+        max-width: 280px;
+        padding: 10px;
+        border-top-right-radius:    8px;
+        border-bottom-right-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
+    }
 
-    div#ddireita {overflow-y: scroll;
-                  background-color: var(--fundo-primario, #f5f5f5);
-                  height:           98%;
-                  width:            84%;
-                  border-top-left-radius:    8px;
-                  border-bottom-left-radius: 8px;
-                  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);}
+    div#didentificacao {
+        background-color: #D3D3D3;
+        padding: 10px;
+        border-top-right-radius: 8px;
+        border-top-left-radius: 8px;
+        box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.1);
+    }
 
-    div#dmetas {float:            left;
-                background-color: var(--fundo-secundario, #f5f5f5);
-                height:           250px;
-                width:            30%;
-                border-radius:    8px;
-                display:          flex;
-                margin-right:     10px;
-                box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);}
-                  
-    div#dvendatri {float:            left;
-                   background-color:var(--fundo-secundario, #f5f5f5);
-                   height:           250px;
-                   width:            36%;
-                   border-radius:    8px;                   
-                   display:          flex;
-                   margin-right:     10px; 
-                   box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);}
+    div#ditens {
+        background-color: #dedede;
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        border-bottom-right-radius: 8px;
+        border-bottom-left-radius: 8px;
+        box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.1);
+    }
 
-    div#doutros    {float:            left;
-                    background-color:var(--fundo-secundario, #f5f5f5);
-                    height:           250px;
-                    width:            34%;
-                    border-radius:    8px;
-                    display:          flex;
-                    margin-right:     10px;
-                    box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);}
+    div#ddireita {
+        overflow-y: scroll;
+        background-color: var(--fundo-primario, #f5f5f5);
+        height: 98%;
+        flex: 1;
+        min-width: 0;
+        border-top-left-radius:    8px;
+        border-bottom-left-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    div#dmetas {
+        background-color: var(--fundo-secundario, #f5f5f5);
+        height: 250px;
+        flex: 1 1 260px;
+        min-width: 0;
+        border-radius: 8px;
+        display: flex;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    div#dvendatri {
+        background-color: var(--fundo-secundario, #f5f5f5);
+        height: 250px;
+        flex: 1 1 280px;
+        min-width: 0;
+        border-radius: 8px;
+        display: flex;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    div#doutros {
+        background-color: var(--fundo-secundario, #f5f5f5);
+        height: 250px;
+        flex: 1 1 260px;
+        min-width: 0;
+        border-radius: 8px;
+        display: flex;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+    }
 
     div.agenda {width: 66%; height: 100%; display: flex; flex-direction: column; margin: auto; }
 
@@ -153,9 +210,9 @@
 
     .ident-usuario {display: flex; flex-direction: column; width: calc(100% - 50px); overflow: hidden; text-overflow: ellipsis;}
 
-    .container-direita-1 {display: flex; flex-direction: row; width: 100%; gap: 5px;}
-    .container-direita-2 {display: flex; flex-direction: row; width: 100%; gap: 20px; justify-content: space-around; margin-block: 10px;}
-    .container-direita-3 {display: flex; flex-direction: row; width: 100%; justify-content: center;}
+    .container-direita-1 {display: flex; flex-direction: row; flex-wrap: wrap; width: 100%; gap: 10px;}
+    .container-direita-2 {display: flex; flex-direction: row; flex-wrap: wrap; width: 100%; gap: 15px; justify-content: space-around; margin-block: 10px;}
+    .container-direita-3 {display: flex; flex-direction: row; flex-wrap: wrap; width: 100%; justify-content: center;}
 
     #ddescgraficometa {background-color: var(--color-primary, #334970); display: inline-block; width:100%; height: 81%; border-radius: 10px; justify-content: center;}
 
@@ -205,22 +262,25 @@
     .liacessos {list-style-type: none; margin-bottom: 5px;}
     .liacessos label {font-size: 20px}
 
-    div#dagenda {float:            right;
-                 background-color: var(--fundo-secundario, #dedede);
-                 height:           270px;
-                 width:            440px;
-                 border-radius:    8px;                   
-                 display:          flex;
-                 box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);
-                 flex-direction:   column;}
+    div#dagenda {
+        background-color: var(--fundo-secundario, #dedede);
+        height: 270px;
+        flex: 1 1 320px;
+        min-width: 0;
+        border-radius: 8px;
+        display: flex;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+        flex-direction: column;
+    }
 
-    div#dcontratos {float:            left;
-                    background-color: var(--fundo-secundario, #dedede);
-                    height:           270px;
-                    width:            calc(100% - 570px);
-                    border-radius:    8px;
-                    /* margin-top:       20px; */
-                    box-shadow:       0px 0px 4px rgba(0, 0, 0, 0.1);}    
+    div#dcontratos {
+        background-color: var(--fundo-secundario, #dedede);
+        height: 270px;
+        flex: 2 1 300px;
+        min-width: 0;
+        border-radius: 8px;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+    }    
 
     div#dacessos { background-color: var(--fundo-secundario, #dedede);
                    height:           100%;
@@ -533,13 +593,179 @@
     background-color: transparent !important;
     }
 
+
+    /* ===== RESPONSIVE MOBILE ===== */
+    @media (max-width: 768px) {
+
+        body {
+            background-color: #1d3561;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+        }
+
+        #btn-hamburger { display: flex; }
+
+        .layout-root {
+            position: relative !important;
+            flex-direction: row !important;
+            width: 100% !important;
+            height: auto !important;
+            min-height: 100dvh !important;
+            min-width: 0 !important;
+            overflow: visible !important;
+        }
+
+        #overlay-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 998;
+            /* backdrop-filter REMOVIDO — causava tela preta */
+        }
+        #overlay-menu.ativo { display: block; }
+
+        div#dbarramenulateral {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100dvh !important;
+            width: 80vw !important;
+            max-width: 300px !important;
+            min-width: 0 !important;
+            z-index: 999;
+            transform: translateX(-110%);
+            border-radius: 0 16px 16px 0;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+        }
+
+        div#dbarramenulateral.menu-aberto {
+            transform: translateX(0);
+            box-shadow: 6px 0 24px rgba(0,0,0,0.5);
+        }
+
+        .botoesmenuesq {
+            float: none !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .botoesinternosapl {
+            width: 90% !important;
+            margin-inline: auto !important;
+            box-sizing: border-box !important;
+        }
+
+        .container-sobre {
+            margin-top: 10px !important;
+        }
+
+        div#ddireita {
+            width: 100vw !important;
+            flex: none !important;
+            height: auto !important;
+            min-height: 100dvh !important;
+            border-radius: 0 !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            padding-top: 60px !important; /* espaço botão hamburguer */
+            box-sizing: border-box !important;
+        }
+
+        .container-direita-1,
+        .container-direita-2,
+        .container-direita-3 {
+            flex-direction: column !important;
+            gap: 12px !important;
+            padding-inline: 8px !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+        }
+
+        div#dmetas, div#dvendatri, div#doutros {
+            flex: none !important;
+            width: 100% !important;
+            height: auto !important;
+            min-height: 180px !important;
+            box-sizing: border-box !important;
+        }
+
+        div#ddescmetas,
+        div#ddesctri,
+        div#ddescoutros {
+            width: 100% !important;
+            height: auto !important;
+            box-sizing: border-box !important;
+        }
+
+        div#dagenda, div#dcontratos {
+            flex: none !important;
+            width: 100% !important;
+            height: auto !important;
+            min-height: 250px !important;
+            box-sizing: border-box !important;
+        }
+
+        div#dacessos {
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        div.agenda { width: 100% !important; }
+
+        .container-tarefas {
+            flex-direction: column !important;
+            gap: 10px !important;
+            height: auto !important;
+        }
+        .tarefa {
+            width: 100% !important;
+            height: 200px !important;
+        }
+        .ddescagenda {
+            width: 100% !important;
+            float: none !important;
+            height: auto !important;
+            min-height: 100px !important;
+        }
+
+        #ddescgraficometa {
+            height: auto !important;
+            min-height: 80px !important;
+        }
+
+        .logoEmpresa img {
+            width: 50px !important;
+            height: 50px !important;
+        }
+
+        .container-gridacess {
+            overflow-x: auto !important;
+        }
+        .gridacess {
+            min-width: 500px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        div#dbarramenulateral { width: 88vw !important; }
+        .fr-fav { min-width: 0 !important; }
+        #aplicacoes_favoritas { grid-template-columns: 1fr !important; }
+    }
 </style>
 </head>
 <body>
     <input id ='ideusu'   name='ideusu'   type="hidden">
     <input id ='wcodfunc' name='wcodfunc' type="hidden">
 
-    <div style="width: 100dvw; height: 97dvh; gap: 1%; position: fixed; display: flex; flex-direction: row; min-width: 1530px; min-height: 580px;">
+    <button id="btn-hamburger" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+    </button>
+    <!-- Overlay escuro ao abrir menu -->
+    <div id="overlay-menu"></div>
+
+    <div class="layout-root" style="width: 100dvw; height: 97dvh; gap: 1%; position: fixed; display: flex; flex-direction: row; min-width: 0; min-height: 0; box-sizing: border-box;">
         <div id="dbarramenulateral">
             <div id="didentificacao">
                 <div class="ddescdiv" style="height: 100px; width: auto; display: flex;">

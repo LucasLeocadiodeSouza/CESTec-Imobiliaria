@@ -3,7 +3,6 @@ package com.cestec.cestec.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.cestec.cestec.infra.security.tokenService;
 import com.cestec.cestec.model.securityLogin.AuthenticationDTO;
 import com.cestec.cestec.model.securityLogin.RegisterDTO;
@@ -11,14 +10,12 @@ import com.cestec.cestec.model.securityLogin.loginResponseDTO;
 import com.cestec.cestec.model.securityLogin.sp_user;
 import com.cestec.cestec.repository.userRepository;
 import com.cestec.cestec.service.genService;
-
+import com.cestec.cestec.service.sp_userService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

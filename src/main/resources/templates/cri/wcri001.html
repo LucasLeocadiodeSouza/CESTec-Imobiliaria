@@ -19,6 +19,7 @@
         addScriptsHead("/js/cri/wcri001.js");
     </script>
 <style>
+    /* === Larguras desktop (mantidas para telas grandes) === */
     .ppp         {width: 32px  !important;}
     .p           {width: 60px  !important;}
     .medium      {width: 120px !important;}
@@ -26,32 +27,325 @@
     .large       {width: 240px !important;}
     .extralarge  {width: 300px !important;}
 
-    .labelmodal {font-weight: 600;
-                 width: 180px;
-                 text-align: right;}
-
-    ::-webkit-scrollbar {
-        width: 1px;
+    /* Label do formulário alinhado à direita no desktop */
+    .labelmodal {
+        font-weight: 600;
+        width: 180px;
+        min-width: 180px;
+        text-align: right;
+        flex-shrink: 0;
     }
 
-    ::-webkit-scrollbar-track {
-        background: transparent;
+    /* Scrollbar fina no modal */
+    ::-webkit-scrollbar        { width: 4px; }
+    ::-webkit-scrollbar-track  { background: transparent; }
+    ::-webkit-scrollbar-thumb  { background: #b0bec5; border-radius: 4px; }
+
+    /* Modal desktop */
+    #dmodalf_contrato {
+        width: 700px;
+        padding-bottom: 20px;
+        opacity: 1;
     }
 
-    #dmodalf_contrato {width: 700px;
-                       padding-bottom: 20px;
-                       opacity: 1;}
+    /* Seção de imagens */
+    #divisao_images         { height: 385px; width: 100%; }
+    #container-miniimages   { display: flex; height: 80px; gap: 2px; overflow-x: auto; overflow-y: hidden; }
+    .mini-images            { height: calc(100% - 10px) !important; width: 60px !important; cursor: pointer; }
+    #image-principal        { width: 100%; height: calc(100% - 10px); display: flex; align-items: center; justify-content: center; padding-top: 10px; }
+    .container-images       { width: calc(100% - 20px); padding-inline: 10px; }
+    .image-focus            { height: 235px !important; width: 310px !important; }
 
-    #divisao_images {height: 385px; width: 100%;}
+    /* ============================================================
+       RESPONSIVIDADE MOBILE
+       Telas ≤ 768px: layout vertical, inputs 100%, modal full-width
+    ============================================================= */
+    @media (max-width: 768px) {
 
-    #container-miniimages {display: flex;height: 80px; gap: 2px; overflow-x: auto; overflow-y: hidden;}
-    .mini-images {height: calc(100% - 10px) !important; width: 60px !important; cursor: pointer;}
+        /* --- Filtro de busca: container sem overflow lateral --- */
+        fieldset.fieldset {
+            padding: 10px 8px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
+        }
 
-    #image-principal {width: 100%; height: calc(100% - 10px); display: flex; align-items: center; justify-content: center; padding-top: 10px;}
+        /* Cada linha do filtro vira coluna */
+        .if {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            height: auto !important;
+            gap: 6px !important;
+            margin-bottom: 8px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
 
-    .container-images {width: calc(100% - 20px); padding-inline: 10px;}
+        /* Linha dos botões Buscar/Nova Busca/Limpar: horizontal com wrap */
+        .if-botoes-filtro {
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            justify-content: flex-start !important;
+            gap: 8px !important;
+            align-items: center !important;
+        }
 
-    .image-focus {height: 235px !important; width: 310px !important;}
+        /* Label fica acima, alinhado à esquerda */
+        .if .labelmodal,
+        .dmf .labelmodal {
+            width: 100% !important;
+            min-width: 0 !important;
+            text-align: left !important;
+            font-size: 12px !important;
+            color: #6b7a99;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        /* Inputs e selects 100% no filtro */
+        .if > input:not([type="radio"]),
+        .if > select {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            height: 44px !important;
+            font-size: 16px !important;
+        }
+
+        /* Inputs no modal também 100% */
+        .dmf > input:not([type="radio"]),
+        .dmf > select {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            height: 44px !important;
+            font-size: 16px !important;
+        }
+
+        /* Sobrescreve as classes de largura fixa no mobile */
+        .ppp, .p, .medium, .Intermedium, .large, .extralarge {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Radios ficam inline, não 100% */
+        .if input[type="radio"],
+        .dmf input[type="radio"] {
+            width: auto !important;
+            height: auto !important;
+            min-width: 0 !important;
+            margin-right: 4px !important;
+        }
+
+        /* Labels dos radios ficam inline */
+        .if label[for],
+        .dmf label[for] {
+            width: auto !important;
+            min-width: 0 !important;
+            text-align: left !important;
+            margin-right: 12px !important;
+        }
+
+        /* Linha de tipo de contrato (radios) fica em row com wrap */
+        .if-radios {
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            align-items: center !important;
+            gap: 4px !important;
+        }
+
+        /* Botões de ação do modal */
+        .dmf.buttoncenter {
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            gap: 8px !important;
+        }
+
+        /* Botões maiores para toque */
+        .button {
+            height: 44px !important;
+            min-width: 90px !important;
+            flex: 1 1 auto !important;
+            max-width: 160px !important;
+            font-size: 14px !important;
+        }
+
+        /* Barra Imprimir/Inserir fica em linha com wrap */
+        .if[style*="margin-left"],
+        div.if.buttoninline {
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+            margin-left: 0 !important;
+        }
+
+        /* --- Modal: ocupa tela toda ---*/
+        #dmodalf_contrato {
+            width: 100% !important;
+            height: 100dvh !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            border-radius: 0 !important;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--fundo-primario, #f5f5f5) !important;
+            z-index: 999999 !important;
+        }
+
+        /* Sticky Header */
+        #dmodalf_contrato .titulo {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-radius: 0;
+            border: none;
+            border-bottom: 2px solid #a6badc54;
+            margin: 0 !important;
+            width: 100% !important;
+            height: 50px !important;
+            padding: 10px;
+            box-sizing: border-box !important;
+        }
+
+        /* Modal Body Scroll */
+        #containermodais {
+            flex-direction: column !important;
+            display: flex !important;
+            gap: 16px !important;
+            overflow-y: auto !important;
+            padding: 16px !important;
+            padding-bottom: 100px !important; /* Espaço para o footer */
+            flex: 1;
+        }
+
+        /* Sticky Footer */
+        .dmf.buttoncenter {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100% !important;
+            background: var(--fundo-primario, #f5f5f5);
+            padding: 16px !important;
+            margin: 0 !important;
+            box-sizing: border-box !important;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+            z-index: 10;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            justify-content: center !important;
+            gap: 12px !important;
+        }
+
+        .dmf.buttoncenter .button {
+            flex: 1 !important;
+            height: 48px !important;
+            font-size: 16px !important;
+            border-radius: 8px !important;
+            max-width: none !important;
+        }
+
+        /* Cada linha do formulário no modal: coluna */
+        .dmf {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            height: auto !important;
+            gap: 6px !important;
+            margin-bottom: 8px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Grid / Agrupamento de campos */
+        .mobile-row {
+            display: flex !important;
+            flex-direction: row !important;
+            width: 100% !important;
+            gap: 10px !important;
+            align-items: flex-end !important;
+        }
+
+        .mobile-row > div {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .col-70 { width: 70% !important; flex: 0 0 70%; }
+        .col-30 { width: calc(30% - 10px) !important; flex: 0 0 calc(30% - 10px); }
+        .col-50 { width: calc(50% - 5px) !important; flex: 0 0 calc(50% - 5px); }
+        
+        /* Ajuste do dmf para funcionar com a grid */
+        .dmf.field-group {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 4px !important;
+            margin-bottom: 0 !important;
+        }
+
+        /* Seção de imagens menor no mobile */
+        #divisao_images {
+            height: 280px !important;
+        }
+
+        .image-focus {
+            height: 160px !important;
+            width: auto !important;
+            max-width: 100% !important;
+        }
+
+        /* ---- GRID: área visível adequada no mobile ---- */
+        #tabela_CTO {
+            width: 100% !important;
+            box-sizing: border-box !important;
+            overflow-x: auto !important;
+        }
+
+        /* Garante que a tabela dentro da grid tenha largura mínima legível
+           mas não seja tão grande que a área visível fique microscópica */
+        #tabela_CTO .div_table_init {
+            min-height: 300px !important;
+        }
+
+        #tabela_CTO table {
+            min-width: 420px !important;
+            font-size: 13px !important;
+        }
+
+        #tabela_CTO table th,
+        #tabela_CTO table td {
+            padding: 8px 8px !important;
+            font-size: 13px !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        #dmodalf_contrato { padding: 8px !important; }
+
+        /* No 480 o filtro fica ainda mais compacto */
+        .if {
+            gap: 4px !important;
+            margin-bottom: 6px !important;
+        }
+
+        /* Grid ainda mais compacta em telas pequenas */
+        #tabela_CTO table {
+            min-width: 360px !important;
+            font-size: 12px !important;
+        }
+
+        #tabela_CTO table th,
+        #tabela_CTO table td {
+            padding: 6px 6px !important;
+            font-size: 12px !important;
+        }
+    }
 </style>
 </head>
 <body>
@@ -74,7 +368,7 @@
                 <input type="text" id="descproprietario" name="descproprietario" class="large" disabled>
             </div>
 
-            <div class='if'>
+            <div class='if if-radios'>
                 <label class="labelmodal">Tipo de Contrato:</label>
 
                 <input type="radio" id="raluguel" name="rimovel" value="1">
@@ -87,15 +381,15 @@
                 <label class="labelmodal" style="text-align: left; width: 80px" for="rambas">Ambas</label>
             </div>
 
-            <div  class='if' style="display: flex; height: auto;">
-                <label class="labelmodal"></label>                
+            <div class='if if-botoes-filtro' style="height: auto;">
+                <label class="labelmodal" style="display:none;"></label>                
                 <div id="bbuscar"    name="bbuscar"    class="button" value="Buscar"      data-icon="/icons/consultaLupa.png"></div>
                 <div id="bnovabusca" name="bnovabusca" class="button" value="Nova Busca"  data-icon="/icons/novaPesquisa.png"></div>
                 <div id="blimpar"    name="blimpar"    class="button" value="Limpar"      data-icon="/icons/limparIcon.png"></div>
             </div>
         </fieldset>
         
-        <div class='if' style="display: flex; margin-left: 5px;">                            
+        <div class='if buttoninline' style="margin-left: 5px;">                            
             <div id="bimprimir" name="bimprimir" class="button" value="Imprimir" data-icon="/icons/printer.png"></div>
             <div id="binserir"  name="binserir"  class="button" value="Inserir"  data-icon="/icons/incluir.png"></div>
         </div>
@@ -135,50 +429,63 @@
                         <input type="text" id="mmetrosquad" name="mmetrosquad" class="p">
                     </div>
 
-                    <div class='dmf'>
-                        <label class="labelmodal">Quartos: </label>
-                        <input type="text" id="mquartos" name="mquartos" class="ppp">
+                    <div class="mobile-row">
+                        <div class='dmf field-group col-50'>
+                            <label class="labelmodal">Quartos: </label>
+                            <input type="text" id="mquartos" name="mquartos" class="ppp">
+                        </div>
+                        <div class='dmf field-group col-50'>
+                            <label class="labelmodal">Banheiros: </label>
+                            <input type="text" id="mbanheiro" name="mbanheiro" class="ppp">
+                        </div>
                     </div>
 
-                    <div class='dmf'>
-                        <label class="labelmodal">Banheiros: </label>
-                        <input type="text" id="mbanheiro" name="mbanheiro" class="ppp">
+                    <div class="mobile-row">
+                        <div class='dmf field-group col-50'>
+                            <label class="labelmodal">Valor (R$): </label>
+                            <input type="text" id="mvlr" name="mvlr" class="medium">
+                        </div>
+                        <div class='dmf field-group col-50'>
+                            <label class="labelmodal">Condomínio(R$): </label>
+                            <input type="text" id="mcondominio" name="mcondominio" class="p">
+                        </div>
                     </div>
 
-                    <div class='dmf'>
-                        <label class="labelmodal">Condomínio(R$): </label>
-                        <input type="text" id="mcondominio" name="mcondominio" class="p">
-                    </div>
-
-                    <div class='dmf'>
-                        <label class="labelmodal">Bairro: </label>
-                        <input type="text" id="mbairro"  name="mbairro"  class="large">&nbsp;&nbsp;
-
-                        <label class="labelmodal" style="width: auto !important;">Número: </label>
-                        <input type="text" id="mnmr"  name="mnmr"  class="ppp">
+                    <div class="mobile-row">
+                        <div class='dmf field-group col-70'>
+                            <label class="labelmodal">Bairro: </label>
+                            <input type="text" id="mbairro"  name="mbairro"  class="large">
+                        </div>
+                        <div class='dmf field-group col-30'>
+                            <label class="labelmodal" style="width: auto !important;">Número: </label>
+                            <input type="text" id="mnmr"  name="mnmr"  class="ppp">
+                        </div>
                     </div>
                     
-                    <div class='dmf'>
-                        <label class="labelmodal">Rua: </label>
-                        <input type="text" id="mrua"  name="mrua"  class="large">&nbsp;&nbsp;
-
-                        <label class="labelmodal" style="width: auto !important;">CEP: </label>
-                        <input type="text" id="mcepini"    name="mcepini" maxlength="5" class="p">
-                        <label class="labelmodal" style="width: auto !important;">-</label>
-                        <input type="text" id="mcepdigito" name="mcepdigito" maxlength="3" class="ppp">
+                    <div class="mobile-row">
+                        <div class='dmf field-group col-70'>
+                            <label class="labelmodal">Rua: </label>
+                            <input type="text" id="mrua"  name="mrua"  class="large">
+                        </div>
+                        <div class='dmf field-group col-30'>
+                            <label class="labelmodal" style="width: auto !important;">CEP: </label>
+                            <div style="display: flex; gap: 4px; align-items: center; width: 100%;">
+                                <input type="text" id="mcepini"    name="mcepini" maxlength="5" class="p">
+                                <span>-</span>
+                                <input type="text" id="mcepdigito" name="mcepdigito" maxlength="3" class="ppp">
+                            </div>
+                        </div>
                     </div>
 
-                    <div class='dmf'>
-                        <label class="labelmodal">Cidade: </label>
-                        <input type="text" id="mcidade"  name="mcidade"  class="medium"> &nbsp;
-                    
-                        <label class="labelmodal" style="width: auto !important;">UF:</label>
-                        <input type="text" id="muf"  name="muf"  class="ppp" maxlength="3">
-                    </div>
-
-                    <div class='dmf'>
-                        <label class="labelmodal">Valor (R$): </label>
-                        <input type="text" id="mvlr" name="mvlr" class="medium">
+                    <div class="mobile-row">
+                        <div class='dmf field-group col-70'>
+                            <label class="labelmodal">Cidade: </label>
+                            <input type="text" id="mcidade"  name="mcidade"  class="medium">
+                        </div>
+                        <div class='dmf field-group col-30'>
+                            <label class="labelmodal" style="width: auto !important;">UF:</label>
+                            <input type="text" id="muf"  name="muf"  class="ppp" maxlength="3">
+                        </div>
                     </div>
 
                     <div class='dmf'>
