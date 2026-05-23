@@ -33,6 +33,3 @@ build/
 .vscode/
 webhook_server.py
 nohup.out
-
-# Arquivos de Configuração do Ambiente de Desenvolvimento
-# src/main/resources/application.properties
