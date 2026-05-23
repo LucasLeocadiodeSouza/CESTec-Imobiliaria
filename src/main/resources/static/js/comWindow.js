@@ -9,9 +9,10 @@ window.addEventListener("load", function () {
 
 const dates   = document.querySelector(".diadomes");
 const nomeMes = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-let date = new Date();
-let mes  = date.getMonth();
-let ano  = date.getFullYear();
+let date      = new Date();
+let mes       = date.getMonth();
+let ano       = date.getFullYear();
+
 var CONSUL,AGENDSJSON;
 var chart;
 const ACAOCONSULTA = {};
@@ -21,6 +22,9 @@ function iniciarEventos() {
 
     event_click("dbackagenda");
     event_click("dnextagenda");
+    event_click("btn-hamburger");
+    // event_click("overlay-menu");
+
 
     filaFetchInit();
 
@@ -63,17 +67,22 @@ function event_click(obj) {
         });
     }
     if(obj == "btn-hamburger"){
-        var sidebar = document.getElementById('dbarramenulateral');
-        var btn     = document.getElementById('btn-hamburger');
-        var overlay = document.getElementById('overlay-menu');
-        sidebar.classList.toggle('menu-aberto');
-        btn.classList.toggle('aberto');
-        overlay.classList.toggle('ativo');
+        document.getElementById(obj).addEventListener("click", function() {
+            var sidebar = document.getElementById('dbarramenulateral');
+            var btn     = document.getElementById('btn-hamburger');
+            var overlay = document.getElementById('overlay-menu');
+
+            sidebar.classList.toggle('menu-aberto');
+            btn.classList.toggle('aberto');
+            overlay.classList.toggle('ativo');
+        });
     }
     if(obj == "overlay-menu"){
-        document.getElementById('dbarramenulateral').classList.remove('menu-aberto');
-        document.getElementById('btn-hamburger').classList.remove('aberto');
-        document.getElementById('overlay-menu').classList.remove('ativo');
+        document.getElementById(obj).addEventListener("click", function() {
+            document.getElementById('dbarramenulateral').classList.remove('menu-aberto');
+            document.getElementById('btn-hamburger').classList.remove('aberto');
+            document.getElementById('overlay-menu').classList.remove('ativo');
+        });
     }
 }
 

@@ -367,10 +367,10 @@
                      padding:          2px;
                      flex-direction:   column;}
 
-    #dbackagenda {background-color: var(--color-primary, #334970);
-                  float:             left;
-                  padding:           6px;
-                  cursor:            pointer;
+    #dbackagenda {background-color:          var(--color-primary, #334970);
+                  float:                     left;
+                  padding:                   6px;
+                  cursor:                    pointer;
                   border-bottom-left-radius: 25px;
                   border-top-left-radius:    25px;
                   width:                     25px;
@@ -657,6 +657,16 @@
             box-sizing: border-box !important;
         }
 
+        #ddescagendabutton {
+            background-color: transparent;
+            box-shadow: 0 0 0;
+        }
+
+        #dmesagenda {
+            margin-left:  0;
+            margin-right: 0;
+        }
+
         .container-sobre {
             margin-top: 10px !important;
         }
@@ -752,7 +762,22 @@
         div#dbarramenulateral { width: 88vw !important; }
         .fr-fav { min-width: 0 !important; }
         #aplicacoes_favoritas { grid-template-columns: 1fr !important; }
+
+        #ddescagenda { display: none !important; }
+
+        #calendariosemanal ul { margin-inline: 15px !important; }
     }
+
+    @media (max-width: 1250px) {
+        .container-gridacess-ext {overflow: scroll;}
+
+        .container-gridacess {
+            width: 1250px;
+            height: 100%;
+            overflow: scroll;
+        }
+    }
+
 </style>
 </head>
 <body>
@@ -1057,56 +1082,58 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="container-gridacess">
-                                    <div class="coluns-gridacess">
-                                        <div class="titulo-colacess" style="width: calc((100%/6) + 140px);">
-                                            <label>Aplicação</label>
+                                <div class="container-gridacess-ext">
+                                    <div class="container-gridacess">
+                                        <div class="coluns-gridacess">
+                                            <div class="titulo-colacess" style="width: calc((100%/6) + 140px);">
+                                                <label>Aplicação</label>
+                                            </div>
+                                            <div class="titulo-colacess" style=" width: calc((100%/6) + 80px);">
+                                                <label>Modulo</label>
+                                            </div>
+                                            <div class="titulo-colacess" style=" width: calc((100%/6) - 50px);">
+                                                <label>Indicador</label>
+                                            </div>
+                                            <div class="titulo-colacess" style="width: calc((100%/6) - 50px);">
+                                                <label>Cod. aplicação</label>
+                                            </div>
+                                            <div class="titulo-colacess" style="width: calc((100%/6) - 70px);">
+                                                <label>Cod. Modulo</label>
+                                            </div>
+                                            <div class="titulo-colacess" style="width: calc((100% / 6) - 50px);">
+                                                <label>Qtde. Acesso</label>
+                                            </div>
                                         </div>
-                                        <div class="titulo-colacess" style=" width: calc((100%/6) + 80px);">
-                                            <label>Modulo</label>
-                                        </div>
-                                        <div class="titulo-colacess" style=" width: calc((100%/6) - 50px);">
-                                            <label>Indicador</label>
-                                        </div>
-                                        <div class="titulo-colacess" style="width: calc((100%/6) - 50px);">
-                                            <label>Cod. aplicação</label>
-                                        </div>
-                                        <div class="titulo-colacess" style="width: calc((100%/6) - 70px);">
-                                            <label>Cod. Modulo</label>
-                                        </div>
-                                        <div class="titulo-colacess" style="width: calc((100% / 6) - 50px);">
-                                            <label>Qtde. Acesso</label>
-                                        </div>
-                                    </div>
-                                    <div class="gridacess">
-                                        <!-- Coluna 1 - Aplicação -->
-                                        <div style="height: 100%;width: calc((100%/6) + 140px);">
-                                            <div class="labels-clear" id="rows-descapls"></div>
-                                        </div>
-
-                                        <!-- Coluna 2 - Modulos -->
-                                        <div style="height: 100%; width: calc((100%/6) + 80px);">
-                                            <div class="labels-clear" id="rows-descmods"></div>
-                                        </div>
-
-                                        <!-- Coluna 3 - Indicadores -->
-                                        <div style="height: 100%; width: calc((100%/6) - 50px);">
-                                            <div class="labels-clear" id="rows-inds"></div>
-                                        </div>
-
-                                        <!-- Coluna 4 - Cod. Aplicação -->
-                                        <div style="height: 100%;width: calc((100%/6) - 50px);">
-                                            <div class="labels-clear" id="rows-codapls"></div>
-                                        </div>
-
-                                        <!-- Coluna 5 - Cod. Modulo -->
-                                        <div style="height: 100%;width: calc((100%/6) - 70px);">
-                                            <div class="labels-clear" id="rows-codmods"></div>
-                                        </div>
-
-                                        <!-- Coluna 6 - Qtde. Acesso -->
-                                        <div style="height: 100%;width: calc((100% / 6) - 50px);">
-                                            <div class="labels-clear" id="rows-qtdeacess"></div>
+                                        <div class="gridacess">
+                                            <!-- Coluna 1 - Aplicação -->
+                                            <div style="height: 100%;width: calc((100%/6) + 140px);">
+                                                <div class="labels-clear" id="rows-descapls"></div>
+                                            </div>
+    
+                                            <!-- Coluna 2 - Modulos -->
+                                            <div style="height: 100%; width: calc((100%/6) + 80px);">
+                                                <div class="labels-clear" id="rows-descmods"></div>
+                                            </div>
+    
+                                            <!-- Coluna 3 - Indicadores -->
+                                            <div style="height: 100%; width: calc((100%/6) - 50px);">
+                                                <div class="labels-clear" id="rows-inds"></div>
+                                            </div>
+    
+                                            <!-- Coluna 4 - Cod. Aplicação -->
+                                            <div style="height: 100%;width: calc((100%/6) - 50px);">
+                                                <div class="labels-clear" id="rows-codapls"></div>
+                                            </div>
+    
+                                            <!-- Coluna 5 - Cod. Modulo -->
+                                            <div style="height: 100%;width: calc((100%/6) - 70px);">
+                                                <div class="labels-clear" id="rows-codmods"></div>
+                                            </div>
+    
+                                            <!-- Coluna 6 - Qtde. Acesso -->
+                                            <div style="height: 100%;width: calc((100% / 6) - 50px);">
+                                                <div class="labels-clear" id="rows-qtdeacess"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
